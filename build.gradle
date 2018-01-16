@@ -1,0 +1,62 @@
+import jaci.openrio.gradle.GradleRIOPlugin
+import jaci.openrio.gradle.frc.FRCJavaArtifact
+import jaci.openrio.gradle.frc.RoboRIO
+
+plugins {
+    id 'java'
+    id 'jaci.openrio.gradle.GradleRIO' version '2018.01.15'
+    id 'com.diffplug.gradle.spotless' version '3.8.0'
+    id 'net.ltgt.apt-idea' version '0.13'
+}
+
+def TEAM = 2767
+def ROBOT_CLASS = 'frc.team2767.Robot'
+
+deploy {
+    targets {
+        target("roborio", RoboRIO) {
+            team = TEAM
+        }
+    }
+    artifacts {
+        artifact('frcJava', FRCJavaArtifact) {
+            targets << "roborio"
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' } // nanohttpd
+}
+
+dependencies {
+    compile wpilib()
+    compile ctre()
+    compile navx()
+    compile openrio.powerup.matchData()
+    compile 'org.strykeforce.thirdcoast:core:18.0.0'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'com.google.dagger:dagger:2.14.1'
+    apt 'com.google.dagger:dagger-compiler:2.14.1'
+    compileOnly 'org.jetbrains:annotations:15.0'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        target '**/*.java'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4.1'
+}
