@@ -15,18 +15,6 @@ public class Robot extends TimedRobot {
 
   private SingletonComponent component;
   private Controls controls;
-  private final Trigger gyroResetButton =
-      new Trigger() {
-        @Override
-        public boolean get() {
-          return controls.getResetButton();
-        }
-
-        @Override
-        public String toString() {
-          return "gyro reset button";
-        }
-      };
   private final Trigger alignWheelsButton =
       new Trigger() {
         @Override
@@ -60,17 +48,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if (gyroResetButton.hasActivated()) {
-      String msg = "Resetting gyro yaw zero";
-      logger.warn(msg);
-      DriverStation.reportWarning(msg, false);
-      swerve.getGyro().zeroYaw();
-    }
-    double forward = applyDeadband(controls.getForward());
-    double strafe = applyDeadband(controls.getStrafe());
-    double azimuth = applyDeadband(controls.getAzimuth());
-
-    swerve.drive(forward, strafe, azimuth);
   }
 
   @Override
@@ -89,12 +66,6 @@ public class Robot extends TimedRobot {
     }
   }
 
-  private double applyDeadband(double input) {
-    if (Math.abs(input) < 0.05) {
-      return 0;
-    }
-    return input;
-  }
 
   private SingletonComponent getComponent() {
     if (component == null) {
