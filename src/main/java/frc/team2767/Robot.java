@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     logger.info("Robot is initializing");
+    COMPONENT.talonProvisioner().enableTimeout(true);
     controls = COMPONENT.controls();
     swerve = COMPONENT.swerveDrive();
     TelemetryService telemetryService = COMPONENT.telemetryService();
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("Robot is enabled in tele-op");
+    COMPONENT.talonProvisioner().enableTimeout(false);
     swerve.stop();
   }
 
