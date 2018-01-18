@@ -2,6 +2,7 @@ package frc.team2767.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team2767.command.TeleOpDriveCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
@@ -21,7 +22,9 @@ public class DriveSubsystem extends Subsystem {
   }
 
   @Override
-  protected void initDefaultCommand() {}
+  protected void initDefaultCommand() {
+    setDefaultCommand(new TeleOpDriveCommand());
+  }
 
   public void alignWheels() {
     swerve.saveAzimuthPositions();
@@ -29,5 +32,17 @@ public class DriveSubsystem extends Subsystem {
     String msg = "drive wheels were re-aligned";
     logger.info(msg);
     DriverStation.reportWarning(msg, false);
+  }
+
+  public void enableTeleOp(boolean enabled) {
+    logger.debug("tele-op enabled = {}", enabled);
+  }
+
+  public void drive(double forward, double strafe, double azimuth) {
+    swerve.drive(forward, strafe, azimuth);
+  }
+
+  public void stop() {
+    swerve.stop();
   }
 }

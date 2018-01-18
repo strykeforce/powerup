@@ -6,7 +6,7 @@ import frc.team2767.subsystem.DriveSubsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AlignWheelsCommand extends InstantCommand {
+public final class AlignWheelsCommand extends InstantCommand {
 
   private static final Logger logger = LoggerFactory.getLogger(AlignWheelsCommand.class);
 
