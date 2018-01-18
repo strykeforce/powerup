@@ -40,8 +40,8 @@ public class Controls {
       new JoystickButton(gameController, GAME_BACK_BUTTON);
 
   @Inject
-  public Controls() {
-    alignWheelsButton.whenPressed(new AlignWheelsCommand());
+  public Controls(AlignWheelsCommand alignWheelsCommand) {
+    alignWheelsButton.whenPressed(alignWheelsCommand);
   }
 
   /**
