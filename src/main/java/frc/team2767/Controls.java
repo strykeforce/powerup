@@ -1,6 +1,9 @@
 package frc.team2767;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team2767.command.ZeroGyroYawCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -34,8 +37,12 @@ public class Controls {
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
 
+  private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
+
   @Inject
-  public Controls() {}
+  public Controls() {
+    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
+  }
 
   /**
    * Return the driver controller left stick Y-axis position.

@@ -45,4 +45,9 @@ public class DriveSubsystem extends Subsystem {
   public void stop() {
     swerve.stop();
   }
+
+  public void zeroGyro() {
+    logger.warn("setting gyro yaw to zero");
+    swerve.getGyro().zeroYaw();
+  }
 }
