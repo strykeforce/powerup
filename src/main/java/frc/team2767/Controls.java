@@ -1,8 +1,6 @@
 package frc.team2767;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team2767.command.AlignWheelsCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -36,13 +34,8 @@ public class Controls {
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
 
-  private final JoystickButton alignWheelsButton =
-      new JoystickButton(gameController, GAME_BACK_BUTTON);
-
   @Inject
-  public Controls(AlignWheelsCommand alignWheelsCommand) {
-    alignWheelsButton.whenPressed(alignWheelsCommand);
-  }
+  public Controls() {}
 
   /**
    * Return the driver controller left stick Y-axis position.

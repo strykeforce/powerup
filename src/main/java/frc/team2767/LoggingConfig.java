@@ -23,7 +23,7 @@ public class LoggingConfig extends ContextAwareBase implements Configurator {
     encoder.setContext(lc);
 
     PatternLayout layout = new PatternLayout();
-    layout.setPattern("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n");
+    layout.setPattern("%-23(%d{HH:mm:ss.SSS} [%thread]) %highlight(%-5level) %logger{32} - %msg%n");
 
     layout.setContext(lc);
     layout.start();

@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Controls;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
+import javax.inject.Inject;
 
 public final class TeleOpDriveCommand extends Command {
 
   private final DriveSubsystem drive;
   private final Controls controls;
 
+  @Inject
   public TeleOpDriveCommand() {
     drive = Robot.COMPONENT.driveSubsystem();
     controls = Robot.COMPONENT.controls();

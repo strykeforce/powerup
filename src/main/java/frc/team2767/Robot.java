@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    logger.info("Robot is initializing");
+    logger.info("robotInit");
     COMPONENT.talonProvisioner().enableTimeout(true);
     controls = COMPONENT.controls();
     swerve = COMPONENT.swerveDrive();
@@ -40,15 +40,13 @@ public class Robot extends TimedRobot {
     swerve.registerWith(telemetryService);
     telemetryService.start();
     swerve.zeroAzimuthEncoders();
-
-    // commands
-    //    alignWheelsButton.whenActive(new AlignWheelsCommand());
   }
 
   @Override
   public void teleopInit() {
-    logger.info("Robot is enabled in tele-op");
+    logger.info("teleopInit - disabling Talon config timeout and stopping swerve");
     COMPONENT.talonProvisioner().enableTimeout(false);
+    COMPONENT.driveSubsystem();
     swerve.stop();
   }
 
@@ -59,7 +57,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    logger.info("Robot is disabled");
+    logger.info("disabledInit");
   }
 
   @Override
@@ -68,4 +66,7 @@ public class Robot extends TimedRobot {
       COMPONENT.driveSubsystem().alignWheels();
     }
   }
+
+  @Override
+  public void robotPeriodic() {}
 }
