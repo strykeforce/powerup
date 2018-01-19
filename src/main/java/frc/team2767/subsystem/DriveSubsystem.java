@@ -21,7 +21,7 @@ public class DriveSubsystem extends Subsystem {
   private final TalonSRX[] talonSRX = new TalonSRX[4];
 
   @Inject
-  public DriveSubsystem(SwerveDrive swerve) {
+  DriveSubsystem(SwerveDrive swerve) {
     this.swerve = swerve;
     wheels = swerve.getWheels();
 

@@ -3,20 +3,17 @@ package frc.team2767.command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
-import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.Wheel;
 
 public class AutonDriveCommand extends TimedCommand {
 
-  private final DriveSubsystem drive;
   private static final Logger logger = LoggerFactory.getLogger(AutonDriveCommand.class);
-
+  private final DriveSubsystem drive;
   private final Wheel[] wheels = new Wheel[4];
   private double[] talonPositions = new double[4];
 
-  @Inject
   public AutonDriveCommand() {
     super(1);
     drive = Robot.COMPONENT.driveSubsystem();
