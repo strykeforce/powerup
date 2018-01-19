@@ -1,7 +1,7 @@
 package frc.team2767;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,43 +10,33 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 
 public class Robot extends TimedRobot {
 
-  private static final Logger logger = LoggerFactory.getLogger(Robot.class);
+  public static final SingletonComponent COMPONENT;
   private static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
+  private static final Logger logger = LoggerFactory.getLogger(Robot.class);
+
+  static {
+    logger.info("loading robot configuration from {}", CONFIG_FILE);
+    COMPONENT = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
+  }
 
   private SingletonComponent component;
   private Controls controls;
-  private final Trigger gyroResetButton =
-      new Trigger() {
-        @Override
-        public boolean get() {
-          return controls.getResetButton();
-        }
-
-        @Override
-        public String toString() {
-          return "gyro reset button";
-        }
-      };
   private final Trigger alignWheelsButton =
       new Trigger() {
         @Override
         public boolean get() {
           return controls.getGamepadBackButton() && controls.getGamepadStartButton();
         }
-
-        @Override
-        public String toString() {
-          return "wheel alignment button combination";
-        }
       };
   private SwerveDrive swerve;
 
   @Override
   public void robotInit() {
-    logger.info("Robot is initializing");
-    controls = getComponent().controls();
-    swerve = getComponent().swerveDrive();
-    TelemetryService telemetryService = getComponent().telemetryService();
+    logger.info("robotInit");
+    COMPONENT.talonProvisioner().enableTimeout(true);
+    controls = COMPONENT.controls();
+    swerve = COMPONENT.swerveDrive();
+    TelemetryService telemetryService = COMPONENT.telemetryService();
     swerve.registerWith(telemetryService);
     telemetryService.start();
     swerve.zeroAzimuthEncoders();
@@ -54,53 +44,29 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    logger.info("Robot is enabled in tele-op");
+    logger.info("teleopInit - disabling Talon config timeout and stopping swerve");
+    COMPONENT.talonProvisioner().enableTimeout(false);
+    COMPONENT.driveSubsystem();
     swerve.stop();
   }
 
   @Override
   public void teleopPeriodic() {
-    if (gyroResetButton.hasActivated()) {
-      String msg = "Resetting gyro yaw zero";
-      logger.warn(msg);
-      DriverStation.reportWarning(msg, false);
-      swerve.getGyro().zeroYaw();
-    }
-    double forward = applyDeadband(controls.getForward());
-    double strafe = applyDeadband(controls.getStrafe());
-    double azimuth = applyDeadband(controls.getAzimuth());
-
-    swerve.drive(forward, strafe, azimuth);
+    Scheduler.getInstance().run();
   }
 
   @Override
   public void disabledInit() {
-    logger.info("Robot is disabled");
+    logger.info("disabledInit");
   }
 
   @Override
   public void disabledPeriodic() {
     if (alignWheelsButton.hasActivated()) {
-      swerve.saveAzimuthPositions();
-      swerve.zeroAzimuthEncoders();
-      String msg = "drive wheels were re-aligned";
-      logger.info(msg);
-      DriverStation.reportWarning(msg, false);
+      COMPONENT.driveSubsystem().alignWheels();
     }
   }
 
-  private double applyDeadband(double input) {
-    if (Math.abs(input) < 0.05) {
-      return 0;
-    }
-    return input;
-  }
-
-  private SingletonComponent getComponent() {
-    if (component == null) {
-      logger.info("loading robot configuration from {}", CONFIG_FILE);
-      component = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
-    }
-    return component;
-  }
+  @Override
+  public void robotPeriodic() {}
 }

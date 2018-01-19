@@ -2,6 +2,7 @@ package frc.team2767;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import frc.team2767.subsystem.DriveSubsystem;
 import java.io.File;
 import javax.inject.Singleton;
 import org.strykeforce.thirdcoast.swerve.GraphableSwerveDriveModule;
@@ -21,7 +22,9 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
     GraphableSwerveDriveModule.class,
   }
 )
-interface SingletonComponent {
+public interface SingletonComponent {
+
+  DriveSubsystem driveSubsystem();
 
   Controls controls();
 
