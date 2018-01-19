@@ -4,18 +4,23 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.ZeroGyroYawCommand;
+import frc.team2767.subsystem.DriveSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Accesses driver control input. */
 @Singleton
 public class Controls {
 
+  private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
+
   private static final int DRIVER_RIGHT_X_AXIS = 0;
   private static final int DRIVER_RIGHT_Y_AXIS = 1;
   private static final int DRIVER_LEFT_Y_AXIS = 2;
-  private static final int DRIVER_TUNER_AXIS = 3;
-  private static final int DRIVER_LEFT_X_AXIS = 4;
+  private static final int DRIVER_TUNER_AXIS = 6;
+  private static final int DRIVER_LEFT_X_AXIS = 5;
 
   private static final int DRIVER_LEFT_BUTTON = 1;
   private static final int DRIVER_RIGHT_SHOULDER_BUTTON = 2;
@@ -51,6 +56,26 @@ public class Controls {
    */
   public double getForward() {
     return -driverController.getRawAxis(DRIVER_LEFT_Y_AXIS);
+  }
+
+  public boolean getLeftButton() {
+    return driverController.getRawButton(DRIVER_LEFT_BUTTON);
+  }
+
+  public boolean getRightShoulder() {
+    return driverController.getRawButton(DRIVER_RIGHT_SHOULDER_BUTTON);
+  }
+
+  public boolean getLeftShoulderUp() {
+    return driverController.getRawButton(DRIVER_LEFT_SHOULDER_UP_BUTTON);
+  }
+
+  public boolean getLeftShoulderDown() {
+    return driverController.getRawButton(DRIVER_LEFT_SHOULDER_DOWN_BUTTON);
+  }
+
+  public double getDriverRightY() {
+    return -driverController.getRawAxis(DRIVER_RIGHT_Y_AXIS);
   }
 
   /**
