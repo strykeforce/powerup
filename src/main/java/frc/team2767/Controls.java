@@ -28,15 +28,15 @@ public class Controls {
   private static final int DRIVER_LEFT_SHOULDER_DOWN_BUTTON = 4;
   private static final int DRIVER_LEFT_SHOULDER_UP_BUTTON = 5;
 
-  private static final int DRIVER_LEFT_TOP_BUTTON_LEFT = 8;
-  private static final int DRIVER_LEFT_TOP_BUTTON_RIGHT = 9;
-  private static final int DRIVER_RIGHT_TOP_BUTTON_LEFT = 10;
-  private static final int DRIVER_RIGHT_TOP_BUTTON_RIGHT = 11;
+  private static final int DRIVER_LEFT_TRIM_X_POS = 7;
+  private static final int DRIVER_LEFT_TRIM_X_NEG = 6;
+  private static final int DRIVER_RIGHT_TRIM_X_NEG = 13;
+  private static final int DRIVER_RIGHT_TRIM_X_POS = 12;
 
-  private static final int DRIVER_CENTER_TOP_LEFT_BUTTON_UP = 6;
-  private static final int DRIVER_CENTER_TOP_LEFT_BUTTON_DOWN = 7;
-  private static final int DRIVER_CENTER_TOP_RIGHT_BUTTON_UP = 12;
-  private static final int DRIVER_CENTER_TOP_RIGHT_BUTTON_DOWN = 13;
+  private static final int DRIVER_LEFT_TRIM_Y_POS = 8;
+  private static final int DRIVER_LEFT_TRIM_Y_NEG = 9;
+  private static final int DRIVER_RIGHT_TRIM_Y_POS = 10;
+  private static final int DRIVER_RIGHT_RIM_Y_NEG = 11;
 
   private static final int GAME_A_BUTTON = 1;
   private static final int GAME_B_BUTTON = 2;
@@ -88,36 +88,36 @@ public class Controls {
     return -driverController.getRawAxis(DRIVER_RIGHT_Y_AXIS);
   }
 
-  public boolean getDriverLeftTopLeft() {
-    return driverController.getRawButton(DRIVER_LEFT_TOP_BUTTON_LEFT);
+  public boolean getDriverLeftTrimXPos() {
+    return driverController.getRawButton(DRIVER_LEFT_TRIM_X_POS);
   }
 
-  public boolean getDriverLeftTopRight() {
-    return driverController.getRawButton(DRIVER_LEFT_TOP_BUTTON_RIGHT);
+  public boolean getDriverLeftTrimXNeg() {
+    return driverController.getRawButton(DRIVER_LEFT_TRIM_X_NEG);
   }
 
-  public boolean getDriverRightTopLeft() {
-    return driverController.getRawButton(DRIVER_RIGHT_TOP_BUTTON_LEFT);
+  public boolean getDriverRightTrimXNeg() {
+    return driverController.getRawButton(DRIVER_RIGHT_TRIM_X_NEG);
   }
 
-  public boolean getDriverRightTopRight() {
-    return driverController.getRawButton(DRIVER_RIGHT_TOP_BUTTON_RIGHT);
+  public boolean getDriverRightTrimXPos() {
+    return driverController.getRawButton(DRIVER_RIGHT_TRIM_X_POS);
   }
 
-  public boolean getDriverCenterTopLeftUp() {
-    return driverController.getRawButton(DRIVER_CENTER_TOP_LEFT_BUTTON_UP);
+  public boolean getDriverLeftTrimYPos() {
+    return driverController.getRawButton(DRIVER_LEFT_TRIM_Y_POS);
   }
 
-  public boolean getDriverCenterTopLeftDown() {
-    return driverController.getRawButton(DRIVER_CENTER_TOP_LEFT_BUTTON_DOWN);
+  public boolean getDriverLeftTrimYNeg() {
+    return driverController.getRawButton(DRIVER_LEFT_TRIM_Y_NEG);
   }
 
-  public boolean getDriverCenterTopRightUp() {
-    return driverController.getRawButton(DRIVER_CENTER_TOP_RIGHT_BUTTON_UP);
+  public boolean getDriverRightTrimYPos() {
+    return driverController.getRawButton(DRIVER_RIGHT_TRIM_Y_POS);
   }
 
-  public boolean getDriverCenterTopRightDown() {
-    return driverController.getRawButton(DRIVER_CENTER_TOP_RIGHT_BUTTON_DOWN);
+  public boolean getDriverRightTrimYNeg() {
+    return driverController.getRawButton(DRIVER_RIGHT_RIM_Y_NEG);
   }
 
   /**

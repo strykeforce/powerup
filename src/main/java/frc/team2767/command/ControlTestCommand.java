@@ -44,15 +44,15 @@ public class ControlTestCommand extends Command {
     boolean leftShoulderUp = controls.getLeftShoulderUp();
     boolean leftShoulderDown = controls.getLeftShoulderDown();
 
-    boolean leftTopLeft = controls.getDriverLeftTopLeft();
-    boolean leftTopRight = controls.getDriverLeftTopRight();
-    boolean rightTopLeft = controls.getDriverRightTopLeft();
-    boolean rightTopRight = controls.getDriverRightTopRight();
+    boolean leftTrimXPos = controls.getDriverLeftTrimXPos();
+    boolean leftTrimXNeg = controls.getDriverLeftTrimXNeg();
+    boolean rightTrimXNeg = controls.getDriverRightTrimXNeg();
+    boolean rightTrimXPos = controls.getDriverRightTrimXPos();
 
-    boolean centerLeftUp = controls.getDriverCenterTopLeftUp();
-    boolean centerLeftDown = controls.getDriverCenterTopLeftDown();
-    boolean centerRightUp = controls.getDriverCenterTopRightUp();
-    boolean centerRightDown = controls.getDriverCenterTopRightDown();
+    boolean leftTrimYPos = controls.getDriverLeftTrimYPos();
+    boolean leftTrimYNeg = controls.getDriverLeftTrimYNeg();
+    boolean rightTrimYPos = controls.getDriverRightTrimYPos();
+    boolean rightTrimYNeg = controls.getDriverRightTrimYNeg();
 
     test("forward", forward);
     test("strafe", strafe);
@@ -66,16 +66,15 @@ public class ControlTestCommand extends Command {
     test("leftShoulderUp", leftShoulderUp);
     test("leftShoulderDown", leftShoulderDown);
 
-    test("leftTopLeft", leftTopLeft);
-    test("leftTopRight", leftTopRight);
-    test("rightTopLeft", rightTopLeft);
-    test("rightTopRight", rightTopRight);
+    test("leftTrimXNeg", leftTrimXNeg);
+    test("leftTrimXPos", leftTrimXPos);
+    test("rightTrimXNeg", rightTrimXNeg);
+    test("rightTrimXPos", rightTrimXPos);
 
-    test("centerLeftUp", centerLeftUp);
-    test("centerLeftDwon", centerLeftDown);
-    test("centerRightUp", centerRightUp);
-    test("centerRightDown", centerRightDown);
-
+    test("leftTrimYPos", leftTrimYPos);
+    test("leftTrimYNeg", leftTrimYNeg);
+    test("rightTrimYPos", rightTrimYPos);
+    test("rightTrimYNeg", rightTrimYNeg);
   }
 
   private void test(String name, double a) {
