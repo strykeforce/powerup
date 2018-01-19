@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Controls;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.DriveSubsystem.Mode;
 
 public final class TeleOpDriveCommand extends Command {
 
@@ -22,7 +23,7 @@ public final class TeleOpDriveCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.enableTeleOp(true);
+    drive.setDriveMode(Mode.TELEOP);
   }
 
   @Override

@@ -15,10 +15,9 @@ import org.strykeforce.thirdcoast.swerve.Wheel;
 public class DriveSubsystem extends Subsystem {
 
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
-
   private final SwerveDrive swerve;
   private final Wheel[] wheels;
-  private final TalonSRX[] talonSRX = new TalonSRX[4];
+  private final TalonSRX[] driveTalons = new TalonSRX[4];
 
   @Inject
   DriveSubsystem(SwerveDrive swerve) {
@@ -26,14 +25,13 @@ public class DriveSubsystem extends Subsystem {
     wheels = swerve.getWheels();
 
     for (int i = 0; i < 4; i++) {
-      wheels[i].setDriveParameters("drive-velocity");
-      talonSRX[i] = wheels[i].getDriveTalon();
-      talonSRX[i].setSelectedSensorPosition(0, 0, 0);
+      driveTalons[i] = wheels[i].getDriveTalon();
+      driveTalons[i].setSelectedSensorPosition(0, 0, 0);
     }
   }
 
   public int getDriveTalonPos(int talonNum) {
-    return talonSRX[talonNum].getSelectedSensorPosition(0);
+    return driveTalons[talonNum].getSelectedSensorPosition(0);
   }
 
   @Override
@@ -49,8 +47,22 @@ public class DriveSubsystem extends Subsystem {
     DriverStation.reportWarning(msg, false);
   }
 
-  public void enableTeleOp(boolean enabled) {
-    logger.debug("tele-op enabled = {}", enabled);
+  public void setDriveMode(Mode mode) {
+    logger.debug("setting mode to {}", mode);
+    switch (mode) {
+      case TELEOP:
+        setDriveControlMode("drive");
+        break;
+      case AUTON:
+        setDriveControlMode("drive-velocity");
+        break;
+    }
+  }
+
+  private void setDriveControlMode(String mode) {
+    for (Wheel w : wheels) {
+      w.setDriveParameters(mode);
+    }
   }
 
   public void drive(double forward, double strafe, double azimuth) {
@@ -71,5 +83,10 @@ public class DriveSubsystem extends Subsystem {
   public void zeroGyro() {
     logger.warn("setting gyro yaw to zero");
     swerve.getGyro().zeroYaw();
+  }
+
+  public enum Mode {
+    TELEOP,
+    AUTON
   }
 }
