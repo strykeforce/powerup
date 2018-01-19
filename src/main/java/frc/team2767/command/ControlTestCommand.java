@@ -36,23 +36,46 @@ public class ControlTestCommand extends Command {
     double strafe = applyDeadband(controls.getStrafe());
     double azimuth = applyDeadband(controls.getAzimuth());
     double tuner = applyDeadband(controls.getTuner());
+    double rightY = applyDeadband(controls.getDriverRightY());
+
     boolean resetButton = controls.getResetButton();
     boolean leftButton = controls.getLeftButton();
     boolean rightShoulder = controls.getRightShoulder();
     boolean leftShoulderUp = controls.getLeftShoulderUp();
     boolean leftShoulderDown = controls.getLeftShoulderDown();
-    double rightY = applyDeadband(controls.getDriverRightY());
+
+    boolean leftTopLeft = controls.getDriverLeftTopLeft();
+    boolean leftTopRight = controls.getDriverLeftTopRight();
+    boolean rightTopLeft = controls.getDriverRightTopLeft();
+    boolean rightTopRight = controls.getDriverRightTopRight();
+
+    boolean centerLeftUp = controls.getDriverCenterTopLeftUp();
+    boolean centerLeftDown = controls.getDriverCenterTopLeftDown();
+    boolean centerRightUp = controls.getDriverCenterTopRightUp();
+    boolean centerRightDown = controls.getDriverCenterTopRightDown();
 
     test("forward", forward);
     test("strafe", strafe);
     test("azimuth", azimuth);
     test("tuner", tuner);
+    test("driverRightY", rightY);
+
     test("resetbutton", resetButton);
     test("leftButton", leftButton);
     test("rightshoulder", rightShoulder);
     test("leftShoulderUp", leftShoulderUp);
     test("leftShoulderDown", leftShoulderDown);
-    test("driverRightY", rightY);
+
+    test("leftTopLeft", leftTopLeft);
+    test("leftTopRight", leftTopRight);
+    test("rightTopLeft", rightTopLeft);
+    test("rightTopRight", rightTopRight);
+
+    test("centerLeftUp", centerLeftUp);
+    test("centerLeftDwon", centerLeftDown);
+    test("centerRightUp", centerRightUp);
+    test("centerRightDown", centerRightDown);
+
   }
 
   private void test(String name, double a) {

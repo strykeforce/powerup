@@ -28,6 +28,16 @@ public class Controls {
   private static final int DRIVER_LEFT_SHOULDER_DOWN_BUTTON = 4;
   private static final int DRIVER_LEFT_SHOULDER_UP_BUTTON = 5;
 
+  private static final int DRIVER_LEFT_TOP_BUTTON_LEFT = 8;
+  private static final int DRIVER_LEFT_TOP_BUTTON_RIGHT = 9;
+  private static final int DRIVER_RIGHT_TOP_BUTTON_LEFT = 10;
+  private static final int DRIVER_RIGHT_TOP_BUTTON_RIGHT = 11;
+
+  private static final int DRIVER_CENTER_TOP_LEFT_BUTTON_UP = 6;
+  private static final int DRIVER_CENTER_TOP_LEFT_BUTTON_DOWN = 7;
+  private static final int DRIVER_CENTER_TOP_RIGHT_BUTTON_UP = 12;
+  private static final int DRIVER_CENTER_TOP_RIGHT_BUTTON_DOWN = 13;
+
   private static final int GAME_A_BUTTON = 1;
   private static final int GAME_B_BUTTON = 2;
   private static final int GAME_X_BUTTON = 3;
@@ -76,6 +86,38 @@ public class Controls {
 
   public double getDriverRightY() {
     return -driverController.getRawAxis(DRIVER_RIGHT_Y_AXIS);
+  }
+
+  public boolean getDriverLeftTopLeft() {
+    return driverController.getRawButton(DRIVER_LEFT_TOP_BUTTON_LEFT);
+  }
+
+  public boolean getDriverLeftTopRight() {
+    return driverController.getRawButton(DRIVER_LEFT_TOP_BUTTON_RIGHT);
+  }
+
+  public boolean getDriverRightTopLeft() {
+    return driverController.getRawButton(DRIVER_RIGHT_TOP_BUTTON_LEFT);
+  }
+
+  public boolean getDriverRightTopRight() {
+    return driverController.getRawButton(DRIVER_RIGHT_TOP_BUTTON_RIGHT);
+  }
+
+  public boolean getDriverCenterTopLeftUp() {
+    return driverController.getRawButton(DRIVER_CENTER_TOP_LEFT_BUTTON_UP);
+  }
+
+  public boolean getDriverCenterTopLeftDown() {
+    return driverController.getRawButton(DRIVER_CENTER_TOP_LEFT_BUTTON_DOWN);
+  }
+
+  public boolean getDriverCenterTopRightUp() {
+    return driverController.getRawButton(DRIVER_CENTER_TOP_RIGHT_BUTTON_UP);
+  }
+
+  public boolean getDriverCenterTopRightDown() {
+    return driverController.getRawButton(DRIVER_CENTER_TOP_RIGHT_BUTTON_DOWN);
   }
 
   /**
