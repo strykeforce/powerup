@@ -25,7 +25,7 @@ public class AutonDriveCommand extends TimedCommand {
     for (int i = 0; i < 4; i++) {
       talonPositions[i] = drive.getDriveTalonPos(i);
     }
-    drive.driveWheels(0, 2000);
+    drive.driveWheels(0, 1000);
   }
 
   @Override

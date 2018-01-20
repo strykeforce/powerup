@@ -32,7 +32,7 @@ public final class TeleOpDriveCommand extends Command {
     double strafe = applyDeadband(controls.getStrafe());
     double azimuth = applyDeadband(controls.getAzimuth());
 
-    //drive.drive(forward, strafe, azimuth);
+    drive.drive(forward, strafe, azimuth);
   }
 
   @Override

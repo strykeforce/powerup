@@ -27,7 +27,7 @@ public class ControlTestCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.enableTeleOp(true);
+    drive.setDriveMode(DriveSubsystem.Mode.TELEOP);
   }
 
   @Override
