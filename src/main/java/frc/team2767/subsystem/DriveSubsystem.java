@@ -36,6 +36,7 @@ public class DriveSubsystem extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
+    //    setDefaultCommand(new ControlTestCommand());
     setDefaultCommand(new TeleOpDriveCommand());
   }
 
@@ -67,11 +68,12 @@ public class DriveSubsystem extends Subsystem {
 
   public void drive(double forward, double strafe, double azimuth) {
     swerve.drive(forward, strafe, azimuth);
+    //    logger.debug("forward={} strafe={}, azimuth={}", forward, strafe, azimuth);
   }
 
   public void driveWheels(double azimuth, double drive) {
     for (Wheel w : wheels) {
-      logger.debug("driveWheels set azimuth={} drive={}", azimuth, drive);
+      //      logger.debug("driveWheels set azimuth={} drive={}", azimuth, drive);
       w.set(azimuth, drive);
     }
   }
