@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.AutonCommandGroup;
-import frc.team2767.command.ClosedLoopDistTestCommand;
+import frc.team2767.command.CrabToSwitchAutonCommand;
 import frc.team2767.command.ZeroGyroYawCommand;
 import frc.team2767.subsystem.DriveSubsystem;
 import javax.inject.Inject;
@@ -66,7 +66,7 @@ public class Controls {
   public Controls() {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     autonButton.whenPressed(new AutonCommandGroup());
-    closedLoopTestButton.whenPressed(new ClosedLoopDistTestCommand(5));
+    closedLoopTestButton.whenPressed(new CrabToSwitchAutonCommand(146));
   }
 
   /**
