@@ -54,6 +54,7 @@ public class Controls {
 
   private static final int BOARD_BUTTON_1 = 1;
   private static final int BOARD_BUTTON_2 = 2;
+  private static final int BOARD_BUTTON_3 = 3;
 
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
@@ -62,12 +63,14 @@ public class Controls {
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
   private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
   private final Button closedLoopTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
 
   @Inject
   public Controls() {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     autonButton.whenPressed(new AutonCommandGroup());
     closedLoopTestButton.whenPressed(new CrabToSwitchAutonCommand(146));
+    azimuthTestButton.whenPressed(new AzimuthCommand());
   }
 
   /**

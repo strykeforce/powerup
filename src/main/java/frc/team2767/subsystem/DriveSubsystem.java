@@ -1,6 +1,7 @@
 package frc.team2767.subsystem;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.command.TeleOpDriveCommand;
@@ -36,7 +37,6 @@ public class DriveSubsystem extends Subsystem {
 
   @Override
   protected void initDefaultCommand() {
-    //    setDefaultCommand(new ControlTestCommand());
     setDefaultCommand(new TeleOpDriveCommand());
   }
 
@@ -68,12 +68,10 @@ public class DriveSubsystem extends Subsystem {
 
   public void drive(double forward, double strafe, double azimuth) {
     swerve.drive(forward, strafe, azimuth);
-    //    logger.debug("forward={} strafe={}, azimuth={}", forward, strafe, azimuth);
   }
 
   public void driveWheels(double azimuth, double drive) {
     for (Wheel w : wheels) {
-      //      logger.debug("driveWheels set azimuth={} drive={}", azimuth, drive);
       w.set(azimuth, drive);
     }
   }
@@ -85,6 +83,10 @@ public class DriveSubsystem extends Subsystem {
   public void zeroGyro() {
     logger.warn("setting gyro yaw to zero");
     swerve.getGyro().zeroYaw();
+  }
+
+  public AHRS getGyro() {
+    return swerve.getGyro();
   }
 
   public enum DriveMode {
