@@ -1,10 +1,10 @@
-package frc.team2767.command;
+package frc.team2767.command.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Controls;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
-import javax.inject.Inject;
+import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,6 @@ public class ControlTestCommand extends Command {
 
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
 
-  @Inject
   public ControlTestCommand() {
     drive = Robot.COMPONENT.driveSubsystem();
     controls = Robot.COMPONENT.controls();
@@ -27,7 +26,7 @@ public class ControlTestCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(DriveSubsystem.Mode.TELEOP);
+    drive.setDriveMode(DriveMode.TELEOP);
   }
 
   @Override

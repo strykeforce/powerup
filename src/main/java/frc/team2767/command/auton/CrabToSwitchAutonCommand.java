@@ -1,21 +1,23 @@
-package frc.team2767.command;
+package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
+import frc.team2767.command.test.ClosedLoopDistTestCommand;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ClosedLoopDistTestCommand extends Command {
+public class CrabToSwitchAutonCommand extends Command {
 
+  private static final Logger logger = LoggerFactory.getLogger(ClosedLoopDistTestCommand.class);
   private int dist;
   private DriveSubsystem drive;
-  private static final Logger logger = LoggerFactory.getLogger(ClosedLoopDistTestCommand.class);
 
   private double[] talonPositions = new double[4];
   private double[] curTalonPositions = new double[4];
 
-  public ClosedLoopDistTestCommand(int distance) {
+  public CrabToSwitchAutonCommand(int distance) {
     dist = distance;
     drive = Robot.COMPONENT.driveSubsystem();
     requires(drive);
@@ -23,11 +25,11 @@ public class ClosedLoopDistTestCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(DriveSubsystem.Mode.AUTON);
+    drive.setDriveMode(DriveMode.AUTON);
     for (int i = 0; i < 4; i++) {
       talonPositions[i] = drive.getDriveTalonPos(i);
     }
-    drive.driveWheels(0, 2000);
+    drive.driveWheels(-0.1, 2500);
   }
 
   @Override
