@@ -48,7 +48,7 @@ public class DriveSubsystem extends Subsystem {
     DriverStation.reportWarning(msg, false);
   }
 
-  public void setDriveMode(Mode mode) {
+  public void setDriveMode(DriveMode mode) {
     logger.debug("setting mode to {}", mode);
     switch (mode) {
       case TELEOP:
@@ -87,7 +87,7 @@ public class DriveSubsystem extends Subsystem {
     swerve.getGyro().zeroYaw();
   }
 
-  public enum Mode {
+  public enum DriveMode {
     TELEOP,
     AUTON
   }
