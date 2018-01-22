@@ -14,8 +14,8 @@ public class AzimuthCommand extends GraphablePIDCommand {
 
   private static final Logger logger = LoggerFactory.getLogger(AzimuthCommand.class);
 
-  private static final double VELOCITY_MAX = 2000;
-  private static final double Kp = 0.01;
+  private static final double OUTPUT_MAX = 1;
+  private static final double Kp = 0.03;
   private static final double Ki = 0;
   private static final double Kd = 0;
   private static final double TOL_DEG = 2;
@@ -31,12 +31,14 @@ public class AzimuthCommand extends GraphablePIDCommand {
     controller = getPIDController();
     controller.setInputRange(-180.0, 180.0);
     controller.setContinuous(true);
-    controller.setOutputRange(-VELOCITY_MAX, VELOCITY_MAX);
+    controller.setOutputRange(-OUTPUT_MAX, OUTPUT_MAX);
     controller.setAbsoluteTolerance(TOL_DEG);
 
     drive = Robot.COMPONENT.driveSubsystem();
     requires(drive);
     gyro = drive.getGyro();
+
+    Robot.COMPONENT.telemetryService().register(this);
   }
 
   @Override
@@ -58,7 +60,6 @@ public class AzimuthCommand extends GraphablePIDCommand {
 
   @Override
   protected boolean isFinished() {
-    logger.debug("error = {}", controller.getError());
     stableCount = controller.onTarget() ? stableCount + 1 : 0;
     return stableCount > STABLE;
   }
