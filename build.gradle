@@ -4,7 +4,7 @@ import jaci.openrio.gradle.frc.RoboRIO
 
 plugins {
     id 'java'
-    id 'jaci.openrio.gradle.GradleRIO' version '2018.01.20'
+    id 'jaci.openrio.gradle.GradleRIO' version '2018.01.22'
     id 'com.diffplug.gradle.spotless' version '3.8.0'
     id 'net.ltgt.apt-idea' version '0.13'
 }

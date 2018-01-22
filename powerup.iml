@@ -25,7 +25,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2018.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2018.2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.wpi.first.ntcore:ntcore-java:4.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.wpi.first.wpiutil:wpiutil-java:3.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.opencv:opencv-java:3.2.0" level="project" />
@@ -61,7 +61,7 @@
     <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.18" level="project" />
     <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2018.1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2018.2.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: edu.wpi.first.ntcore:ntcore-java:4.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: edu.wpi.first.wpiutil:wpiutil-java:3.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.opencv:opencv-java:3.2.0" level="project" />
@@ -80,7 +80,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.gson:gson:2.8.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.squareup.okio:okio:1.13.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2018.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: edu.wpi.first.wpilibj:wpilibj-java:2018.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: edu.wpi.first.ntcore:ntcore-java:4.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: edu.wpi.first.wpiutil:wpiutil-java:3.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.opencv:opencv-java:3.2.0" level="project" />
