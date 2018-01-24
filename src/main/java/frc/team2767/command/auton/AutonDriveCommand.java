@@ -7,6 +7,10 @@ import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Autonomous driving by time.
+ */
+
 public class AutonDriveCommand extends TimedCommand {
 
   private static final Logger logger = LoggerFactory.getLogger(AutonDriveCommand.class);

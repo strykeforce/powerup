@@ -8,6 +8,9 @@ import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Autonomous drive command to drive to switch from starting position.
+ */
 public class CrabToSwitchAutonCommand extends Command {
 
   private static final Logger logger = LoggerFactory.getLogger(ClosedLoopDistTestCommand.class);
