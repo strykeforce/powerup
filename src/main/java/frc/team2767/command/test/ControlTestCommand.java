@@ -8,9 +8,7 @@ import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Tests button mapping and controls.
- */
+/** Tests button mapping and controls. */
 public class ControlTestCommand extends Command {
   private final DriveSubsystem drive;
   private final Controls controls;
