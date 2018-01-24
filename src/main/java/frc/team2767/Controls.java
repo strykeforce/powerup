@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.ZeroGyroYawCommand;
 import frc.team2767.command.auton.AutonCommandGroup;
 import frc.team2767.command.auton.AzimuthCommand;
-import frc.team2767.command.auton.CrabToSwitchAutonCommand;
 import frc.team2767.subsystem.DriveSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -69,7 +68,6 @@ public class Controls {
   public Controls() {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     autonButton.whenPressed(new AutonCommandGroup());
-    closedLoopTestButton.whenPressed(new CrabToSwitchAutonCommand(146));
     azimuthTestButton.whenPressed(new AzimuthCommand());
   }
 

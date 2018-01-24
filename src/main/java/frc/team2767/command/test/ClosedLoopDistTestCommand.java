@@ -7,6 +7,7 @@ import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** Test closed loop drive-velocity mode. */
 public class ClosedLoopDistTestCommand extends Command {
 
   private int dist;
