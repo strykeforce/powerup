@@ -11,14 +11,21 @@ import org.slf4j.LoggerFactory;
 public class CrabToSwitchAutonCommand extends Command {
 
   private static final Logger logger = LoggerFactory.getLogger(ClosedLoopDistTestCommand.class);
-  private int dist;
+  private double forw;
+  private double dist;
+  private double strf;
+  private double azm;
   private DriveSubsystem drive;
 
   private double[] talonPositions = new double[4];
   private double[] curTalonPositions = new double[4];
 
-  public CrabToSwitchAutonCommand(int distance) {
+  public CrabToSwitchAutonCommand(double forward, double strafe, double azimuth, double distance) {
+    forw = forward;
+    strf = strafe;
+    azm = azimuth;
     dist = distance;
+
     drive = Robot.COMPONENT.driveSubsystem();
     requires(drive);
   }
@@ -29,7 +36,7 @@ public class CrabToSwitchAutonCommand extends Command {
     for (int i = 0; i < 4; i++) {
       talonPositions[i] = drive.getDriveTalonPos(i);
     }
-    drive.driveWheels(-0.1, 2500);
+    drive.drive(forw, strf, azm);
   }
 
   @Override
