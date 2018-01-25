@@ -233,7 +233,10 @@ public class Controls {
     return gameController.getRawButton(GAME_START_BUTTON);
   }
 
-  /** Identifies USB port of specified controller */
+  /** Identifies USB port of specified controller
+   *
+   * @return the port number
+   */
   private int getControllerPort(String name) {
     for (int i = 0; i < kJoystickPorts; i++) {
       if (name.equals(driverStation.getJoystickName(i))) {
