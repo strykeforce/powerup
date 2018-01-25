@@ -30,9 +30,7 @@ public final class TeleOpDriveCommand extends Command {
   }
 
   private double applyInputAdjustments(double input) {
-//    return rateLimit.applyRateLimit(expoScale.applyExpoScale(input));
-    return expoScale.applyExpoScale(input);
-//    return rateLimit.applyRateLimit(input);
+    return rateLimit.applyRateLimit(expoScale.applyExpoScale(input));
   }
 
   @Override

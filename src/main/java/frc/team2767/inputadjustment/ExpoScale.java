@@ -1,7 +1,7 @@
 package frc.team2767.inputadjustment;
 
 /**
- * Applies exponential scaling and deadband to joystick inputs
+ * Applies exponential scaling and deadband to joystick inputs -1.0 to 1.0.
  */
 public class ExpoScale {
 
