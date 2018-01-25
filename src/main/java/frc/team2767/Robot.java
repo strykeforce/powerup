@@ -13,6 +13,7 @@ public class Robot extends TimedRobot {
 
   public static final SingletonComponent COMPONENT;
   private static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
+  private static final String TABLE = "POWERUP";
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
     telemetryService.register(new UltrasonicRangefinderItem(0, PWMChannel.PWMChannel1));
     telemetryService.start();
     swerve.zeroAzimuthEncoders();
+    logger.info(COMPONENT.settings().getTable(TABLE).getString("description"));
   }
 
   @Override

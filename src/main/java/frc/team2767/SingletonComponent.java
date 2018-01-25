@@ -36,6 +36,8 @@ public interface SingletonComponent {
 
   TalonFactory talonFactory();
 
+  Settings settings();
+
   @Component.Builder
   interface Builder {
 
