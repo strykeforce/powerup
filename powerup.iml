@@ -30,7 +30,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.wpi.first.wpiutil:wpiutil-java:3.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.opencv:opencv-java:3.2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: edu.wpi.first.cscore:cscore-java:1.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.strykeforce.thirdcoast:core:18.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.strykeforce.thirdcoast:core:18.0.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: openrio.mirror.third.ctre:CTRE-phoenix-java:5.2.1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: openrio.mirror.third.kauailabs:navx-java:3.0.346" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: openrio.powerup:MatchData:2018.01.07" level="project" />
@@ -66,7 +66,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: edu.wpi.first.wpiutil:wpiutil-java:3.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.opencv:opencv-java:3.2.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: edu.wpi.first.cscore:cscore-java:1.1.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.strykeforce.thirdcoast:core:18.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.strykeforce.thirdcoast:core:18.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: openrio.mirror.third.ctre:CTRE-phoenix-java:5.2.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: openrio.mirror.third.kauailabs:navx-java:3.0.346" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: openrio.powerup:MatchData:2018.01.07" level="project" />
@@ -85,7 +85,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: edu.wpi.first.wpiutil:wpiutil-java:3.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.opencv:opencv-java:3.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: edu.wpi.first.cscore:cscore-java:1.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.strykeforce.thirdcoast:core:18.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.strykeforce.thirdcoast:core:18.0.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: openrio.mirror.third.ctre:CTRE-phoenix-java:5.2.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: openrio.mirror.third.kauailabs:navx-java:3.0.346" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: openrio.powerup:MatchData:2018.01.07" level="project" />
