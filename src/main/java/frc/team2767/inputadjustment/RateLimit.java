@@ -1,5 +1,8 @@
 package frc.team2767.inputadjustment;
 
+/**
+ * Applies rate limit to joystick input.
+ */
 public class RateLimit {
 
   private static double rateLimit;
