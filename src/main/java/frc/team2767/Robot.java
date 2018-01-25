@@ -1,5 +1,6 @@
 package frc.team2767;
 
+import com.ctre.phoenix.CANifier.PWMChannel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import java.io.File;
@@ -38,6 +39,8 @@ public class Robot extends TimedRobot {
     swerve = COMPONENT.swerveDrive();
     TelemetryService telemetryService = COMPONENT.telemetryService();
     swerve.registerWith(telemetryService);
+    telemetryService.register(new UltrasonicRangefinderItem(0, PWMChannel.PWMChannel0));
+    telemetryService.register(new UltrasonicRangefinderItem(0, PWMChannel.PWMChannel1));
     telemetryService.start();
     swerve.zeroAzimuthEncoders();
   }
