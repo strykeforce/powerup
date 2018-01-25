@@ -15,7 +15,7 @@ public final class TeleOpDriveCommand extends Command {
   private final DriveSubsystem drive;
   private final Controls controls;
   private ExpoScale expoScale;
-  private final RateLimit rateLimit;
+  private RateLimit rateLimit;
 
   public TeleOpDriveCommand() {
     drive = Robot.COMPONENT.driveSubsystem();

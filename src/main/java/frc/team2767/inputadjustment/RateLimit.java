@@ -3,22 +3,24 @@ package frc.team2767.inputadjustment;
 /**
  * Applies rate limit to joystick input.
  */
+
 public class RateLimit {
 
-  private static double rateLimit;
-  private static double lastLimit = 0;
+  private final double rateLimit;
+  private double lastLimit;
 
-  public RateLimit(double rateLimit) {
-    RateLimit.rateLimit = rateLimit;
+  public RateLimit(double rateLimit, double lastLimit) {
+    this.lastLimit = lastLimit;
+    this.rateLimit = rateLimit;
   }
 
-  public double applyRateLimit(double input) {
+  public double applyRateLimit(double joystickInput) {
     double y;
-    if (Math.abs(input - lastLimit) > rateLimit) {
-      y = lastLimit + Math.copySign(rateLimit, input - rateLimit);
+    if (Math.abs(joystickInput - lastLimit) > rateLimit) {
+      y = lastLimit + Math.copySign(rateLimit, joystickInput - lastLimit);
     }
     else {
-      y = input;
+      y = joystickInput;
     }
 
     lastLimit = y;
