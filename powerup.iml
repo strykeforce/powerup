@@ -34,6 +34,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: openrio.mirror.third.ctre:CTRE-phoenix-java:5.2.1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: openrio.mirror.third.kauailabs:navx-java:3.0.346" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: openrio.powerup:MatchData:2018.01.07" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: jaci.pathfinder:Pathfinder-Java:1.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.dagger:dagger:2.14.1" level="project" />
@@ -70,6 +71,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: openrio.mirror.third.ctre:CTRE-phoenix-java:5.2.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: openrio.mirror.third.kauailabs:navx-java:3.0.346" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: openrio.powerup:MatchData:2018.01.07" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jaci.pathfinder:Pathfinder-Java:1.8" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.dagger:dagger:2.14.1" level="project" />
@@ -89,6 +91,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: openrio.mirror.third.ctre:CTRE-phoenix-java:5.2.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: openrio.mirror.third.kauailabs:navx-java:3.0.346" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: openrio.powerup:MatchData:2018.01.07" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: jaci.pathfinder:Pathfinder-Java:1.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.dagger:dagger:2.14.1" level="project" />

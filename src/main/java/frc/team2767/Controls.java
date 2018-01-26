@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.ZeroGyroYawCommand;
 import frc.team2767.command.auton.AutonCommandGroup;
 import frc.team2767.command.auton.AzimuthCommand;
+import frc.team2767.command.test.PathCommand;
 import frc.team2767.subsystem.DriveSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,7 +62,7 @@ public class Controls {
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
   private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
-  private final Button closedLoopTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
   private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
 
   @Inject
@@ -69,6 +70,7 @@ public class Controls {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     autonButton.whenPressed(new AutonCommandGroup());
     azimuthTestButton.whenPressed(new AzimuthCommand());
+    testButton.whenPressed(new PathCommand());
   }
 
   /**
