@@ -20,7 +20,6 @@ public class PathCommand extends Command {
   @Override
   protected void initialize() {
     drive.setDriveMode(DriveMode.AUTON);
-    pathController.reset();
     pathController.start();
   }
 
