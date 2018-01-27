@@ -58,17 +58,12 @@ public class Controls {
   private static final int BOARD_BUTTON_1 = 1;
   private static final int BOARD_BUTTON_2 = 2;
   private static final int BOARD_BUTTON_3 = 3;
-
-  // not sure of controller names, temp placeholders
-  private static final String INTERLINK_X_DRIVER_CONTROLLER = "Interlink-X";
-  private static final String XBOX_CONTROLLER_GAME_CONTROLLER = "X-Box";
-  private static final String BUTTON_BOARD = "Unidentified Controller";
-
+  
   private final Joystick gameController =
-      new Joystick(getControllerPort(INTERLINK_X_DRIVER_CONTROLLER));
+      new Joystick(1);
   private final Joystick driverController =
-      new Joystick(getControllerPort(XBOX_CONTROLLER_GAME_CONTROLLER));
-  private final Joystick buttonBoard = new Joystick(getControllerPort(BUTTON_BOARD));
+      new Joystick(2);
+  private final Joystick buttonBoard = new Joystick(3);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
   private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
@@ -231,20 +226,5 @@ public class Controls {
    */
   public boolean getGamepadStartButton() {
     return gameController.getRawButton(GAME_START_BUTTON);
-  }
-
-  /**
-   * Identifies USB port of specified controller
-   *
-   * @return the port number
-   */
-  private int getControllerPort(String name) {
-    for (int i = 0; i < kJoystickPorts; i++) {
-      if (name.equals(driverStation.getJoystickName(i))) {
-        return i;
-      }
-    }
-
-    return 0;
   }
 }
