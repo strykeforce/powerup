@@ -1,7 +1,5 @@
 package frc.team2767;
 
-import static edu.wpi.first.wpilibj.DriverStation.kJoystickPorts;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -58,11 +56,9 @@ public class Controls {
   private static final int BOARD_BUTTON_1 = 1;
   private static final int BOARD_BUTTON_2 = 2;
   private static final int BOARD_BUTTON_3 = 3;
-  
-  private final Joystick gameController =
-      new Joystick(1);
-  private final Joystick driverController =
-      new Joystick(2);
+
+  private final Joystick gameController = new Joystick(1);
+  private final Joystick driverController = new Joystick(2);
   private final Joystick buttonBoard = new Joystick(3);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
