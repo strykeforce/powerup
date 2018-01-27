@@ -8,8 +8,6 @@ import frc.team2767.inputadjustment.RateLimit;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 
-import java.util.logging.Logger;
-
 public final class TeleOpDriveCommand extends Command {
 
   private final DriveSubsystem drive;
@@ -20,7 +18,7 @@ public final class TeleOpDriveCommand extends Command {
   public TeleOpDriveCommand() {
     drive = Robot.COMPONENT.driveSubsystem();
     controls = Robot.COMPONENT.controls();
-    rateLimit  = new RateLimit(0.4);
+    rateLimit = new RateLimit(0.4);
     expoScale = new ExpoScale(0.05, 1.0);
     requires(drive);
   }
@@ -40,9 +38,9 @@ public final class TeleOpDriveCommand extends Command {
 
   @Override
   protected void execute() {
-//    double forward = applyDeadband(controls.getForward());
-//    double strafe = applyDeadband(controls.getStrafe());
-//    double azimuth = applyDeadband(controls.getAzimuth());
+    //    double forward = applyDeadband(controls.getForward());
+    //    double strafe = applyDeadband(controls.getStrafe());
+    //    double azimuth = applyDeadband(controls.getAzimuth());
 
     double forward = applyInputAdjustments(controls.getForward());
     double strafe = applyInputAdjustments(controls.getStrafe());
