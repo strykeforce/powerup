@@ -233,7 +233,8 @@ public class Controls {
     return gameController.getRawButton(GAME_START_BUTTON);
   }
 
-  /** Identifies USB port of specified controller
+  /**
+   * Identifies USB port of specified controller
    *
    * @return the port number
    */
