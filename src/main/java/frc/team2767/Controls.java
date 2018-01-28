@@ -1,12 +1,12 @@
 package frc.team2767;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.ZeroGyroYawCommand;
 import frc.team2767.command.auton.AutonCommandGroup;
 import frc.team2767.command.auton.AzimuthCommand;
-import frc.team2767.command.test.PathCommand;
 import frc.team2767.subsystem.DriveSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public class Controls {
 
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
+  private static final DriverStation driverStation = DriverStation.getInstance();
 
   private static final int DRIVER_RIGHT_X_AXIS = 0;
   private static final int DRIVER_RIGHT_Y_AXIS = 1;
@@ -56,13 +57,13 @@ public class Controls {
   private static final int BOARD_BUTTON_2 = 2;
   private static final int BOARD_BUTTON_3 = 3;
 
-  private final Joystick gameController = new Joystick(0);
-  private final Joystick driverController = new Joystick(1);
+  private final Joystick gameController = new Joystick(1);
+  private final Joystick driverController = new Joystick(2);
   private final Joystick buttonBoard = new Joystick(3);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
   private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
-  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  private final Button closedLoopTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
   private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
 
   @Inject
@@ -70,7 +71,6 @@ public class Controls {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     autonButton.whenPressed(new AutonCommandGroup());
     azimuthTestButton.whenPressed(new AzimuthCommand());
-    testButton.whenPressed(new PathCommand());
   }
 
   /**

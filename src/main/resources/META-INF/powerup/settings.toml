@@ -13,24 +13,3 @@
 
 [POWERUP]
 description = "Stryke Force 2018 POWER UP"
-
-[PATHS.TEST1]
-waypoints = [
-  {x = 0.0, y = 0.0, angle = 0.0},
-  {x = 5.0, y = 4.5, angle = 90.0},
-  {x = 12.5, y = 9.5, angle = 0.0},
-  {x = 15.5, y = 9.5, angle = 0.0},
-  {x = 22.5, y = 4.0, angle = -90.0},
-  {x = 22.5, y = -10.0, angle = -90.0},
-  {x = 15.0, y = -17.5, angle = -180.0},
-  {x = 10.0, y = -17.5, angle = -180.0},
-  {x = 5.0, y = -10.0, angle = 90.0},
-  {x = 5.0, y = -5.0, angle = 90.0},
-  {x = 0.0, y = 0.0, angle = 0.0},
-]
-fit              = "HERMITE_CUBIC"
-sample_count     = 100_000
-dt               = 0.050    # sec
-max_velocity     = 2.5   # m/sec
-max_acceleration = 5.0  # m/sec/sec
-max_jerk         = 50.0  # m/sec/sec/sec
