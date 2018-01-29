@@ -3,6 +3,7 @@ package frc.team2767;
 import com.ctre.phoenix.CANifier.PWMChannel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
     telemetryService.start();
     swerve.zeroAzimuthEncoders();
     logger.info(COMPONENT.settings().getTable(TABLE).getString("description"));
+    LiveWindow.disableAllTelemetry();
   }
 
   @Override
