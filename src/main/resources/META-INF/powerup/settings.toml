@@ -13,8 +13,6 @@
 
 [POWERUP]
 description = "Stryke Force 2018 POWER UP"
-<<<<<<< HEAD
-=======
 
 [PATHS.TEST1]
 waypoints = [
@@ -80,4 +78,3 @@ max_jerk         = 50.0  # m/sec/sec/sec
   [TALON.encoder]
     device = "CTRE_MagEncoder_Relative"
     reversed = false
->>>>>>> upstream/develop
