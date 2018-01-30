@@ -15,29 +15,23 @@ public final class TeleOpDriveCommand extends Command {
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
   private final DriveSubsystem drive;
   private final Controls controls;
-  private ExpoScale expoScale;
-  private RateLimit rateLimit;
+  private ExpoScale expoScaleForward;
+  private RateLimit rateLimitForward;
+  private ExpoScale expoScaleStrafe;
+  private RateLimit rateLimitStrafe;
 
   public TeleOpDriveCommand() {
     drive = Robot.COMPONENT.driveSubsystem();
     controls = Robot.COMPONENT.controls();
-    rateLimit = new RateLimit(0.3, 0.0);
-    expoScale = new ExpoScale(0.05, 0);
+    rateLimitForward = new RateLimit(0.3, 0.0);
+    expoScaleForward = new ExpoScale(0.05, 0);
+    rateLimitStrafe = new RateLimit(0.3, 0.0);
+    expoScaleStrafe = new ExpoScale(0.05, 0);
     requires(drive);
   }
 
   private static double applyDeadband(double input) {
     return Math.abs(input) > 0.05 ? input : 0;
-  }
-
-  private double applyInputAdjustments(double input) {
-    if (rateLimit.applyRateLimit(expoScale.applyExpoScale(input)) != 0.0) {
-      logger.debug(
-          "Premath={} Postmath={}",
-          input,
-          rateLimit.applyRateLimit(expoScale.applyExpoScale(input)));
-    }
-    return rateLimit.applyRateLimit(expoScale.applyExpoScale(input));
   }
 
   @Override
@@ -48,8 +42,10 @@ public final class TeleOpDriveCommand extends Command {
   @Override
   protected void execute() {
 
-    double forward = applyInputAdjustments(controls.getForward());
-    double strafe = applyInputAdjustments(controls.getStrafe());
+    double forward =
+        rateLimitForward.applyRateLimit(expoScaleForward.applyExpoScale(controls.getForward()));
+    double strafe =
+        rateLimitStrafe.applyRateLimit(expoScaleStrafe.applyExpoScale(controls.getStrafe()));
     double azimuth = controls.getAzimuth();
 
     drive.drive(forward, strafe, azimuth);
