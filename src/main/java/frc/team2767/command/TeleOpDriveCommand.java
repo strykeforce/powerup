@@ -46,7 +46,8 @@ public final class TeleOpDriveCommand extends Command {
         rateLimitForward.applyRateLimit(expoScaleForward.applyExpoScale(controls.getForward()));
     double strafe =
         rateLimitStrafe.applyRateLimit(expoScaleStrafe.applyExpoScale(controls.getStrafe()));
-    double azimuth = controls.getAzimuth();
+
+    double azimuth = applyDeadband(controls.getAzimuth());
 
     drive.drive(forward, strafe, azimuth);
   }
