@@ -9,13 +9,22 @@ import frc.team2767.subsystem.DriveSubsystem;
 
 public class PathCommand extends Command {
 
+  private static final String LEFT = "LEFT";
+  private static final String CENTER_LEFT = "CENTERLEFT";
+  private static final String CENTER_RIGHT = "CENTERRIGHT";
   private final DriveSubsystem drive;
   private PathController pathController;
 
-  public PathCommand() {
+  public PathCommand(int pathID) {
     drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
-    pathController = new PathController("TEST1");
+    if (pathID == 1) {
+      pathController = new PathController(LEFT);
+    } else if (pathID == 2) {
+      pathController = new PathController(CENTER_LEFT);
+    } else if (pathID == 3) {
+      pathController = new PathController(CENTER_RIGHT);
+    }
   }
 
   @Override
