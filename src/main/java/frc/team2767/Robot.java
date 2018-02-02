@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.control.Trigger;
 import java.io.File;
+import openrio.powerup.MatchData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
@@ -16,6 +17,9 @@ public class Robot extends TimedRobot {
   public static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
   public static final String TABLE = "POWERUP";
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
+  private static MatchData.OwnedSide NEAR_SWITCH;
+  private static MatchData.OwnedSide FAR_SWITCH;
+  private static MatchData.OwnedSide SCALE;
 
   static {
     logger.info("loading robot configuration from {}", CONFIG_FILE);
@@ -24,6 +28,13 @@ public class Robot extends TimedRobot {
 
   private boolean sob;
   private Trigger alignWheelsButton;
+
+  @Override
+  public void autonomousInit() {
+    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+  }
 
   @Override
   public void robotInit() {
@@ -71,4 +82,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {}
+
+  public static MatchData.OwnedSide getScale() {
+    return SCALE;
+  }
+
+  public static MatchData.OwnedSide getNearSwitch() {
+    return NEAR_SWITCH;
+  }
+
+  public static MatchData.OwnedSide getFarSwitch() {
+    return FAR_SWITCH;
+  }
 }
