@@ -1,7 +1,9 @@
 package frc.team2767;
 
+import com.ctre.phoenix.CANifier.PWMChannel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ public class Robot extends TimedRobot {
 
   public static final SingletonComponent COMPONENT;
   private static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
+  private static final String TABLE = "POWERUP";
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
@@ -38,8 +41,12 @@ public class Robot extends TimedRobot {
     swerve = COMPONENT.swerveDrive();
     TelemetryService telemetryService = COMPONENT.telemetryService();
     swerve.registerWith(telemetryService);
+    telemetryService.register(new UltrasonicRangefinderItem(0, PWMChannel.PWMChannel0));
+    telemetryService.register(new UltrasonicRangefinderItem(0, PWMChannel.PWMChannel1));
     telemetryService.start();
     swerve.zeroAzimuthEncoders();
+    logger.info(COMPONENT.settings().getTable(TABLE).getString("description"));
+    LiveWindow.disableAllTelemetry();
   }
 
   @Override

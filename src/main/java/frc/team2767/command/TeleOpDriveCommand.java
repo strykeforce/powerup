@@ -4,17 +4,29 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Controls;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
-import javax.inject.Inject;
+import frc.team2767.subsystem.DriveSubsystem.DriveMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.strykeforce.thirdcoast.util.ExpoScale;
+import org.strykeforce.thirdcoast.util.RateLimit;
 
 public final class TeleOpDriveCommand extends Command {
 
+  private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
   private final DriveSubsystem drive;
   private final Controls controls;
+  private ExpoScale expoScaleForward;
+  private RateLimit rateLimitForward;
+  private ExpoScale expoScaleStrafe;
+  private RateLimit rateLimitStrafe;
 
-  @Inject
   public TeleOpDriveCommand() {
     drive = Robot.COMPONENT.driveSubsystem();
     controls = Robot.COMPONENT.controls();
+    rateLimitForward = new RateLimit(0.3, 0.0);
+    expoScaleForward = new ExpoScale(0.05, 0);
+    rateLimitStrafe = new RateLimit(0.3, 0.0);
+    expoScaleStrafe = new ExpoScale(0.05, 0);
     requires(drive);
   }
 
@@ -24,14 +36,19 @@ public final class TeleOpDriveCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.enableTeleOp(true);
+    drive.setDriveMode(DriveMode.TELEOP);
   }
 
   @Override
   protected void execute() {
-    double forward = applyDeadband(controls.getForward());
-    double strafe = applyDeadband(controls.getStrafe());
+
+    double forward =
+        rateLimitForward.applyRateLimit(expoScaleForward.applyExpoScale(controls.getForward()));
+    double strafe =
+        rateLimitStrafe.applyRateLimit(expoScaleStrafe.applyExpoScale(controls.getStrafe()));
+
     double azimuth = applyDeadband(controls.getAzimuth());
+
     drive.drive(forward, strafe, azimuth);
   }
 

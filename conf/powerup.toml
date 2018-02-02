@@ -1,0 +1,42 @@
+###############################################################################
+##
+## Settings for POWER UP
+##
+###############################################################################
+[[TALON]]
+  name = "azimuth"
+  mode = "MotionMagic"
+  setpointMax = 0.0
+  motionMagicAcceleration = 10000.0
+  motionMagicCruiseVelocity = 800.0
+  allowableClosedLoopError = 0
+  pGain = 15.0
+  iGain = 0.0
+  dGain = 150.0
+  fGain = 1.0
+  [TALON.encoder]
+    device = "CTRE_MagEncoder_Relative"
+    reversed = false
+
+[[TALON]]
+  name = "drive"
+  mode = "PercentOutput"
+  setpointMax    = 1.0
+  currentLimit   = 40
+  [TALON.encoder]
+    device = "CTRE_MagEncoder_Relative"
+    reversed = false
+
+[[TALON]]
+  name = "drive-velocity"
+  mode = "Velocity"
+  allowableClosedLoopError = 0
+  pGain = 0.1
+  iGain = 0.0
+  dGain = 1.0
+  fGain = 0.03
+  setpointMax = 0.0
+  currentLimit = 40
+  [TALON.encoder]
+    device = "CTRE_MagEncoder_Relative"
+    reversed = false

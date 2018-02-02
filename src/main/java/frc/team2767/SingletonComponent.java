@@ -11,12 +11,14 @@ import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 import org.strykeforce.thirdcoast.swerve.WheelModule;
 import org.strykeforce.thirdcoast.talon.TalonFactory;
 import org.strykeforce.thirdcoast.talon.TalonProvisioner;
+import org.strykeforce.thirdcoast.telemetry.NetworkModule;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 
 /** This interface configures dependency injection for the Robot. */
 @Singleton
 @Component(
   modules = {
+    NetworkModule.class,
     GyroModule.class,
     WheelModule.class,
     GraphableSwerveDriveModule.class,
@@ -35,6 +37,8 @@ public interface SingletonComponent {
   TalonProvisioner talonProvisioner();
 
   TalonFactory talonFactory();
+
+  Settings settings();
 
   @Component.Builder
   interface Builder {
