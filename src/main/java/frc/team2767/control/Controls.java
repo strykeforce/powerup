@@ -60,9 +60,13 @@ public class Controls {
   private static final int BOARD_BUTTON_3 = 3;
   private static final int BOARD_BUTTON_4 = 4;
   private static final int BOARD_BUTTON_5 = 5;
+  private static final int BOARD_BUTTON_6 = 6;
+
   private static final int LEFT = 1;
   private static final int CENTER_LEFT = 2;
   private static final int CENTER_RIGHT = 3;
+  private static final int CENTER_RIGHT_EXCHANGE = 4;
+
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
   private final Joystick buttonBoard = new Joystick(3);
@@ -73,6 +77,7 @@ public class Controls {
   private final Button button3 = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
   private final Button button4 = new JoystickButton(buttonBoard, BOARD_BUTTON_4);
   private final Button button5 = new JoystickButton(buttonBoard, BOARD_BUTTON_5);
+  private final Button button6 = new JoystickButton(buttonBoard, BOARD_BUTTON_6);
 
   //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
   //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
@@ -106,6 +111,7 @@ public class Controls {
     button3.whenPressed(new PathCommand(LEFT));
     button4.whenPressed(new PathCommand(CENTER_LEFT));
     button5.whenPressed(new PathCommand(CENTER_RIGHT));
+    button6.whenPressed(new PathCommand(CENTER_RIGHT_EXCHANGE));
   }
 
   /**
