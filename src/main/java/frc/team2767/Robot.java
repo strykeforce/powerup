@@ -36,7 +36,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     logger.info("robotInit");
-    COMPONENT.talonProvisioner().enableTimeout(true);
     controls = COMPONENT.controls();
     swerve = COMPONENT.swerveDrive();
     TelemetryService telemetryService = COMPONENT.telemetryService();
@@ -52,7 +51,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("teleopInit - disabling Talon config timeout and stopping swerve");
-    COMPONENT.talonProvisioner().enableTimeout(false);
     COMPONENT.driveSubsystem();
     swerve.stop();
   }

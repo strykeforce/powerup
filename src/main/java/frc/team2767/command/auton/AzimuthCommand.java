@@ -1,6 +1,6 @@
 package frc.team2767.command.auton;
 
-import static frc.team2767.subsystem.DriveSubsystem.DriveMode.AUTON;
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.PIDController;
@@ -43,7 +43,7 @@ public class AzimuthCommand extends GraphablePIDCommand {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(AUTON);
+    drive.setDriveMode(CLOSED_LOOP);
     setSetpoint(0);
     stableCount = 0;
   }

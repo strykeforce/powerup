@@ -1,10 +1,11 @@
 package frc.team2767.command;
 
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Controls;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
-import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.util.ExpoScale;
@@ -36,7 +37,7 @@ public final class TeleOpDriveCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(DriveMode.TELEOP);
+    drive.setDriveMode(OPEN_LOOP);
   }
 
   @Override

@@ -1,15 +1,16 @@
 package frc.team2767.command.test;
 
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
-import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 
 public class PathCommand extends Command {
 
-  private PathController pathController;
   private final DriveSubsystem drive;
+  private PathController pathController;
 
   public PathCommand() {
     drive = Robot.COMPONENT.driveSubsystem();
@@ -19,7 +20,7 @@ public class PathCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(DriveMode.AUTON);
+    drive.setDriveMode(CLOSED_LOOP);
     pathController.start();
   }
 

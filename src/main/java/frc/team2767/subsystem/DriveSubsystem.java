@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
+import org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode;
 import org.strykeforce.thirdcoast.swerve.Wheel;
 
 @Singleton
@@ -49,21 +50,8 @@ public class DriveSubsystem extends Subsystem {
   }
 
   public void setDriveMode(DriveMode mode) {
-    logger.debug("setting mode to {}", mode);
-    switch (mode) {
-      case TELEOP:
-        setDriveControlMode("drive");
-        break;
-      case AUTON:
-        setDriveControlMode("drive-velocity");
-        break;
-    }
-  }
-
-  private void setDriveControlMode(String mode) {
-    for (Wheel w : wheels) {
-      w.setDriveParameters(mode);
-    }
+    logger.debug("setting drive mode to {}", mode);
+    swerve.setDriveMode(mode);
   }
 
   public void drive(double forward, double strafe, double azimuth) {
@@ -87,10 +75,5 @@ public class DriveSubsystem extends Subsystem {
 
   public AHRS getGyro() {
     return swerve.getGyro();
-  }
-
-  public enum DriveMode {
-    TELEOP,
-    AUTON
   }
 }

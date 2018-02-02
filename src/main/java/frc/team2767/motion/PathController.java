@@ -22,7 +22,7 @@ public class PathController implements Runnable {
   private final Notifier notifier;
   private final DriveSubsystem drive;
   private final AHRS gyro;
-  private final double p_azimuth;
+  private final double kPAzimuth;
   private int iteration;
   private volatile boolean running;
 
@@ -30,7 +30,7 @@ public class PathController implements Runnable {
     Toml toml = Robot.COMPONENT.settings().getTable(TABLE).getTable(path);
     drive = Robot.COMPONENT.driveSubsystem();
     gyro = drive.getGyro();
-    p_azimuth = toml.getDouble("p_azimuth", 0.0);
+    kPAzimuth = toml.getDouble("p_azimuth", 0.0);
 
     config = toml.to(Trajectory.Config.class);
 
@@ -77,7 +77,7 @@ public class PathController implements Runnable {
     double vel_ratio = segment.velocity / config.max_velocity;
     double forward = Math.cos(segment.heading) * vel_ratio;
     double strafe = -Math.sin(segment.heading) * vel_ratio;
-    double azimuth = p_azimuth * gyro.getYaw(); // target = 0 deg
+    double azimuth = kPAzimuth * gyro.getYaw(); // target = 0 deg
     drive.drive(forward, strafe, azimuth);
     logger.debug(
         "iteration = {} position = {} velocity = {}, forward = {}, strafe = {} azimuth = {}",

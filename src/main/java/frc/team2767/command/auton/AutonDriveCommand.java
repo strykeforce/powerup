@@ -1,9 +1,10 @@
 package frc.team2767.command.auton;
 
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
+
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
-import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public class AutonDriveCommand extends TimedCommand {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(DriveMode.AUTON);
+    drive.setDriveMode(CLOSED_LOOP);
     for (int i = 0; i < 4; i++) {
       talonPositions[i] = drive.getDriveTalonPos(i);
     }
