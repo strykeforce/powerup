@@ -11,6 +11,7 @@ public class PathCommand extends Command {
   private static final String LEFT = "LEFT";
   private static final String CENTER_LEFT = "CENTERLEFT";
   private static final String CENTER_RIGHT = "CENTERRIGHT";
+  private static final String CENTER_RIGHT_EXCHANGE = "CENTERRIGHTEXCHANGE";
   private final DriveSubsystem drive;
   private PathController pathController;
 
@@ -23,6 +24,8 @@ public class PathCommand extends Command {
       pathController = new PathController(CENTER_LEFT);
     } else if (pathID == 3) {
       pathController = new PathController(CENTER_RIGHT);
+    } else if (pathID == 4) {
+      pathController = new PathController(CENTER_RIGHT_EXCHANGE);
     }
   }
 
