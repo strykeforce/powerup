@@ -19,7 +19,7 @@ public class ClosedLoopDistTestCommand extends Command {
 
   public ClosedLoopDistTestCommand(int distance) {
     dist = distance;
-    drive = Robot.COMPONENT.driveSubsystem();
+    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
   }
 

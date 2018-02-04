@@ -34,11 +34,11 @@ public class AzimuthCommand extends GraphablePIDCommand {
     controller.setOutputRange(-OUTPUT_MAX, OUTPUT_MAX);
     controller.setAbsoluteTolerance(TOL_DEG);
 
-    drive = Robot.COMPONENT.driveSubsystem();
+    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
     gyro = drive.getGyro();
 
-    Robot.COMPONENT.telemetryService().register(this);
+    Robot.INJECTOR.telemetryService().register(this);
   }
 
   @Override

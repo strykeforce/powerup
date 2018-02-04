@@ -28,7 +28,7 @@ public class CrabToSwitchAutonCommand extends Command {
     azm = azimuth;
     dist = distance;
 
-    drive = Robot.COMPONENT.driveSubsystem();
+    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
   }
 

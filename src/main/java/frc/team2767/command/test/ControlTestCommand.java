@@ -16,8 +16,8 @@ public class ControlTestCommand extends Command {
   private final Controls controls;
 
   public ControlTestCommand() {
-    drive = Robot.COMPONENT.driveSubsystem();
-    controls = Robot.COMPONENT.controls();
+    drive = Robot.INJECTOR.driveSubsystem();
+    controls = Robot.INJECTOR.controls();
     requires(drive);
   }
 
@@ -32,49 +32,49 @@ public class ControlTestCommand extends Command {
 
   @Override
   protected void execute() {
-    double forward = applyDeadband(controls.getForward());
-    double strafe = applyDeadband(controls.getStrafe());
-    double azimuth = applyDeadband(controls.getAzimuth());
-    double tuner = applyDeadband(controls.getTuner());
-    double rightY = applyDeadband(controls.getDriverRightY());
+    //    double forward = applyDeadband(controls.getForward());
+    //    double strafe = applyDeadband(controls.getStrafe());
+    //    double azimuth = applyDeadband(controls.getAzimuth());
+    //    double tuner = applyDeadband(controls.getTuner());
+    //    double rightY = applyDeadband(controls.getDriverRightY());
+    //
+    //    boolean resetButton = controls.getResetButton();
+    //    boolean leftButton = controls.getLeftButton();
+    //    boolean rightShoulder = controls.getRightShoulder();
+    //    boolean leftShoulderUp = controls.getLeftShoulderUp();
+    //    boolean leftShoulderDown = controls.getLeftShoulderDown();
+    //
+    //    boolean leftTrimXPos = controls.getDriverLeftTrimXPos();
+    //    boolean leftTrimXNeg = controls.getDriverLeftTrimXNeg();
+    //    boolean rightTrimXNeg = controls.getDriverRightTrimXNeg();
+    //    boolean rightTrimXPos = controls.getDriverRightTrimXPos();
+    //
+    //    boolean leftTrimYPos = controls.getDriverLeftTrimYPos();
+    //    boolean leftTrimYNeg = controls.getDriverLeftTrimYNeg();
+    //    boolean rightTrimYPos = controls.getDriverRightTrimYPos();
+    //    boolean rightTrimYNeg = controls.getDriverRightTrimYNeg();
 
-    boolean resetButton = controls.getResetButton();
-    boolean leftButton = controls.getLeftButton();
-    boolean rightShoulder = controls.getRightShoulder();
-    boolean leftShoulderUp = controls.getLeftShoulderUp();
-    boolean leftShoulderDown = controls.getLeftShoulderDown();
-
-    boolean leftTrimXPos = controls.getDriverLeftTrimXPos();
-    boolean leftTrimXNeg = controls.getDriverLeftTrimXNeg();
-    boolean rightTrimXNeg = controls.getDriverRightTrimXNeg();
-    boolean rightTrimXPos = controls.getDriverRightTrimXPos();
-
-    boolean leftTrimYPos = controls.getDriverLeftTrimYPos();
-    boolean leftTrimYNeg = controls.getDriverLeftTrimYNeg();
-    boolean rightTrimYPos = controls.getDriverRightTrimYPos();
-    boolean rightTrimYNeg = controls.getDriverRightTrimYNeg();
-
-    test("forward", forward);
-    test("strafe", strafe);
-    test("azimuth", azimuth);
-    test("tuner", tuner);
-    test("driverRightY", rightY);
-
-    test("resetbutton", resetButton);
-    test("leftButton", leftButton);
-    test("rightshoulder", rightShoulder);
-    test("leftShoulderUp", leftShoulderUp);
-    test("leftShoulderDown", leftShoulderDown);
-
-    test("leftTrimXNeg", leftTrimXNeg);
-    test("leftTrimXPos", leftTrimXPos);
-    test("rightTrimXNeg", rightTrimXNeg);
-    test("rightTrimXPos", rightTrimXPos);
-
-    test("leftTrimYPos", leftTrimYPos);
-    test("leftTrimYNeg", leftTrimYNeg);
-    test("rightTrimYPos", rightTrimYPos);
-    test("rightTrimYNeg", rightTrimYNeg);
+    //    test("forward", forward);
+    //    test("strafe", strafe);
+    //    test("azimuth", azimuth);
+    //    test("tuner", tuner);
+    //    test("driverRightY", rightY);
+    //
+    //    test("resetbutton", resetButton);
+    //    test("leftButton", leftButton);
+    //    test("rightshoulder", rightShoulder);
+    //    test("leftShoulderUp", leftShoulderUp);
+    //    test("leftShoulderDown", leftShoulderDown);
+    //
+    //    test("leftTrimXNeg", leftTrimXNeg);
+    //    test("leftTrimXPos", leftTrimXPos);
+    //    test("rightTrimXNeg", rightTrimXNeg);
+    //    test("rightTrimXPos", rightTrimXPos);
+    //
+    //    test("leftTrimYPos", leftTrimYPos);
+    //    test("leftTrimYNeg", leftTrimYNeg);
+    //    test("rightTrimYPos", rightTrimYPos);
+    //    test("rightTrimYNeg", rightTrimYNeg);
   }
 
   private void test(String name, double a) {

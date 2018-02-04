@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.ZeroGyroYawCommand;
-import frc.team2767.command.auton.AutonCommandGroup;
-import frc.team2767.command.auton.AzimuthCommand;
-import frc.team2767.command.test.PathCommand;
+import frc.team2767.command.lift.DownCommand;
+import frc.team2767.command.lift.StopCommand;
+import frc.team2767.command.lift.UpCommand;
 import frc.team2767.subsystem.DriveSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -58,19 +58,25 @@ public class Controls {
 
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
-  private final Joystick buttonBoard = new Joystick(3);
+  //  private final Joystick buttonBoard = new Joystick(3);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
-  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
-  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
-  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
+  //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  //  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  private final Button liftUpButton = new JoystickButton(gameController, GAME_Y_BUTTON);
+  private final Button liftDownButton = new JoystickButton(gameController, GAME_A_BUTTON);
 
   @Inject
-  public Controls() {
+  Controls() {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
-    autonButton.whenPressed(new AutonCommandGroup());
-    azimuthTestButton.whenPressed(new AzimuthCommand());
-    testButton.whenPressed(new PathCommand());
+    //    //    autonButton.whenPressed(new AutonCommandGroup());
+    //    //    azimuthTestButton.whenPressed(new AzimuthCommand());
+    //    //    testButton.whenPressed(new PathCommand());
+    liftUpButton.whenPressed(new UpCommand());
+    liftUpButton.whenReleased(new StopCommand());
+    liftDownButton.whenPressed(new DownCommand());
+    liftDownButton.whenReleased(new StopCommand());
   }
 
   /**

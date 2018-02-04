@@ -3,7 +3,12 @@ package frc.team2767;
 import dagger.BindsInstance;
 import dagger.Component;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.Graphable;
+import frc.team2767.subsystem.LiftSubsystem;
+import frc.team2767.subsystem.SubsystemModule;
+import frc.team2767.trigger.AlignWheelsTrigger;
 import java.io.File;
+import java.util.Set;
 import javax.inject.Singleton;
 import org.strykeforce.thirdcoast.swerve.GraphableSwerveDriveModule;
 import org.strykeforce.thirdcoast.swerve.GyroModule;
@@ -21,11 +26,16 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
     GyroModule.class,
     WheelModule.class,
     GraphableSwerveDriveModule.class,
+    SubsystemModule.class,
   }
 )
 public interface SingletonComponent {
 
+  Set<Graphable> graphables();
+
   DriveSubsystem driveSubsystem();
+
+  LiftSubsystem liftSubsystem();
 
   Controls controls();
 
@@ -36,6 +46,8 @@ public interface SingletonComponent {
   Talons talons();
 
   Settings settings();
+
+  AlignWheelsTrigger alignWheelsTrigger();
 
   @Component.Builder
   interface Builder {

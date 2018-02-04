@@ -27,8 +27,11 @@ public class PathController implements Runnable {
   private volatile boolean running;
 
   public PathController(String path) {
-    Toml toml = Robot.COMPONENT.settings().getTable(TABLE).getTable(path);
-    drive = Robot.COMPONENT.driveSubsystem();
+    Toml toml = Robot.INJECTOR.settings().getTable(TABLE).getTable(path);
+    if (toml == null) {
+      logger.error("Path '{}' is missing", path);
+    }
+    drive = Robot.INJECTOR.driveSubsystem();
     gyro = drive.getGyro();
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
 

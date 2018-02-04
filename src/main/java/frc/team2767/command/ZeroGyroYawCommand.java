@@ -9,7 +9,7 @@ public class ZeroGyroYawCommand extends InstantCommand {
   private final DriveSubsystem drive;
 
   public ZeroGyroYawCommand() {
-    drive = Robot.COMPONENT.driveSubsystem();
+    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
   }
 

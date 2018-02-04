@@ -17,7 +17,7 @@ public class AutonDriveCommand extends TimedCommand {
 
   public AutonDriveCommand() {
     super(1);
-    drive = Robot.COMPONENT.driveSubsystem();
+    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
   }
 

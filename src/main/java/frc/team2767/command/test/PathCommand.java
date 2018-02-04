@@ -13,7 +13,7 @@ public class PathCommand extends Command {
   private PathController pathController;
 
   public PathCommand() {
-    drive = Robot.COMPONENT.driveSubsystem();
+    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
     pathController = new PathController("TEST1");
   }

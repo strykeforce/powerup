@@ -1,12 +1,8 @@
-package frc.team2767;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package frc.team2767.trigger;
 
 /** Detects triggering events for polled inputs. For example, detecting a button "down" event. */
 public abstract class Trigger {
 
-  static final Logger logger = LoggerFactory.getLogger(Trigger.class);
   private boolean isActiveLast = false;
 
   /**
@@ -27,7 +23,6 @@ public abstract class Trigger {
     if (get()) {
       if (!isActiveLast) {
         isActiveLast = true;
-        logger.debug("{} has activated", this);
         return true;
       }
     } else {
