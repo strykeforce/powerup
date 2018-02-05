@@ -1,4 +1,4 @@
-package frc.team2767.command;
+package frc.team2767.command.drive;
 
 import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 

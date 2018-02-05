@@ -3,7 +3,7 @@ package frc.team2767.subsystem;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team2767.command.TeleOpDriveCommand;
+import frc.team2767.command.drive.TeleOpDriveCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
