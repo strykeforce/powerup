@@ -4,7 +4,7 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.team2767.trigger.Trigger;
+import frc.team2767.control.Trigger;
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

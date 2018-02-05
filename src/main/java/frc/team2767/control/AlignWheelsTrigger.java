@@ -1,6 +1,5 @@
-package frc.team2767.trigger;
+package frc.team2767.control;
 
-import frc.team2767.Controls;
 import javax.inject.Inject;
 
 public class AlignWheelsTrigger extends Trigger {

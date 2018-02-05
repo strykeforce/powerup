@@ -3,8 +3,8 @@ package frc.team2767.command.test;
 import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team2767.Controls;
 import frc.team2767.Robot;
+import frc.team2767.control.Controls;
 import frc.team2767.subsystem.DriveSubsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

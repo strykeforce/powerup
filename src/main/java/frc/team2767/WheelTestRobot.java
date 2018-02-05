@@ -1,7 +1,8 @@
 package frc.team2767;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import frc.team2767.trigger.Trigger;
+import frc.team2767.control.Controls;
+import frc.team2767.control.Trigger;
 import org.strykeforce.thirdcoast.swerve.Wheel;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;

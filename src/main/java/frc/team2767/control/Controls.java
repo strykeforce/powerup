@@ -1,4 +1,4 @@
-package frc.team2767;
+package frc.team2767.control;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

@@ -4,8 +4,8 @@ import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team2767.Controls;
 import frc.team2767.Robot;
+import frc.team2767.control.Controls;
 import frc.team2767.subsystem.DriveSubsystem;
 import org.strykeforce.thirdcoast.util.ExpoScale;
 import org.strykeforce.thirdcoast.util.RateLimit;

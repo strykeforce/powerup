@@ -1,4 +1,4 @@
-package frc.team2767.trigger;
+package frc.team2767.control;
 
 /** Detects triggering events for polled inputs. For example, detecting a button "down" event. */
 public abstract class Trigger {
