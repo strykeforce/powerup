@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.DriveSubsystem.DriveMode;
 
 public class PathCommand extends Command {
 
