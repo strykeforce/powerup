@@ -5,12 +5,14 @@ import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
+@Singleton
 public class ClimberSubsystem extends Subsystem implements Graphable {
 
   private static final int LEFT_ID = 20; // PDP 12
