@@ -1,12 +1,11 @@
 package frc.team2767.command.test;
 
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
-import frc.team2767.subsystem.DriveSubsystem.DriveMode;
+
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
 
 public class PathCommand extends Command {
 
