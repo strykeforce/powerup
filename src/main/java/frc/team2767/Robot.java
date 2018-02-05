@@ -1,5 +1,6 @@
 package frc.team2767;
 
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -21,15 +22,25 @@ public class Robot extends TimedRobot {
     INJECTOR = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
   }
 
+  private boolean sob;
   private Trigger alignWheelsButton;
 
   @Override
   public void robotInit() {
-    logger.info(INJECTOR.settings().getTable(TABLE).getString("description"));
-    alignWheelsButton = INJECTOR.alignWheelsTrigger();
+    Toml settings = INJECTOR.settings().getTable(TABLE);
+    sob = settings.getBoolean("sob", false);
+    logger.info(settings.getString("description"));
     TelemetryService telemetryService = INJECTOR.telemetryService();
-    INJECTOR.graphables().forEach(g -> g.register(telemetryService));
-    INJECTOR.driveSubsystem().zeroAzimuthEncoders();
+    if (!sob) {
+      alignWheelsButton = INJECTOR.alignWheelsTrigger();
+      INJECTOR.graphables().forEach(g -> g.register(telemetryService));
+      INJECTOR.driveSubsystem().zeroAzimuthEncoders();
+    } else {
+      logger.warn("running in SOB mode");
+      //      INJECTOR.intakeSubsystem().register(telemetryService);
+      INJECTOR.climberSubsystem().register(telemetryService);
+      INJECTOR.controls();
+    }
     LiveWindow.disableAllTelemetry();
     telemetryService.start();
   }
@@ -37,7 +48,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("teleopInit - stopping swerve");
-    INJECTOR.driveSubsystem().stop();
+    if (!sob) INJECTOR.driveSubsystem().stop();
   }
 
   @Override
@@ -52,6 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    if (sob) return;
     if (alignWheelsButton.hasActivated()) {
       INJECTOR.driveSubsystem().alignWheels();
     }

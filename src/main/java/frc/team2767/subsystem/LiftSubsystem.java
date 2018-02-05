@@ -1,7 +1,6 @@
 package frc.team2767.subsystem;
 
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
-import static com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
+import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
 public class LiftSubsystem extends Subsystem implements Graphable {
@@ -36,8 +36,6 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       logger.error("Talons not present");
       return;
     }
-    frontTalon.configSelectedFeedbackSensor(CTRE_MagEncoder_Relative, 0, TIMEOUT);
-    frontTalon.setSensorPhase(true);
     frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
   }
 
@@ -64,7 +62,7 @@ public class LiftSubsystem extends Subsystem implements Graphable {
 
   @Override
   public void register(TelemetryService telemetryService) {
-    telemetryService.register(frontTalon);
-    telemetryService.register(rearTalon);
+    telemetryService.register(new TalonItem(frontTalon, "Lift Front (" + FRONT_ID + ")"));
+    telemetryService.register(new TalonItem(rearTalon, "Lift Rear (" + REAR_ID + ")"));
   }
 }

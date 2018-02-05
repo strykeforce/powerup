@@ -9,6 +9,13 @@
 #              | | | (_) | |_) | (_) |  _ < | | |_| |
 #              |_|  \___/|_.__/ \___/|_| \_\___\___/
 #
+[POWERUP]
+description = "Stryke Force 2018 POWER UP"
+
+[POWERUP.JOYSTICK]
+ deadband = 0.05
+ expoScale = 0.5
+ rateLimit = 0.04
 
 [PATHS.LEFT]
 waypoints = [
@@ -74,6 +81,10 @@ max_acceleration = 2.0   # m/sec/sec
 max_jerk         = 60.0  # m/sec/sec/sec
 p_azimuth        = -0.004
 
+[THIRDCOAST.SWERVE]
+  length = 20.625
+  width  = 26.125
+
 [[TALON]]
   name = "azimuth"
   talonIds = [0, 1, 2, 3]
@@ -95,7 +106,7 @@ p_azimuth        = -0.004
   talonIds = [10, 11, 12, 13]
   [TALON.selectedFeedbackSensor]
     feedbackDevice = "CTRE_MagEncoder_Relative"
-  [currentLimit]
+  [TALON.currentLimit]
     continuous = 40
     peak = 0
     peakDuration = 0
@@ -106,3 +117,27 @@ p_azimuth        = -0.004
     fGain = 0.03
     iZone = 0
     allowableClosedLoopError = 0
+
+[[TALON]]
+  name = "climber"
+  talonIds = [20, 21]
+  [TALON.selectedFeedbackSensor]
+    feedbackDevice = "CTRE_MagEncoder_Relative"
+  [TALON.output]
+    neutralMode = "Brake"
+
+[[TALON]]
+  name = "intake"
+  talonIds = [30, 31]
+  [TALON.selectedFeedbackSensor]
+    feedbackDevice = "CTRE_MagEncoder_Relative"
+  [TALON.output]
+    neutralMode = "Brake"
+
+[[TALON]]
+  name = "lift"
+  talonIds = [50, 51]
+  [TALON.selectedFeedbackSensor]
+    feedbackDevice = "CTRE_MagEncoder_Relative"
+  [TALON.output]
+    neutralMode = "Brake"

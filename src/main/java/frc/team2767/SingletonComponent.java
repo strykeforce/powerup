@@ -2,8 +2,10 @@ package frc.team2767;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import frc.team2767.subsystem.ClimberSubsystem;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.Graphable;
+import frc.team2767.subsystem.IntakeSubsystem;
 import frc.team2767.subsystem.LiftSubsystem;
 import frc.team2767.subsystem.SubsystemModule;
 import frc.team2767.trigger.AlignWheelsTrigger;
@@ -33,9 +35,13 @@ public interface SingletonComponent {
 
   Set<Graphable> graphables();
 
+  ClimberSubsystem climberSubsystem();
+
   DriveSubsystem driveSubsystem();
 
   LiftSubsystem liftSubsystem();
+
+  IntakeSubsystem intakeSubsystem();
 
   Controls controls();
 

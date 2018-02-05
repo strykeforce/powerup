@@ -3,11 +3,10 @@ package frc.team2767;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team2767.command.ZeroGyroYawCommand;
-import frc.team2767.command.lift.DownCommand;
-import frc.team2767.command.lift.StopCommand;
-import frc.team2767.command.lift.UpCommand;
-import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.command.climber.ClimbCommand;
+import frc.team2767.command.climber.HoldCommand;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class Controls {
 
-  private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
+  private static final Logger logger = LoggerFactory.getLogger(Controls.class);
 
   private static final int DRIVER_RIGHT_X_AXIS = 0;
   private static final int DRIVER_RIGHT_Y_AXIS = 1;
@@ -52,9 +51,7 @@ public class Controls {
   private static final int GAME_LEFT_STICK_BUTTON = 9;
   private static final int GAME_RIGHT_STICK_BUTTON = 10;
 
-  private static final int BOARD_BUTTON_1 = 1;
-  private static final int BOARD_BUTTON_2 = 2;
-  private static final int BOARD_BUTTON_3 = 3;
+  private static final int POWERUP_INTAKE_PORTAL = 0;
 
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
@@ -67,16 +64,25 @@ public class Controls {
   private final Button liftUpButton = new JoystickButton(gameController, GAME_Y_BUTTON);
   private final Button liftDownButton = new JoystickButton(gameController, GAME_A_BUTTON);
 
+  List<Button> buttons = new ArrayList<>();
+
   @Inject
   Controls() {
-    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
+    logger.debug("initializing controls");
+    //    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     //    //    autonButton.whenPressed(new AutonCommandGroup());
     //    //    azimuthTestButton.whenPressed(new AzimuthCommand());
     //    //    testButton.whenPressed(new PathCommand());
-    liftUpButton.whenPressed(new UpCommand());
-    liftUpButton.whenReleased(new StopCommand());
-    liftDownButton.whenPressed(new DownCommand());
-    liftDownButton.whenReleased(new StopCommand());
+    liftUpButton.whenPressed(new ClimbCommand());
+    liftUpButton.whenReleased(new HoldCommand());
+    //    liftDownButton.whenPressed(new DownCommand());
+    //    liftDownButton.whenReleased(new StopCommand());
+
+    //    for (int i = 1; i < 10; i++) {
+    //      Button button = new JoystickButton(gameController, i);
+    //      button.whenPressed(new PrintCommand("Button " + i));
+    //      buttons.add(button);
+    //    }
   }
 
   /**
