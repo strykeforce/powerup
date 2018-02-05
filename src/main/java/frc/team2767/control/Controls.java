@@ -5,12 +5,15 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import frc.team2767.command.drive.ZeroGyroYawCommand;
+import frc.team2767.command.test.PathCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Accesses driver control input. */
 @Singleton
@@ -52,12 +55,30 @@ public class Controls {
   private static final int GAME_RIGHT_STICK_BUTTON = 10;
 
   private static final int POWERUP_INTAKE_PORTAL = 0;
+  private static final int BOARD_BUTTON_1 = 1;
+  private static final int BOARD_BUTTON_2 = 2;
+  private static final int BOARD_BUTTON_3 = 3;
+  private static final int BOARD_BUTTON_4 = 4;
+  private static final int BOARD_BUTTON_5 = 5;
+  private static final int BOARD_BUTTON_6 = 6;
+
+  private static final int LEFT = 1;
+  private static final int CENTER_LEFT = 2;
+  private static final int CENTER_RIGHT = 3;
+  private static final int CENTER_RIGHT_EXCHANGE = 4;
 
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
-  //  private final Joystick buttonBoard = new Joystick(3);
+  private final Joystick buttonBoard = new Joystick(3);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
+  private final Button button1 = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
+  private final Button button2 = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  private final Button button3 = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  private final Button button4 = new JoystickButton(buttonBoard, BOARD_BUTTON_4);
+  private final Button button5 = new JoystickButton(buttonBoard, BOARD_BUTTON_5);
+  private final Button button6 = new JoystickButton(buttonBoard, BOARD_BUTTON_6);
+
   //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
   //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
   //  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
@@ -73,6 +94,7 @@ public class Controls {
     //    //    autonButton.whenPressed(new AutonCommandGroup());
     //    //    azimuthTestButton.whenPressed(new AzimuthCommand());
     //    //    testButton.whenPressed(new PathCommand());
+    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     liftUpButton.whenPressed(new ClimbCommand());
     liftUpButton.whenReleased(new HoldCommand());
     //    liftDownButton.whenPressed(new DownCommand());
@@ -83,6 +105,13 @@ public class Controls {
     //      button.whenPressed(new PrintCommand("Button " + i));
     //      buttons.add(button);
     //    }
+
+    //    button1.whenPressed(new AutonCommandGroup());
+    //    button2.whenPressed(new AzimuthCommand());
+    button3.whenPressed(new PathCommand(LEFT));
+    button4.whenPressed(new PathCommand(CENTER_LEFT));
+    button5.whenPressed(new PathCommand(CENTER_RIGHT));
+    button6.whenPressed(new PathCommand(CENTER_RIGHT_EXCHANGE));
   }
 
   /**
