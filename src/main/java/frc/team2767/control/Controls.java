@@ -7,13 +7,12 @@ import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.test.PathCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Accesses driver control input. */
 @Singleton
