@@ -37,6 +37,13 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void autonomousInit() {
+    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+  }
+
+  @Override
   public void robotInit() {
     Toml settings = INJECTOR.settings().getTable(TABLE);
     sob = settings.getBoolean("sob", false);
