@@ -6,13 +6,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
+import frc.team2767.command.test.PathCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import frc.team2767.command.test.PathCommand;
-import frc.team2767.subsystem.DriveSubsystem;
 import java.util.ArrayList;
 import java.util.List;
 
