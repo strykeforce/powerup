@@ -3,17 +3,21 @@ package frc.team2767.control;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc.team2767.command.auton.AutonCommandGroup;
+import frc.team2767.command.auton.AzimuthCommand;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
+import frc.team2767.command.lift.DownCommand;
+import frc.team2767.command.lift.StopCommand;
 import frc.team2767.command.test.PathCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Accesses driver control input. */
 @Singleton
@@ -70,6 +74,7 @@ public class Controls {
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
   private final Joystick buttonBoard = new Joystick(3);
+  private final Joystick newButtonBoard = new Joystick(3);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
   private final Button button1 = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
@@ -79,9 +84,9 @@ public class Controls {
   private final Button button5 = new JoystickButton(buttonBoard, BOARD_BUTTON_5);
   private final Button button6 = new JoystickButton(buttonBoard, BOARD_BUTTON_6);
 
-  //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
-  //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
-  //  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
+  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
   private final Button liftUpButton = new JoystickButton(gameController, GAME_Y_BUTTON);
   private final Button liftDownButton = new JoystickButton(gameController, GAME_A_BUTTON);
 
@@ -90,24 +95,24 @@ public class Controls {
   @Inject
   Controls() {
     logger.debug("initializing controls");
-    //    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
-    //    //    autonButton.whenPressed(new AutonCommandGroup());
-    //    //    azimuthTestButton.whenPressed(new AzimuthCommand());
-    //    //    testButton.whenPressed(new PathCommand());
+    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
+    autonButton.whenPressed(new AutonCommandGroup());
+    azimuthTestButton.whenPressed(new AzimuthCommand());
+    testButton.whenPressed(new PathCommand(CENTER_RIGHT));
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     liftUpButton.whenPressed(new ClimbCommand());
     liftUpButton.whenReleased(new HoldCommand());
-    //    liftDownButton.whenPressed(new DownCommand());
-    //    liftDownButton.whenReleased(new StopCommand());
+    liftDownButton.whenPressed(new DownCommand());
+    liftDownButton.whenReleased(new StopCommand());
 
-    //    for (int i = 1; i < 10; i++) {
-    //      Button button = new JoystickButton(gameController, i);
-    //      button.whenPressed(new PrintCommand("Button " + i));
-    //      buttons.add(button);
-    //    }
+    for (int i = 1; i <= 12; i++) {
+      Button button = new JoystickButton(newButtonBoard, i);
+      button.whenPressed(new PrintCommand("Button " + i));
+      buttons.add(button);
+    }
 
-    //    button1.whenPressed(new AutonCommandGroup());
-    //    button2.whenPressed(new AzimuthCommand());
+    button1.whenPressed(new AutonCommandGroup());
+    button2.whenPressed(new AzimuthCommand());
     button3.whenPressed(new PathCommand(LEFT));
     button4.whenPressed(new PathCommand(CENTER_LEFT));
     button5.whenPressed(new PathCommand(CENTER_RIGHT));

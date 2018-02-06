@@ -29,18 +29,12 @@ public class Robot extends TimedRobot {
   private boolean sob;
   private Trigger alignWheelsButton;
 
-  @Override
-  public void autonomousInit() {
-    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
-    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+  public static MatchData.OwnedSide getNearSwitch() {
+    return NEAR_SWITCH;
   }
 
-  @Override
-  public void autonomousInit() {
-    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
-    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+  public static MatchData.OwnedSide getFarSwitch() {
+    return FAR_SWITCH;
   }
 
   @Override
@@ -56,11 +50,23 @@ public class Robot extends TimedRobot {
     } else {
       logger.warn("running in SOB mode");
       //      INJECTOR.intakeSubsystem().register(telemetryService);
-      INJECTOR.climberSubsystem().register(telemetryService);
+      //      INJECTOR.climberSubsystem().register(telemetryService);
       INJECTOR.controls();
     }
     LiveWindow.disableAllTelemetry();
     telemetryService.start();
+  }
+
+  @Override
+  public void disabledInit() {
+    logger.info("disabledInit");
+  }
+
+  @Override
+  public void autonomousInit() {
+    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
   }
 
   @Override
@@ -70,14 +76,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  @Override
-  public void disabledInit() {
-    logger.info("disabledInit");
-  }
+  public void robotPeriodic() {}
 
   @Override
   public void disabledPeriodic() {
@@ -88,17 +87,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+  }
 
-  public static MatchData.OwnedSide getScale() {
+  public MatchData.OwnedSide getScale() {
     return SCALE;
-  }
-
-  public static MatchData.OwnedSide getNearSwitch() {
-    return NEAR_SWITCH;
-  }
-
-  public static MatchData.OwnedSide getFarSwitch() {
-    return FAR_SWITCH;
   }
 }
