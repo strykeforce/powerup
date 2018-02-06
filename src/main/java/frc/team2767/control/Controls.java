@@ -3,6 +3,7 @@ package frc.team2767.control;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team2767.Settings;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
@@ -87,26 +88,16 @@ public class Controls {
   List<Button> buttons = new ArrayList<>();
 
   @Inject
-  Controls() {
-    logger.debug("initializing controls");
-    //    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
-    //    //    autonButton.whenPressed(new AutonCommandGroup());
-    //    //    azimuthTestButton.whenPressed(new AzimuthCommand());
-    //    //    testButton.whenPressed(new PathCommand());
+  Controls(Settings settings) {
+    if (settings.isIsolatedTestMode()) {
+      logger.debug("initializing SOB controls");
+      return;
+    }
+    logger.debug("initializing Robot controls");
+    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     liftUpButton.whenPressed(new ClimbCommand());
     liftUpButton.whenReleased(new HoldCommand());
-    //    liftDownButton.whenPressed(new DownCommand());
-    //    liftDownButton.whenReleased(new StopCommand());
-
-    //    for (int i = 1; i < 10; i++) {
-    //      Button button = new JoystickButton(gameController, i);
-    //      button.whenPressed(new PrintCommand("Button " + i));
-    //      buttons.add(button);
-    //    }
-
-    //    button1.whenPressed(new AutonCommandGroup());
-    //    button2.whenPressed(new AzimuthCommand());
     button3.whenPressed(new PathCommand(LEFT));
     button4.whenPressed(new PathCommand(CENTER_LEFT));
     button5.whenPressed(new PathCommand(CENTER_RIGHT));

@@ -1,10 +1,10 @@
 package frc.team2767;
 
-import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.control.Trigger;
+import frc.team2767.subsystem.DriveSubsystem;
 import java.io.File;
 import openrio.powerup.MatchData;
 import org.slf4j.Logger;
@@ -26,62 +26,11 @@ public class Robot extends TimedRobot {
     INJECTOR = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
   }
 
-  private boolean sob;
+  private Settings settings;
+  private DriveSubsystem driveSubsystem;
   private Trigger alignWheelsButton;
-
-  @Override
-  public void autonomousInit() {
-    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
-    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
-    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
-  }
-
-  @Override
-  public void robotInit() {
-    Toml settings = INJECTOR.settings().getTable(TABLE);
-    sob = settings.getBoolean("sob", false);
-    logger.info(settings.getString("description"));
-    TelemetryService telemetryService = INJECTOR.telemetryService();
-    if (!sob) {
-      alignWheelsButton = INJECTOR.alignWheelsTrigger();
-      INJECTOR.graphables().forEach(g -> g.register(telemetryService));
-      INJECTOR.driveSubsystem().zeroAzimuthEncoders();
-    } else {
-      logger.warn("running in SOB mode");
-      //      INJECTOR.intakeSubsystem().register(telemetryService);
-      INJECTOR.climberSubsystem().register(telemetryService);
-      INJECTOR.controls();
-    }
-    LiveWindow.disableAllTelemetry();
-    telemetryService.start();
-  }
-
-  @Override
-  public void teleopInit() {
-    logger.info("teleopInit - stopping swerve");
-    if (!sob) INJECTOR.driveSubsystem().stop();
-  }
-
-  @Override
-  public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  @Override
-  public void disabledInit() {
-    logger.info("disabledInit");
-  }
-
-  @Override
-  public void disabledPeriodic() {
-    if (sob) return;
-    if (alignWheelsButton.hasActivated()) {
-      INJECTOR.driveSubsystem().alignWheels();
-    }
-  }
-
-  @Override
-  public void robotPeriodic() {}
+  private Scheduler scheduler;
+  private boolean isolatedTestMode;
 
   public static MatchData.OwnedSide getScale() {
     return SCALE;
@@ -94,4 +43,58 @@ public class Robot extends TimedRobot {
   public static MatchData.OwnedSide getFarSwitch() {
     return FAR_SWITCH;
   }
+
+  @Override
+  public void autonomousInit() {
+    NEAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR);
+    FAR_SWITCH = MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_FAR);
+    SCALE = MatchData.getOwnedSide(MatchData.GameFeature.SCALE);
+  }
+
+  @Override
+  public void robotInit() {
+    settings = INJECTOR.settings();
+    scheduler = Scheduler.getInstance();
+    isolatedTestMode = settings.isIsolatedTestMode();
+    TelemetryService telemetryService = INJECTOR.telemetryService();
+    if (!isolatedTestMode) {
+      driveSubsystem = INJECTOR.driveSubsystem();
+      alignWheelsButton = INJECTOR.alignWheelsTrigger();
+      INJECTOR.graphables().forEach(g -> g.register(telemetryService));
+      driveSubsystem.zeroAzimuthEncoders();
+    } else {
+      logger.warn("running in SOB mode");
+    }
+    LiveWindow.disableAllTelemetry();
+    telemetryService.start();
+  }
+
+  @Override
+  public void teleopInit() {
+    if (!isolatedTestMode) {
+      driveSubsystem.stop();
+      logger.info("teleopInit - stopped swerve");
+    }
+  }
+
+  @Override
+  public void teleopPeriodic() {
+    scheduler.run();
+  }
+
+  @Override
+  public void disabledInit() {
+    logger.info("disabledInit");
+  }
+
+  @Override
+  public void disabledPeriodic() {
+    if (isolatedTestMode) return;
+    if (alignWheelsButton.hasActivated()) {
+      driveSubsystem.alignWheels();
+    }
+  }
+
+  @Override
+  public void robotPeriodic() {}
 }
