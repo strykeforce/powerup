@@ -13,7 +13,6 @@ import frc.team2767.subsystem.SubsystemModule;
 import java.io.File;
 import java.util.Set;
 import javax.inject.Singleton;
-import org.strykeforce.thirdcoast.swerve.GraphableSwerveDriveModule;
 import org.strykeforce.thirdcoast.swerve.GyroModule;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 import org.strykeforce.thirdcoast.swerve.WheelModule;
@@ -28,7 +27,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
     NetworkModule.class,
     GyroModule.class,
     WheelModule.class,
-    GraphableSwerveDriveModule.class,
+    //    GraphableSwerveDriveModule.class,
     SubsystemModule.class,
   }
 )
