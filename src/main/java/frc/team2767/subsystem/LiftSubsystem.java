@@ -62,7 +62,9 @@ public class LiftSubsystem extends Subsystem implements Graphable {
 
   @Override
   public void register(TelemetryService telemetryService) {
-    telemetryService.register(new TalonItem(frontTalon, "Lift Front (" + FRONT_ID + ")"));
-    telemetryService.register(new TalonItem(rearTalon, "Lift Rear (" + REAR_ID + ")"));
+    if (frontTalon != null)
+      telemetryService.register(new TalonItem(frontTalon, "Lift Front (" + FRONT_ID + ")"));
+    if (rearTalon != null)
+      telemetryService.register(new TalonItem(rearTalon, "Lift Rear (" + REAR_ID + ")"));
   }
 }

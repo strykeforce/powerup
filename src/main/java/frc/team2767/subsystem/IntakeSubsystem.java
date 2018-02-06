@@ -81,8 +81,10 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
 
   @Override
   public void register(TelemetryService telemetryService) {
-    telemetryService.register(new TalonItem(leftTalon, "Intake Left (" + LEFT_ID + ")"));
-    telemetryService.register(new TalonItem(rightTalon, "Intake Right (" + RIGHT_ID + ")"));
+    if (leftTalon != null)
+      telemetryService.register(new TalonItem(leftTalon, "Intake Left (" + LEFT_ID + ")"));
+    if (rightTalon != null)
+      telemetryService.register(new TalonItem(rightTalon, "Intake Right (" + RIGHT_ID + ")"));
   }
 
   public enum Mode {
