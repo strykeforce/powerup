@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     kAutonSwitchDebounceMs = settings.getTable(TABLE).getLong("autonSwitchDebounceMs", 1000L);
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
-    // TODO: skip a lot of this stuff if in compitition
+    // TODO: skip a lot of this stuff if in competition
     isolatedTestMode = settings.isIsolatedTestMode();
     TelemetryService telemetryService = INJECTOR.telemetryService();
     if (!isolatedTestMode) {
@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
       driveSubsystem.zeroAzimuthEncoders();
     } else {
       logger.warn("running in SOB mode");
+      INJECTOR.flipSubsystem().register(telemetryService);
     }
     LiveWindow.disableAllTelemetry();
     telemetryService.start();
