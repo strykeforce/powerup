@@ -104,6 +104,11 @@ public class Controls {
     button6.whenPressed(new PathCommand(CENTER_RIGHT_EXCHANGE));
   }
 
+  public int getAutonomousSwitchPosition() {
+    // TODO
+    return 0;
+  }
+
   /**
    * Return the driver controller left stick Y-axis position.
    *
