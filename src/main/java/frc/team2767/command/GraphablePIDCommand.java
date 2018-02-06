@@ -1,8 +1,8 @@
 package frc.team2767.command;
 
 import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.CLOSED_LOOP_ERROR;
+import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.CLOSED_LOOP_TARGET;
 import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.POSITION;
-import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.SETPOINT;
 
 import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.command.PIDCommand;
@@ -18,7 +18,7 @@ import org.strykeforce.thirdcoast.telemetry.item.Item;
 public abstract class GraphablePIDCommand extends PIDCommand implements Item {
 
   private static final Set<Measure> MEASURES =
-      Collections.unmodifiableSet(EnumSet.of(SETPOINT, POSITION, CLOSED_LOOP_ERROR));
+      Collections.unmodifiableSet(EnumSet.of(CLOSED_LOOP_TARGET, POSITION, CLOSED_LOOP_ERROR));
 
   public GraphablePIDCommand(String name, double p, double i, double d) {
     super(name, p, i, d);
@@ -51,7 +51,7 @@ public abstract class GraphablePIDCommand extends PIDCommand implements Item {
     }
 
     switch (measure) {
-      case SETPOINT:
+      case CLOSED_LOOP_TARGET:
         return this::getSetpoint;
       case POSITION:
         return this::getPosition;

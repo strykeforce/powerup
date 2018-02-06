@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class Settings {
 
+  public static final String TABLE = "POWERUP";
   private static final Logger logger = LoggerFactory.getLogger(Settings.class);
   private static final String DEFAULTS = "/META-INF/powerup/settings.toml";
 
@@ -35,6 +36,11 @@ public class Settings {
       return new Toml();
     }
     return toml.getTable(key);
+  }
+
+  public boolean isIsolatedTestMode() {
+    Toml toml = getTable(TABLE);
+    return toml.getBoolean("sob", false);
   }
 
   private Toml defaults() {

@@ -52,7 +52,9 @@ public class ClimberSubsystem extends Subsystem implements Graphable {
 
   @Override
   public void register(TelemetryService telemetryService) {
-    telemetryService.register(new TalonItem(leftTalon, "Climber Left (" + LEFT_ID + ")"));
-    telemetryService.register(new TalonItem(rightTalon, "Climber Right (" + RIGHT_ID + ")"));
+    if (leftTalon != null)
+      telemetryService.register(new TalonItem(leftTalon, "Climber Left (" + LEFT_ID + ")"));
+    if (rightTalon != null)
+      telemetryService.register(new TalonItem(rightTalon, "Climber Right (" + RIGHT_ID + ")"));
   }
 }
