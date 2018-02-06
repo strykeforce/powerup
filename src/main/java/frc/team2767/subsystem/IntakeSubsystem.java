@@ -18,10 +18,8 @@ import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 @Singleton
 public class IntakeSubsystem extends Subsystem implements Graphable {
 
-  private static final int LEFT_ID = 3; // PDP 10
-  private static final int RIGHT_ID = 4; // PDP 9
-  //  private static final int LEFT_ID = 30; // PDP 10
-  //  private static final int RIGHT_ID = 31; // PDP 9
+  private static final int LEFT_ID = 30; // PDP 10
+  private static final int RIGHT_ID = 31; // PDP 9
 
   private static final String TABLE = "POWERUP.INTAKE";
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);

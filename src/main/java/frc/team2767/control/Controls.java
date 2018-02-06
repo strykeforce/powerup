@@ -8,6 +8,11 @@ import frc.team2767.Settings;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
+import frc.team2767.command.flipper.FlipperCommandGroup;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import frc.team2767.command.test.PathCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +92,12 @@ public class Controls {
   private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
   private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
   private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  private final Button flipper =
+      new JoystickButton(driverController, DRIVER_LEFT_SHOULDER_UP_BUTTON);
+
+  //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
+  //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  //  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
   private final Button liftUpButton = new JoystickButton(gameController, GAME_Y_BUTTON);
   private final Button liftDownButton = new JoystickButton(gameController, GAME_A_BUTTON);
 
@@ -97,6 +108,8 @@ public class Controls {
     for (int i = 0; i < 6; i++) {
       digitalInputs.add(i, new DigitalInput(i));
     }
+    flipper.whenPressed(new FlipperCommandGroup());
+
     if (settings.isIsolatedTestMode()) {
       logger.info("initializing controls in isolated test mode");
       return;
@@ -106,10 +119,11 @@ public class Controls {
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     liftUpButton.whenPressed(new ClimbCommand());
     liftUpButton.whenReleased(new HoldCommand());
-    button3.whenPressed(new PathCommand(LEFT));
-    button4.whenPressed(new PathCommand(CENTER_LEFT));
-    button5.whenPressed(new PathCommand(CENTER_RIGHT));
-    button6.whenPressed(new PathCommand(CENTER_RIGHT_EXCHANGE));
+    //    button3.whenPressed(new PathCommand(LEFT));
+    //    button4.whenPressed(new PathCommand(CENTER_LEFT));
+    //    button5.whenPressed(new PathCommand(CENTER_RIGHT));
+    //    button6.whenPressed(new PathCommand(CENTER_RIGHT_EXCHANGE));
+
   }
 
   /**
