@@ -139,5 +139,20 @@ p_azimuth        = -0.004
   talonIds = [50, 51]
   [TALON.selectedFeedbackSensor]
     feedbackDevice = "CTRE_MagEncoder_Relative"
+    phaseSensor = true
   [TALON.output]
     neutralMode = "Brake"
+
+[[TALON]]
+  name = "flipper"
+  talonIds = [60]
+  [TALON.selectedFeedbackSensor]
+    feedbackDevice = "CTRE_MagEncoder_Relative"
+  [TALON.output]
+    neutralMode = "Brake"
+  [TALON.softLimit.forward]
+    limit = 1400
+    enabled = true
+  [TALON.softLimit.reverse]
+    limit = 100
+    enabled = true
