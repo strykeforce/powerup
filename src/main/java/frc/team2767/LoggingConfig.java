@@ -12,6 +12,8 @@ import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import edu.wpi.first.wpilibj.DriverStation;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,20 +21,25 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 
 public class LoggingConfig extends ContextAwareBase implements Configurator {
 
+  private static final String CONSOLE_NAME = "console";
   private static final String CONSOLE_PATTERN =
       "%-23(%d{HH:mm:ss.SSS} [%thread]) %highlight(%-5level) %logger{32} - %msg%n";
 
+  private static final String FILE_NAME = "file";
   private static final String FILE_PATTERN =
       "%-23(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{32} - %msg%n";
+
+  private static final String TABLE = "POWERUP";
 
   @NotNull
   private static Appender<ILoggingEvent> consoleAppender(LoggerContext lc) {
     ConsoleAppender<ILoggingEvent> ca = new ConsoleAppender<>();
     ca.setContext(lc);
-    ca.setName("console");
+    ca.setName(CONSOLE_NAME);
     LayoutWrappingEncoder<ILoggingEvent> encoder = getEncoder(lc, CONSOLE_PATTERN);
     ca.setEncoder(encoder);
     return ca;
@@ -42,7 +49,7 @@ public class LoggingConfig extends ContextAwareBase implements Configurator {
   private static Appender<ILoggingEvent> fileAppender(LoggerContext lc) {
     FileAppender<ILoggingEvent> fa = new FileAppender<>();
     fa.setContext(lc);
-    fa.setName("file");
+    fa.setName(FILE_NAME);
     fa.setFile(getLogFile());
     fa.setImmediateFlush(false);
     fa.setPrudent(false);
@@ -56,11 +63,11 @@ public class LoggingConfig extends ContextAwareBase implements Configurator {
     DriverStation driverStation = DriverStation.getInstance();
     StringBuilder stringBuilder = new StringBuilder();
 
-    Path path = FileSystems.getDefault().getPath("/media/sda/logs/");
-    if (Files.exists(path)) stringBuilder.append(path);
+    Path path = FileSystems.getDefault().getPath("/media/sda1/logs/");
+    if (Files.exists(path)) stringBuilder.append(path).append("/");
     else stringBuilder.append("/home/lvuser/logs/");
 
-    DateFormat dateFormat = new SimpleDateFormat("yymmddhhmm");
+    DateFormat dateFormat = new SimpleDateFormat("yyMMddhhmm");
     stringBuilder.append(dateFormat.format(Calendar.getInstance().getTime()));
 
     DriverStation.MatchType matchType = driverStation.getMatchType();
@@ -84,6 +91,20 @@ public class LoggingConfig extends ContextAwareBase implements Configurator {
     layout.start();
     encoder.setLayout(layout);
     return encoder;
+  }
+
+  public static void flushLogs() {
+    Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+
+    FileAppender<ILoggingEvent> appender =
+        (FileAppender<ILoggingEvent>) root.getAppender(FILE_NAME);
+    if (appender == null) return;
+    OutputStream os = appender.getOutputStream();
+    try {
+      os.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override

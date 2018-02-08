@@ -40,7 +40,7 @@ public class Settings {
 
   public boolean isIsolatedTestMode() {
     Toml toml = getTable(TABLE);
-    return toml.getBoolean("sob", false);
+    return toml.getBoolean("isolatedTestMode", false);
   }
 
   private Toml defaults() {

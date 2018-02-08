@@ -30,14 +30,16 @@ public class Robot extends TimedRobot {
     INJECTOR = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
   }
 
+  int autonSwitchStableCount = 0;
+  int newAutonSwitchPostion = -1;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
   private Trigger alignWheelsButton;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
   private Command autonCommand = new PrintCommand("NO AUTON SELECTED");
-  private MatchData.OwnedSide nearSwitch = OwnedSide.UNKNOWN;
-  private MatchData.OwnedSide scale = OwnedSide.UNKNOWN;
+  private MatchData.OwnedSide nearSwitch;
+  private MatchData.OwnedSide scale;
   private int autonSwitchPosition = -1;
   private long autonSwitchLastChangedTime;
   private boolean doneCheckingMatchData = false;
@@ -46,20 +48,25 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Settings settings = INJECTOR.settings();
-    kAutonSwitchDebounceMs = settings.getTable(TABLE).getLong("autonSwitchDebounceMs", 1000L);
+    kAutonSwitchDebounceMs = settings.getTable(TABLE).getLong("autonSwitchDebounceMs", 2000L);
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
-    // TODO: skip a lot of this stuff if in compitition
+
     isolatedTestMode = settings.isIsolatedTestMode();
-    TelemetryService telemetryService = INJECTOR.telemetryService();
-    if (!isolatedTestMode) {
-      driveSubsystem = INJECTOR.driveSubsystem();
-      alignWheelsButton = INJECTOR.alignWheelsTrigger();
-      INJECTOR.graphables().forEach(g -> g.register(telemetryService));
-      driveSubsystem.zeroAzimuthEncoders();
-    } else {
-      logger.warn("running in SOB mode");
+    if (isolatedTestMode) {
+      logger.warn("starting {}", isolatedTestModeMessage());
+      logger.debug(
+          "auton switch position = {}",
+          String.format("%02X", controls.getAutonomousSwitchPosition()));
+      return;
     }
+
+    // TODO: skip a lot of this stuff if in competition
+    TelemetryService telemetryService = INJECTOR.telemetryService();
+    driveSubsystem = INJECTOR.driveSubsystem();
+    alignWheelsButton = INJECTOR.alignWheelsTrigger();
+    INJECTOR.graphables().forEach(g -> g.register(telemetryService));
+    driveSubsystem.zeroAzimuthEncoders();
     LiveWindow.disableAllTelemetry();
     telemetryService.start();
     logger.debug("autonSwitchDebounceMs = {}", kAutonSwitchDebounceMs);
@@ -70,25 +77,28 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    logger.warn("disabled mode starting");
+    logger.info("disabled mode starting {}", isolatedTestModeMessage());
+    LoggingConfig.flushLogs();
   }
 
   @Override
   public void disabledPeriodic() {
-    if (isolatedTestMode) return;
-    if (alignWheelsButton.hasActivated()) {
-      driveSubsystem.alignWheels();
-    }
     checkMatchData();
     // auton commands need time to compute path trajectories so instantiate as early as possible
     if (checkAutonomousSwitch()) {
+      logger.info("initializing auton command {}", String.format("%02X", autonSwitchPosition));
+      // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
-        case 0:
+        case 0x0:
           autonCommand = new CenterSwitchCommand();
           break;
         default:
           break;
       }
+    }
+    if (isolatedTestMode) return;
+    if (alignWheelsButton.hasActivated()) {
+      driveSubsystem.alignWheels();
     }
   }
 
@@ -112,22 +122,24 @@ public class Robot extends TimedRobot {
   private boolean checkAutonomousSwitch() {
     boolean changed = false;
     int switchPosition = controls.getAutonomousSwitchPosition();
-    if (switchPosition != autonSwitchPosition) {
-      long now = System.currentTimeMillis();
-      if (now - autonSwitchLastChangedTime < kAutonSwitchDebounceMs) return false;
 
-      // switch hasn't changed in kAutonSwitchDebounceMs ms, so consider it set
-      changed = true;
+    if (switchPosition != newAutonSwitchPostion) {
+      autonSwitchStableCount = 0;
+      newAutonSwitchPostion = switchPosition;
+    } else {
+      autonSwitchStableCount++;
+    }
+
+    if (autonSwitchStableCount > 100) {
+      if (autonSwitchPosition != switchPosition) changed = true;
       autonSwitchPosition = switchPosition;
-      autonSwitchLastChangedTime = now;
-      logger.info("autonomous switch position changed to {}", autonSwitchPosition);
     }
     return changed;
   }
 
   @Override
   public void autonomousInit() {
-    logger.warn("autonomous mode starting");
+    logger.info("autonomous mode starting {}", isolatedTestModeMessage());
     checkMatchData();
     if (autonCommand instanceof OwnedSidesSettable) {
       ((OwnedSidesSettable) autonCommand).setOwnedSide(nearSwitch, scale);
@@ -147,7 +159,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    logger.warn("teleop mode starting");
+    logger.info("teleop mode starting {}", isolatedTestModeMessage());
     if (!isolatedTestMode) {
       driveSubsystem.stop();
     }
@@ -156,5 +168,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     scheduler.run();
+  }
+
+  private String isolatedTestModeMessage() {
+    return isolatedTestMode ? "in isolated test mode" : "";
   }
 }

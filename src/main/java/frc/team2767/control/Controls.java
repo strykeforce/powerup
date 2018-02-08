@@ -1,5 +1,6 @@
 package frc.team2767.control;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -67,6 +68,8 @@ public class Controls {
   private static final int CENTER_RIGHT = 3;
   private static final int CENTER_RIGHT_EXCHANGE = 4;
 
+  private final List<DigitalInput> digitalInputs = new ArrayList<>();
+
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
   private final Joystick buttonBoard = new Joystick(3);
@@ -89,11 +92,14 @@ public class Controls {
 
   @Inject
   Controls(Settings settings) {
+    for (int i = 0; i < 6; i++) {
+      digitalInputs.add(i, new DigitalInput(i));
+    }
     if (settings.isIsolatedTestMode()) {
-      logger.debug("initializing SOB controls");
+      logger.info("initializing controls in isolated test mode");
       return;
     }
-    logger.debug("initializing Robot controls");
+    logger.info("initializing robot controls");
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     liftUpButton.whenPressed(new ClimbCommand());
@@ -104,9 +110,21 @@ public class Controls {
     button6.whenPressed(new PathCommand(CENTER_RIGHT_EXCHANGE));
   }
 
+  /**
+   * Read the selected autonomous mode from the binary-code hexadecimal switch. Don't be fooled by
+   * hex numbers when debugging, for example switch position 24 (hex) = 36 (dec).
+   *
+   * <p>The switch wiring labelled 0-5 are connected to corresponding DIO ports 0-5.
+   *
+   * @return the switch position
+   */
   public int getAutonomousSwitchPosition() {
-    // TODO
-    return 0;
+    int val = 0;
+    for (int i = 6; i-- > 0; ) {
+      val = val << 1;
+      val = (val & 0xFE) | (digitalInputs.get(i).get() ? 0 : 1);
+    }
+    return val;
   }
 
   /**
