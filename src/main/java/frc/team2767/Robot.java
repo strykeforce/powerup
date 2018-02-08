@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
   public static final SingletonComponent INJECTOR;
   public static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
   public static final String TABLE = "POWERUP";
+  private static final int AUTON_SWITCH_STABLE = 100;
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
@@ -30,8 +31,8 @@ public class Robot extends TimedRobot {
     INJECTOR = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
   }
 
-  int autonSwitchStableCount = 0;
-  int newAutonSwitchPostion = -1;
+  private int autonSwitchStableCount = 0;
+  private int newAutonSwitchPostion = -1;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
   private Trigger alignWheelsButton;
@@ -41,14 +42,11 @@ public class Robot extends TimedRobot {
   private MatchData.OwnedSide nearSwitch;
   private MatchData.OwnedSide scale;
   private int autonSwitchPosition = -1;
-  private long autonSwitchLastChangedTime;
   private boolean doneCheckingMatchData = false;
-  private long kAutonSwitchDebounceMs;
 
   @Override
   public void robotInit() {
     Settings settings = INJECTOR.settings();
-    kAutonSwitchDebounceMs = settings.getTable(TABLE).getLong("autonSwitchDebounceMs", 2000L);
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
@@ -69,7 +67,6 @@ public class Robot extends TimedRobot {
     driveSubsystem.zeroAzimuthEncoders();
     LiveWindow.disableAllTelemetry();
     telemetryService.start();
-    logger.debug("autonSwitchDebounceMs = {}", kAutonSwitchDebounceMs);
   }
 
   @Override
@@ -130,8 +127,8 @@ public class Robot extends TimedRobot {
       autonSwitchStableCount++;
     }
 
-    if (autonSwitchStableCount > 100) {
-      if (autonSwitchPosition != switchPosition) changed = true;
+    if (autonSwitchStableCount > AUTON_SWITCH_STABLE && autonSwitchPosition != switchPosition) {
+      changed = true;
       autonSwitchPosition = switchPosition;
     }
     return changed;
