@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import frc.team2767.command.LogCommand;
 import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.control.Controls;
@@ -86,10 +87,16 @@ public class Robot extends TimedRobot {
       logger.info("initializing auton command {}", String.format("%02X", autonSwitchPosition));
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
-        case 0x0:
+        case 0x00:
           autonCommand = new CenterSwitchCommand();
           break;
+        case 0x30:
+          autonCommand = new LogCommand("Running auton command 0x30");
+          break;
         default:
+          logger.warn(
+              "no auton command assigned for switch position {}",
+              String.format("%02X", autonSwitchPosition));
           break;
       }
     }
