@@ -8,12 +8,7 @@ import frc.team2767.Settings;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
-import frc.team2767.command.flipper.FlipperCommandGroup;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import frc.team2767.command.test.PathCommand;
+import frc.team2767.command.flipper.FlipperLaunchCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,7 +103,7 @@ public class Controls {
     for (int i = 0; i < 6; i++) {
       digitalInputs.add(i, new DigitalInput(i));
     }
-    flipper.whenPressed(new FlipperCommandGroup());
+    flipper.whenPressed(new FlipperLaunchCommand());
 
     if (settings.isIsolatedTestMode()) {
       logger.info("initializing controls in isolated test mode");

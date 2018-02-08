@@ -8,7 +8,7 @@ public class FlipperDownCommand extends Command {
   private final FlipperSubsystem flipperSubsystem;
 
   public FlipperDownCommand() {
-    flipperSubsystem = Robot.INJECTOR.flipSubsystem();
+    flipperSubsystem = Robot.INJECTOR.flipperSubsystem();
     requires(flipperSubsystem);
   }
 

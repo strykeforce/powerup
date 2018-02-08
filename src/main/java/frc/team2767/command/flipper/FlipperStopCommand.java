@@ -8,7 +8,7 @@ public class FlipperStopCommand extends InstantCommand {
   private final FlipperSubsystem flipperSubsystem;
 
   public FlipperStopCommand() {
-    flipperSubsystem = Robot.INJECTOR.flipSubsystem();
+    flipperSubsystem = Robot.INJECTOR.flipperSubsystem();
     requires(flipperSubsystem);
   }
 
