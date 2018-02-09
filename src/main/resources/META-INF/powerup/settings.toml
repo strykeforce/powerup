@@ -33,3 +33,10 @@ isolatedTestMode = false
 [POWERUP.INTAKE]
   loadOutput = 0.5
   holdOutput = 0.1
+
+[POWERUP.LIFT]
+  upOutput   = 0.2
+  downOutput = -0.2
+  stopOutput = 0.0
+  
+  absoluteTolerance = 10
