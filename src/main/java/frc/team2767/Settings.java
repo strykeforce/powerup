@@ -17,12 +17,14 @@ public class Settings {
   private static final String DEFAULTS = "/META-INF/powerup/settings.toml";
 
   private final Toml toml;
+  private final Toml defaults;
 
   @Inject
   public Settings(File config) {
+    defaults = defaults();
     if (Files.notExists(config.toPath())) {
       logger.error("{} is missing, using defaults in " + DEFAULTS, config);
-      toml = defaults();
+      toml = defaults;
       return;
     }
 
@@ -35,7 +37,10 @@ public class Settings {
       logger.error("table with key '{}' not present", key);
       return new Toml();
     }
-    return toml.getTable(key);
+    Toml table = toml.getTable(key);
+    Toml defaultTable = defaults.getTable(key);
+
+    return new Toml(defaultTable).read(table);
   }
 
   public boolean isIsolatedTestMode() {
