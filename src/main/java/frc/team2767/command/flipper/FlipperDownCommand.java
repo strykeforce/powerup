@@ -14,7 +14,7 @@ public class FlipperDownCommand extends Command {
 
   @Override
   protected void initialize() {
-    flipperSubsystem.reset();
+    flipperSubsystem.down();
   }
 
   @Override

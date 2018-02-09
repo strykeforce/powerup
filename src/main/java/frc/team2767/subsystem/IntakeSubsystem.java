@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team2767.Robot;
 import frc.team2767.Settings;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,23 +18,18 @@ import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
 public class IntakeSubsystem extends Subsystem implements Graphable {
-
   private static final int LEFT_ID = 30; // PDP 10
   private static final int RIGHT_ID = 31; // PDP 9
 
-  private static final String TABLE = "POWERUP.INTAKE";
+  private static final String TABLE = Robot.TABLE + ".INTAKE";
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);
-  private final double kLoadPercentOutput;
-  private final double kHoldPercentOutput;
+  private final double kLoadOutput;
+  private final double kHoldOutput;
   private final TalonSRX leftTalon, rightTalon;
   private final SensorCollection rightSensors;
 
   @Inject
   public IntakeSubsystem(Talons talons, Settings settings) {
-    Toml toml = settings.getTable(TABLE);
-    kLoadPercentOutput = toml.getDouble("loadPercentOutput");
-    kHoldPercentOutput = toml.getDouble("holdPercentOutput");
-
     leftTalon = talons.getTalon(LEFT_ID);
     rightTalon = talons.getTalon(RIGHT_ID);
     if (leftTalon == null) {
@@ -44,21 +40,24 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
     } else {
       logger.error("Right Talon missing");
       rightSensors = null;
-      return;
     }
 
-    logger.info("loadPercentOutput = {}", kLoadPercentOutput);
-    logger.info("holdPercentOutput = {}", kHoldPercentOutput);
+    Toml toml = settings.getTable(TABLE);
+    kLoadOutput = toml.getDouble("loadOutput");
+    kHoldOutput = toml.getDouble("holdOutput");
+
+    logger.info("loadOutput = {}", kLoadOutput);
+    logger.info("holdOutput = {}", kHoldOutput);
   }
 
   public void run(Mode mode) {
     double output = 0d;
     switch (mode) {
       case LOAD:
-        output = kLoadPercentOutput;
+        output = kLoadOutput;
         break;
       case HOLD:
-        output = kHoldPercentOutput;
+        output = kHoldOutput;
         break;
     }
     leftTalon.set(PercentOutput, output);

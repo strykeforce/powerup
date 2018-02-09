@@ -54,9 +54,7 @@ public class Robot extends TimedRobot {
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
       logger.warn("starting {}", isolatedTestModeMessage());
-      logger.debug(
-          "auton switch position = {}",
-          String.format("%02X", controls.getAutonomousSwitchPosition()));
+      INJECTOR.intakeSubsystem();
       return;
     }
 

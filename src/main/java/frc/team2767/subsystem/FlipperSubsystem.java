@@ -3,7 +3,10 @@ package frc.team2767.subsystem;
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team2767.Robot;
+import frc.team2767.Settings;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
@@ -13,45 +16,56 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 
 @Singleton
 public class FlipperSubsystem extends Subsystem implements Graphable {
-
   private static final int ID = 60; // PDP 8
 
-  private static final double OUTPUT = 0.5;
-  private static final double DOWN_OUTPUT = 0.2;
-  private static final double STOP_OUTPUT = 0.0;
-
   private static final Logger logger = LoggerFactory.getLogger(FlipperSubsystem.class);
+  private static final String TABLE = Robot.TABLE + ".FLIPPER";
+
+  private final double kUpOutput;
+  private final double kDownOutput;
+  private final int kUpPosition;
+  private final int kDownPosition;
 
   private final TalonSRX talon;
 
   @Inject
-  public FlipperSubsystem(Talons talons) {
+  public FlipperSubsystem(Talons talons, Settings settings) {
     talon = talons.getTalon(ID);
-    talon.setSelectedSensorPosition(0, 0, 10);
-    logger.debug("Flipper init");
+    if (talon != null) talon.setSelectedSensorPosition(0, 0, 10);
+
+    Toml toml = settings.getTable(TABLE);
+    kUpOutput = toml.getDouble("upOutput");
+    kDownOutput = toml.getDouble("downOutput");
+    kUpPosition = toml.getLong("upPosition").intValue();
+    kDownPosition = toml.getLong("downPosition").intValue();
+
+    logger.info("upOutput = {}", kUpOutput);
+    logger.info("downOutput = {}", kDownOutput);
+    logger.info("upPosition = {}", kUpPosition);
+    logger.info("downPosition = {}", kDownPosition);
   }
 
-  public void run() {
-    logger.debug("flipping");
-    talon.set(PercentOutput, OUTPUT);
+  public void up() {
+    logger.debug("flipper up at output {}", kUpOutput);
+    talon.set(PercentOutput, kUpOutput);
   }
 
-  public void reset() {
-    logger.debug("resetting");
-    talon.set(PercentOutput, -1 * DOWN_OUTPUT);
+  public void down() {
+    logger.debug("flipper down at output {}", kDownOutput);
+    talon.set(PercentOutput, kDownOutput);
   }
 
   public void stop() {
-    logger.debug("stopping");
-    talon.set(PercentOutput, STOP_OUTPUT);
+    logger.debug("flipper stopped");
+    talon.set(PercentOutput, 0d);
   }
 
   public boolean isFinishedUp() {
-    return talon.getSelectedSensorPosition(0) > 1000;
+    return talon.getSelectedSensorPosition(0) > kUpPosition;
   }
 
   public boolean isFinishedDown() {
-    return talon.getSelectedSensorPosition(0) < 200;
+    return talon.getSelectedSensorPosition(0) < kDownPosition;
   }
 
   @Override

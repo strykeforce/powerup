@@ -15,7 +15,7 @@ public class FlipperUpCommand extends Command {
 
   @Override
   protected void initialize() {
-    flipperSubsystem.run();
+    flipperSubsystem.up();
   }
 
   @Override
