@@ -4,18 +4,19 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.team2767.Settings;
+import frc.team2767.command.LogCommand;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.flipper.FlipperLaunchCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Accesses driver control input. */
 @Singleton
@@ -64,6 +65,22 @@ public class Controls {
   private static final int BOARD_BUTTON_5 = 5;
   private static final int BOARD_BUTTON_6 = 6;
 
+  private static final int POWERUP_SHOULDER_DOWN_1 = 1;
+  private static final int POWERUP_SHOULDER_UP_2 = 2;
+  private static final int POWERUP_ELEVATOR_DOWN_3 = 3;
+  private static final int POWERUP_ELEVATOR_UP_4 = 4;
+  private static final int POWERUP_CLIMB_BUTTON_5 = 5;
+  private static final int POWERUP_TRANSFORM_6 = 6;
+  private static final int POWERUP_MID_SCALE_7 = 7;
+  private static final int POWERUP_PORTAL_INTAKE_8 = 8;
+  private static final int POWERUP_INTAKE_OUT_9 = 9;
+  private static final int POWERUP_GROUND_INTAKE_POS_10 = 10;
+  private static final int POWERUP_INTAKE_IN_11 = 11;
+  private static final int POWERUP_EXCHANGE_POS_12 = 12;
+
+  private static final int POWERUP_BOARD_BUTTON_Y_AXIS = 1;
+  private static final int POWERUP_BOARD_BUTTON_X_AXIS = 0;
+
   private static final int LEFT = 1;
   private static final int CENTER_LEFT = 2;
   private static final int CENTER_RIGHT = 3;
@@ -74,7 +91,35 @@ public class Controls {
   private final Joystick gameController = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
   private final Joystick buttonBoard = new Joystick(3);
-  private final Joystick newButtonBoard = new Joystick(3);
+  private final Joystick powerupButtonBoard = new Joystick(2);
+
+  private final Button powerupShoulderDownButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_DOWN_1);
+  private final Button powerupShoulderUpButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_UP_2);
+  private final Button powerupElevatorDownButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_ELEVATOR_DOWN_3);
+  private final Button powerupElevatorUpButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_ELEVATOR_UP_4);
+  private final Button powerupClimbButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON_5);
+  private final Trigger powerupSwitchPosButton;
+  private final Trigger powerupScaleHighButton;
+  private final Button powerupScaleMidButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_MID_SCALE_7);
+  private final Button powerupPortalIntakeButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_PORTAL_INTAKE_8);
+  private final Button powerupIntakeOutButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_OUT_9);
+  private final Button powerupGroundIntakePosButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_GROUND_INTAKE_POS_10);
+  private final Button powerupIntakeInButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_IN_11);
+  private final Trigger powerupStowButton;
+  private final Button powerupExchangePosButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_EXCHANGE_POS_12);
+  private final Button powerupTransformerButton =
+      new JoystickButton(powerupButtonBoard, POWERUP_TRANSFORM_6);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
   private final Button button1 = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
@@ -103,13 +148,43 @@ public class Controls {
     for (int i = 0; i < 6; i++) {
       digitalInputs.add(i, new DigitalInput(i));
     }
-    flipper.whenPressed(new FlipperLaunchCommand());
+
+    powerupScaleHighButton = new ButtonBoardAxisTriggerYNeg(this);
+    powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
+    powerupScaleMidButton.whenActive(new LogCommand("scale mid"));
+
+    powerupStowButton = new ButtonBoardAxisTriggerXPos(this);
+    powerupStowButton.whenActive(new LogCommand("Powerup stow is active"));
+
+    powerupSwitchPosButton = new ButtonBoardAxisTriggerXNeg(this);
+    powerupSwitchPosButton.whenActive(new LogCommand("Powerup switch pos is active"));
+
+    powerupElevatorUpButton.whenActive(new LogCommand("elevator up"));
+    powerupElevatorDownButton.whenActive(new LogCommand("elevator down"));
+
+    powerupShoulderUpButton.whenActive(new LogCommand("shoulder up"));
+    powerupShoulderDownButton.whenActive(new LogCommand("shoulder down"));
+
+    powerupExchangePosButton.whenActive(new LogCommand("exchange Pos"));
+
+    powerupPortalIntakeButton.whenActive(new LogCommand("portal intake button"));
+
+    powerupGroundIntakePosButton.whenActive(new LogCommand("ground intake pos"));
+
+    powerupIntakeInButton.whenActive(new LogCommand("intake in"));
+    powerupIntakeOutButton.whenActive(new LogCommand("intake out"));
+
+    powerupClimbButton.whenActive(new LogCommand("climb"));
+
+    powerupTransformerButton.whenActive(new LogCommand("transformers!!!!!!"));
 
     if (settings.isIsolatedTestMode()) {
       logger.info("initializing controls in isolated test mode");
       return;
     }
+
     logger.info("initializing robot controls");
+    flipper.whenPressed(new FlipperLaunchCommand());
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
     liftUpButton.whenPressed(new ClimbCommand());
@@ -224,6 +299,18 @@ public class Controls {
    */
   public double getTuner() {
     return driverController.getRawAxis(DRIVER_TUNER_AXIS);
+  }
+
+  public double getButtonBoardYNeg() {
+    return powerupButtonBoard.getRawAxis(POWERUP_BOARD_BUTTON_Y_AXIS);
+  }
+
+  public double getButtonBoardXNeg() {
+    return powerupButtonBoard.getRawAxis(POWERUP_BOARD_BUTTON_X_AXIS);
+  }
+
+  public double getButtonBoardXPos() {
+    return powerupButtonBoard.getRawAxis(POWERUP_BOARD_BUTTON_X_AXIS);
   }
 
   /**
