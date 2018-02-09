@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("disabled mode starting {}", isolatedTestModeMessage());
-    LoggingConfig.flushLogs();
+    Logging.flushLogs();
   }
 
   @Override

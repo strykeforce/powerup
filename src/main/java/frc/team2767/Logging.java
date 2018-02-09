@@ -23,7 +23,7 @@ import java.util.Calendar;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
-public class LoggingConfig extends ContextAwareBase implements Configurator {
+public class Logging extends ContextAwareBase implements Configurator {
 
   private static final String CONSOLE_NAME = "console";
   private static final String CONSOLE_PATTERN =
