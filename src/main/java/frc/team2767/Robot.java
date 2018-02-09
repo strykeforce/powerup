@@ -22,8 +22,8 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 public class Robot extends TimedRobot {
 
   public static final SingletonComponent INJECTOR;
-  public static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
   public static final String TABLE = "POWERUP";
+  private static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
   private static final int AUTON_SWITCH_STABLE = 100;
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
@@ -88,6 +88,9 @@ public class Robot extends TimedRobot {
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
         case 0x00:
+          // active when switch missing, leave empty
+          break;
+        case 0x01:
           autonCommand = new CenterSwitchCommand();
           break;
         case 0x30:
