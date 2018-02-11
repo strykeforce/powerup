@@ -40,6 +40,8 @@ public interface SingletonComponent {
 
   FlipperSubsystem flipperSubsystem();
 
+  ShoulderSubsystem shoulderSubsystem();
+
   Controls controls();
 
   SwerveDrive swerveDrive();

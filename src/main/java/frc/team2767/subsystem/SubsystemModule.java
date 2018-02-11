@@ -22,4 +22,8 @@ public abstract class SubsystemModule {
   @Binds
   @IntoSet
   public abstract Graphable liftSubsystem(LiftSubsystem liftSubsystem);
+
+  @Binds
+  @IntoSet
+  public abstract Graphable shoulderSubsystem(ShoulderSubsystem shoulderSubsystem);
 }
