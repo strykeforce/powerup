@@ -4,13 +4,20 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.climber.ClimbCommand;
 import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.flipper.FlipperLaunchCommand;
+import frc.team2767.command.lift.Down;
+import frc.team2767.command.lift.LoadParameters;
+import frc.team2767.command.lift.Position;
+import frc.team2767.command.lift.SaveZero;
+import frc.team2767.command.lift.Stop;
+import frc.team2767.command.lift.Up;
+import frc.team2767.command.lift.Zero;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -103,8 +110,8 @@ public class Controls {
       new JoystickButton(powerupButtonBoard, POWERUP_ELEVATOR_UP_4);
   private final Button powerupClimbButton =
       new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON_5);
-  private final Trigger powerupSwitchPosButton;
-  private final Trigger powerupScaleHighButton;
+  //  private final Trigger powerupSwitchPosButton;
+  //  private final Trigger powerupScaleHighButton;
   private final Button powerupScaleMidButton =
       new JoystickButton(powerupButtonBoard, POWERUP_MID_SCALE_7);
   private final Button powerupPortalIntakeButton =
@@ -115,7 +122,7 @@ public class Controls {
       new JoystickButton(powerupButtonBoard, POWERUP_GROUND_INTAKE_POS_10);
   private final Button powerupIntakeInButton =
       new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_IN_11);
-  private final Trigger powerupStowButton;
+  //  private final Trigger powerupStowButton;
   private final Button powerupExchangePosButton =
       new JoystickButton(powerupButtonBoard, POWERUP_EXCHANGE_POS_12);
   private final Button powerupTransformerButton =
@@ -149,15 +156,22 @@ public class Controls {
       digitalInputs.add(i, new DigitalInput(i));
     }
 
-    powerupScaleHighButton = new ButtonBoardAxisTriggerYNeg(this);
-    powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
+    assignSmartDashboardButtons();
+
+    if (settings.isIsolatedTestMode()) {
+      logger.info("initializing controls in isolated test mode");
+      return;
+    }
+
+    //    powerupScaleHighButton = new ButtonBoardAxisTriggerYNeg(this);
+    //    powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
     powerupScaleMidButton.whenActive(new LogCommand("scale mid"));
 
-    powerupStowButton = new ButtonBoardAxisTriggerXPos(this);
-    powerupStowButton.whenActive(new LogCommand("Powerup stow is active"));
-
-    powerupSwitchPosButton = new ButtonBoardAxisTriggerXNeg(this);
-    powerupSwitchPosButton.whenActive(new LogCommand("Powerup switch pos is active"));
+    //    powerupStowButton = new ButtonBoardAxisTriggerXPos(this);
+    //    powerupStowButton.whenActive(new LogCommand("Powerup stow is active"));
+    //
+    //    powerupSwitchPosButton = new ButtonBoardAxisTriggerXNeg(this);
+    //    powerupSwitchPosButton.whenActive(new LogCommand("Powerup switch pos is active"));
 
     powerupElevatorUpButton.whenActive(new LogCommand("elevator up"));
     powerupElevatorDownButton.whenActive(new LogCommand("elevator down"));
@@ -177,11 +191,6 @@ public class Controls {
     powerupClimbButton.whenActive(new LogCommand("climb"));
 
     powerupTransformerButton.whenActive(new LogCommand("transformers!!!!!!"));
-
-    if (settings.isIsolatedTestMode()) {
-      logger.info("initializing controls in isolated test mode");
-      return;
-    }
 
     logger.info("initializing robot controls");
     flipper.whenPressed(new FlipperLaunchCommand());
@@ -211,6 +220,20 @@ public class Controls {
       val = (val & 0xFE) | (digitalInputs.get(i).get() ? 0 : 1);
     }
     return val;
+  }
+
+  private void assignSmartDashboardButtons() {
+    SmartDashboard.putData("Lift/LoadParametersCommand", new LoadParameters());
+    SmartDashboard.putData("Lift/PositionCommand", new Position());
+    SmartDashboard.putData("Lift/UpCommand", new Up());
+    SmartDashboard.putData("Lift/DownCommand", new Down());
+    SmartDashboard.putData("Lift/StopCommand", new Stop());
+    SmartDashboard.putData("Lift/SaveZero", new SaveZero());
+    SmartDashboard.putData("Lift/Zero", new Zero());
+
+    SmartDashboard.putData("Shoulder/Up", new frc.team2767.command.shoulder.Up());
+    SmartDashboard.putData("Shoulder/Down", new frc.team2767.command.shoulder.Down());
+    SmartDashboard.putData("Shoulder/Stop", new frc.team2767.command.shoulder.Stop());
   }
 
   /**

@@ -51,21 +51,21 @@ public class Robot extends TimedRobot {
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
+    TelemetryService telemetryService = INJECTOR.telemetryService();
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
       logger.warn("starting {}", isolatedTestModeMessage());
-      INJECTOR.intakeSubsystem();
+      INJECTOR.liftSubsystem().register(telemetryService);
+      telemetryService.start();
       return;
     }
 
     // TODO: skip a lot of this stuff if in competition
-    TelemetryService telemetryService = INJECTOR.telemetryService();
     driveSubsystem = INJECTOR.driveSubsystem();
     alignWheelsButton = INJECTOR.alignWheelsTrigger();
     INJECTOR.graphables().forEach(g -> g.register(telemetryService));
     driveSubsystem.zeroAzimuthEncoders();
     LiveWindow.disableAllTelemetry();
-    telemetryService.start();
   }
 
   @Override

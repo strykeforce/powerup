@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.LiftSubsystem;
 
-public class UpCommand extends InstantCommand {
+public class Up extends InstantCommand {
 
   private final LiftSubsystem liftSubsystem;
 
-  public UpCommand() {
+  public Up() {
     liftSubsystem = Robot.INJECTOR.liftSubsystem();
     requires(liftSubsystem);
   }
