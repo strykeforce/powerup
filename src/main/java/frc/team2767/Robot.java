@@ -1,5 +1,6 @@
 package frc.team2767;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PrintCommand;
@@ -64,6 +65,8 @@ public class Robot extends TimedRobot {
     telemetryService.start();
     driveSubsystem.zeroAzimuthEncoders();
     LiveWindow.disableAllTelemetry();
+    // start camera display to smartdashbard
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   @Override
