@@ -119,8 +119,20 @@ public class Controls {
       new JoystickButton(powerupButtonBoard, POWERUP_LIFT_UP);
   private final Button powerupClimbButton =
       new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON);
-  private final Trigger powerupLowScaleButton;
-  private final Trigger powerupScaleHighButton;
+  private final Trigger powerupLowScaleButton =
+      new Trigger() {
+        @Override
+        public boolean get() {
+          return getButtonBoardXNeg() < -0.9;
+        }
+      };
+  private final Trigger powerupScaleHighButton =
+      new Trigger() {
+        @Override
+        public boolean get() {
+          return Math.abs(getButtonBoardYNeg()) > 0.9;
+        }
+      };
   private final Button powerupScaleMidButton =
       new JoystickButton(powerupButtonBoard, POWERUP_MID_SCALE);
   private final Button powerupPortalIntakeButton =
@@ -131,7 +143,13 @@ public class Controls {
       new JoystickButton(powerupButtonBoard, POWERUP_GROUND_INTAKE_POS);
   private final Button powerupIntakeInButton =
       new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_IN);
-  private final Trigger powerupStowButton;
+  private final Trigger powerupStowButton =
+      new Trigger() {
+        @Override
+        public boolean get() {
+          return getButtonBoardXPos() > 0.9;
+        }
+      };
   private final Button powerupExchangePosButton =
       new JoystickButton(powerupButtonBoard, POWERUP_EXCHANGE_POS);
   private final Button powerupTransformerButton =
@@ -176,14 +194,11 @@ public class Controls {
     assignDriverButtons();
     assignSmartDashboardButtons();
 
-    powerupScaleHighButton = new ButtonBoardAxisTriggerYNeg(this);
     powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
     powerupScaleMidButton.whenActive(new LogCommand("scale mid"));
 
-    powerupStowButton = new ButtonBoardAxisTriggerXPos(this);
     powerupStowButton.whenActive(new Stow());
 
-    powerupLowScaleButton = new ButtonBoardAxisTriggerXNeg(this);
     powerupLowScaleButton.whenActive(new LogCommand("Low scale"));
 
     powerupElevatorUpButton.whenActive(new LogCommand("elevator up"));

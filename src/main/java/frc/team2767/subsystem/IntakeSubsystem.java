@@ -60,12 +60,12 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
       case LOAD:
         leftOutput = kLoadOutput;
         rightOutput = kLoadOutput;
-        logger.info("running in LOAD at {}", leftOutput);
+        logger.debug("running in LOAD at {}", leftOutput);
         break;
       case HOLD:
         leftOutput = kHoldOutput;
         rightOutput = 0.25 * kHoldOutput;
-        logger.info("running in HOLD at {}", leftOutput);
+        logger.debug("running in HOLD at {}", leftOutput);
         break;
       case EJECT:
         leftOutput = kEjectOutput;
