@@ -5,22 +5,22 @@ import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.IntakeSubsystem;
 
-public class LoadCommand extends CommandGroup {
+public class IntakeLoad extends CommandGroup {
 
-  public LoadCommand() {
+  public IntakeLoad() {
     addSequential(new Intake());
     addSequential(new Hold());
   }
 
   static class Intake extends Command {
 
-    private final IntakeSubsystem intakeSubsystem;
+    private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
 
     public Intake() {
-      intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
       requires(intakeSubsystem);
     }
 
@@ -35,11 +35,12 @@ public class LoadCommand extends CommandGroup {
     }
   }
 
-  static class Hold extends Command {
+  static class Hold extends TimedCommand {
 
     private final IntakeSubsystem intakeSubsystem;
 
     public Hold() {
+      super(0.75);
       intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
       requires(intakeSubsystem);
     }
@@ -51,7 +52,12 @@ public class LoadCommand extends CommandGroup {
 
     @Override
     protected boolean isFinished() {
-      return intakeSubsystem.isLoaded();
+      return isTimedOut() && intakeSubsystem.isLoaded();
+    }
+
+    @Override
+    protected void end() {
+      intakeSubsystem.stop();
     }
   }
 }

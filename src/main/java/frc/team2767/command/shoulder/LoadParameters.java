@@ -4,17 +4,16 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.ShoulderSubsystem;
 
-public class Down extends InstantCommand {
+public class LoadParameters extends InstantCommand {
 
-  private final ShoulderSubsystem shoulderSubsystem;
+  private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
 
-  public Down() {
-    shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
+  public LoadParameters() {
     requires(shoulderSubsystem);
   }
 
   @Override
   protected void initialize() {
-    shoulderSubsystem.down();
+    shoulderSubsystem.loadParameters();
   }
 }

@@ -4,20 +4,27 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
 import frc.team2767.command.LogCommand;
-import frc.team2767.command.climber.ClimbCommand;
-import frc.team2767.command.climber.HoldCommand;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
-import frc.team2767.command.flipper.FlipperLaunchCommand;
-import frc.team2767.command.lift.Down;
-import frc.team2767.command.lift.LoadParameters;
-import frc.team2767.command.lift.Position;
+import frc.team2767.command.intake.IntakeEject;
+import frc.team2767.command.intake.IntakeIn;
+import frc.team2767.command.intake.IntakeLoad;
+import frc.team2767.command.intake.IntakeOut;
+import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.lift.SaveZero;
-import frc.team2767.command.lift.Stop;
-import frc.team2767.command.lift.Up;
 import frc.team2767.command.lift.Zero;
+import frc.team2767.command.sequence.Stow;
+import frc.team2767.command.shoulder.LoadParameters;
+import frc.team2767.command.shoulder.ShoulderDown;
+import frc.team2767.command.shoulder.ShoulderOpenLoopDown;
+import frc.team2767.command.shoulder.ShoulderOpenLoopUp;
+import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.command.shoulder.ShoulderStop;
+import frc.team2767.command.shoulder.ShoulderUp;
+import frc.team2767.command.shoulder.ShoulderZero;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -72,18 +79,18 @@ public class Controls {
   private static final int BOARD_BUTTON_5 = 5;
   private static final int BOARD_BUTTON_6 = 6;
 
-  private static final int POWERUP_SHOULDER_DOWN_1 = 1;
-  private static final int POWERUP_SHOULDER_UP_2 = 2;
-  private static final int POWERUP_ELEVATOR_DOWN_3 = 3;
-  private static final int POWERUP_ELEVATOR_UP_4 = 4;
-  private static final int POWERUP_CLIMB_BUTTON_5 = 5;
-  private static final int POWERUP_TRANSFORM_6 = 6;
-  private static final int POWERUP_MID_SCALE_7 = 7;
-  private static final int POWERUP_PORTAL_INTAKE_8 = 8;
-  private static final int POWERUP_INTAKE_OUT_9 = 9;
-  private static final int POWERUP_GROUND_INTAKE_POS_10 = 10;
-  private static final int POWERUP_INTAKE_IN_11 = 11;
-  private static final int POWERUP_EXCHANGE_POS_12 = 12;
+  private static final int POWERUP_SHOULDER_DOWN = 3;
+  private static final int POWERUP_SHOULDER_UP = 4;
+  private static final int POWERUP_LIFT_DOWN = 1;
+  private static final int POWERUP_LIFT_UP = 2;
+  private static final int POWERUP_CLIMB_BUTTON = 5;
+  private static final int POWERUP_TRANSFORM = 6;
+  private static final int POWERUP_MID_SCALE = 7;
+  private static final int POWERUP_PORTAL_INTAKE = 8;
+  private static final int POWERUP_INTAKE_OUT = 9;
+  private static final int POWERUP_GROUND_INTAKE_POS = 10;
+  private static final int POWERUP_INTAKE_IN = 11;
+  private static final int POWERUP_EXCHANGE_POS = 12;
 
   private static final int POWERUP_BOARD_BUTTON_Y_AXIS = 1;
   private static final int POWERUP_BOARD_BUTTON_X_AXIS = 0;
@@ -95,58 +102,68 @@ public class Controls {
 
   private final List<DigitalInput> digitalInputs = new ArrayList<>();
 
-  private final Joystick gameController = new Joystick(0);
+  private final Joystick powerupButtonBoard = new Joystick(0);
   private final Joystick driverController = new Joystick(1);
-  private final Joystick buttonBoard = new Joystick(3);
-  private final Joystick powerupButtonBoard = new Joystick(2);
+
+  //
+  //  Button Board
+  //
 
   private final Button powerupShoulderDownButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_DOWN_1);
+      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_DOWN);
   private final Button powerupShoulderUpButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_UP_2);
+      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_UP);
   private final Button powerupElevatorDownButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_ELEVATOR_DOWN_3);
+      new JoystickButton(powerupButtonBoard, POWERUP_LIFT_DOWN);
   private final Button powerupElevatorUpButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_ELEVATOR_UP_4);
+      new JoystickButton(powerupButtonBoard, POWERUP_LIFT_UP);
   private final Button powerupClimbButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON_5);
-  //  private final Trigger powerupSwitchPosButton;
-  //  private final Trigger powerupScaleHighButton;
+      new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON);
+  private final Trigger powerupLowScaleButton;
+  private final Trigger powerupScaleHighButton;
   private final Button powerupScaleMidButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_MID_SCALE_7);
+      new JoystickButton(powerupButtonBoard, POWERUP_MID_SCALE);
   private final Button powerupPortalIntakeButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_PORTAL_INTAKE_8);
+      new JoystickButton(powerupButtonBoard, POWERUP_PORTAL_INTAKE);
   private final Button powerupIntakeOutButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_OUT_9);
+      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_OUT);
   private final Button powerupGroundIntakePosButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_GROUND_INTAKE_POS_10);
+      new JoystickButton(powerupButtonBoard, POWERUP_GROUND_INTAKE_POS);
   private final Button powerupIntakeInButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_IN_11);
-  //  private final Trigger powerupStowButton;
+      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_IN);
+  private final Trigger powerupStowButton;
   private final Button powerupExchangePosButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_EXCHANGE_POS_12);
+      new JoystickButton(powerupButtonBoard, POWERUP_EXCHANGE_POS);
   private final Button powerupTransformerButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_TRANSFORM_6);
+      new JoystickButton(powerupButtonBoard, POWERUP_TRANSFORM);
+
+  //
+  // Flight Sim
+  //
+  private final Button driverIntakeEject =
+      new JoystickButton(driverController, DRIVER_LEFT_SHOULDER_DOWN_BUTTON);
+  private final Button driverIntakeLoad =
+      new JoystickButton(driverController, DRIVER_RIGHT_SHOULDER_BUTTON);
 
   private final Button zeroGyroButton = new JoystickButton(driverController, DRIVER_RESET_BUTTON);
-  private final Button button1 = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
-  private final Button button2 = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
-  private final Button button3 = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
-  private final Button button4 = new JoystickButton(buttonBoard, BOARD_BUTTON_4);
-  private final Button button5 = new JoystickButton(buttonBoard, BOARD_BUTTON_5);
-  private final Button button6 = new JoystickButton(buttonBoard, BOARD_BUTTON_6);
-
-  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
-  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
-  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
-  private final Button flipper =
-      new JoystickButton(driverController, DRIVER_LEFT_SHOULDER_UP_BUTTON);
+  //  private final Button button1 = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
+  //  private final Button button2 = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  //  private final Button button3 = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  //  private final Button button4 = new JoystickButton(buttonBoard, BOARD_BUTTON_4);
+  //  private final Button button5 = new JoystickButton(buttonBoard, BOARD_BUTTON_5);
+  //  private final Button button6 = new JoystickButton(buttonBoard, BOARD_BUTTON_6);
+  //
+  //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
+  //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
+  //  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
+  //  private final Button flipper =
+  //      new JoystickButton(driverController, DRIVER_LEFT_SHOULDER_UP_BUTTON);
 
   //  private final Button autonButton = new JoystickButton(buttonBoard, BOARD_BUTTON_1);
   //  private final Button testButton = new JoystickButton(buttonBoard, BOARD_BUTTON_2);
   //  private final Button azimuthTestButton = new JoystickButton(buttonBoard, BOARD_BUTTON_3);
-  private final Button liftUpButton = new JoystickButton(gameController, GAME_Y_BUTTON);
-  private final Button liftDownButton = new JoystickButton(gameController, GAME_A_BUTTON);
+  //  private final Button liftUpButton = new JoystickButton(gameController, GAME_Y_BUTTON);
+  //  private final Button liftDownButton = new JoystickButton(gameController, GAME_A_BUTTON);
 
   List<Button> buttons = new ArrayList<>();
 
@@ -156,48 +173,50 @@ public class Controls {
       digitalInputs.add(i, new DigitalInput(i));
     }
 
+    assignDriverButtons();
     assignSmartDashboardButtons();
+
+    powerupScaleHighButton = new ButtonBoardAxisTriggerYNeg(this);
+    powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
+    powerupScaleMidButton.whenActive(new LogCommand("scale mid"));
+
+    powerupStowButton = new ButtonBoardAxisTriggerXPos(this);
+    powerupStowButton.whenActive(new Stow());
+
+    powerupLowScaleButton = new ButtonBoardAxisTriggerXNeg(this);
+    powerupLowScaleButton.whenActive(new LogCommand("Low scale"));
+
+    powerupElevatorUpButton.whenActive(new LogCommand("elevator up"));
+    powerupElevatorDownButton.whenActive(new LogCommand("elevator down"));
+
+    powerupShoulderUpButton.whileActive(new ShoulderUp());
+    powerupShoulderDownButton.whileActive(new ShoulderDown());
+
+    powerupExchangePosButton.whenActive(new ShoulderPosition(0));
+
+    powerupPortalIntakeButton.whenActive(new LogCommand("portal intake button"));
+
+    powerupGroundIntakePosButton.whenActive(new ShoulderPosition(0));
+
+    powerupIntakeInButton.whenActive(new IntakeIn());
+    powerupIntakeInButton.whenReleased(new IntakeStop());
+    powerupIntakeOutButton.whenActive(new IntakeOut());
+    powerupIntakeOutButton.whenReleased(new IntakeStop());
+
+    powerupClimbButton.whenActive(new LogCommand("climb"));
+
+    powerupTransformerButton.whenActive(new LogCommand("transformers!!!!!!"));
 
     if (settings.isIsolatedTestMode()) {
       logger.info("initializing controls in isolated test mode");
       return;
     }
 
-    //    powerupScaleHighButton = new ButtonBoardAxisTriggerYNeg(this);
-    //    powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
-    powerupScaleMidButton.whenActive(new LogCommand("scale mid"));
-
-    //    powerupStowButton = new ButtonBoardAxisTriggerXPos(this);
-    //    powerupStowButton.whenActive(new LogCommand("Powerup stow is active"));
-    //
-    //    powerupSwitchPosButton = new ButtonBoardAxisTriggerXNeg(this);
-    //    powerupSwitchPosButton.whenActive(new LogCommand("Powerup switch pos is active"));
-
-    powerupElevatorUpButton.whenActive(new LogCommand("elevator up"));
-    powerupElevatorDownButton.whenActive(new LogCommand("elevator down"));
-
-    powerupShoulderUpButton.whenActive(new LogCommand("shoulder up"));
-    powerupShoulderDownButton.whenActive(new LogCommand("shoulder down"));
-
-    powerupExchangePosButton.whenActive(new LogCommand("exchange Pos"));
-
-    powerupPortalIntakeButton.whenActive(new LogCommand("portal intake button"));
-
-    powerupGroundIntakePosButton.whenActive(new LogCommand("ground intake pos"));
-
-    powerupIntakeInButton.whenActive(new LogCommand("intake in"));
-    powerupIntakeOutButton.whenActive(new LogCommand("intake out"));
-
-    powerupClimbButton.whenActive(new LogCommand("climb"));
-
-    powerupTransformerButton.whenActive(new LogCommand("transformers!!!!!!"));
-
     logger.info("initializing robot controls");
-    flipper.whenPressed(new FlipperLaunchCommand());
+    //    flipper.whenPressed(new FlipperLaunchCommand());
     zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
-    zeroGyroButton.whenPressed(new ZeroGyroYawCommand());
-    liftUpButton.whenPressed(new ClimbCommand());
-    liftUpButton.whenReleased(new HoldCommand());
+    //    liftUpButton.whenPressed(new ClimbCommand());
+    //    liftUpButton.whenReleased(new HoldCommand());
     //    button3.whenPressed(new PathCommand(LEFT));
     //    button4.whenPressed(new PathCommand(CENTER_LEFT));
     //    button5.whenPressed(new PathCommand(CENTER_RIGHT));
@@ -222,18 +241,24 @@ public class Controls {
     return val;
   }
 
+  private void assignDriverButtons() {
+    driverIntakeEject.whenPressed(new IntakeEject());
+    driverIntakeLoad.whileActive(new IntakeLoad());
+  }
+
   private void assignSmartDashboardButtons() {
-    SmartDashboard.putData("Lift/LoadParametersCommand", new LoadParameters());
-    SmartDashboard.putData("Lift/PositionCommand", new Position());
-    SmartDashboard.putData("Lift/UpCommand", new Up());
-    SmartDashboard.putData("Lift/DownCommand", new Down());
-    SmartDashboard.putData("Lift/StopCommand", new Stop());
+    SmartDashboard.putData("Intake/Load", new IntakeLoad());
+    SmartDashboard.putData("Intake/Eject", new IntakeEject());
+
+    SmartDashboard.putData("Shoulder/LoadParametersCommand", new LoadParameters());
+    SmartDashboard.putData("Shoulder/PositionCommand", new ShoulderPosition(6000));
+    SmartDashboard.putData("Shoulder/Zero", new ShoulderZero());
     SmartDashboard.putData("Lift/SaveZero", new SaveZero());
     SmartDashboard.putData("Lift/Zero", new Zero());
 
-    SmartDashboard.putData("Shoulder/Up", new frc.team2767.command.shoulder.Up());
-    SmartDashboard.putData("Shoulder/Down", new frc.team2767.command.shoulder.Down());
-    SmartDashboard.putData("Shoulder/Stop", new frc.team2767.command.shoulder.Stop());
+    SmartDashboard.putData("Shoulder/Up", new ShoulderOpenLoopUp());
+    SmartDashboard.putData("Shoulder/Down", new ShoulderOpenLoopDown());
+    SmartDashboard.putData("Shoulder/Stop", new ShoulderStop());
   }
 
   /**
@@ -350,52 +375,52 @@ public class Controls {
    *
    * @return true if the button is pressed
    */
-  public boolean getGamepadAButton() {
-    return gameController.getRawButton(GAME_A_BUTTON);
-  }
+  //  public boolean getGamepadAButton() {
+  //    return gameController.getRawButton(GAME_A_BUTTON);
+  //  }
 
   /**
    * Return the gamepad "B" button
    *
    * @return true if the button is pressed
    */
-  public boolean getGamepadBButton() {
-    return gameController.getRawButton(GAME_B_BUTTON);
-  }
+  //  public boolean getGamepadBButton() {
+  //    return gameController.getRawButton(GAME_B_BUTTON);
+  //  }
 
   /**
    * Return the gamepad "X" button
    *
    * @return true if the button is pressed
    */
-  public boolean getGamepadXButton() {
-    return gameController.getRawButton(GAME_X_BUTTON);
-  }
+  //  public boolean getGamepadXButton() {
+  //    return gameController.getRawButton(GAME_X_BUTTON);
+  //  }
 
   /**
    * Return the gamepad "Y" button
    *
    * @return true if the button is pressed
    */
-  public boolean getGamepadYButton() {
-    return gameController.getRawButton(GAME_Y_BUTTON);
-  }
+  //  public boolean getGamepadYButton() {
+  //    return gameController.getRawButton(GAME_Y_BUTTON);
+  //  }
 
   /**
    * Return the gamepad "back" button
    *
    * @return true if the button is pressed
    */
-  public boolean getGamepadBackButton() {
-    return gameController.getRawButton(GAME_BACK_BUTTON);
-  }
+  //  public boolean getGamepadBackButton() {
+  //    return gameController.getRawButton(GAME_BACK_BUTTON);
+  //  }
 
   /**
    * Return the gamepad "start" button
    *
    * @return true if the button is pressed
    */
-  public boolean getGamepadStartButton() {
-    return gameController.getRawButton(GAME_START_BUTTON);
-  }
+  //  public boolean getGamepadStartButton() {
+  //    return gameController.getRawButton(GAME_START_BUTTON);
+  //  }
 }

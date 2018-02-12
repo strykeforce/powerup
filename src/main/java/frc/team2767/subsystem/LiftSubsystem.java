@@ -32,19 +32,18 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   private final double kUpOutput;
   private final double kDownOutput;
   private final double kStopOutput;
-  private final int kAbsoluteTolerance;
+  private final int kCloseEnough;
+
   private final TalonSRX frontTalon, rearTalon;
   private final Preferences preferences;
-  private int setpoint = 0;
-  private int stableCount;
 
   @Inject
   public LiftSubsystem(Talons talons, Settings settings) {
     this.preferences = Preferences.getInstance();
-    //    initializeParameters();
 
     frontTalon = talons.getTalon(MASTER_ID);
     rearTalon = talons.getTalon(SLAVE_ID);
+
     if (frontTalon == null || rearTalon == null) {
       logger.error("Talons not present");
     } else {
@@ -60,26 +59,21 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     kUpOutput = toml.getDouble("upOutput");
     kDownOutput = toml.getDouble("downOutput");
     kStopOutput = toml.getDouble("stopOutput");
-    kAbsoluteTolerance = toml.getLong("absoluteTolerance").intValue();
+    kCloseEnough = toml.getLong("closeEnough").intValue();
 
     logger.info("upOutput = {}", kUpOutput);
     logger.info("downOutput = {}", kDownOutput);
     logger.info("stopOutput = {}", kStopOutput);
-    logger.info("absoluteTolerance = {}", kAbsoluteTolerance);
+    logger.info("closeEnough = {}", kCloseEnough);
   }
 
-  public void setSetpoint(double setpoint) {
-    logger.info("setting position = {}", setpoint);
-    frontTalon.set(MotionMagic, setpoint);
-    this.setpoint = (int) setpoint;
-    stableCount = 0;
+  public void setPosition(double position) {
+    logger.info("setting position = {}", position);
+    frontTalon.set(MotionMagic, position);
   }
 
   public boolean onTarget() {
-    if (Math.abs(frontTalon.getSelectedSensorPosition(0) - setpoint) < kAbsoluteTolerance)
-      stableCount++;
-    else stableCount = 0;
-    return stableCount > 2;
+    return frontTalon.getClosedLoopError(0) < kCloseEnough;
   }
 
   public void zeroPosition() {
@@ -95,7 +89,7 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     logger.info("saved absolute zero = {}", pos);
   }
 
-  public int getAbsolutePosition() {
+  private int getAbsolutePosition() {
     if (frontTalon == null) {
       logger.error("front Talon not present, returning 0 for getAzimuthAbsolutePosition()");
       return 0;
@@ -145,16 +139,6 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     logger.info("cruise = {}", cruise);
   }
 
-  public void initializeParameters() {
-    preferences.putDouble("Lift/0/K_P", 0d);
-    preferences.putDouble("Lift/1/K_I", 0d);
-    preferences.putDouble("Lift/2/K_D", 0d);
-    preferences.putDouble("Lift/3/K_F", 0d);
-    preferences.putInt("Lift/4/iZone", 0);
-    preferences.putInt("Lift/5/accel", 0);
-    preferences.putInt("Lift/6/cruise", 0);
-  }
-
   @Override
   protected void initDefaultCommand() {}
 
@@ -164,10 +148,5 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       telemetryService.register(new TalonItem(frontTalon, "Lift Master (" + MASTER_ID + ")"));
     if (rearTalon != null)
       telemetryService.register(new TalonItem(rearTalon, "Lift Slave (" + SLAVE_ID + ")"));
-  }
-
-  enum Strategy {
-    MOTION,
-    PIV
   }
 }

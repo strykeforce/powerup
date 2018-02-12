@@ -55,15 +55,13 @@ public class Robot extends TimedRobot {
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
       logger.warn("starting {}", isolatedTestModeMessage());
-      INJECTOR.liftSubsystem().register(telemetryService);
-      telemetryService.start();
       return;
     }
-
     // TODO: skip a lot of this stuff if in competition
     driveSubsystem = INJECTOR.driveSubsystem();
     alignWheelsButton = INJECTOR.alignWheelsTrigger();
     INJECTOR.graphables().forEach(g -> g.register(telemetryService));
+    telemetryService.start();
     driveSubsystem.zeroAzimuthEncoders();
     LiveWindow.disableAllTelemetry();
   }

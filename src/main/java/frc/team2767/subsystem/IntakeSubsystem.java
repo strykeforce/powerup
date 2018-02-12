@@ -25,6 +25,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);
   private final double kLoadOutput;
   private final double kHoldOutput;
+  private final double kEjectOutput;
   private final TalonSRX leftTalon, rightTalon;
   private final SensorCollection rightSensors;
 
@@ -45,23 +46,34 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
     Toml toml = settings.getTable(TABLE);
     kLoadOutput = toml.getDouble("loadOutput");
     kHoldOutput = toml.getDouble("holdOutput");
+    kEjectOutput = toml.getDouble("ejectOutput");
 
     logger.info("loadOutput = {}", kLoadOutput);
     logger.info("holdOutput = {}", kHoldOutput);
+    logger.info("ejectOutput = {}", kEjectOutput);
   }
 
   public void run(Mode mode) {
-    double output = 0d;
+    double leftOutput = 0d;
+    double rightOutput = 0d;
     switch (mode) {
       case LOAD:
-        output = kLoadOutput;
+        leftOutput = kLoadOutput;
+        rightOutput = kLoadOutput;
+        logger.info("running in LOAD at {}", leftOutput);
         break;
       case HOLD:
-        output = kHoldOutput;
+        leftOutput = kHoldOutput;
+        rightOutput = 0.25 * kHoldOutput;
+        logger.info("running in HOLD at {}", leftOutput);
+        break;
+      case EJECT:
+        leftOutput = kEjectOutput;
+        rightOutput = kEjectOutput;
         break;
     }
-    leftTalon.set(PercentOutput, output);
-    rightTalon.set(PercentOutput, output);
+    leftTalon.set(PercentOutput, leftOutput);
+    rightTalon.set(PercentOutput, rightOutput);
   }
 
   public void stop() {
@@ -70,7 +82,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
   }
 
   public boolean isLoaded() {
-    return rightSensors.isFwdLimitSwitchClosed();
+    return rightSensors.isRevLimitSwitchClosed();
   }
 
   @Override
@@ -86,6 +98,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
 
   public enum Mode {
     LOAD,
-    HOLD;
+    HOLD,
+    EJECT;
   }
 }

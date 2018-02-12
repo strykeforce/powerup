@@ -13,6 +13,6 @@ public class AlignWheelsTrigger extends Trigger {
 
   @Override
   public boolean get() {
-    return controls.getGamepadBackButton() && controls.getGamepadStartButton();
+    return controls.getDriverLeftTrimXNeg() && controls.getDriverRightTrimXPos();
   }
 }
