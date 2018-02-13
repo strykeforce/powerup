@@ -40,6 +40,7 @@ isolatedTestMode = false
   downOutput  = -0.05
   stopOutput  = 0.0
   closeEnough = 50
+  jogIncrement = 400
 
 [POWERUP.SHOULDER]
   upOutput    = 0.2
@@ -49,4 +50,70 @@ isolatedTestMode = false
   zeroPosition = 6750
   jogIncrement = 300
 
-  absoluteTolerance = 10
+##
+## Paths
+##
+
+  [PATHS.LEFT]
+  waypoints = [
+    {x = 0.0, y = 0.0, angle = 0.0},
+    {x = 8.0, y = -0.2, angle = 0.0},
+    {x = 10.0, y = -0.4, angle = 0.0},
+    {x = 11.5, y = -0.7, angle = 0.0},
+    {x = 12.0, y = -1.5, angle = -90.0},
+  ]
+  fit              = "HERMITE_CUBIC"
+  sample_count     = 100_000
+  dt               = 0.05  # sec
+  max_velocity     = 1.7   # m/sec
+  max_acceleration = 2.0   # m/sec/sec
+  max_jerk         = 60.0  # m/sec/sec/sec
+  p_azimuth        = -0.004
+
+  [PATHS.CENTERLEFT]
+  waypoints = [
+    {x = 0.0, y = 0.0, angle = 35.0},
+    {x = 3.75, y = 2.8, angle = 40.0},
+    {x = 7.5, y = 5.16, angle = 0.0},
+  ]
+
+  fit              = "HERMITE_CUBIC"
+  sample_count     = 100_000
+  dt               = 0.05  # sec
+  max_velocity     = 1.7   # m/sec
+  max_acceleration = 2.0   # m/sec/sec
+  max_jerk         = 60.0  # m/sec/sec/sec
+  p_azimuth        = -0.004
+
+  [PATHS.CENTERRIGHT]
+  waypoints = [
+    {x = 0.0, y = 0.0, angle = -35.0},
+    {x = 3.75, y = -2.8, angle = -35.0},
+    {x = 7.8, y = -3.5, angle = 0.0},
+  ]
+  fit              = "HERMITE_CUBIC"
+  sample_count     = 100_000
+  dt               = 0.05  # sec
+  max_velocity     = 1.7   # m/sec
+  max_acceleration = 2.0   # m/sec/sec
+  max_jerk         = 60.0  # m/sec/sec/sec
+  p_azimuth        = -0.004
+
+  [PATHS.CENTERRIGHTEXCHANGE]
+
+  waypoints = [
+    {x = 0.0, y = 0.0, angle = -35.0},
+    {x = 7.5, y = -3.7, angle = 0.0},
+    {x = 6.0, y = -2.5, angle = -90.0},
+    {x = 6.0, y = -1.0, angle = -90.0},
+    {x = 5.0, y = -1.7, angle = -180.0},
+    {x = 0.0, y = 1.5, angle = -180.0}
+
+  ]
+  fit              = "HERMITE_CUBIC"
+  sample_count     = 100_000
+  dt               = 0.05  # sec
+  max_velocity     = 1.7   # m/sec
+  max_acceleration = 2.0   # m/sec/sec
+  max_jerk         = 60.0  # m/sec/sec/sec
+  p_azimuth        = -0.004
