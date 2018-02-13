@@ -13,6 +13,7 @@ import frc.team2767.control.Controls;
 import frc.team2767.control.Trigger;
 import frc.team2767.subsystem.DriveSubsystem;
 import java.io.File;
+import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
 import openrio.powerup.MatchData.OwnedSide;
@@ -24,13 +25,20 @@ public class Robot extends TimedRobot {
 
   public static final SingletonComponent INJECTOR;
   public static final String TABLE = "POWERUP";
-  private static final File CONFIG_FILE = new File("/home/lvuser/powerup.toml");
   private static final int AUTON_SWITCH_STABLE = 100;
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
-    logger.info("loading robot configuration from {}", CONFIG_FILE);
-    INJECTOR = DaggerSingletonComponent.builder().config(CONFIG_FILE).build();
+    File robotConfig = new File("/home/lvuser/powerup.toml");
+    URL thirdCoastConfig = Robot.class.getResource("/META-INF/powerup/thirdcoast.toml");
+
+    logger.info("loading robot configuration from {}", robotConfig);
+    logger.info("loading Third Coast configuration from {}", thirdCoastConfig);
+    INJECTOR =
+        DaggerSingletonComponent.builder()
+            .robotConfig(robotConfig)
+            .thirdCoastConfig(thirdCoastConfig)
+            .build();
   }
 
   private int autonSwitchStableCount = 0;

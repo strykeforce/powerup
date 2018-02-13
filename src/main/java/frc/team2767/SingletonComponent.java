@@ -6,6 +6,7 @@ import frc.team2767.control.AlignWheelsTrigger;
 import frc.team2767.control.Controls;
 import frc.team2767.subsystem.*;
 import java.io.File;
+import java.net.URL;
 import java.util.Set;
 import javax.inject.Singleton;
 import org.strykeforce.thirdcoast.swerve.GyroModule;
@@ -58,7 +59,10 @@ public interface SingletonComponent {
   interface Builder {
 
     @BindsInstance
-    Builder config(File config);
+    Builder thirdCoastConfig(URL config);
+
+    @BindsInstance
+    Builder robotConfig(File config);
 
     SingletonComponent build();
   }

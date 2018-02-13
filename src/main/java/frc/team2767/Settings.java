@@ -30,6 +30,7 @@ public class Settings {
 
     this.toml = new Toml(defaults()).read(config);
     logger.info("reading settings from {}", config);
+    logger.info("default settings from {}", DEFAULTS);
   }
 
   public Toml getTable(String key) {
