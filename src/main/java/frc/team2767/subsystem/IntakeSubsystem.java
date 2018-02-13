@@ -91,8 +91,9 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
 
   @Override
   public void periodic() {
-    //every time the scheduler is run, display the limit switch value.
-    SmartDashboard.putBoolean("Block obtained?", rightTalon.getSensorCollection().isRevLimitSwitchClosed());
+    // every time the scheduler is run, display the limit switch value.
+    SmartDashboard.putBoolean(
+        "Block obtained?", rightTalon.getSensorCollection().isRevLimitSwitchClosed());
   }
 
   @Override

@@ -59,7 +59,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable {
   }
 
   public boolean onTarget() {
-    return talon.getClosedLoopError(0) < kCloseEnough;
+    return Math.abs(talon.getClosedLoopError(0)) < kCloseEnough;
   }
 
   public boolean onZero() {
