@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
 import javax.inject.Inject;
@@ -87,6 +88,12 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
 
   @Override
   protected void initDefaultCommand() {}
+
+  @Override
+  public void periodic() {
+    //every time the scheduler is run, display the limit switch value.
+    SmartDashboard.putBoolean("Block obtained?", rightTalon.getSensorCollection().isRevLimitSwitchClosed());
+  }
 
   @Override
   public void register(TelemetryService telemetryService) {
