@@ -57,9 +57,9 @@ isolatedTestMode = false
   jogIncrement   = 300
 
   # positions
-  zeroPosition   = 6750
-  stowPosition   = 6250
-  intakePosition = -100
+  zeroPosition   = 7000
+  stowPosition   = 6500
+  intakePosition = -250
 
 ##
 ## Paths

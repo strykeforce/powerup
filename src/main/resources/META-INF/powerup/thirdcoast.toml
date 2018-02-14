@@ -47,6 +47,8 @@
  talonIds = [10, 11, 12, 13]
  [TALON.selectedFeedbackSensor]
    feedbackDevice = "CTRE_MagEncoder_Relative"
+ [TALON.output]
+   neutralMode = "Brake"
  [TALON.currentLimit]
    continuous = 40
    peak = 0
@@ -127,7 +129,7 @@
     limit = 0
     enabled = false
   [TALON.softLimit.reverse]
-    limit = 0
+    limit = -300
     enabled = true
   [TALON.limitSwitch.forward]
     source = "FeedbackConnector"
