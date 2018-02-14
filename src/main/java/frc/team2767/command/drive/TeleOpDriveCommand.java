@@ -24,6 +24,7 @@ public final class TeleOpDriveCommand extends Command {
   private RateLimit rateLimitForward;
   private ExpoScale expoScaleStrafe;
   private RateLimit rateLimitStrafe;
+  private ExpoScale expoScaleAzimuth;
 
   public TeleOpDriveCommand() {
     drive = Robot.INJECTOR.driveSubsystem();
@@ -37,6 +38,7 @@ public final class TeleOpDriveCommand extends Command {
     expoScaleForward = new ExpoScale(kJoystickDeadband, kExpoScale);
     rateLimitStrafe = new RateLimit(kRateLimit, 0.0);
     expoScaleStrafe = new ExpoScale(kJoystickDeadband, kExpoScale);
+    expoScaleAzimuth = new ExpoScale(kJoystickDeadband, 0.2);
     requires(drive);
   }
 
@@ -56,7 +58,7 @@ public final class TeleOpDriveCommand extends Command {
     double strafe =
         rateLimitStrafe.applyRateLimit(expoScaleStrafe.applyExpoScale(controls.getStrafe()));
 
-    double azimuth = applyDeadband(controls.getAzimuth());
+    double azimuth = expoScaleAzimuth.applyExpoScale(controls.getAzimuth());
 
     drive.drive(forward, strafe, azimuth);
   }

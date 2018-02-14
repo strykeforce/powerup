@@ -33,6 +33,7 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   private final double kDownOutput;
   private final double kStopOutput;
   private final int kCloseEnough;
+  private final int kJogIncrement;
 
   private final TalonSRX frontTalon, rearTalon;
   private final Preferences preferences;
@@ -60,20 +61,31 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     kDownOutput = toml.getDouble("downOutput");
     kStopOutput = toml.getDouble("stopOutput");
     kCloseEnough = toml.getLong("closeEnough").intValue();
+    kJogIncrement = toml.getLong("jogIncrement").intValue();
 
     logger.info("upOutput = {}", kUpOutput);
     logger.info("downOutput = {}", kDownOutput);
     logger.info("stopOutput = {}", kStopOutput);
     logger.info("closeEnough = {}", kCloseEnough);
+    logger.info("jogIncrement = {}", kJogIncrement);
   }
 
   public void setPosition(double position) {
+    if (position < frontTalon.getSelectedSensorPosition(0)) {
+      // going down
+      frontTalon.configMotionCruiseVelocity(750, 0);
+      frontTalon.configMotionAcceleration(2500, 0);
+    } else {
+      // going up
+      frontTalon.configMotionCruiseVelocity(1500, 0);
+      frontTalon.configMotionAcceleration(10000, 0);
+    }
     logger.info("setting position = {}", position);
     frontTalon.set(MotionMagic, position);
   }
 
   public boolean onTarget() {
-    return frontTalon.getClosedLoopError(0) < kCloseEnough;
+    return Math.abs(frontTalon.getClosedLoopError(0)) < kCloseEnough;
   }
 
   public void zeroPosition() {
@@ -98,11 +110,22 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   }
 
   public void up() {
+    int position = frontTalon.getSelectedSensorPosition(0) + kJogIncrement;
+    setPosition(position);
+  }
+
+  public void down() {
+    int position = frontTalon.getSelectedSensorPosition(0) - kJogIncrement;
+    if (position < 0) position = 0;
+    setPosition(position);
+  }
+
+  public void openLoopUp() {
     logger.debug("lift up at output {}", kUpOutput);
     frontTalon.set(PercentOutput, kUpOutput);
   }
 
-  public void down() {
+  public void openLoopDown() {
     logger.debug("lift down at output {}", kDownOutput);
     frontTalon.set(PercentOutput, kDownOutput);
   }

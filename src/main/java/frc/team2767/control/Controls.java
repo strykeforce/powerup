@@ -14,6 +14,9 @@ import frc.team2767.command.intake.IntakeIn;
 import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
+import frc.team2767.command.lift.LiftDown;
+import frc.team2767.command.lift.LiftPosition;
+import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.SaveZero;
 import frc.team2767.command.lift.Zero;
 import frc.team2767.command.sequence.Stow;
@@ -113,9 +116,9 @@ public class Controls {
       new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_DOWN);
   private final Button powerupShoulderUpButton =
       new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_UP);
-  private final Button powerupElevatorDownButton =
+  private final Button powerupLiftDownButton =
       new JoystickButton(powerupButtonBoard, POWERUP_LIFT_DOWN);
-  private final Button powerupElevatorUpButton =
+  private final Button powerupLiftUpButton =
       new JoystickButton(powerupButtonBoard, POWERUP_LIFT_UP);
   private final Button powerupClimbButton =
       new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON);
@@ -194,24 +197,23 @@ public class Controls {
     assignDriverButtons();
     assignSmartDashboardButtons();
 
-    powerupScaleHighButton.whenActive(new LogCommand("Button powerup scale high is active"));
-    powerupScaleMidButton.whenActive(new LogCommand("scale mid"));
+    powerupScaleHighButton.whenActive(new LiftPosition(17_100));
+    powerupScaleMidButton.whenActive(new LiftPosition(13_300));
+    powerupLowScaleButton.whenActive(new LiftPosition(9_100));
 
     powerupStowButton.whenActive(new Stow());
 
-    powerupLowScaleButton.whenActive(new LogCommand("Low scale"));
-
-    powerupElevatorUpButton.whenActive(new LogCommand("elevator up"));
-    powerupElevatorDownButton.whenActive(new LogCommand("elevator down"));
+    powerupLiftUpButton.whileActive(new LiftUp());
+    powerupLiftDownButton.whileActive(new LiftDown());
 
     powerupShoulderUpButton.whileActive(new ShoulderUp());
     powerupShoulderDownButton.whileActive(new ShoulderDown());
 
-    powerupExchangePosButton.whenActive(new ShoulderPosition(0));
+    powerupExchangePosButton.whenActive(new ShoulderZero());
 
     powerupPortalIntakeButton.whenActive(new LogCommand("portal intake button"));
 
-    powerupGroundIntakePosButton.whenActive(new ShoulderPosition(0));
+    powerupGroundIntakePosButton.whenActive(new ShoulderPosition(-100));
 
     powerupIntakeInButton.whenActive(new IntakeIn());
     powerupIntakeInButton.whenReleased(new IntakeStop());
@@ -258,7 +260,7 @@ public class Controls {
 
   private void assignDriverButtons() {
     driverIntakeEject.whenPressed(new IntakeEject());
-    driverIntakeLoad.whileActive(new IntakeLoad());
+    driverIntakeLoad.whenActive(new IntakeLoad());
   }
 
   private void assignSmartDashboardButtons() {

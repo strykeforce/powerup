@@ -40,7 +40,7 @@ isolatedTestMode = false
   downOutput  = -0.05
   stopOutput  = 0.0
   closeEnough = 50
-  jogIncrement = 400
+  jogIncrement = 1400
 
 [POWERUP.SHOULDER]
   upOutput    = 0.2
