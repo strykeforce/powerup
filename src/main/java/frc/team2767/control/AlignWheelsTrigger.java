@@ -4,10 +4,10 @@ import javax.inject.Inject;
 
 public class AlignWheelsTrigger extends Trigger {
 
-  private final Controls controls;
+  private final DriverControls controls;
 
   @Inject
-  public AlignWheelsTrigger(Controls controls) {
+  public AlignWheelsTrigger(DriverControls controls) {
     this.controls = controls;
   }
 

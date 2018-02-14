@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
 
 public class ExampleButton extends Trigger {
 
-  private final Controls controls;
+  private final DriverControls controls;
 
   public ExampleButton(Controls controls) {
-    this.controls = controls;
+    this.controls = controls.getDriverControls();
   }
 
   @Override

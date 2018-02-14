@@ -5,7 +5,7 @@ import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
-import frc.team2767.control.Controls;
+import frc.team2767.control.DriverControls;
 import frc.team2767.subsystem.DriveSubsystem;
 import org.strykeforce.thirdcoast.util.ExpoScale;
 import org.strykeforce.thirdcoast.util.RateLimit;
@@ -16,7 +16,7 @@ public final class TeleOpDriveCommand extends Command {
 
   //  private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
   private final DriveSubsystem drive;
-  private final Controls controls;
+  private final DriverControls controls;
   private final double kJoystickDeadband;
   private final double kExpoScale;
   private final double kRateLimit;
@@ -28,7 +28,7 @@ public final class TeleOpDriveCommand extends Command {
 
   public TeleOpDriveCommand() {
     drive = Robot.INJECTOR.driveSubsystem();
-    controls = Robot.INJECTOR.controls();
+    controls = Robot.INJECTOR.controls().getDriverControls();
     Toml toml = Robot.INJECTOR.settings().getTable(TABLE);
     kJoystickDeadband = toml.getDouble("deadband", 0.05);
     kExpoScale = toml.getDouble("expoScale", 0.5);
