@@ -17,6 +17,7 @@ public class DriverControls {
 
   @Inject
   public DriverControls(Settings settings) {
+    Controls.logger.debug("initializing driver controls");
     if (settings.isIsolatedTestMode()) return;
 
     // gyro

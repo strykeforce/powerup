@@ -20,18 +20,15 @@ import frc.team2767.command.shoulder.ShoulderUp;
 import frc.team2767.command.shoulder.ShoulderZero;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class PowerUpControls {
-
-  private static final Logger logger = LoggerFactory.getLogger(PowerUpControls.class);
 
   private final Joystick board = new Joystick(0);
 
   @Inject
   public PowerUpControls(Settings settings) {
+    Controls.logger.debug("initializing POWER UP button board controls");
     if (settings.isIsolatedTestMode()) return;
 
     Toml toml = settings.getTable("POWERUP.LIFT");
@@ -92,10 +89,10 @@ public class PowerUpControls {
     new JoystickButton(board, Switch.SHOULDER_UP.index).whileActive(new ShoulderUp());
     new JoystickButton(board, Switch.SHOULDER_DOWN.index).whileActive(new ShoulderDown());
 
-    logger.info("scaleLow = {}", kScaleLow);
-    logger.info("scaleMedium = {}", kScaleMedium);
-    logger.info("scaleHigh = {}", kScaleHigh);
-    logger.info("intakePosition = {}", kIntakePosition);
+    Controls.logger.info("scaleLow = {}", kScaleLow);
+    Controls.logger.info("scaleMedium = {}", kScaleMedium);
+    Controls.logger.info("scaleHigh = {}", kScaleHigh);
+    Controls.logger.info("intakePosition = {}", kIntakePosition);
   }
 
   public enum Axis {

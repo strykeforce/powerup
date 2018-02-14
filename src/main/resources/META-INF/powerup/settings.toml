@@ -16,9 +16,10 @@ description = "Stryke Force 2018 POWER UP"
 isolatedTestMode = false
 
 [POWERUP.JOYSTICK]
-  deadband  = 0.05
-  expoScale = 0.5
-  rateLimit = 0.04
+  deadband    = 0.05
+  driveExpo   = 0.5
+  azimuthExpo = 0.2
+  rateLimit   = 0.04
 
 [POWERUP.CLIMBER]
   upOutput   = 1.0

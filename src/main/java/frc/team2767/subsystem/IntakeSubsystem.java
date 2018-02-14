@@ -114,6 +114,6 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
     LOAD,
     HOLD,
     FAST_EJECT,
-    SLOW_EJECT;
+    SLOW_EJECT
   }
 }

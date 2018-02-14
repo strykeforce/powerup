@@ -1,6 +1,7 @@
 package frc.team2767.control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team2767.Settings;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.lift.SaveZero;
@@ -18,7 +19,10 @@ import javax.inject.Singleton;
 public class SmartDashboardControls {
 
   @Inject
-  public SmartDashboardControls() {
+  public SmartDashboardControls(Settings settings) {
+    Controls.logger.debug("initializing SmartDashboard controls");
+    if (settings.isIsolatedTestMode()) return;
+
     SmartDashboard.putData("Intake/Load", new IntakeLoad());
     SmartDashboard.putData("Intake/Eject", new IntakeEject());
 

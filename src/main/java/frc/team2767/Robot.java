@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    logger.info("disabled mode starting {}", isolatedTestModeMessage());
+    logger.info("DISABLED {}", isolatedTestModeMessage());
     Logging.flushLogs();
   }
 
@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    logger.info("autonomous mode starting {}", isolatedTestModeMessage());
+    logger.info("AUTONOMOUS {}", isolatedTestModeMessage());
     checkMatchData();
     if (autonCommand instanceof OwnedSidesSettable) {
       ((OwnedSidesSettable) autonCommand).setOwnedSide(nearSwitch, scale);
@@ -173,7 +173,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    logger.info("teleop mode starting {}", isolatedTestModeMessage());
+    logger.info("TELEOP {}", isolatedTestModeMessage());
     if (!isolatedTestMode) {
       driveSubsystem.stop();
     }

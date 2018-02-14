@@ -13,6 +13,7 @@ public class AutonSwitch {
 
   @Inject
   public AutonSwitch() {
+    Controls.logger.debug("initializing autonomous switch");
     for (int i = 0; i < BITS; i++) {
       digitalInputs.add(i, new DigitalInput(i));
     }

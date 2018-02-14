@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode;
+import org.strykeforce.thirdcoast.swerve.Wheel;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 
 @Singleton
@@ -35,6 +36,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   public void alignWheels() {
     swerve.saveAzimuthPositions();
     swerve.zeroAzimuthEncoders();
+
     String msg = "drive wheels were re-aligned";
     logger.info(msg);
     DriverStation.reportWarning(msg, false);
@@ -49,14 +51,12 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     swerve.drive(forward, strafe, azimuth);
   }
 
-  @Deprecated
-  public int getDriveTalonPos(int talonNum) {
-    throw new AssertionError("getDriveTalonPos not implemented");
+  public int getDrivePosition(int wheel) {
+    return swerve.getWheels()[wheel].getDriveTalon().getSelectedSensorPosition(0);
   }
 
-  @Deprecated
   public void driveWheels(double azimuth, double drive) {
-    throw new AssertionError("driveWheels not implemented");
+    for (Wheel wheel : swerve.getWheels()) wheel.set(azimuth, drive);
   }
 
   public void stop() {

@@ -6,7 +6,7 @@ import frc.team2767.subsystem.ShoulderSubsystem;
 
 public class ShoulderStop extends InstantCommand {
 
-  private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();;
+  private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
 
   public ShoulderStop() {
     requires(shoulderSubsystem);
