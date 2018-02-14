@@ -1,9 +1,11 @@
 package frc.team2767.control;
 
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import frc.team2767.Settings;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.intake.IntakeIn;
 import frc.team2767.command.intake.IntakeOut;
@@ -18,117 +20,112 @@ import frc.team2767.command.shoulder.ShoulderUp;
 import frc.team2767.command.shoulder.ShoulderZero;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class PowerUpControls {
 
-  private static final int POWERUP_SHOULDER_DOWN = 3;
-  private static final int POWERUP_SHOULDER_UP = 4;
-  private static final int POWERUP_LIFT_DOWN = 1;
-  private static final int POWERUP_LIFT_UP = 2;
-  private static final int POWERUP_CLIMB_BUTTON = 5;
-  private static final int POWERUP_TRANSFORM = 6;
-  private static final int POWERUP_MID_SCALE = 7;
-  private static final int POWERUP_PORTAL_INTAKE = 8;
-  private static final int POWERUP_INTAKE_OUT = 9;
-  private static final int POWERUP_GROUND_INTAKE_POS = 10;
-  private static final int POWERUP_INTAKE_IN = 11;
-  private static final int POWERUP_EXCHANGE_POS = 12;
+  private static final Logger logger = LoggerFactory.getLogger(PowerUpControls.class);
 
-  private static final int POWERUP_BOARD_BUTTON_Y_AXIS = 1;
-  private static final int POWERUP_BOARD_BUTTON_X_AXIS = 0;
-
-  private final Joystick powerupButtonBoard = new Joystick(0);
-
-  //
-  //  Button Board
-  //
-
-  private final Button powerupShoulderDownButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_DOWN);
-  private final Button powerupShoulderUpButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_SHOULDER_UP);
-  private final Button powerupLiftDownButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_LIFT_DOWN);
-  private final Button powerupLiftUpButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_LIFT_UP);
-  private final Button powerupClimbButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_CLIMB_BUTTON);
-  private final edu.wpi.first.wpilibj.buttons.Trigger powerupLowScaleButton =
-      new edu.wpi.first.wpilibj.buttons.Trigger() {
-        @Override
-        public boolean get() {
-          return getButtonBoardXNeg() < -0.9;
-        }
-      };
-  private final edu.wpi.first.wpilibj.buttons.Trigger powerupScaleHighButton =
-      new edu.wpi.first.wpilibj.buttons.Trigger() {
-        @Override
-        public boolean get() {
-          return Math.abs(getButtonBoardYNeg()) > 0.9;
-        }
-      };
-  private final Button powerupScaleMidButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_MID_SCALE);
-  private final Button powerupPortalIntakeButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_PORTAL_INTAKE);
-  private final Button powerupIntakeOutButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_OUT);
-  private final Button powerupGroundIntakePosButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_GROUND_INTAKE_POS);
-  private final Button powerupIntakeInButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_INTAKE_IN);
-  private final edu.wpi.first.wpilibj.buttons.Trigger powerupStowButton =
-      new Trigger() {
-        @Override
-        public boolean get() {
-          return getButtonBoardXPos() > 0.9;
-        }
-      };
-  private final Button powerupExchangePosButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_EXCHANGE_POS);
-  private final Button powerupTransformerButton =
-      new JoystickButton(powerupButtonBoard, POWERUP_TRANSFORM);
+  private final Joystick board = new Joystick(0);
 
   @Inject
-  public PowerUpControls() {
-    powerupScaleHighButton.whenActive(new LiftPosition(17_100));
-    powerupScaleMidButton.whenActive(new LiftPosition(13_300));
-    powerupLowScaleButton.whenActive(new LiftPosition(9_100));
+  public PowerUpControls(Settings settings) {
+    if (settings.isIsolatedTestMode()) return;
 
-    powerupStowButton.whenActive(new Stow());
+    Toml toml = settings.getTable("POWERUP.LIFT");
+    int kScaleLow = toml.getLong("scaleLow").intValue();
+    int kScaleMedium = toml.getLong("scaleMedium").intValue();
+    int kScaleHigh = toml.getLong("scaleHigh").intValue();
+    toml = settings.getTable("POWERUP.SHOULDER");
+    int kIntakePosition = toml.getLong("intakePosition").intValue();
 
-    powerupLiftUpButton.whileActive(new LiftUp());
-    powerupLiftDownButton.whileActive(new LiftDown());
+    // intake
+    Button intakeIn = new JoystickButton(board, Switch.INTAKE_IN.index);
+    intakeIn.whenActive(new IntakeIn());
+    intakeIn.whenReleased(new IntakeStop());
 
-    powerupShoulderUpButton.whileActive(new ShoulderUp());
-    powerupShoulderDownButton.whileActive(new ShoulderDown());
+    Button intakeOut = new JoystickButton(board, Switch.INTAKE_OUT.index);
+    intakeOut.whenActive(new IntakeOut());
+    intakeOut.whenReleased(new IntakeStop());
 
-    powerupExchangePosButton.whenActive(new ShoulderZero());
+    // climber
+    new JoystickButton(board, Switch.CLIMB.index).whenActive(new LogCommand("climb"));
+    new JoystickButton(board, Switch.CLIMBER_TRANSFORM.index)
+        .whenActive(new LogCommand("transformers!!!!!!"));
 
-    powerupPortalIntakeButton.whenActive(new LogCommand("portal intake button"));
+    // lift
+    new JoystickButton(board, Switch.LIFT_UP.index).whileActive(new LiftUp());
+    new JoystickButton(board, Switch.LIFT_DOWN.index).whileActive(new LiftDown());
 
-    powerupGroundIntakePosButton.whenActive(new ShoulderPosition(-100));
+    new Trigger() {
+      @Override
+      public boolean get() {
+        return board.getRawAxis(Axis.STOW.index) > 0.9;
+      }
+    }.whenActive(new Stow());
 
-    powerupIntakeInButton.whenActive(new IntakeIn());
-    powerupIntakeInButton.whenReleased(new IntakeStop());
-    powerupIntakeOutButton.whenActive(new IntakeOut());
-    powerupIntakeOutButton.whenReleased(new IntakeStop());
+    new Trigger() {
+      @Override
+      public boolean get() {
+        return board.getRawAxis(Axis.LIFT_LOW_SCALE.index) < -0.9;
+      }
+    }.whenActive(new LiftPosition(kScaleLow));
 
-    powerupClimbButton.whenActive(new LogCommand("climb"));
+    new Trigger() {
+      @Override
+      public boolean get() {
+        return Math.abs(board.getRawAxis(Axis.LIFT_HIGH_SCALE.index)) > 0.9;
+      }
+    }.whenActive(new LiftPosition(kScaleHigh));
 
-    powerupTransformerButton.whenActive(new LogCommand("transformers!!!!!!"));
+    new JoystickButton(board, Switch.LIFT_MID_SCALE.index)
+        .whenActive(new LiftPosition(kScaleMedium));
+    new JoystickButton(board, Switch.EXCHANGE_POS.index).whenActive(new ShoulderZero());
+    new JoystickButton(board, Switch.PORTAL_INTAKE.index)
+        .whenActive(new LogCommand("portal intake button"));
+    new JoystickButton(board, Switch.GROUND_INTAKE_POS.index)
+        .whenActive(new ShoulderPosition(kIntakePosition));
+
+    // shoulder
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whileActive(new ShoulderUp());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whileActive(new ShoulderDown());
+
+    logger.info("scaleLow = {}", kScaleLow);
+    logger.info("scaleMedium = {}", kScaleMedium);
+    logger.info("scaleHigh = {}", kScaleHigh);
+    logger.info("intakePosition = {}", kIntakePosition);
   }
 
-  public double getButtonBoardYNeg() {
-    return powerupButtonBoard.getRawAxis(POWERUP_BOARD_BUTTON_Y_AXIS);
+  public enum Axis {
+    STOW(0),
+    LIFT_LOW_SCALE(0),
+    LIFT_HIGH_SCALE(1);
+    private final int index;
+
+    Axis(int index) {
+      this.index = index;
+    }
   }
 
-  public double getButtonBoardXNeg() {
-    return powerupButtonBoard.getRawAxis(POWERUP_BOARD_BUTTON_X_AXIS);
-  }
+  public enum Switch {
+    SHOULDER_UP(4),
+    SHOULDER_DOWN(3),
+    LIFT_UP(2),
+    LIFT_DOWN(1),
+    CLIMB(5),
+    CLIMBER_TRANSFORM(6),
+    LIFT_MID_SCALE(7),
+    PORTAL_INTAKE(8),
+    INTAKE_IN(11),
+    INTAKE_OUT(9),
+    GROUND_INTAKE_POS(10),
+    EXCHANGE_POS(12);
+    private final int index;
 
-  public double getButtonBoardXPos() {
-    return powerupButtonBoard.getRawAxis(POWERUP_BOARD_BUTTON_X_AXIS);
+    Switch(int index) {
+      this.index = index;
+    }
   }
 }

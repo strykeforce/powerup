@@ -10,7 +10,7 @@ import frc.team2767.command.LogCommand;
 import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.control.Controls;
-import frc.team2767.control.Trigger;
+import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
 import java.io.File;
 import java.net.URL;
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   private int newAutonSwitchPostion = -1;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
-  private Trigger alignWheelsButton;
+  private SimpleTrigger alignWheelsButton;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
   private Command autonCommand = new PrintCommand("NO AUTON SELECTED");

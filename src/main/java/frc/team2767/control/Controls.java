@@ -14,9 +14,8 @@ public class Controls {
 
   private final AutonSwitch autonSwitch;
   private final DriverControls driverControls;
-  private final PowerUpControls powerUpControls;
-  private final SmartDashboardControls smartDashboardControls;
 
+  @SuppressWarnings("unused")
   @Inject
   Controls(
       Settings settings,
@@ -28,8 +27,6 @@ public class Controls {
 
     this.autonSwitch = autonSwitch;
     this.driverControls = driverControls;
-    this.powerUpControls = powerUpControls;
-    this.smartDashboardControls = smartDashboardControls;
   }
 
   public DriverControls getDriverControls() {

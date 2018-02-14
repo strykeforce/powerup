@@ -31,24 +31,32 @@ isolatedTestMode = false
   downPosition = 200
 
 [POWERUP.INTAKE]
-  loadOutput = -1.0
-  holdOutput = -1.0
+  loadOutput  = -1.0
+  holdOutput  = -1.0
   ejectOutput = 0.8
 
 [POWERUP.LIFT]
-  upOutput    = 0.1
-  downOutput  = -0.05
-  stopOutput  = 0.0
-  closeEnough = 50
+  upOutput     = 0.1
+  downOutput   = -0.05
+  stopOutput   = 0.0
+  closeEnough  = 50
   jogIncrement = 1400
 
+  # scale positions
+  scaleLow     = 9100
+  scaleMedium  = 13_300
+  scaleHigh    = 17_100
+
 [POWERUP.SHOULDER]
-  upOutput    = 0.2
-  downOutput  = -0.2
-  stopOutput  = 0.0
-  closeEnough = 50
+  upOutput     = 0.2
+  downOutput   = -0.2
+  stopOutput   = 0.0
+  closeEnough  = 50
   zeroPosition = 6750
   jogIncrement = 300
+
+  # positions
+  intakePosition = -100
 
 ##
 ## Paths
