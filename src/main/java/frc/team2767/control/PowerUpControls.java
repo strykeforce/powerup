@@ -32,9 +32,9 @@ public class PowerUpControls {
     if (settings.isIsolatedTestMode()) return;
 
     Toml toml = settings.getTable("POWERUP.LIFT");
-    int kScaleLow = toml.getLong("scaleLow").intValue();
-    int kScaleMedium = toml.getLong("scaleMedium").intValue();
-    int kScaleHigh = toml.getLong("scaleHigh").intValue();
+    int kScaleLow = toml.getLong("scaleLowPosition").intValue();
+    int kScaleMid = toml.getLong("scaleMidPosition").intValue();
+    int kScaleHigh = toml.getLong("scaleHighPosition").intValue();
     toml = settings.getTable("POWERUP.SHOULDER");
     int kIntakePosition = toml.getLong("intakePosition").intValue();
 
@@ -77,8 +77,7 @@ public class PowerUpControls {
       }
     }.whenActive(new LiftPosition(kScaleHigh));
 
-    new JoystickButton(board, Switch.LIFT_MID_SCALE.index)
-        .whenActive(new LiftPosition(kScaleMedium));
+    new JoystickButton(board, Switch.LIFT_MID_SCALE.index).whenActive(new LiftPosition(kScaleMid));
     new JoystickButton(board, Switch.EXCHANGE_POS.index).whenActive(new ShoulderZero());
     new JoystickButton(board, Switch.PORTAL_INTAKE.index)
         .whenActive(new LogCommand("portal intake button"));
@@ -89,9 +88,9 @@ public class PowerUpControls {
     new JoystickButton(board, Switch.SHOULDER_UP.index).whileActive(new ShoulderUp());
     new JoystickButton(board, Switch.SHOULDER_DOWN.index).whileActive(new ShoulderDown());
 
-    Controls.logger.info("scaleLow = {}", kScaleLow);
-    Controls.logger.info("scaleMedium = {}", kScaleMedium);
-    Controls.logger.info("scaleHigh = {}", kScaleHigh);
+    Controls.logger.info("scaleLowPosition = {}", kScaleLow);
+    Controls.logger.info("scaleMidPosition = {}", kScaleMid);
+    Controls.logger.info("scaleHighPosition = {}", kScaleHigh);
     Controls.logger.info("intakePosition = {}", kIntakePosition);
   }
 

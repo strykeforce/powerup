@@ -43,20 +43,22 @@ isolatedTestMode = false
   closeEnough  = 50
   jogIncrement = 1400
 
-  # scale positions
-  scaleLow     = 9100
-  scaleMedium  = 13_300
-  scaleHigh    = 17_100
+  # positions
+  scaleLowPosition  = 9100
+  scaleMidPosition  = 13_300
+  scaleHighPosition = 17_100
+  stowPosition      = 0
 
 [POWERUP.SHOULDER]
-  upOutput     = 0.2
-  downOutput   = -0.2
-  stopOutput   = 0.0
-  closeEnough  = 50
-  zeroPosition = 6750
-  jogIncrement = 300
+  upOutput       = 0.2
+  downOutput     = -0.2
+  stopOutput     = 0.0
+  closeEnough    = 50
+  jogIncrement   = 300
 
   # positions
+  zeroPosition   = 6750
+  stowPosition   = 6250
   intakePosition = -100
 
 ##
