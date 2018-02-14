@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
   public static final SingletonComponent INJECTOR;
   public static final String TABLE = "POWERUP";
-  private static final int AUTON_SWITCH_STABLE = 100;
+  private static final int AUTON_SWITCH_DEBOUNCED = 100;
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
       autonSwitchStableCount++;
     }
 
-    if (autonSwitchStableCount > AUTON_SWITCH_STABLE && autonSwitchPosition != switchPosition) {
+    if (autonSwitchStableCount > AUTON_SWITCH_DEBOUNCED && autonSwitchPosition != switchPosition) {
       changed = true;
       autonSwitchPosition = switchPosition;
     }

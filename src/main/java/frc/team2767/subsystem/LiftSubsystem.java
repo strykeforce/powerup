@@ -3,6 +3,7 @@ package frc.team2767.subsystem;
 import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.Preferences;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.strykeforce.thirdcoast.talon.Errors;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.talon.config.StatusFrameRate;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
@@ -89,10 +91,16 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   }
 
   public void zeroPosition() {
-    int offset = getAbsolutePosition() - preferences.getInt(ZERO, 0);
-    frontTalon.setSelectedSensorPosition(offset, 0, TIMEOUT);
-    while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
-    logger.info("zeroing lift, offset = {}", offset);
+    if (frontTalon == null) {
+      logger.error("front Talon not present, aborting zeroPosition()");
+      return;
+    }
+    int zero = preferences.getInt(ZERO, 0);
+    int setpoint = getAbsolutePosition() - zero;
+    ErrorCode e = frontTalon.setSelectedSensorPosition(setpoint, 0, TIMEOUT);
+    Errors.check(e, logger);
+    frontTalon.set(MotionMagic, setpoint);
+    logger.info("zeroed lift position, setpoint = {}", setpoint);
   }
 
   public void saveAbsoluteZeroPosition() {
