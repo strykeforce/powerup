@@ -100,6 +100,12 @@ public class Robot extends TimedRobot {
         case 0x01:
           autonCommand = new CenterSwitchCommand();
           break;
+        case 0x02:
+          autonCommand = new LogCommand("Running auton command 0x02");
+          break;
+        case 0x3F:
+          autonCommand = new LogCommand("Running auton command 0x3F - Last");
+          break;
         case 0x30:
           autonCommand = new LogCommand("Running auton command 0x30");
           break;

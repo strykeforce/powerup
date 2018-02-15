@@ -1,5 +1,7 @@
 package frc.team2767.command.drive;
 
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
+
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
@@ -9,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.util.ExpoScale;
 import org.strykeforce.thirdcoast.util.RateLimit;
-
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 
 public final class TeleOpDriveCommand extends Command {
 
