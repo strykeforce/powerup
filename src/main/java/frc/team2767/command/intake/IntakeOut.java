@@ -1,6 +1,6 @@
 package frc.team2767.command.intake;
 
-import static frc.team2767.subsystem.IntakeSubsystem.Mode.EJECT;
+import static frc.team2767.subsystem.IntakeSubsystem.Mode.SLOW_EJECT;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team2767.Robot;
@@ -16,6 +16,6 @@ public class IntakeOut extends InstantCommand {
 
   @Override
   protected void initialize() {
-    intakeSubsystem.run(EJECT);
+    intakeSubsystem.run(SLOW_EJECT);
   }
 }

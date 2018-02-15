@@ -27,7 +27,7 @@ public class ClosedLoopDistTestCommand extends Command {
   protected void initialize() {
     drive.setDriveMode(CLOSED_LOOP);
     for (int i = 0; i < 4; i++) {
-      talonPositions[i] = drive.getDriveTalonPos(i);
+      talonPositions[i] = drive.getDrivePosition(i);
     }
     drive.driveWheels(0, 2000);
   }
@@ -46,7 +46,7 @@ public class ClosedLoopDistTestCommand extends Command {
     double sum = 0;
 
     for (int i = 0; i < 4; i++) {
-      curTalonPositions[i] = drive.getDriveTalonPos(i);
+      curTalonPositions[i] = drive.getDrivePosition(i);
       sum += Math.abs(curTalonPositions[i] - talonPositions[i]);
     }
     logger.debug("wheelsmoved {}", sum / 4 / 1983.65);

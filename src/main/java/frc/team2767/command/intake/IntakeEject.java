@@ -1,6 +1,6 @@
 package frc.team2767.command.intake;
 
-import static frc.team2767.subsystem.IntakeSubsystem.Mode.EJECT;
+import static frc.team2767.subsystem.IntakeSubsystem.Mode.FAST_EJECT;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
@@ -16,7 +16,7 @@ public class IntakeEject extends TimedCommand {
 
   @Override
   protected void initialize() {
-    intakeSubsystem.run(EJECT);
+    intakeSubsystem.run(FAST_EJECT);
   }
 
   @Override

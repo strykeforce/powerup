@@ -54,7 +54,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable {
   }
 
   public void setPosition(double position) {
-    logger.info("positioning to {}", position);
+    logger.debug("positioning to {}", position);
     talon.set(MotionMagic, position);
   }
 
@@ -97,7 +97,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable {
   }
 
   public void stop() {
-    logger.info("shoulder stop at position {}", talon.getSelectedSensorPosition(0));
+    logger.debug("shoulder stop at position {}", talon.getSelectedSensorPosition(0));
     talon.set(PercentOutput, kStopOutput);
   }
 

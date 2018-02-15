@@ -26,7 +26,8 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);
   private final double kLoadOutput;
   private final double kHoldOutput;
-  private final double kEjectOutput;
+  private final double kFastEjectOutput;
+  private final double kSlowEjectOutput;
   private final TalonSRX leftTalon, rightTalon;
   private final SensorCollection rightSensors;
 
@@ -47,11 +48,12 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
     Toml toml = settings.getTable(TABLE);
     kLoadOutput = toml.getDouble("loadOutput");
     kHoldOutput = toml.getDouble("holdOutput");
-    kEjectOutput = toml.getDouble("ejectOutput");
+    kFastEjectOutput = toml.getDouble("ejectOutput");
+    kSlowEjectOutput = 0.4; // toml.getDouble("ejectOutput");
 
     logger.info("loadOutput = {}", kLoadOutput);
     logger.info("holdOutput = {}", kHoldOutput);
-    logger.info("ejectOutput = {}", kEjectOutput);
+    logger.info("ejectOutput = {}", kFastEjectOutput);
   }
 
   public void run(Mode mode) {
@@ -68,9 +70,13 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
         rightOutput = 0.25 * kHoldOutput;
         logger.debug("running in HOLD at {}", leftOutput);
         break;
-      case EJECT:
-        leftOutput = kEjectOutput;
-        rightOutput = kEjectOutput;
+      case FAST_EJECT:
+        leftOutput = kFastEjectOutput;
+        rightOutput = kFastEjectOutput;
+        break;
+      case SLOW_EJECT:
+        leftOutput = kSlowEjectOutput;
+        rightOutput = kSlowEjectOutput;
         break;
     }
     leftTalon.set(PercentOutput, leftOutput);
@@ -107,6 +113,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
   public enum Mode {
     LOAD,
     HOLD,
-    EJECT;
+    FAST_EJECT,
+    SLOW_EJECT
   }
 }

@@ -47,6 +47,8 @@
  talonIds = [10, 11, 12, 13]
  [TALON.selectedFeedbackSensor]
    feedbackDevice = "CTRE_MagEncoder_Relative"
+ [TALON.output]
+   neutralMode = "Brake"
  [TALON.currentLimit]
    continuous = 40
    peak = 0
@@ -59,13 +61,13 @@
    iZone = 0
    allowableClosedLoopError = 0
 
-[[TALON]]
- name = "climber"
- talonIds = [20, 21]
- [TALON.selectedFeedbackSensor]
-   feedbackDevice = "CTRE_MagEncoder_Relative"
- [TALON.output]
-   neutralMode = "Brake"
+# [[TALON]]
+#  name = "climber"
+#  talonIds = [20, 21]
+#  [TALON.selectedFeedbackSensor]
+#    feedbackDevice = "CTRE_MagEncoder_Relative"
+#  [TALON.output]
+#    neutralMode = "Brake"
 
 [[TALON]]
   name = "intake"
@@ -95,7 +97,7 @@
     limit = 18500
     enabled = true
   [TALON.softLimit.reverse]
-    limit = 1000
+    limit = 100
     enabled = true
   [TALON.motionMagic] # down
     acceleration = 2500  # 10000 up
@@ -127,7 +129,7 @@
     limit = 0
     enabled = false
   [TALON.softLimit.reverse]
-    limit = 0
+    limit = -300
     enabled = true
   [TALON.limitSwitch.forward]
     source = "FeedbackConnector"

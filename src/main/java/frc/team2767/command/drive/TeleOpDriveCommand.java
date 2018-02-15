@@ -5,8 +5,10 @@ import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
-import frc.team2767.control.Controls;
+import frc.team2767.control.DriverControls;
 import frc.team2767.subsystem.DriveSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.util.ExpoScale;
 import org.strykeforce.thirdcoast.util.RateLimit;
 
@@ -14,34 +16,35 @@ public final class TeleOpDriveCommand extends Command {
 
   private static final String TABLE = Robot.TABLE + ".JOYSTICK";
 
-  //  private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
+  private static final Logger logger = LoggerFactory.getLogger(TeleOpDriveCommand.class);
   private final DriveSubsystem drive;
-  private final Controls controls;
-  private final double kJoystickDeadband;
-  private final double kExpoScale;
-  private final double kRateLimit;
-  private ExpoScale expoScaleForward;
-  private RateLimit rateLimitForward;
-  private ExpoScale expoScaleStrafe;
-  private RateLimit rateLimitStrafe;
+  private final DriverControls controls;
+  private final ExpoScale driveExpo;
+  private final ExpoScale azimuthExpo;
+  private final RateLimit forwardRateLimit;
+  private final RateLimit strafeRateLimit;
 
   public TeleOpDriveCommand() {
     drive = Robot.INJECTOR.driveSubsystem();
-    controls = Robot.INJECTOR.controls();
-    Toml toml = Robot.INJECTOR.settings().getTable(TABLE);
-    kJoystickDeadband = toml.getDouble("deadband", 0.05);
-    kExpoScale = toml.getDouble("expoScale", 0.5);
-    kRateLimit = toml.getDouble("rateLimit", 0.0);
-
-    rateLimitForward = new RateLimit(kRateLimit);
-    expoScaleForward = new ExpoScale(kJoystickDeadband, kExpoScale);
-    rateLimitStrafe = new RateLimit(kRateLimit);
-    expoScaleStrafe = new ExpoScale(kJoystickDeadband, kExpoScale);
     requires(drive);
-  }
 
-  private static double applyDeadband(double input) {
-    return Math.abs(input) > 0.05 ? input : 0;
+    controls = Robot.INJECTOR.controls().getDriverControls();
+
+    Toml toml = Robot.INJECTOR.settings().getTable(TABLE);
+    double kDeadband = toml.getDouble("deadband");
+    double kDriveExpo = toml.getDouble("driveExpo");
+    double kAzimuthExpo = toml.getDouble("azimuthExpo");
+    double kRateLimit = toml.getDouble("rateLimit");
+
+    forwardRateLimit = new RateLimit(kRateLimit);
+    driveExpo = new ExpoScale(kDeadband, kDriveExpo);
+    strafeRateLimit = new RateLimit(kRateLimit);
+    azimuthExpo = new ExpoScale(kDeadband, kAzimuthExpo);
+
+    logger.info("deadband = {}", kDeadband);
+    logger.info("driveExpo = {}", kDriveExpo);
+    logger.info("azimuthExpo = {}", kAzimuthExpo);
+    logger.info("rateLimit = {}", kRateLimit);
   }
 
   @Override
@@ -51,12 +54,9 @@ public final class TeleOpDriveCommand extends Command {
 
   @Override
   protected void execute() {
-    double forward =
-        rateLimitForward.applyRateLimit(expoScaleForward.applyExpoScale(controls.getForward()));
-    double strafe =
-        rateLimitStrafe.applyRateLimit(expoScaleStrafe.applyExpoScale(controls.getStrafe()));
-
-    double azimuth = applyDeadband(controls.getAzimuth());
+    double forward = forwardRateLimit.apply(driveExpo.apply(controls.getForward()));
+    double strafe = strafeRateLimit.apply(driveExpo.apply(controls.getStrafe()));
+    double azimuth = azimuthExpo.apply(controls.getAzimuth());
 
     drive.drive(forward, strafe, azimuth);
   }

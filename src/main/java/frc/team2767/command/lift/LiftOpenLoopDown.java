@@ -4,16 +4,17 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.LiftSubsystem;
 
-public class LoadParameters extends InstantCommand {
+public class LiftOpenLoopDown extends InstantCommand {
 
-  private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();
+  private final LiftSubsystem liftSubsystem;
 
-  public LoadParameters() {
+  public LiftOpenLoopDown() {
+    liftSubsystem = Robot.INJECTOR.liftSubsystem();
     requires(liftSubsystem);
   }
 
   @Override
   protected void initialize() {
-    liftSubsystem.loadParameters();
+    liftSubsystem.openLoopDown();
   }
 }

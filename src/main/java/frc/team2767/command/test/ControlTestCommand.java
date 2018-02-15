@@ -13,11 +13,10 @@ import org.slf4j.LoggerFactory;
 public class ControlTestCommand extends Command {
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
   private final DriveSubsystem drive;
-  private final Controls controls;
 
   public ControlTestCommand() {
     drive = Robot.INJECTOR.driveSubsystem();
-    controls = Robot.INJECTOR.controls();
+    Controls controls = Robot.INJECTOR.controls();
     requires(drive);
   }
 
