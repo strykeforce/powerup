@@ -143,33 +143,6 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     frontTalon.set(PercentOutput, kStopOutput);
   }
 
-  public void loadParameters() {
-    double p = preferences.getDouble("Lift/0/K_P", 0d);
-    double i = preferences.getDouble("Lift/1/K_I", 0d);
-    double d = preferences.getDouble("Lift/2/K_D", 0d);
-    double f = preferences.getDouble("Lift/3/K_F", 0d);
-    int iZone = preferences.getInt("Lift/4/iZone", 0);
-    int accel = preferences.getInt("Lift/5/accel", 0);
-    int cruise = preferences.getInt("Lift/6/cruise", 0);
-
-    if (frontTalon != null) {
-      frontTalon.config_kP(0, p, TIMEOUT);
-      frontTalon.config_kI(0, i, TIMEOUT);
-      frontTalon.config_kD(0, d, TIMEOUT);
-      frontTalon.config_kF(0, f, TIMEOUT);
-      frontTalon.config_IntegralZone(0, iZone, TIMEOUT);
-      frontTalon.configMotionCruiseVelocity(cruise, TIMEOUT);
-      frontTalon.configMotionAcceleration(accel, TIMEOUT);
-    }
-    logger.info("P = {}", p);
-    logger.info("I = {}", i);
-    logger.info("D = {}", d);
-    logger.info("F = {}", f);
-    logger.info("iZone = {}", iZone);
-    logger.info("accel = {}", accel);
-    logger.info("cruise = {}", cruise);
-  }
-
   @Override
   protected void initDefaultCommand() {}
 
