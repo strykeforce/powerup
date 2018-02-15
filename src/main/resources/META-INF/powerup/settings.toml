@@ -44,10 +44,19 @@ isolatedTestMode = false
   jogIncrement = 1400
 
   # positions
-  scaleLowPosition  = 9100
-  scaleMidPosition  = 13_300
-  scaleHighPosition = 17_100
-  stowPosition      = 0
+  scaleLowPosition     = 9100
+  scaleMidPosition     = 13_300
+  scaleHighPosition    = 17_100
+  stowPosition         = 0
+  downVelocityShiftPos = 7000
+
+  # velocities
+  upAccel          = 10_000
+  upVelocity       = 1500
+  downSlowAccel    = 2500
+  downSlowVelocity = 750
+  downFastAccel    = 10_000
+  downFastVelocity = 1500
 
 [POWERUP.SHOULDER]
   upOutput       = 0.2
