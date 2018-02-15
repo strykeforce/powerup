@@ -33,9 +33,9 @@ public final class TeleOpDriveCommand extends Command {
     kExpoScale = toml.getDouble("expoScale", 0.5);
     kRateLimit = toml.getDouble("rateLimit", 0.0);
 
-    rateLimitForward = new RateLimit(kRateLimit, 0.0);
+    rateLimitForward = new RateLimit(kRateLimit);
     expoScaleForward = new ExpoScale(kJoystickDeadband, kExpoScale);
-    rateLimitStrafe = new RateLimit(kRateLimit, 0.0);
+    rateLimitStrafe = new RateLimit(kRateLimit);
     expoScaleStrafe = new ExpoScale(kJoystickDeadband, kExpoScale);
     requires(drive);
   }
