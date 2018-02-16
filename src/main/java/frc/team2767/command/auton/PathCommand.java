@@ -1,31 +1,37 @@
 package frc.team2767.command.auton;
 
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
-import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
 
 public class PathCommand extends Command {
 
-  private final DriveSubsystem drive;
-  private PathController pathController;
+  private final DriveSubsystem driveSubsystem;
+  private final String path;
+
+  public PathCommand(String name, String path) {
+    super(name);
+    this.driveSubsystem = Robot.INJECTOR.driveSubsystem();
+    this.path = path;
+    requires(driveSubsystem);
+  }
 
   public PathCommand(String path) {
-    drive = Robot.INJECTOR.driveSubsystem();
-    requires(drive);
-    pathController = new PathController(path);
+    this("Path", path);
   }
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(CLOSED_LOOP);
-    pathController.start();
+    driveSubsystem.drivePath(path);
   }
 
   @Override
   protected boolean isFinished() {
-    return !pathController.isRunning();
+    return driveSubsystem.isPathFinished();
+  }
+
+  @Override
+  protected void end() {
+    driveSubsystem.endPath();
   }
 }
