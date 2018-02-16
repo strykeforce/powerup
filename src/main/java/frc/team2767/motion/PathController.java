@@ -26,11 +26,14 @@ public class PathController implements Runnable {
   private int iteration;
   private volatile boolean running;
 
+  /**
+   * Runs a PathFinder trajectory.
+   *
+   * @param path the TOML path description, located in /META-INF/powerup/paths/{path}.toml
+   */
   public PathController(String path) {
-    Toml toml = Robot.INJECTOR.settings().getTable(TABLE).getTable(path);
-    if (toml == null) {
-      logger.error("Path '{}' is missing", path);
-    }
+    Toml toml = Robot.INJECTOR.settings().getPath(path);
+    if (toml == null) throw new IllegalArgumentException(path);
     drive = Robot.INJECTOR.driveSubsystem();
     gyro = drive.getGyro();
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);

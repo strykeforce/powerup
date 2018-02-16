@@ -3,7 +3,6 @@ package frc.team2767;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
@@ -39,7 +38,7 @@ public class Robot extends TimedRobot {
   private SimpleTrigger alignWheelsButton;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
-  private Command autonCommand = new PrintCommand("NO AUTON SELECTED");
+  private Command autonCommand = new LogCommand("NO AUTON SELECTED");
   private MatchData.OwnedSide nearSwitch;
   private MatchData.OwnedSide scale;
   private int autonSwitchPosition = -1;

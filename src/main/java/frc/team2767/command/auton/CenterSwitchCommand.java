@@ -2,7 +2,6 @@ package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.team2767.command.OwnedSidesSettable;
-import frc.team2767.command.test.PathCommand;
 import openrio.powerup.MatchData.OwnedSide;
 
 /**
@@ -12,15 +11,10 @@ import openrio.powerup.MatchData.OwnedSide;
  */
 public class CenterSwitchCommand extends ConditionalCommand implements OwnedSidesSettable {
 
-  private static final int LEFT = 1;
-  private static final int CENTER_LEFT = 2;
-  private static final int CENTER_RIGHT = 3;
-  private static final int CENTER_RIGHT_EXCHANGE = 4;
-
   private OwnedSide ownedSide = OwnedSide.UNKNOWN;
 
   public CenterSwitchCommand() {
-    super(new PathCommand(CENTER_LEFT), new PathCommand(CENTER_RIGHT));
+    super(new PathCommand("center_left"), new PathCommand("center_right"));
   }
 
   @Override
