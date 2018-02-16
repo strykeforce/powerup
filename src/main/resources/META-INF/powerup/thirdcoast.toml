@@ -60,6 +60,20 @@
    fGain = 0.03
    iZone = 0
    allowableClosedLoopError = 0
+ [[TALON.closedLoopProfile]] # slot 0 Velocity
+   pGain = 0.1
+   iGain = 0.0
+   dGain = 1.0
+   fGain = 0.03
+   iZone = 0
+   allowableClosedLoopError = 0
+ [[TALON.closedLoopProfile]] # slot 0 Velocity
+   pGain = 0.1
+   iGain = 0.0
+   dGain = 1.0
+   fGain = 0.03
+   iZone = 0
+   allowableClosedLoopError = 0
 
 # [[TALON]]
 #  name = "climber"
@@ -97,7 +111,7 @@
     limit = 18500
     enabled = true
   [TALON.softLimit.reverse]
-    limit = 100
+    limit = 0
     enabled = true
   [TALON.motionMagic] # down
     acceleration = 2500  # 10000 up

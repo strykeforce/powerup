@@ -3,7 +3,6 @@ package frc.team2767;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
@@ -12,7 +11,6 @@ import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import java.io.File;
 import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
@@ -29,16 +27,8 @@ public class Robot extends TimedRobot {
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
-    File robotConfig = new File("/home/lvuser/powerup.toml");
     URL thirdCoastConfig = Robot.class.getResource("/META-INF/powerup/thirdcoast.toml");
-
-    logger.info("loading robot configuration from {}", robotConfig);
-    logger.info("loading Third Coast configuration from {}", thirdCoastConfig);
-    INJECTOR =
-        DaggerSingletonComponent.builder()
-            .robotConfig(robotConfig)
-            .thirdCoastConfig(thirdCoastConfig)
-            .build();
+    INJECTOR = DaggerSingletonComponent.builder().thirdCoastConfig(thirdCoastConfig).build();
   }
 
   private int autonSwitchStableCount = 0;
@@ -48,7 +38,7 @@ public class Robot extends TimedRobot {
   private SimpleTrigger alignWheelsButton;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
-  private Command autonCommand = new PrintCommand("NO AUTON SELECTED");
+  private Command autonCommand = new LogCommand("NO AUTON SELECTED");
   private MatchData.OwnedSide nearSwitch;
   private MatchData.OwnedSide scale;
   private int autonSwitchPosition = -1;
