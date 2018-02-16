@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.Settings;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
-import frc.team2767.command.intake.IntakeDriver;
+import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeEject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,7 +25,7 @@ public class DriverControls {
 
     // intake
     new JoystickButton(joystick, Shoulder.LEFT_DOWN.index).whenPressed(new IntakeEject());
-    new JoystickButton(joystick, Shoulder.RIGHT.index).whenPressed(new IntakeDriver());
+    new JoystickButton(joystick, Shoulder.RIGHT.index).whenPressed(new IntakeLoad());
   }
 
   public double getForward() {
