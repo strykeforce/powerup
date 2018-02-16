@@ -12,7 +12,6 @@ import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import java.io.File;
 import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
@@ -29,16 +28,8 @@ public class Robot extends TimedRobot {
   private static final Logger logger = LoggerFactory.getLogger(Robot.class);
 
   static {
-    File robotConfig = new File("/home/lvuser/powerup.toml");
     URL thirdCoastConfig = Robot.class.getResource("/META-INF/powerup/thirdcoast.toml");
-
-    logger.info("loading robot configuration from {}", robotConfig);
-    logger.info("loading Third Coast configuration from {}", thirdCoastConfig);
-    INJECTOR =
-        DaggerSingletonComponent.builder()
-            .robotConfig(robotConfig)
-            .thirdCoastConfig(thirdCoastConfig)
-            .build();
+    INJECTOR = DaggerSingletonComponent.builder().thirdCoastConfig(thirdCoastConfig).build();
   }
 
   private int autonSwitchStableCount = 0;

@@ -5,7 +5,6 @@ import dagger.Component;
 import frc.team2767.control.AlignWheelsTrigger;
 import frc.team2767.control.Controls;
 import frc.team2767.subsystem.*;
-import java.io.File;
 import java.net.URL;
 import java.util.Set;
 import javax.inject.Singleton;
@@ -60,9 +59,6 @@ public interface SingletonComponent {
 
     @BindsInstance
     Builder thirdCoastConfig(URL config);
-
-    @BindsInstance
-    Builder robotConfig(File config);
 
     SingletonComponent build();
   }
