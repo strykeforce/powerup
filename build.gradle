@@ -48,6 +48,10 @@ dependencies {
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
+wpi {
+    shuffleboardVersion = '1.2.1'
+}
+
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     manifest GradleRIOPlugin.javaManifest(ROBOT_CLASS)
