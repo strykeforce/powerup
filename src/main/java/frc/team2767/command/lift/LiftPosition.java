@@ -20,6 +20,11 @@ public class LiftPosition extends Command {
   }
 
   @Override
+  protected void execute() {
+    liftSubsystem.adjustVelocity();
+  }
+
+  @Override
   protected boolean isFinished() {
     return liftSubsystem.onTarget();
   }

@@ -78,7 +78,8 @@ public class IntakeDriver extends CommandGroup {
     protected boolean isFinished() {
       return true;
       // intakeSubsystem.isLoaded();
-      // FIXME convert from a delay to a stop when limit switch is pressed. Limit switches are currently broken.
+      // FIXME convert from a delay to a stop when limit switch is pressed. Limit switches are
+      // currently broken.
     }
     /*
     @Override

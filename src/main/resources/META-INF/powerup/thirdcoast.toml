@@ -111,7 +111,7 @@
     limit = 18500
     enabled = true
   [TALON.softLimit.reverse]
-    limit = 100
+    limit = 0
     enabled = true
   [TALON.motionMagic] # down
     acceleration = 2500  # 10000 up

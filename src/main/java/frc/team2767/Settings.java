@@ -14,23 +14,25 @@ public class Settings {
 
   public static final String TABLE = "POWERUP";
   private static final Logger logger = LoggerFactory.getLogger(Settings.class);
+  private static final File CONFIG = new File("/home/lvuser/powerup.toml");
   private static final String DEFAULTS = "/META-INF/powerup/settings.toml";
+  private static final String PATHS = "/META-INF/powerup/paths/";
 
   private final Toml toml;
   private final Toml defaults;
 
   @Inject
-  public Settings(File config) {
+  public Settings() {
     defaults = defaults();
-    if (Files.notExists(config.toPath())) {
-      logger.error("{} is missing, using defaults in " + DEFAULTS, config);
+    if (Files.exists(CONFIG.toPath())) {
+      this.toml = new Toml(defaults()).read(CONFIG);
+      logger.info("reading POWER UP settings from '{}'", CONFIG);
+    } else {
+      logger.warn("POWER UP settings file '{}' is missing", CONFIG);
       toml = defaults;
-      return;
     }
 
-    this.toml = new Toml(defaults()).read(config);
-    logger.info("reading settings from {}", config);
-    logger.info("default settings from {}", DEFAULTS);
+    logger.info("reading POWER UP default settings from JAR '{}'", DEFAULTS);
   }
 
   public Toml getTable(String key) {
@@ -42,6 +44,15 @@ public class Settings {
     Toml defaultTable = defaults.getTable(key);
 
     return new Toml(defaultTable).read(table);
+  }
+
+  public Toml getPath(String name) {
+    InputStream in = this.getClass().getResourceAsStream(PATHS + name + ".toml");
+    if (in == null) {
+      logger.error("path '{}{}{}' not found", PATHS, name, ".toml");
+      return null;
+    }
+    return new Toml().read(in);
   }
 
   public boolean isIsolatedTestMode() {

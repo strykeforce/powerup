@@ -29,8 +29,15 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   private static final Logger logger = LoggerFactory.getLogger(LiftSubsystem.class);
   private static final String TABLE = Robot.TABLE + ".LIFT";
   private static final String ZERO = "Lift/zero";
-
   private static final int TIMEOUT = 10;
+
+  private final int kUpAccel;
+  private final int kUpVelocity;
+  private final int kDownSlowAccel;
+  private final int kDownSlowVelocity;
+  private final int kDownFastAccel;
+  private final int kDownFastVelocity;
+  private final int kDownVelocityShiftPos;
   private final double kUpOutput;
   private final double kDownOutput;
   private final double kStopOutput;
@@ -39,6 +46,11 @@ public class LiftSubsystem extends Subsystem implements Graphable {
 
   private final TalonSRX frontTalon, rearTalon;
   private final Preferences preferences;
+  private boolean upward;
+  private boolean checkFast;
+  private boolean checkSlow;
+  private int stableCount;
+  private int setpoint;
 
   @Inject
   public LiftSubsystem(Talons talons, Settings settings) {
@@ -59,35 +71,90 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     }
 
     Toml toml = settings.getTable(TABLE);
+    kUpAccel = toml.getLong("upAccel").intValue();
+    kUpVelocity = toml.getLong("upVelocity").intValue();
+    kDownSlowAccel = toml.getLong("downSlowAccel").intValue();
+    kDownSlowVelocity = toml.getLong("downSlowVelocity").intValue();
+    kDownFastAccel = toml.getLong("downFastAccel").intValue();
+    kDownFastVelocity = toml.getLong("downFastVelocity").intValue();
+    kDownVelocityShiftPos = toml.getLong("downVelocityShiftPos").intValue();
     kUpOutput = toml.getDouble("upOutput");
     kDownOutput = toml.getDouble("downOutput");
     kStopOutput = toml.getDouble("stopOutput");
     kCloseEnough = toml.getLong("closeEnough").intValue();
     kJogIncrement = toml.getLong("jogIncrement").intValue();
 
+    logger.info("upAccel = {}", kUpAccel);
+    logger.info("upVelocity = {}", kUpVelocity);
+    logger.info("downSlowAccel = {}", kDownSlowAccel);
+    logger.info("downSlowVelocity = {}", kDownSlowVelocity);
+    logger.info("downFastAccel = {}", kDownFastAccel);
+    logger.info("downFastVelocity = {}", kDownFastVelocity);
+    logger.info("downVelocityShiftPos = {}", kDownVelocityShiftPos);
+    logger.info("closeEnough = {}", kCloseEnough);
+    logger.info("jogIncrement = {}", kJogIncrement);
     logger.info("upOutput = {}", kUpOutput);
     logger.info("downOutput = {}", kDownOutput);
     logger.info("stopOutput = {}", kStopOutput);
-    logger.info("closeEnough = {}", kCloseEnough);
-    logger.info("jogIncrement = {}", kJogIncrement);
   }
 
-  public void setPosition(double position) {
-    if (position < frontTalon.getSelectedSensorPosition(0)) {
-      // going down
-      frontTalon.configMotionCruiseVelocity(750, 0);
-      frontTalon.configMotionAcceleration(2500, 0);
-    } else {
-      // going up
-      frontTalon.configMotionCruiseVelocity(1500, 0);
-      frontTalon.configMotionAcceleration(10000, 0);
-    }
+  public void setPosition(int position) {
     logger.info("setting position = {}", position);
+    setpoint = position;
+    upward = setpoint > frontTalon.getSelectedSensorPosition(0);
+    if (upward) {
+      frontTalon.configMotionCruiseVelocity(kUpVelocity, 0);
+      frontTalon.configMotionAcceleration(kUpAccel, 0);
+    } else {
+      checkFast = checkSlow = true;
+      adjustVelocity();
+    }
+    stableCount = 0;
     frontTalon.set(MotionMagic, position);
   }
 
+  public void adjustVelocity() {
+    int position = frontTalon.getSelectedSensorPosition(0);
+    //    logger.debug("position = {} upward = {}", position, upward);
+
+    if (upward) return;
+
+    if (checkFast && position > kDownVelocityShiftPos) {
+      frontTalon.configMotionCruiseVelocity(kDownFastVelocity, 0);
+      frontTalon.configMotionAcceleration(kDownFastAccel, 0);
+      logger.debug("frontTalon velocity = fast ({}) position = {}", kDownFastVelocity, position);
+      checkFast = false;
+      return;
+    }
+
+    if (checkSlow && position < kDownVelocityShiftPos) {
+      frontTalon.configMotionCruiseVelocity(kDownSlowVelocity, 0);
+      frontTalon.configMotionAcceleration(kDownSlowAccel, 0);
+      logger.debug("frontTalon velocity = slow ({}) position = {}", kDownSlowVelocity, position);
+      checkFast = checkSlow = false;
+    }
+  }
+
   public boolean onTarget() {
-    return Math.abs(frontTalon.getClosedLoopError(0)) < kCloseEnough;
+    int error = setpoint - frontTalon.getSelectedSensorPosition(0);
+    if (Math.abs(error) > kCloseEnough) stableCount = 0;
+    else stableCount++;
+    if (stableCount > 3) {
+      logger.debug("stableCount > 3");
+      return true;
+    }
+    return false;
+  }
+
+  public void up() {
+    int position = frontTalon.getSelectedSensorPosition(0) + kJogIncrement;
+    setPosition(position);
+  }
+
+  public void down() {
+    int position = frontTalon.getSelectedSensorPosition(0) - kJogIncrement;
+    if (position < 0) position = 0;
+    setPosition(position);
   }
 
   public void zeroPosition() {
@@ -115,17 +182,6 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       return 0;
     }
     return frontTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
-  }
-
-  public void up() {
-    int position = frontTalon.getSelectedSensorPosition(0) + kJogIncrement;
-    setPosition(position);
-  }
-
-  public void down() {
-    int position = frontTalon.getSelectedSensorPosition(0) - kJogIncrement;
-    if (position < 0) position = 0;
-    setPosition(position);
   }
 
   public void openLoopUp() {
