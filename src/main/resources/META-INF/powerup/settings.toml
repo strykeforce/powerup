@@ -15,6 +15,11 @@
 description = "Stryke Force 2018 POWER UP"
 isolatedTestMode = false
 
+[POWERUP.PATH]
+  p_azimuth  = -0.004
+  p_distance = 0.01
+  ticksPerInch = 1836 # carpet-x 50% percentile
+
 [POWERUP.JOYSTICK]
   deadband    = 0.05
   driveExpo   = 0.5
