@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.auton.CenterSwitchCommand;
+import frc.team2767.command.auton.PathCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
     driveSubsystem = INJECTOR.driveSubsystem();
     alignWheelsButton = INJECTOR.alignWheelsTrigger();
     INJECTOR.graphables().forEach(g -> g.register(telemetryService));
+    driveSubsystem.register(telemetryService);
     telemetryService.start();
     driveSubsystem.zeroAzimuthEncoders();
     LiveWindow.disableAllTelemetry();
@@ -89,6 +91,15 @@ public class Robot extends TimedRobot {
           break;
         case 0x01:
           autonCommand = new CenterSwitchCommand();
+          break;
+        case 0x02:
+          autonCommand = new PathCommand("straight_forward_test");
+          break;
+        case 0x03:
+          autonCommand = new PathCommand("corner_test");
+          break;
+        case 0x3F:
+          autonCommand = new LogCommand("Running auton command 0x3F - Last");
           break;
         case 0x30:
           autonCommand = new LogCommand("Running auton command 0x30");
