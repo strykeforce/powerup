@@ -2,8 +2,8 @@ package frc.team2767.control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
-import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeEject;
+import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.lift.SaveZero;
 import frc.team2767.command.lift.Zero;
 import frc.team2767.command.shoulder.LoadParameters;

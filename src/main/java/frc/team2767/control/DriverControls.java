@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.Settings;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
-import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeEject;
+import frc.team2767.command.intake.IntakeLoad;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
