@@ -37,6 +37,6 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Shoulder/Down", new ShoulderOpenLoopDown());
     SmartDashboard.putData("Shoulder/Stop", new ShoulderStop());
 
-        SmartDashboard.putData("auton/PathCommand", new PathCommand("center_left"));
+    SmartDashboard.putData("auton/PathCommand", new PathCommand("center_left"));
   }
 }

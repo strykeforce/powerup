@@ -1,7 +1,7 @@
 package frc.team2767.control;
 
 import static frc.team2767.control.DriverControls.Trim.LEFT_X_NEG;
-import static frc.team2767.control.DriverControls.Trim.LEFT_X_POS;
+import static frc.team2767.control.DriverControls.Trim.RIGHT_X_POS;
 
 import javax.inject.Inject;
 
@@ -16,6 +16,6 @@ public class AlignWheelsTrigger extends SimpleTrigger {
 
   @Override
   public boolean get() {
-    return controls.getTrim(LEFT_X_NEG) && controls.getTrim(LEFT_X_POS);
+    return controls.getTrim(LEFT_X_NEG) && controls.getTrim(RIGHT_X_POS);
   }
 }
