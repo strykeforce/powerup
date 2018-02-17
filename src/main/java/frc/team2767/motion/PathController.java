@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PathController implements Runnable {
+
   private static final Logger logger = LoggerFactory.getLogger(PathController.class);
   private static final String TABLE = "PATHS";
   private final Trajectory.Config config;
@@ -37,6 +38,7 @@ public class PathController implements Runnable {
     drive = Robot.INJECTOR.driveSubsystem();
     gyro = drive.getGyro();
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
+    logger.info("p_azimuth = {}", kPAzimuth);
 
     config = toml.to(Trajectory.Config.class);
 
@@ -59,6 +61,39 @@ public class PathController implements Runnable {
     notifier = new Notifier(this);
 
     logger.info(this.toString());
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder("[");
+    for (Waypoint wp : waypoints) {
+      builder
+          .append("WayPoint{x=")
+          .append(wp.x)
+          .append(", y=")
+          .append(wp.y)
+          .append(", angle=")
+          .append(Math.toDegrees(wp.angle))
+          .append("}, ");
+    }
+    builder.delete(builder.length() - 2, builder.length());
+    builder.append("]");
+    return "PathController{"
+        + "config=Trajectory.Config{fit="
+        + config.fit
+        + ", dt="
+        + config.dt
+        + ", samples="
+        + config.sample_count
+        + ", max_velocity="
+        + config.max_velocity
+        + ", max_acceleration="
+        + config.max_acceleration
+        + ", max_jerk="
+        + config.max_jerk
+        + "}, waypoints="
+        + builder.toString()
+        + '}';
   }
 
   public void start() {
@@ -94,38 +129,5 @@ public class PathController implements Runnable {
         strafe,
         azimuth);
     iteration++;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder("[");
-    for (Waypoint wp : waypoints) {
-      builder
-          .append("WayPoint{x=")
-          .append(wp.x)
-          .append(", y=")
-          .append(wp.y)
-          .append(", angle=")
-          .append(Math.toDegrees(wp.angle))
-          .append("}, ");
-    }
-    builder.delete(builder.length() - 2, builder.length());
-    builder.append("]");
-    return "PathController{"
-        + "config=Trajectory.Config{fit="
-        + config.fit
-        + ", dt="
-        + config.dt
-        + ", samples="
-        + config.sample_count
-        + ", max_velocity="
-        + config.max_velocity
-        + ", max_acceleration="
-        + config.max_acceleration
-        + ", max_jerk="
-        + config.max_jerk
-        + "}, waypoints="
-        + builder.toString()
-        + '}';
   }
 }

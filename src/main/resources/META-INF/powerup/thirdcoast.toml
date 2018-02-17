@@ -8,6 +8,9 @@
   length = 20.625
   width  = 26.125
 
+[THIRDCOAST.WHEEL]
+  driveSetpointMax = 5000
+
 [[TALON]]
   name = "azimuth"
   talonIds = [0, 1, 2, 3]
