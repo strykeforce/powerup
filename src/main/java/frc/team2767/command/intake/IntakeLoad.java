@@ -2,6 +2,7 @@ package frc.team2767.command.intake;
 
 import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
 
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
@@ -17,7 +18,7 @@ public class IntakeLoad extends CommandGroup {
     addSequential(new DropShoulder());
     addSequential(new Intake());
     addSequential(new Hold());
-    addSequential(new StowShoulder());
+    //    addSequential(new StowShoulder());
   }
 
   // lower lift to lowest position
@@ -25,7 +26,7 @@ public class IntakeLoad extends CommandGroup {
 
     private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();
 
-    public DropLift() {
+    DropLift() {
       requires(liftSubsystem);
     }
 
@@ -44,14 +45,16 @@ public class IntakeLoad extends CommandGroup {
   static class DropShoulder extends Command {
 
     private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
+    private final int position;
 
-    public DropShoulder() {
+    DropShoulder() {
+      position = Robot.INJECTOR.settings().getTable("POWERUP.SHOULDER").getLong("intakePosition").intValue();
       requires(shoulderSubsystem);
     }
 
     @Override
     protected void initialize() {
-      shoulderSubsystem.setPosition(0);
+      shoulderSubsystem.setPosition(position);
     }
 
     @Override
@@ -93,7 +96,7 @@ public class IntakeLoad extends CommandGroup {
 
     private final IntakeSubsystem intakeSubsystem;
 
-    public Hold() {
+    Hold() {
       super(2);
       intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
       requires(intakeSubsystem);
