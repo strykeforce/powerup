@@ -24,7 +24,7 @@ public class SmartDashboardControls {
     Controls.logger.debug("initializing SmartDashboard controls");
     if (settings.isIsolatedTestMode()) return;
 
-    SmartDashboard.putData("Intake/Load", new IntakeLoad());
+    SmartDashboard.putData("Intake/Driver", new IntakeLoad());
     SmartDashboard.putData("Intake/Eject", new IntakeEject());
 
     SmartDashboard.putData("Shoulder/LoadParametersCommand", new LoadParameters());
