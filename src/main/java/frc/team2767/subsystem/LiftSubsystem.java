@@ -1,7 +1,6 @@
 package frc.team2767.subsystem;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
-import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
+import static com.ctre.phoenix.motorcontrol.ControlMode.*;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -49,6 +48,9 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   private boolean upward;
   private boolean checkFast;
   private boolean checkSlow;
+  private boolean checkEncoder;
+  private long positionStartTime;
+  private int startPosition;
   private int stableCount;
   private int setpoint;
 
@@ -99,9 +101,12 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   }
 
   public void setPosition(int position) {
-    logger.info("setting position = {}", position);
     setpoint = position;
-    upward = setpoint > frontTalon.getSelectedSensorPosition(0);
+    startPosition = frontTalon.getSelectedSensorPosition(0);
+    logger.info("setting position = {}, starting at {}", position, startPosition);
+
+    upward = setpoint > startPosition;
+
     if (upward) {
       frontTalon.configMotionCruiseVelocity(kUpVelocity, 0);
       frontTalon.configMotionAcceleration(kUpAccel, 0);
@@ -109,13 +114,27 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       checkFast = checkSlow = true;
       adjustVelocity();
     }
+
+    checkEncoder = true;
+    positionStartTime = System.nanoTime();
     stableCount = 0;
     frontTalon.set(MotionMagic, position);
   }
 
   public void adjustVelocity() {
     int position = frontTalon.getSelectedSensorPosition(0);
-    //    logger.debug("position = {} upward = {}", position, upward);
+
+    if (checkEncoder) {
+      long elapsed = System.nanoTime() - positionStartTime;
+      if (elapsed < 200e6) return;
+
+      if (Math.abs(position - startPosition) == 0) {
+        frontTalon.set(Disabled, 0);
+        setpoint = position;
+        logger.error("no encoder movement detected in {} ms", elapsed / 1e6);
+        return;
+      } else checkEncoder = false;
+    }
 
     if (upward) return;
 

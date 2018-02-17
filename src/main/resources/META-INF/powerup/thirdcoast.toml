@@ -113,7 +113,7 @@
     peak = 0
     peakDuration = 0
   [TALON.softLimit.forward]
-    limit = 18500
+    limit = 16600
     enabled = true
   [TALON.softLimit.reverse]
     limit = 0
