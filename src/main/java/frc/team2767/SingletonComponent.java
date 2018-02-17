@@ -4,6 +4,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 import frc.team2767.control.AlignWheelsTrigger;
 import frc.team2767.control.Controls;
+import frc.team2767.motion.PathControllerFactory;
 import frc.team2767.subsystem.*;
 import java.net.URL;
 import java.util.Set;
@@ -54,6 +55,8 @@ public interface SingletonComponent {
   Settings settings();
 
   AlignWheelsTrigger alignWheelsTrigger();
+
+  PathControllerFactory pathControllerFactory();
 
   @Component.Builder
   interface Builder {
