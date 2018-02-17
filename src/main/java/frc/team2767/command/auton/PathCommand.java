@@ -6,12 +6,11 @@ import frc.team2767.subsystem.DriveSubsystem;
 
 public class PathCommand extends Command {
 
-  private final DriveSubsystem driveSubsystem;
+  private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final String path;
 
   public PathCommand(String name, String path) {
     super(name);
-    this.driveSubsystem = Robot.INJECTOR.driveSubsystem();
     this.path = path;
     requires(driveSubsystem);
   }

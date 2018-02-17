@@ -4,6 +4,7 @@ import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 import com.kauailabs.navx.frc.AHRS;
 import com.moandjiezana.toml.Toml;
+import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.Notifier;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
@@ -11,17 +12,24 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.DoubleSupplier;
 import javax.inject.Inject;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 import org.strykeforce.thirdcoast.swerve.Wheel;
+import org.strykeforce.thirdcoast.telemetry.grapher.Measure;
+import org.strykeforce.thirdcoast.telemetry.item.Item;
 
 @AutoFactory
-public class PathController implements Runnable {
+public class PathController implements Runnable, Item {
   private static final Logger logger = LoggerFactory.getLogger(PathController.class);
-  private static final String TABLE = "PATHS";
   private static final int PID = 0;
   private static final double INCHES_PER_METER = 39.3701;
 
@@ -41,6 +49,9 @@ public class PathController implements Runnable {
   private int[] start = new int[4];
   private int iteration;
   private volatile boolean running;
+
+  private double forward, strafe, azimuth, distance;
+  private Segment segment;
 
   /**
    * Runs a PathFinder trajectory.
@@ -79,7 +90,7 @@ public class PathController implements Runnable {
     toml = settings.getTable("POWERUP.PATH");
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
-    kTicksPerMeter = toml.getDouble("ticksPerInch") * INCHES_PER_METER;
+    kTicksPerMeter = toml.getLong("ticksPerInch").doubleValue() * INCHES_PER_METER;
 
     logger.info("p_azimuth = {}", kPAzimuth);
     logger.info("p_distance = {}", kPDistance);
@@ -99,7 +110,6 @@ public class PathController implements Runnable {
   public void stop() {
     logger.debug("stopping path controller and swerve drive");
     notifier.stop();
-    drive.stop();
     running = false;
   }
 
@@ -113,14 +123,14 @@ public class PathController implements Runnable {
       stop();
       return;
     }
-    Segment segment = trajectory.get(iteration);
+    segment = trajectory.get(iteration);
 
     double vel_desired = segment.velocity / config.max_velocity;
     double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
 
-    double forward = Math.cos(segment.heading) * vel_setpoint;
-    double strafe = -Math.sin(segment.heading) * vel_setpoint;
-    double azimuth = kPAzimuth * gyro.getYaw(); // target = 0 deg
+    forward = Math.cos(segment.heading) * vel_setpoint;
+    strafe = -Math.sin(segment.heading) * vel_setpoint;
+    azimuth = kPAzimuth * gyro.getYaw(); // target = 0 deg
 
     if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
@@ -139,7 +149,7 @@ public class PathController implements Runnable {
 
   private double distanceError(double position) {
     double desired = kTicksPerMeter * position;
-    double distance = 0;
+    distance = 0;
 
     for (int i = 0; i < 4; i++) {
       distance += Math.abs(wheels[i].getDriveTalon().getSelectedSensorPosition(PID) - start[i]);
@@ -155,6 +165,86 @@ public class PathController implements Runnable {
         error);
     //    return error;
     return 0; // FIXME: testing only
+  }
+
+  @Override
+  public int deviceId() {
+    return 0;
+  }
+
+  @Override
+  public String type() {
+    return "pathfinder";
+  }
+
+  @Override
+  public String description() {
+    return "Path Controller";
+  }
+
+  @Override
+  public Set<Measure> measures() {
+    return Collections.unmodifiableSet(
+        EnumSet.of(
+            Measure.GYRO_YAW,
+            Measure.SWERVE_FORWARD,
+            Measure.SWERVE_STRAFE,
+            Measure.SWERVE_AZIMUTH,
+            Measure.PATH_SEG_X,
+            Measure.PATH_SEG_Y,
+            Measure.PATH_SEG_POSITION_METERS,
+            Measure.PATH_SEG_POSITION_TICKS,
+            Measure.PATH_SEG_VELOCITY,
+            Measure.PATH_SEG_ACCELERATION,
+            Measure.PATH_SEG_JERK,
+            Measure.PATH_SEG_HEADING,
+            Measure.PATH_DISTANCE,
+            Measure.PATH_POSITION_ERROR));
+  }
+
+  @Override
+  public DoubleSupplier measurementFor(Measure measure) {
+    switch (measure) {
+      case GYRO_YAW:
+        return gyro::getYaw;
+      case SWERVE_FORWARD:
+        return () -> forward;
+      case SWERVE_STRAFE:
+        return () -> strafe;
+      case SWERVE_AZIMUTH:
+        return () -> azimuth;
+      case PATH_SEG_X:
+        return () -> segment.x;
+      case PATH_SEG_Y:
+        return () -> segment.y;
+      case PATH_SEG_POSITION_METERS:
+        return () -> segment.position;
+      case PATH_SEG_POSITION_TICKS:
+        return () -> kTicksPerMeter * segment.position;
+      case PATH_SEG_VELOCITY:
+        return () -> segment.velocity;
+      case PATH_SEG_ACCELERATION:
+        return () -> segment.acceleration;
+      case PATH_SEG_JERK:
+        return () -> segment.jerk;
+      case PATH_SEG_HEADING:
+        return () -> segment.heading;
+      case PATH_DISTANCE:
+        return () -> distance;
+      case PATH_POSITION_ERROR:
+        return () -> kTicksPerMeter * segment.position - distance;
+      default:
+        logger.error("invalid Measure: {}", measure);
+    }
+    return () -> 0d;
+  }
+
+  @Override
+  public void toJson(JsonWriter writer) throws IOException {}
+
+  @Override
+  public int compareTo(@NotNull Item o) {
+    return 0;
   }
 
   @Override

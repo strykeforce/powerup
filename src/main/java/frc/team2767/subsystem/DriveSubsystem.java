@@ -58,10 +58,14 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     swerve.drive(forward, strafe, azimuth);
   }
 
-  public void drivePath(String path) {
-    pathController = pathControllerFactory.create(path);
+  public void drivePath(PathController pathController) {
+    this.pathController = pathController;
     setDriveMode(CLOSED_LOOP);
     pathController.start();
+  }
+
+  public void drivePath(String path) {
+    drivePath(pathControllerFactory.create(path));
   }
 
   public void driveWheels(double azimuth, double drive) {

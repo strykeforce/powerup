@@ -12,6 +12,7 @@ import frc.team2767.command.shoulder.ShoulderOpenLoopUp;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.command.shoulder.ShoulderStop;
 import frc.team2767.command.shoulder.ShoulderZero;
+import frc.team2767.command.test.PathTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -23,7 +24,10 @@ public class SmartDashboardControls {
     Controls.logger.debug("initializing SmartDashboard controls");
     if (settings.isIsolatedTestMode()) return;
 
-    SmartDashboard.putData("Intake/Driver", new IntakeLoad());
+    SmartDashboard.putData(
+        "Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
+
+    SmartDashboard.putData("Intake/Load", new IntakeLoad());
     SmartDashboard.putData("Intake/Eject", new IntakeEject());
 
     SmartDashboard.putData("Shoulder/LoadParametersCommand", new LoadParameters());
