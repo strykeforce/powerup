@@ -73,4 +73,4 @@ isolatedTestMode = false
   # positions
   zeroPosition   = 7000
   stowPosition   = 6500
-  intakePosition = -250
+  intakePosition = 250
