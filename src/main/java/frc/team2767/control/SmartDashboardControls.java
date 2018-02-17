@@ -2,6 +2,7 @@ package frc.team2767.control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
+import frc.team2767.command.auton.PathCommand;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.lift.SaveZero;
@@ -35,5 +36,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Shoulder/Up", new ShoulderOpenLoopUp());
     SmartDashboard.putData("Shoulder/Down", new ShoulderOpenLoopDown());
     SmartDashboard.putData("Shoulder/Stop", new ShoulderStop());
+
+        SmartDashboard.putData("auton/PathCommand", new PathCommand("center_left"));
   }
 }
