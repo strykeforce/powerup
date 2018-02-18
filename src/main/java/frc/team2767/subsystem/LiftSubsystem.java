@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.talon.Errors;
 import org.strykeforce.thirdcoast.talon.Talons;
-import org.strykeforce.thirdcoast.talon.config.StatusFrameRate;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
@@ -68,8 +67,6 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
       while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
       logger.info("done setting encoder to zero");
-      StatusFrameRate.GRAPHER.configure(frontTalon);
-      StatusFrameRate.GRAPHER.configure(rearTalon);
     }
 
     Toml toml = settings.getTable(TABLE);

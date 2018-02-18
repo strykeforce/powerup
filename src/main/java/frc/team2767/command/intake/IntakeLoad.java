@@ -2,7 +2,6 @@ package frc.team2767.command.intake;
 
 import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
 
-import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
@@ -48,7 +47,12 @@ public class IntakeLoad extends CommandGroup {
     private final int position;
 
     DropShoulder() {
-      position = Robot.INJECTOR.settings().getTable("POWERUP.SHOULDER").getLong("intakePosition").intValue();
+      position =
+          Robot.INJECTOR
+              .settings()
+              .getTable("POWERUP.SHOULDER")
+              .getLong("intakePosition")
+              .intValue();
       requires(shoulderSubsystem);
     }
 
