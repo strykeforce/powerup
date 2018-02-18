@@ -14,6 +14,6 @@ public class LiftDown extends InstantCommand {
 
   @Override
   protected void initialize() {
-    liftSubsystem.down();
+    liftSubsystem.openLoopDown();
   }
 }

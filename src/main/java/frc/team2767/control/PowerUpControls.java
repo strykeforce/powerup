@@ -12,6 +12,7 @@ import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.lift.LiftDown;
 import frc.team2767.command.lift.LiftPosition;
+import frc.team2767.command.lift.LiftStop;
 import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderDown;
@@ -53,8 +54,10 @@ public class PowerUpControls {
         .whenActive(new LogCommand("transformers!!!!!!"));
 
     // lift
-    new JoystickButton(board, Switch.LIFT_UP.index).whileActive(new LiftUp());
-    new JoystickButton(board, Switch.LIFT_DOWN.index).whileActive(new LiftDown());
+    new JoystickButton(board, Switch.LIFT_UP.index).whenPressed(new LiftUp());
+    new JoystickButton(board, Switch.LIFT_UP.index).whenReleased(new LiftStop());
+    new JoystickButton(board, Switch.LIFT_DOWN.index).whenPressed(new LiftDown());
+    new JoystickButton(board, Switch.LIFT_DOWN.index).whenReleased(new LiftStop());
 
     new Trigger() {
       @Override

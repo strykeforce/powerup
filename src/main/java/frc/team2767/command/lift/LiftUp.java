@@ -14,6 +14,6 @@ public class LiftUp extends InstantCommand {
 
   @Override
   protected void initialize() {
-    liftSubsystem.up();
+    liftSubsystem.openLoopUp();
   }
 }
