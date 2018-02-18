@@ -105,7 +105,7 @@
   talonIds = [50]
   [TALON.selectedFeedbackSensor]
     feedbackDevice = "CTRE_MagEncoder_Relative"
-    phaseSensor = true
+    phaseSensor = false
   [TALON.output]
     neutralMode = "Brake"
   [TALON.currentLimit]
