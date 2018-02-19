@@ -6,6 +6,7 @@ import frc.team2767.Settings;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
+import frc.team2767.subsystem.IntakeSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -24,7 +25,10 @@ public class DriverControls {
     new JoystickButton(joystick, Switch.RESET.index).whenPressed(new ZeroGyroYawCommand());
 
     // intake
-    new JoystickButton(joystick, Shoulder.LEFT_DOWN.index).whenPressed(new IntakeEject());
+    new JoystickButton(joystick, Shoulder.LEFT_DOWN.index)
+        .whenPressed(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
+    new JoystickButton(joystick, Shoulder.LEFT_UP.index)
+        .whenPressed(new IntakeEject(IntakeSubsystem.Mode.SLOW_EJECT));
     new JoystickButton(joystick, Shoulder.RIGHT.index).whenPressed(new IntakeLoad());
   }
 
