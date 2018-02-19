@@ -39,8 +39,6 @@ public interface SingletonComponent {
 
   IntakeSubsystem intakeSubsystem();
 
-  FlipperSubsystem flipperSubsystem();
-
   ShoulderSubsystem shoulderSubsystem();
 
   Controls controls();

@@ -167,17 +167,3 @@
     fGain = 1.1
     iZone = 0
     allowableClosedLoopError = 0
-
-#[[TALON]]
-#  name = "flipper"
-#  talonIds = [60]
-#  [TALON.selectedFeedbackSensor]
-#    feedbackDevice = "CTRE_MagEncoder_Relative"
-#  [TALON.output]
-#    neutralMode = "Brake"
-#  [TALON.softLimit.forward]
-#    limit = 1400
-#    enabled = true
-#  [TALON.softLimit.reverse]
-#    limit = 100
-#    enabled = true
