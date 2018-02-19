@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.team2767.Settings;
 import frc.team2767.command.LogCommand;
+import frc.team2767.command.climber.ClimberClimb;
+import frc.team2767.command.climber.ClimberDeploy;
+import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.intake.IntakeIn;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
@@ -49,9 +52,9 @@ public class PowerUpControls {
     intakeOut.whenReleased(new IntakeStop());
 
     // climber
-    new JoystickButton(board, Switch.CLIMB.index).whenActive(new LogCommand("climb"));
-    new JoystickButton(board, Switch.CLIMBER_TRANSFORM.index)
-        .whenActive(new LogCommand("transformers!!!!!!"));
+    new JoystickButton(board, Switch.CLIMBER_DEPLOY.index).whenPressed(new ClimberDeploy());
+    new JoystickButton(board, Switch.CLIMB.index).whenPressed(new ClimberClimb());
+    new JoystickButton(board, Switch.CLIMB.index).whenReleased(new ClimberStop());
 
     // lift
     new JoystickButton(board, Switch.LIFT_UP.index).whenPressed(new LiftUp());
@@ -114,7 +117,7 @@ public class PowerUpControls {
     LIFT_UP(2),
     LIFT_DOWN(1),
     CLIMB(5),
-    CLIMBER_TRANSFORM(6),
+    CLIMBER_DEPLOY(6),
     LIFT_MID_SCALE(7),
     PORTAL_INTAKE(8),
     INTAKE_IN(11),

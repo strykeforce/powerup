@@ -2,16 +2,13 @@ package frc.team2767.control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
+import frc.team2767.command.climber.ClimberStop;
+import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.lift.SaveZero;
 import frc.team2767.command.lift.Zero;
-import frc.team2767.command.shoulder.LoadParameters;
-import frc.team2767.command.shoulder.ShoulderOpenLoopDown;
-import frc.team2767.command.shoulder.ShoulderOpenLoopUp;
-import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.command.shoulder.ShoulderStop;
-import frc.team2767.command.shoulder.ShoulderZero;
+import frc.team2767.command.shoulder.*;
 import frc.team2767.command.test.PathTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,6 +21,8 @@ public class SmartDashboardControls {
     Controls.logger.debug("initializing SmartDashboard controls");
     if (settings.isIsolatedTestMode()) return;
 
+    SmartDashboard.putData("Climber/Unwind", new ClimberUnwind());
+    SmartDashboard.putData("Climber/Stop", new ClimberStop());
     SmartDashboard.putData(
         "Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
 
