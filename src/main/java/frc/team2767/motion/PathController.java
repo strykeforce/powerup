@@ -174,7 +174,7 @@ public class PathController implements Runnable, Item {
 
   @Override
   public String type() {
-    return "pathfinder";
+    return "controller";
   }
 
   @Override

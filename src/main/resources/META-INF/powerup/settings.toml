@@ -20,6 +20,14 @@ isolatedTestMode = false
   p_distance = 0.01
   ticksPerInch = 1836 # carpet-x 50% percentile
 
+[POWERUP.AZIMUTH]
+  p = 0.035
+  i = 0.0
+  d = 0.0
+  tolerance = 0.5
+  outputMax = 1.0
+  test = true
+
 [POWERUP.JOYSTICK]
   deadband    = 0.05
   driveExpo   = 0.5

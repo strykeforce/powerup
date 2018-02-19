@@ -9,7 +9,7 @@
   width  = 26.125
 
 [THIRDCOAST.WHEEL]
-  driveSetpointMax = 8000
+  driveSetpointMax = 10_000
 
 [[TALON]]
   name = "azimuth"
