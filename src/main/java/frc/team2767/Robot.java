@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.auton.CenterSwitchCommand;
+import frc.team2767.command.auton.PathCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
@@ -32,17 +33,14 @@ public class Robot extends TimedRobot {
   }
 
   private int autonSwitchStableCount = 0;
-  private int newAutonSwitchPostion = -1;
+  private int newAutonSwitchPostion;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
   private SimpleTrigger alignWheelsButton;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
-  private Command autonCommand = new LogCommand("NO AUTON SELECTED");
-  private MatchData.OwnedSide nearSwitch;
-  private MatchData.OwnedSide scale;
+  private Command autonCommand;
   private int autonSwitchPosition = -1;
-  private boolean doneCheckingMatchData = false;
 
   @Override
   public void robotInit() {
@@ -50,21 +48,27 @@ public class Robot extends TimedRobot {
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
-    TelemetryService telemetryService = INJECTOR.telemetryService();
+    logger.info("starting in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
+
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
       logger.warn("starting {}", isolatedTestModeMessage());
       return;
     }
-    // TODO: skip a lot of this stuff if in competition
+
     driveSubsystem = INJECTOR.driveSubsystem();
     alignWheelsButton = INJECTOR.alignWheelsTrigger();
-    INJECTOR.graphables().forEach(g -> g.register(telemetryService));
-    telemetryService.start();
+
     driveSubsystem.zeroAzimuthEncoders();
-    LiveWindow.disableAllTelemetry();
-    // start camera display to smartdashbard
     CameraServer.getInstance().startAutomaticCapture();
+
+    LiveWindow.disableAllTelemetry();
+    if (!settings.isEvent()) {
+      logger.info("telemetry service disabled");
+      TelemetryService telemetryService = INJECTOR.telemetryService();
+      INJECTOR.graphables().forEach(g -> g.register(telemetryService));
+      telemetryService.start();
+    }
   }
 
   @Override
@@ -73,54 +77,51 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("DISABLED {}", isolatedTestModeMessage());
+    resetAutonomous();
     Logging.flushLogs();
   }
 
   @Override
   public void disabledPeriodic() {
-    checkMatchData();
     // auton commands need time to compute path trajectories so instantiate as early as possible
     if (checkAutonomousSwitch()) {
       logger.info("initializing auton command {}", String.format("%02X", autonSwitchPosition));
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
-        case 0x00:
-          // active when switch missing, leave empty
-          break;
         case 0x01:
           autonCommand = new CenterSwitchCommand();
+          break;
+        case 0x02:
+          autonCommand = new PathCommand("straight_forward_test");
+          break;
+        case 0x03:
+          autonCommand = new PathCommand("corner_test");
+          break;
+        case 0x3F:
+          autonCommand = new LogCommand("Running auton command 0x3F - Last");
           break;
         case 0x30:
           autonCommand = new LogCommand("Running auton command 0x30");
           break;
+        case 0x00:
         default:
           logger.warn(
               "no auton command assigned for switch position {}",
               String.format("%02X", autonSwitchPosition));
+          autonCommand = new LogCommand("DRIVE OVER LINE"); // FIXME: put in real auton command
           break;
       }
     }
     if (isolatedTestMode) return;
     if (alignWheelsButton.hasActivated()) {
+      logger.debug("align wheels button activated");
       driveSubsystem.alignWheels();
     }
   }
 
-  private boolean checkMatchData() {
-    boolean changed = false;
-    OwnedSide ownedSide = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
-    if (nearSwitch != ownedSide) {
-      changed = true;
-      nearSwitch = ownedSide;
-      logger.info("NEAR SWITCH owned side changed to {}", nearSwitch);
-    }
-    ownedSide = MatchData.getOwnedSide(GameFeature.SCALE);
-    if (scale != ownedSide) {
-      changed = true;
-      scale = ownedSide;
-      logger.info("SCALE owned side changed to {}", scale);
-    }
-    return changed;
+  private void resetAutonomous() {
+    autonCommand = new LogCommand("NO AUTON SELECTED");
+    newAutonSwitchPostion = -1;
   }
 
   private boolean checkAutonomousSwitch() {
@@ -144,21 +145,33 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     logger.info("AUTONOMOUS {}", isolatedTestModeMessage());
-    checkMatchData();
-    if (autonCommand instanceof OwnedSidesSettable) {
-      ((OwnedSidesSettable) autonCommand).setOwnedSide(nearSwitch, scale);
-      logger.info("set auton command near switch owned = {}, scale owned = {}", nearSwitch, scale);
+
+    MatchData.OwnedSide nearSwitch = OwnedSide.UNKNOWN;
+    MatchData.OwnedSide scale = OwnedSide.UNKNOWN;
+    long start = System.nanoTime();
+
+    while (nearSwitch == OwnedSide.UNKNOWN && System.nanoTime() - start < 5e9) {
+      nearSwitch = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
+      scale = MatchData.getOwnedSide(GameFeature.SCALE);
     }
+
+    if (nearSwitch == OwnedSide.UNKNOWN) {
+      logger.error("GAME DATA TIMEOUT");
+      autonCommand = new LogCommand("DRIVE OVER LINE"); // FIXME: put in real auton command
+    } else {
+      logger.info("NEAR SWITCH owned side = {}", nearSwitch);
+      logger.info("SCALE owned side = {}", scale);
+    }
+
+    if (autonCommand instanceof OwnedSidesSettable)
+      ((OwnedSidesSettable) autonCommand).setOwnedSide(nearSwitch, scale);
+
     autonCommand.start();
   }
 
   @Override
   public void autonomousPeriodic() {
     scheduler.run();
-    // log match data until it doesn't change between checks
-    if (!doneCheckingMatchData) {
-      doneCheckingMatchData = !checkMatchData();
-    }
   }
 
   @Override

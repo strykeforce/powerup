@@ -15,6 +15,11 @@
 description = "Stryke Force 2018 POWER UP"
 isolatedTestMode = false
 
+[POWERUP.PATH]
+  p_azimuth  = -0.004
+  p_distance = 0.01
+  ticksPerInch = 1836 # carpet-x 50% percentile
+
 [POWERUP.JOYSTICK]
   deadband    = 0.05
   driveExpo   = 0.5
@@ -23,7 +28,7 @@ isolatedTestMode = false
 
 [POWERUP.CLIMBER]
   upOutput   = 1.0
-  stopOutput = 0.1
+  stopOutput = 0.0
 
 [POWERUP.FLIPPER]
   upOutput     = 0.5
@@ -37,8 +42,8 @@ isolatedTestMode = false
   ejectOutput = 0.8
 
 [POWERUP.LIFT]
-  upOutput     = 0.1
-  downOutput   = -0.05
+  upOutput     = 0.25
+  downOutput   = -0.25
   stopOutput   = 0.0
   closeEnough  = 50
   jogIncrement = 1400
@@ -68,4 +73,4 @@ isolatedTestMode = false
   # positions
   zeroPosition   = 7000
   stowPosition   = 6500
-  intakePosition = -250
+  intakePosition = 250

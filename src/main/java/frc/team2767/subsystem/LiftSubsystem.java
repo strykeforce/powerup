@@ -1,13 +1,11 @@
 package frc.team2767.subsystem;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
-import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
+import static com.ctre.phoenix.motorcontrol.ControlMode.*;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
@@ -17,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.talon.Errors;
 import org.strykeforce.thirdcoast.talon.Talons;
-import org.strykeforce.thirdcoast.talon.config.StatusFrameRate;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
@@ -46,15 +43,21 @@ public class LiftSubsystem extends Subsystem implements Graphable {
 
   private final TalonSRX frontTalon, rearTalon;
   private final Preferences preferences;
+  private final boolean event;
+
   private boolean upward;
   private boolean checkFast;
   private boolean checkSlow;
+  private boolean checkEncoder;
+  private long positionStartTime;
+  private int startPosition;
   private int stableCount;
   private int setpoint;
 
   @Inject
   public LiftSubsystem(Talons talons, Settings settings) {
     this.preferences = Preferences.getInstance();
+    event = settings.isEvent();
 
     frontTalon = talons.getTalon(MASTER_ID);
     rearTalon = talons.getTalon(SLAVE_ID);
@@ -63,11 +66,10 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       logger.error("Talons not present");
     } else {
       rearTalon.follow(frontTalon);
-      frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
-      while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
+      zeroPosition();
+      //      frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
+      //      while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
       logger.info("done setting encoder to zero");
-      StatusFrameRate.GRAPHER.configure(frontTalon);
-      StatusFrameRate.GRAPHER.configure(rearTalon);
     }
 
     Toml toml = settings.getTable(TABLE);
@@ -99,9 +101,12 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   }
 
   public void setPosition(int position) {
-    logger.info("setting position = {}", position);
     setpoint = position;
-    upward = setpoint > frontTalon.getSelectedSensorPosition(0);
+    startPosition = frontTalon.getSelectedSensorPosition(0);
+    logger.info("setting position = {}, starting at {}", position, startPosition);
+
+    upward = setpoint > startPosition;
+
     if (upward) {
       frontTalon.configMotionCruiseVelocity(kUpVelocity, 0);
       frontTalon.configMotionAcceleration(kUpAccel, 0);
@@ -109,13 +114,27 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       checkFast = checkSlow = true;
       adjustVelocity();
     }
+
+    checkEncoder = true;
+    positionStartTime = System.nanoTime();
     stableCount = 0;
     frontTalon.set(MotionMagic, position);
   }
 
   public void adjustVelocity() {
     int position = frontTalon.getSelectedSensorPosition(0);
-    //    logger.debug("position = {} upward = {}", position, upward);
+
+    if (checkEncoder) {
+      long elapsed = System.nanoTime() - positionStartTime;
+      if (elapsed < 200e6) return;
+
+      if (Math.abs(position - startPosition) == 0) {
+        frontTalon.set(Disabled, 0);
+        setpoint = position;
+        logger.error("no encoder movement detected in {} ms", elapsed / 1e6);
+        return;
+      } else checkEncoder = false;
+    }
 
     if (upward) return;
 
@@ -158,10 +177,12 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   }
 
   public void zeroPosition() {
-    if (frontTalon == null) {
-      logger.error("front Talon not present, aborting zeroPosition()");
+    if (!event && !frontTalon.getSensorCollection().isRevLimitSwitchClosed()) {
+      logger.error("LIFT limit switch not detected - disabling closed-loop positioning");
+      frontTalon.selectProfileSlot(4, 0);
       return;
     }
+
     int zero = preferences.getInt(ZERO, 0);
     int setpoint = getAbsolutePosition() - zero;
     ErrorCode e = frontTalon.setSelectedSensorPosition(setpoint, 0, TIMEOUT);

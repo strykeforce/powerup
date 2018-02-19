@@ -14,7 +14,8 @@ public class CenterSwitchCommand extends ConditionalCommand implements OwnedSide
   private OwnedSide ownedSide = OwnedSide.UNKNOWN;
 
   public CenterSwitchCommand() {
-    super(new PathCommand("center_left"), new PathCommand("center_right"));
+    super(
+        new CenterSwitchCommandGroup("center_left"), new CenterSwitchCommandGroup("center_right"));
   }
 
   @Override

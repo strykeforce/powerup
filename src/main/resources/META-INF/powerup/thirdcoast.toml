@@ -8,6 +8,9 @@
   length = 20.625
   width  = 26.125
 
+[THIRDCOAST.WHEEL]
+  driveSetpointMax = 8000
+
 [[TALON]]
   name = "azimuth"
   talonIds = [0, 1, 2, 3]
@@ -53,35 +56,37 @@
    continuous = 40
    peak = 0
    peakDuration = 0
- [[TALON.closedLoopProfile]] # slot 0 Velocity
-   pGain = 0.1
-   iGain = 0.0
-   dGain = 1.0
-   fGain = 0.03
-   iZone = 0
+ [[TALON.closedLoopProfile]] # slot 0 Velocity Low
+   pGain = 0.04
+   iGain = 0.0003
+   dGain = 0.0
+   fGain = 0.05
+   iZone = 1000
+   maxIntegralAccumulator = 250_000
    allowableClosedLoopError = 0
- [[TALON.closedLoopProfile]] # slot 0 Velocity
-   pGain = 0.1
-   iGain = 0.0
-   dGain = 1.0
-   fGain = 0.03
-   iZone = 0
+ [[TALON.closedLoopProfile]] # slot 0 Velocity Mid
+   pGain = 0.03
+   iGain = 0.00017
+   dGain = 0.0
+   fGain = 0.042
+   iZone = 1000
+   maxIntegralAccumulator = 250_000
    allowableClosedLoopError = 0
- [[TALON.closedLoopProfile]] # slot 0 Velocity
-   pGain = 0.1
+ [[TALON.closedLoopProfile]] # slot 0 Velocity High
+   pGain = 0.03
    iGain = 0.0
    dGain = 1.0
    fGain = 0.03
    iZone = 0
    allowableClosedLoopError = 0
 
-# [[TALON]]
-#  name = "climber"
-#  talonIds = [20, 21]
-#  [TALON.selectedFeedbackSensor]
-#    feedbackDevice = "CTRE_MagEncoder_Relative"
-#  [TALON.output]
-#    neutralMode = "Brake"
+ [[TALON]]
+  name = "climber"
+  talonIds = [20, 21]
+  [TALON.selectedFeedbackSensor]
+    feedbackDevice = "CTRE_MagEncoder_Relative"
+  [TALON.output]
+    neutralMode = "Brake"
 
 [[TALON]]
   name = "intake"
@@ -100,7 +105,7 @@
   talonIds = [50]
   [TALON.selectedFeedbackSensor]
     feedbackDevice = "CTRE_MagEncoder_Relative"
-    phaseSensor = true
+    phaseSensor = false
   [TALON.output]
     neutralMode = "Brake"
   [TALON.currentLimit]
@@ -108,7 +113,7 @@
     peak = 0
     peakDuration = 0
   [TALON.softLimit.forward]
-    limit = 18500
+    limit = 17500
     enabled = true
   [TALON.softLimit.reverse]
     limit = 0
