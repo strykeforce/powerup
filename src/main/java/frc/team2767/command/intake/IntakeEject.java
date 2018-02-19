@@ -1,22 +1,24 @@
 package frc.team2767.command.intake;
 
-import static frc.team2767.subsystem.IntakeSubsystem.Mode.FAST_EJECT;
-
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.IntakeSubsystem;
+import frc.team2767.subsystem.IntakeSubsystem.Mode;
 
 public class IntakeEject extends TimedCommand {
 
   private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+  public final Mode speed;
 
-  public IntakeEject() {
-    super(0.5);
+  public IntakeEject(Mode mode) {
+    super(mode == Mode.FAST_EJECT ? 0.5 : 1.0);
+
+    speed = mode;
   }
 
   @Override
   protected void initialize() {
-    intakeSubsystem.run(FAST_EJECT);
+    intakeSubsystem.run(speed);
   }
 
   @Override
