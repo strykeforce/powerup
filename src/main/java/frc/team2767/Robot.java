@@ -1,7 +1,6 @@
 package frc.team2767;
 
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -49,6 +48,8 @@ public class Robot extends TimedRobot {
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
+    logger.info("starting in {} mode", controls.isEvent() ? "EVENT" : "SAFE");
+
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
       logger.warn("starting {}", isolatedTestModeMessage());
@@ -62,8 +63,8 @@ public class Robot extends TimedRobot {
     CameraServer.getInstance().startAutomaticCapture();
 
     LiveWindow.disableAllTelemetry();
-    if (!DriverStation.getInstance().isFMSAttached()) {
-      logger.info("FMS attached - disabled grapher");
+    if (!controls.isEvent()) {
+      logger.info("telemetry service disabled");
       TelemetryService telemetryService = INJECTOR.telemetryService();
       INJECTOR.graphables().forEach(g -> g.register(telemetryService));
       telemetryService.start();
