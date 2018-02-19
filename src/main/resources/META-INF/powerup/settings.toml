@@ -51,7 +51,7 @@ isolatedTestMode = false
   # positions
   scaleLowPosition     = 9100
   scaleMidPosition     = 13_300
-  scaleHighPosition    = 15_500
+  scaleHighPosition    = 17_100
   stowPosition         = 0
   downVelocityShiftPos = 7000
 

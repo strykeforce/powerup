@@ -1,6 +1,7 @@
 package frc.team2767;
 
 import com.moandjiezana.toml.Toml;
+import edu.wpi.first.wpilibj.DigitalInput;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ public class Settings {
 
   private final Toml toml;
   private final Toml defaults;
+  private final boolean jumperRemoved;
 
   @Inject
   public Settings() {
@@ -33,6 +35,14 @@ public class Settings {
     }
 
     logger.info("reading POWER UP default settings from JAR '{}'", DEFAULTS);
+
+    DigitalInput di = new DigitalInput(9);
+    jumperRemoved = di.get();
+    di.free();
+  }
+
+  public boolean isEvent() {
+    return jumperRemoved;
   }
 
   public Toml getTable(String key) {

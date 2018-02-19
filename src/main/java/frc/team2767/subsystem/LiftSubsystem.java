@@ -6,7 +6,6 @@ import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
@@ -44,6 +43,8 @@ public class LiftSubsystem extends Subsystem implements Graphable {
 
   private final TalonSRX frontTalon, rearTalon;
   private final Preferences preferences;
+  private final boolean event;
+
   private boolean upward;
   private boolean checkFast;
   private boolean checkSlow;
@@ -56,6 +57,7 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   @Inject
   public LiftSubsystem(Talons talons, Settings settings) {
     this.preferences = Preferences.getInstance();
+    event = settings.isEvent();
 
     frontTalon = talons.getTalon(MASTER_ID);
     rearTalon = talons.getTalon(SLAVE_ID);
@@ -64,8 +66,9 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       logger.error("Talons not present");
     } else {
       rearTalon.follow(frontTalon);
-      frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
-      while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
+      zeroPosition();
+      //      frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
+      //      while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
       logger.info("done setting encoder to zero");
     }
 
@@ -174,10 +177,12 @@ public class LiftSubsystem extends Subsystem implements Graphable {
   }
 
   public void zeroPosition() {
-    if (frontTalon == null) {
-      logger.error("front Talon not present, aborting zeroPosition()");
+    if (!event && !frontTalon.getSensorCollection().isRevLimitSwitchClosed()) {
+      logger.error("LIFT limit switch not detected - disabling closed-loop positioning");
+      frontTalon.selectProfileSlot(4, 0);
       return;
     }
+
     int zero = preferences.getInt(ZERO, 0);
     int setpoint = getAbsolutePosition() - zero;
     ErrorCode e = frontTalon.setSelectedSensorPosition(setpoint, 0, TIMEOUT);
