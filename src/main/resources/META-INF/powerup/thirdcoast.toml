@@ -9,7 +9,7 @@
   width  = 26.125
 
 [THIRDCOAST.WHEEL]
-  driveSetpointMax = 8000
+  driveSetpointMax = 10_000
 
 [[TALON]]
   name = "azimuth"
@@ -74,10 +74,11 @@
    allowableClosedLoopError = 0
  [[TALON.closedLoopProfile]] # slot 0 Velocity High
    pGain = 0.03
-   iGain = 0.0
-   dGain = 1.0
-   fGain = 0.03
-   iZone = 0
+   iGain = 0.0004
+   dGain = 0.0
+   fGain = 0.031
+   iZone = 3000
+   maxIntegralAccumulator = 150_000
    allowableClosedLoopError = 0
 
  [[TALON]]
@@ -167,17 +168,3 @@
     fGain = 1.1
     iZone = 0
     allowableClosedLoopError = 0
-
-#[[TALON]]
-#  name = "flipper"
-#  talonIds = [60]
-#  [TALON.selectedFeedbackSensor]
-#    feedbackDevice = "CTRE_MagEncoder_Relative"
-#  [TALON.output]
-#    neutralMode = "Brake"
-#  [TALON.softLimit.forward]
-#    limit = 1400
-#    enabled = true
-#  [TALON.softLimit.reverse]
-#    limit = 100
-#    enabled = true

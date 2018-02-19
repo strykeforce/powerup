@@ -4,13 +4,13 @@ import dagger.BindsInstance;
 import dagger.Component;
 import frc.team2767.control.AlignWheelsTrigger;
 import frc.team2767.control.Controls;
+import frc.team2767.motion.AzimuthControllerFactory;
 import frc.team2767.motion.PathControllerFactory;
 import frc.team2767.subsystem.*;
 import java.net.URL;
 import java.util.Set;
 import javax.inject.Singleton;
 import org.strykeforce.thirdcoast.swerve.GyroModule;
-import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 import org.strykeforce.thirdcoast.swerve.WheelModule;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.telemetry.NetworkModule;
@@ -39,13 +39,9 @@ public interface SingletonComponent {
 
   IntakeSubsystem intakeSubsystem();
 
-  FlipperSubsystem flipperSubsystem();
-
   ShoulderSubsystem shoulderSubsystem();
 
   Controls controls();
-
-  SwerveDrive swerveDrive();
 
   TelemetryService telemetryService();
 
@@ -56,6 +52,8 @@ public interface SingletonComponent {
   AlignWheelsTrigger alignWheelsTrigger();
 
   PathControllerFactory pathControllerFactory();
+
+  AzimuthControllerFactory azimuthControllerFactory();
 
   @Component.Builder
   interface Builder {
