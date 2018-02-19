@@ -5,7 +5,10 @@ import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOO
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team2767.Settings;
 import frc.team2767.command.drive.TeleOpDriveCommand;
+import frc.team2767.motion.AzimuthController;
+import frc.team2767.motion.AzimuthControllerFactory;
 import frc.team2767.motion.PathController;
 import frc.team2767.motion.PathControllerFactory;
 import javax.inject.Inject;
@@ -23,12 +26,21 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
   private final SwerveDrive swerve;
   private final PathControllerFactory pathControllerFactory;
+  private final AzimuthControllerFactory azimuthControllerFactory;
   private PathController pathController;
+  private AzimuthController azimuthController;
 
   @Inject
-  DriveSubsystem(SwerveDrive swerve, PathControllerFactory pathControllerFactory) {
+  DriveSubsystem(
+      Settings settings,
+      SwerveDrive swerve,
+      PathControllerFactory pathControllerFactory,
+      AzimuthControllerFactory azimuthControllerFactory) {
     this.swerve = swerve;
     this.pathControllerFactory = pathControllerFactory;
+    this.azimuthControllerFactory = azimuthControllerFactory;
+    if (!settings.isEvent() && settings.getTable("POWERUP.AZIMUTH").getBoolean("test", false))
+      azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
   }
 
   @Override
@@ -58,6 +70,13 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     swerve.drive(forward, strafe, azimuth);
   }
 
+  public void driveWheels(double azimuth, double drive) {
+    for (Wheel wheel : swerve.getWheels()) wheel.set(azimuth, drive);
+  }
+
+  //
+  // PathFinder
+  //
   public void drivePath(PathController pathController) {
     this.pathController = pathController;
     setDriveMode(CLOSED_LOOP);
@@ -68,10 +87,6 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     drivePath(pathControllerFactory.create(path));
   }
 
-  public void driveWheels(double azimuth, double drive) {
-    for (Wheel wheel : swerve.getWheels()) wheel.set(azimuth, drive);
-  }
-
   public boolean isPathFinished() {
     return !pathController.isRunning();
   }
@@ -79,6 +94,29 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   public void endPath() {
     pathController.stop();
     pathController = null;
+  }
+
+  //
+  // Azimuth
+  //
+  public void azimuthTo(double setpoint) {
+    logger.info("azimuth to {}", setpoint);
+    setDriveMode(CLOSED_LOOP);
+    if (azimuthController == null)
+      azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
+    azimuthController.enable();
+  }
+
+  public boolean isAzimuthFinished() {
+    return azimuthController.onTarget();
+  }
+
+  public void endAzimuth() {
+    azimuthController.disable();
+    logger.info(
+        "azimuth ended setpoint = {} gyro yaw = {}",
+        azimuthController.getSetpoint(),
+        azimuthController.getYaw());
   }
 
   public int getDrivePosition(int wheel) {
@@ -101,5 +139,6 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   @Override
   public void register(TelemetryService telemetryService) {
     swerve.registerWith(telemetryService);
+    if (azimuthController != null) telemetryService.register(azimuthController);
   }
 }

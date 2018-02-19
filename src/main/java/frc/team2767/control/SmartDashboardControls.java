@@ -2,6 +2,7 @@ package frc.team2767.control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
+import frc.team2767.command.auton.AzimuthCommand;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.intake.IntakeEject;
@@ -19,6 +20,8 @@ public class SmartDashboardControls {
   public SmartDashboardControls(Settings settings) {
     Controls.logger.debug("initializing SmartDashboard controls");
     if (settings.isIsolatedTestMode()) return;
+
+    SmartDashboard.putData("Azimuth", new AzimuthCommand(0));
 
     SmartDashboard.putData("Climber/Unwind", new ClimberUnwind());
     SmartDashboard.putData("Climber/Stop", new ClimberStop());
