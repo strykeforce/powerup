@@ -6,10 +6,9 @@ import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
-import frc.team2767.command.lift.SaveZero;
+import frc.team2767.command.lift.LiftSaveZero;
 import frc.team2767.command.lift.Zero;
 import frc.team2767.command.shoulder.*;
-import frc.team2767.command.test.PathTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -23,8 +22,8 @@ public class SmartDashboardControls {
 
     SmartDashboard.putData("Climber/Unwind", new ClimberUnwind());
     SmartDashboard.putData("Climber/Stop", new ClimberStop());
-    SmartDashboard.putData(
-        "Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
+    //    SmartDashboard.putData(
+    //        "Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
 
     SmartDashboard.putData("Intake/Load", new IntakeLoad());
     SmartDashboard.putData("Intake/Eject", new IntakeEject());
@@ -32,7 +31,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Shoulder/LoadParametersCommand", new LoadParameters());
     SmartDashboard.putData("Shoulder/PositionCommand", new ShoulderPosition(6000));
     SmartDashboard.putData("Shoulder/Zero", new ShoulderZero());
-    SmartDashboard.putData("Lift/SaveZero", new SaveZero());
+    SmartDashboard.putData("Lift/SaveZero", new LiftSaveZero());
     SmartDashboard.putData("Lift/Zero", new Zero());
 
     SmartDashboard.putData("Shoulder/Up", new ShoulderOpenLoopUp());

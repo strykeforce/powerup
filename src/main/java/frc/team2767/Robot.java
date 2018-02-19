@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
-    logger.info("starting in {} mode", controls.isEvent() ? "EVENT" : "SAFE");
+    logger.info("starting in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
@@ -63,7 +63,7 @@ public class Robot extends TimedRobot {
     CameraServer.getInstance().startAutomaticCapture();
 
     LiveWindow.disableAllTelemetry();
-    if (!controls.isEvent()) {
+    if (!settings.isEvent()) {
       logger.info("telemetry service disabled");
       TelemetryService telemetryService = INJECTOR.telemetryService();
       INJECTOR.graphables().forEach(g -> g.register(telemetryService));

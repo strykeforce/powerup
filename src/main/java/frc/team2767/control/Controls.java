@@ -1,6 +1,5 @@
 package frc.team2767.control;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ public class Controls {
 
   private final AutonSwitch autonSwitch;
   private final DriverControls driverControls;
-  private final boolean jumperRemoved;
 
   @SuppressWarnings("unused")
   @Inject
@@ -26,10 +24,6 @@ public class Controls {
 
     this.autonSwitch = autonSwitch;
     this.driverControls = driverControls;
-
-    DigitalInput di = new DigitalInput(9);
-    jumperRemoved = di.get();
-    di.free();
   }
 
   public DriverControls getDriverControls() {
@@ -38,9 +32,5 @@ public class Controls {
 
   public int getAutonomousSwitchPosition() {
     return autonSwitch.position();
-  }
-
-  public boolean isEvent() {
-    return jumperRemoved;
   }
 }
