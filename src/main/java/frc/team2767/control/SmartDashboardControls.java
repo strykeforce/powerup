@@ -9,6 +9,7 @@ import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.lift.LiftSaveZero;
 import frc.team2767.command.lift.Zero;
 import frc.team2767.command.shoulder.*;
+import frc.team2767.subsystem.IntakeSubsystem;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -26,7 +27,7 @@ public class SmartDashboardControls {
     //        "Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
 
     SmartDashboard.putData("Intake/Load", new IntakeLoad());
-    SmartDashboard.putData("Intake/Eject", new IntakeEject());
+    SmartDashboard.putData("Intake/Eject", new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
 
     SmartDashboard.putData("Shoulder/LoadParametersCommand", new LoadParameters());
     SmartDashboard.putData("Shoulder/PositionCommand", new ShoulderPosition(6000));
