@@ -113,6 +113,7 @@ public class Robot extends TimedRobot {
     }
     if (isolatedTestMode) return;
     if (alignWheelsButton.hasActivated()) {
+      logger.debug("align wheels button activated");
       driveSubsystem.alignWheels();
     }
   }

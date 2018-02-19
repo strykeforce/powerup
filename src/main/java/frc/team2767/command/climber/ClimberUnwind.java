@@ -4,17 +4,17 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.ClimberSubsystem;
 
-public class ClimbCommand extends InstantCommand {
+public class ClimberUnwind extends InstantCommand {
 
-  private final ClimberSubsystem climberSubsystem;
+  private final ClimberSubsystem climberSubsystem = Robot.INJECTOR.climberSubsystem();
 
-  public ClimbCommand() {
-    climberSubsystem = Robot.INJECTOR.climberSubsystem();
+  public ClimberUnwind() {
+    super("Unwind");
     requires(climberSubsystem);
   }
 
   @Override
   protected void initialize() {
-    climberSubsystem.climb();
+    climberSubsystem.unwind();
   }
 }

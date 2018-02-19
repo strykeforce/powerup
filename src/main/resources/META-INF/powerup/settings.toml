@@ -28,7 +28,7 @@ isolatedTestMode = false
 
 [POWERUP.CLIMBER]
   upOutput   = 1.0
-  stopOutput = 0.1
+  stopOutput = 0.0
 
 [POWERUP.FLIPPER]
   upOutput     = 0.5
