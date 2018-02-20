@@ -24,39 +24,68 @@ public class ClimberSubsystem extends Subsystem implements Graphable {
 
   private static final Logger logger = LoggerFactory.getLogger(ClimberSubsystem.class);
   private static final String TABLE = Robot.TABLE + ".CLIMBER";
-  private final double kUpOutput;
+  private final double kUpFastOutput;
+  private final double kUpSlowOutput;
   private final double kStopOutput;
   private final double kUnwindOutput;
+  private final double kReleaseOutput;
+  private final int kSlowDownPosition;
+
   private final Servo servo = new Servo(SERVO);
   private final TalonSRX leftTalon, rightTalon;
+  private boolean checkPosition;
 
   @Inject
   public ClimberSubsystem(Talons talons, Settings settings) {
-    servo.set(0d);
     leftTalon = talons.getTalon(LEFT_ID);
     rightTalon = talons.getTalon(RIGHT_ID);
-    if (leftTalon == null || rightTalon == null) {
-      logger.error("Talons not present");
-    }
+
+    if (leftTalon == null || rightTalon == null) logger.error("Talons not present");
+    else leftTalon.setSelectedSensorPosition(0, 0, 10);
+
+    servo.set(0d);
+
     Toml toml = settings.getTable(TABLE);
-    kUpOutput = toml.getDouble("upOutput");
+    kUpFastOutput = toml.getDouble("upFastOutput");
+    kUpSlowOutput = toml.getDouble("upSlowOutput");
     kStopOutput = toml.getDouble("stopOutput");
-    kUnwindOutput = -0.15;
-    logger.info("upOutput = {}", kUpOutput);
+    kUnwindOutput = toml.getDouble("unwindOutput");
+    kReleaseOutput = toml.getDouble("releaseOutput");
+    kSlowDownPosition = toml.getLong("slowDownPosition").intValue();
+    logger.info("upFastOutput = {}", kUpFastOutput);
+    logger.info("upSlowOutput = {}", kUpSlowOutput);
     logger.info("stopOutput = {}", kStopOutput);
+    logger.info("unwindOutput = {}", kUnwindOutput);
+    logger.info("releaseOutput = {}", kReleaseOutput);
+    logger.info("slowDownPosition = {}", kSlowDownPosition);
   }
 
   @Override
   protected void initDefaultCommand() {}
 
   public void deploy() {
-    servo.set(1d);
+    logger.info("deploying ramp");
+    servo.set(0.7);
   }
 
   public void climb() {
-    logger.info("climbing at {}% output", kUpOutput * 100);
-    leftTalon.set(PercentOutput, kUpOutput);
-    rightTalon.set(PercentOutput, kUpOutput);
+    logger.info("climbing at {}% output", kUpFastOutput * 100);
+    leftTalon.set(PercentOutput, kUpFastOutput);
+    rightTalon.set(PercentOutput, kUpFastOutput);
+    checkPosition = true;
+  }
+
+  public boolean isFastClimbFinished() {
+    if (!checkPosition) return true;
+
+    int position = leftTalon.getSelectedSensorPosition(0);
+    if (position > kSlowDownPosition) {
+      logger.info("position = {}, climbing at {}% output", position, kUpSlowOutput * 100);
+      leftTalon.set(PercentOutput, kUpSlowOutput);
+      rightTalon.set(PercentOutput, kUpSlowOutput);
+      checkPosition = false;
+    }
+    return false;
   }
 
   public void stop() {
@@ -69,6 +98,12 @@ public class ClimberSubsystem extends Subsystem implements Graphable {
     logger.info("unwinding at {}% output", kUnwindOutput * 100);
     leftTalon.set(PercentOutput, kUnwindOutput);
     rightTalon.set(PercentOutput, kUnwindOutput);
+  }
+
+  public void release() {
+    logger.info("releasing at {}% output", kReleaseOutput * 100);
+    leftTalon.set(PercentOutput, kReleaseOutput);
+    rightTalon.set(PercentOutput, kReleaseOutput);
   }
 
   @Override

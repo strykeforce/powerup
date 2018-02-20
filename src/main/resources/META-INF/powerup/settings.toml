@@ -35,8 +35,13 @@ isolatedTestMode = false
   rateLimit   = 0.04
 
 [POWERUP.CLIMBER]
-  upOutput   = 1.0
-  stopOutput = 0.0
+  upFastOutput      = 1.0
+  upSlowOutput      = 0.25
+  stopOutput    = 0.0
+  unwindOutput  = -0.15
+  releaseOutput = 0.15
+
+  slowDownPosition = 37_700
 
 [POWERUP.INTAKE]
   loadOutput  = -1.0
