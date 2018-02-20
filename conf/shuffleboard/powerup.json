@@ -1,0 +1,137 @@
+{
+  "dividerPosition": 0.009404388714733543,
+  "tabPane": [
+    {
+      "title": "Pit Dashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/Pit/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Pit/Shoulder/Zero",
+              "_title": "Shoulder"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Climber",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Climber/Release",
+                  "_title": "SmartDashboard/Pit/Climber/Release"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Climber/Unwind",
+                  "_title": "SmartDashboard/Pit/Climber/Unwind"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Climber/Stop",
+                  "_title": "SmartDashboard/Pit/Climber/Stop"
+                }
+              ]
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Lift",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Lift/SaveZero",
+                  "_title": "SmartDashboard/Pit/Lift/SaveZero"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Lift/Zero",
+                  "_title": "SmartDashboard/Pit/Lift/Zero"
+                }
+              ]
+            }
+          },
+          "0,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMSInfo"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Game Dashboard",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "1,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Block obtained?",
+              "_title": "/SmartDashboard/Block obtained?",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
+            }
+          },
+          "0,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMSInfo"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

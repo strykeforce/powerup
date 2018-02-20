@@ -9,6 +9,7 @@ public class LiftSaveZero extends InstantCommand {
   private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();
 
   public LiftSaveZero() {
+    super("Save Zero");
     requires(liftSubsystem);
   }
 
