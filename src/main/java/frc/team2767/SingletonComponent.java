@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.Set;
 import javax.inject.Singleton;
 import org.strykeforce.thirdcoast.swerve.GyroModule;
-import org.strykeforce.thirdcoast.swerve.WheelModule;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.telemetry.NetworkModule;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
@@ -22,8 +21,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
   modules = {
     NetworkModule.class,
     GyroModule.class,
-    WheelModule.class,
-    //    GraphableSwerveDriveModule.class,
+    PowerUpWheelModule.class,
     SubsystemModule.class,
   }
 )
