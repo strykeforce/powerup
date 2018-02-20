@@ -50,7 +50,7 @@ isolatedTestMode = false
 
 [POWERUP.LIFT]
   upOutput     = 0.25
-  downOutput   = -0.25
+  downOutput   = -0.2
   stopOutput   = 0.0
   closeEnough  = 50
   jogIncrement = 1400
