@@ -8,16 +8,18 @@ import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 public class DriveZero extends Command {
 
   private final DriveSubsystem drive = Robot.INJECTOR.driveSubsystem();
+  private final double output;
 
-  public DriveZero() {
+  public DriveZero(double output) {
     super("Drive Zero");
+    this.output = output;
     requires(drive);
   }
 
   @Override
   protected void initialize() {
     drive.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
-    drive.driveWheels(0, 0.5);
+    drive.driveWheels(0, output);
   }
 
   @Override

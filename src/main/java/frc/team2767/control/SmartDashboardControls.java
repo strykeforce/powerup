@@ -51,7 +51,8 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
-    SmartDashboard.putData("Test/DriveZero", new DriveZero());
+    SmartDashboard.putData("Test/DriveZero", new DriveZero(0.5));
+    SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero(-0.5));
     SmartDashboard.putData("Test/Azimuth", new AzimuthCommand(0));
     SmartDashboard.putData(
         "Test/Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));

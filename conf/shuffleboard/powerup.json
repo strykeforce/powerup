@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.006493506493506494,
+  "dividerPosition": 0.00545950864422202,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -179,10 +179,10 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "1,0": {
+          "0,0": {
             "size": [
-              2,
-              2
+              3,
+              3
             ],
             "content": {
               "_type": "Camera Stream",
@@ -190,7 +190,7 @@
               "_title": "USB Camera 0"
             }
           },
-          "0,0": {
+          "3,0": {
             "size": [
               1,
               1
@@ -203,7 +203,7 @@
               "colorWhenFalse": "#8B0000FF"
             }
           },
-          "0,2": {
+          "3,1": {
             "size": [
               3,
               1
@@ -212,6 +212,63 @@
               "_type": "Basic FMS Info",
               "_source0": "network_table:///FMSInfo",
               "_title": "FMSInfo"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Test Dashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/Test/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/DriveZero",
+              "_title": "DriveZero"
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/DriveZeroBackwards",
+              "_title": "DriveZeroBackwards"
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Azimuth",
+              "_title": "Azimuth"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Path/StraightLine",
+              "_title": "Path/StraightLine"
             }
           }
         }
