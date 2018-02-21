@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.009404388714733543,
+  "dividerPosition": 0.006493506493506494,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -11,7 +11,7 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "2,0": {
+          "3,2": {
             "size": [
               1,
               1
@@ -80,6 +80,90 @@
               "_type": "Basic FMS Info",
               "_source0": "network_table:///FMSInfo",
               "_title": "FMSInfo"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Wheels Azimuth Zero",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/0",
+                  "_title": "Wheels/Inc/0"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/0",
+                  "_title": "Wheels/Dec/0"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/1",
+                  "_title": "Wheels/Inc/1"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/1",
+                  "_title": "Wheels/Dec/1"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/2",
+                  "_title": "Wheels/Inc/2"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/2",
+                  "_title": "Wheels/Dec/2"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/3",
+                  "_title": "Wheels/Inc/3"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/3",
+                  "_title": "Wheels/Dec/3"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Reset",
+                  "_title": "Wheels/Reset"
+                }
+              ]
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Wheels",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/LockZero",
+                  "_title": "Wheels/LockZero"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Lock2000",
+                  "_title": "Wheels/Lock2000"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/UnlockZero",
+                  "_title": "Wheels/UnlockZero"
+                }
+              ]
             }
           }
         }
