@@ -25,11 +25,12 @@ public class Robot extends TimedRobot {
   public static final SingletonComponent INJECTOR;
   public static final String TABLE = "POWERUP";
   private static final int AUTON_SWITCH_DEBOUNCED = 100;
-  private static final Logger logger = LoggerFactory.getLogger(Robot.class);
+  private static final Logger logger;
 
   static {
     URL thirdCoastConfig = Robot.class.getResource("/META-INF/powerup/thirdcoast.toml");
     INJECTOR = DaggerSingletonComponent.builder().thirdCoastConfig(thirdCoastConfig).build();
+    logger = LoggerFactory.getLogger(Robot.class);
   }
 
   private int autonSwitchStableCount = 0;
@@ -48,11 +49,11 @@ public class Robot extends TimedRobot {
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
-    logger.info("starting in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
+    logger.info("INIT in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
     isolatedTestMode = settings.isIsolatedTestMode();
     if (isolatedTestMode) {
-      logger.warn("starting {}", isolatedTestModeMessage());
+      logger.warn("INIT {}", isolatedTestModeMessage());
       return;
     }
 
@@ -188,6 +189,6 @@ public class Robot extends TimedRobot {
   }
 
   private String isolatedTestModeMessage() {
-    return isolatedTestMode ? "in isolated test mode" : "";
+    return isolatedTestMode ? "(isolated test mode)" : "";
   }
 }

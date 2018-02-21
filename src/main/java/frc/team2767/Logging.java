@@ -33,8 +33,6 @@ public class Logging extends ContextAwareBase implements Configurator {
   private static final String FILE_PATTERN =
       "%-23(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{32} - %msg%n";
 
-  private static final String TABLE = "POWERUP";
-
   @NotNull
   private static Appender<ILoggingEvent> consoleAppender(LoggerContext lc) {
     ConsoleAppender<ILoggingEvent> ca = new ConsoleAppender<>();
@@ -75,7 +73,7 @@ public class Logging extends ContextAwareBase implements Configurator {
     stringBuilder.append(".log");
 
     String logFile = stringBuilder.toString();
-    System.out.println("Logging to " + logFile);
+    System.out.println("POWER UP log file: " + logFile);
     return logFile;
   }
 
@@ -109,16 +107,16 @@ public class Logging extends ContextAwareBase implements Configurator {
 
   @Override
   public void configure(LoggerContext lc) {
-    System.out.println("Setting up robot logging configuration.");
-    boolean fms = DriverStation.getInstance().isFMSAttached();
+    Settings settings = Robot.INJECTOR.settings();
+    boolean event = settings.isEvent();
 
     Appender<ILoggingEvent> appender;
-    appender = fms ? fileAppender(lc) : consoleAppender(lc);
+    appender = event ? fileAppender(lc) : consoleAppender(lc);
 
     appender.start();
 
     Logger rootLogger = lc.getLogger(Logger.ROOT_LOGGER_NAME);
     rootLogger.addAppender(appender);
-    rootLogger.setLevel(fms ? Level.INFO : Level.DEBUG);
+    rootLogger.setLevel(event ? Level.INFO : Level.DEBUG);
   }
 }

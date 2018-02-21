@@ -28,13 +28,13 @@ public class Settings {
     defaults = defaults();
     if (Files.exists(CONFIG.toPath())) {
       this.toml = new Toml(defaults()).read(CONFIG);
-      logger.info("reading POWER UP settings from '{}'", CONFIG);
+      System.out.println("POWER UP settings: " + CONFIG);
     } else {
-      logger.warn("POWER UP settings file '{}' is missing", CONFIG);
+      System.out.println("POWER UP settings file is missing: " + CONFIG);
       toml = defaults;
     }
 
-    logger.info("reading POWER UP default settings from JAR '{}'", DEFAULTS);
+    System.out.println("POWER UP default settings: jar:" + DEFAULTS);
 
     DigitalInput di = new DigitalInput(9);
     jumperRemoved = di.get();
