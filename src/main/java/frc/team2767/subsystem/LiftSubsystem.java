@@ -19,7 +19,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
-public class LiftSubsystem extends Subsystem implements Graphable {
+public class LiftSubsystem extends Subsystem implements Graphable, Positionable {
   private static final int MASTER_ID = 50; // PDP 15
   private static final int SLAVE_ID = 51; // PDP 14
 
@@ -114,6 +114,13 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     checkEncoder = true;
     positionStartTime = System.nanoTime();
     stableCount = 0;
+    frontTalon.set(MotionMagic, position);
+  }
+
+  @Override
+  public void resetPosition() {
+    int position = frontTalon.getSelectedSensorPosition(0);
+    logger.info("resetting position = {}", position);
     frontTalon.set(MotionMagic, position);
   }
 

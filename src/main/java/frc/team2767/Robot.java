@@ -78,6 +78,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("DISABLED {}", isolatedTestModeMessage());
+    INJECTOR.positionables().forEach(Positionable::resetPosition);
     resetAutonomous();
     Logging.flushLogs();
   }

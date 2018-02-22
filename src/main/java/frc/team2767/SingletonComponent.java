@@ -29,6 +29,8 @@ public interface SingletonComponent {
 
   Set<Graphable> graphables();
 
+  Set<Positionable> positionables();
+
   ClimberSubsystem climberSubsystem();
 
   DriveSubsystem driveSubsystem();
