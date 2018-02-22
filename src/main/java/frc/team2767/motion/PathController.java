@@ -9,7 +9,6 @@ import com.moandjiezana.toml.Toml;
 import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
-import frc.team2767.Robot;
 import frc.team2767.Settings;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -65,7 +64,6 @@ public class PathController implements Runnable, Item {
    */
   @Inject
   public PathController(String path, @Provided Settings settings, @Provided SwerveDrive drive) {
-    settings = Robot.INJECTOR.settings();
     Toml toml = settings.getPath(path);
     if (toml == null) throw new IllegalArgumentException(path);
     this.drive = drive;

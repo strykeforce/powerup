@@ -9,8 +9,10 @@ public class LiftZero extends TimedCommand {
   private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();
 
   public LiftZero() {
-    super("Lift Zero", 5);
+    super("Lift Zero", 0);
     requires(liftSubsystem);
+    double timeout = Robot.INJECTOR.settings().getTable("POWERUP.LIFT").getDouble("timeout");
+    setTimeout(timeout);
   }
 
   @Override
@@ -20,7 +22,7 @@ public class LiftZero extends TimedCommand {
 
   @Override
   protected boolean isFinished() {
-    return liftSubsystem.onZero();
+    return liftSubsystem.onZero() || isTimedOut();
   }
 
   @Override

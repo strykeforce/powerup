@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.auton.CenterSwitchCommand;
+import frc.team2767.command.auton.CrossTheLine;
 import frc.team2767.command.auton.PathCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.Positionable;
 import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
@@ -34,14 +36,14 @@ public class Robot extends TimedRobot {
   }
 
   private int autonSwitchStableCount = 0;
-  private int newAutonSwitchPostion;
+  private int autonSwitchPosition = -1;
+  private int newAutonSwitchPosition;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
   private SimpleTrigger alignWheelsButton;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
   private Command autonCommand;
-  private int autonSwitchPosition = -1;
 
   @Override
   public void robotInit() {
@@ -65,7 +67,7 @@ public class Robot extends TimedRobot {
 
     LiveWindow.disableAllTelemetry();
     if (!settings.isEvent()) {
-      logger.info("telemetry service disabled");
+      logger.info("telemetry service enabled");
       TelemetryService telemetryService = INJECTOR.telemetryService();
       INJECTOR.graphables().forEach(g -> g.register(telemetryService));
       telemetryService.start();
@@ -110,7 +112,7 @@ public class Robot extends TimedRobot {
           logger.warn(
               "no auton command assigned for switch position {}",
               String.format("%02X", autonSwitchPosition));
-          autonCommand = new LogCommand("DRIVE OVER LINE"); // FIXME: put in real auton command
+          autonCommand = new CrossTheLine();
           break;
       }
     }
@@ -122,17 +124,18 @@ public class Robot extends TimedRobot {
   }
 
   private void resetAutonomous() {
+    logger.debug("reset auton");
     autonCommand = new LogCommand("NO AUTON SELECTED");
-    newAutonSwitchPostion = -1;
+    autonSwitchPosition = -1;
   }
 
   private boolean checkAutonomousSwitch() {
     boolean changed = false;
     int switchPosition = controls.getAutonomousSwitchPosition();
 
-    if (switchPosition != newAutonSwitchPostion) {
+    if (switchPosition != newAutonSwitchPosition) {
       autonSwitchStableCount = 0;
-      newAutonSwitchPostion = switchPosition;
+      newAutonSwitchPosition = switchPosition;
     } else {
       autonSwitchStableCount++;
     }
@@ -159,7 +162,7 @@ public class Robot extends TimedRobot {
 
     if (nearSwitch == OwnedSide.UNKNOWN) {
       logger.error("GAME DATA TIMEOUT");
-      autonCommand = new LogCommand("DRIVE OVER LINE"); // FIXME: put in real auton command
+      autonCommand = new CrossTheLine();
     } else {
       logger.info("NEAR SWITCH owned side = {}", nearSwitch);
       logger.info("SCALE owned side = {}", scale);

@@ -50,6 +50,7 @@ isolatedTestMode = false
   ejectOutput = 0.8
 
 [POWERUP.LIFT]
+  timeout      = 2.5
   upOutput     = 0.25
   downOutput   = -0.2
   stopOutput   = 0.0
