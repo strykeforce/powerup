@@ -137,7 +137,8 @@ public class PathController implements Runnable, Item {
     }
     segment = trajectory.get(iteration);
 
-    double vel_desired = segment.velocity / config.max_velocity; // TODO use max auton velocity to scale
+    double vel_desired =
+        segment.velocity / config.max_velocity; // TODO use max auton velocity to scale
     double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
 
     forward = Math.cos(segment.heading) * vel_setpoint;

@@ -7,8 +7,7 @@ import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
-import frc.team2767.command.lift.LiftSaveZero;
-import frc.team2767.command.lift.Zero;
+import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZero;
 import frc.team2767.command.test.PathTestCommand;
 import javax.inject.Inject;
@@ -26,8 +25,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Climber/Stop", new ClimberStop());
     SmartDashboard.putData("Pit/Climber/Release", new ClimberRelease());
 
-    SmartDashboard.putData("Pit/Lift/SaveZero", new LiftSaveZero());
-    SmartDashboard.putData("Pit/Lift/Zero", new Zero());
+    SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
 
     SmartDashboard.putData("Pit/Shoulder/Zero", new ShoulderZero());
 
@@ -40,14 +38,14 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Wheels/LockZero", new LockAzimuthPosition("Lock 0", 0));
     SmartDashboard.putData("Pit/Wheels/Lock2000", new LockAzimuthPosition("Lock 2000", 2000));
     SmartDashboard.putData("Pit/Wheels/UnlockZero", new UnlockAzimuthPosition());
-    SmartDashboard.putData("Pit/Wheels/Inc/0", new AdjustWheelAlignment("Wheel 0 +1", 0, 1));
-    SmartDashboard.putData("Pit/Wheels/Dec/0", new AdjustWheelAlignment("Wheel 0 -1", 0, -1));
-    SmartDashboard.putData("Pit/Wheels/Inc/1", new AdjustWheelAlignment("Wheel 1 +1", 1, 1));
-    SmartDashboard.putData("Pit/Wheels/Dec/1", new AdjustWheelAlignment("Wheel 1 -1", 1, -1));
-    SmartDashboard.putData("Pit/Wheels/Inc/2", new AdjustWheelAlignment("Wheel 2 +1", 2, 1));
-    SmartDashboard.putData("Pit/Wheels/Dec/2", new AdjustWheelAlignment("Wheel 2 -1", 2, -1));
-    SmartDashboard.putData("Pit/Wheels/Inc/3", new AdjustWheelAlignment("Wheel 3 +1", 3, 1));
-    SmartDashboard.putData("Pit/Wheels/Dec/3", new AdjustWheelAlignment("Wheel 3 -1", 3, -1));
+    SmartDashboard.putData("Pit/Wheels/Inc/0", new AdjustWheelAlignment("Wheel 0 CCW", 0, 1));
+    SmartDashboard.putData("Pit/Wheels/Dec/0", new AdjustWheelAlignment("Wheel 0 CW", 0, -1));
+    SmartDashboard.putData("Pit/Wheels/Inc/1", new AdjustWheelAlignment("Wheel 1 CCW", 1, 1));
+    SmartDashboard.putData("Pit/Wheels/Dec/1", new AdjustWheelAlignment("Wheel 1 CW", 1, -1));
+    SmartDashboard.putData("Pit/Wheels/Inc/2", new AdjustWheelAlignment("Wheel 2 CCW", 2, 1));
+    SmartDashboard.putData("Pit/Wheels/Dec/2", new AdjustWheelAlignment("Wheel 2 CW", 2, -1));
+    SmartDashboard.putData("Pit/Wheels/Inc/3", new AdjustWheelAlignment("Wheel 3 CCW", 3, 1));
+    SmartDashboard.putData("Pit/Wheels/Dec/3", new AdjustWheelAlignment("Wheel 3 CW", 3, -1));
   }
 
   private void addTestCommands() {

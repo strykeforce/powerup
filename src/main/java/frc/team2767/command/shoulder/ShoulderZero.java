@@ -9,7 +9,7 @@ public class ShoulderZero extends Command {
   private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
 
   public ShoulderZero() {
-    super("Zero");
+    super("Shoulder Zero");
     requires(shoulderSubsystem);
   }
 
