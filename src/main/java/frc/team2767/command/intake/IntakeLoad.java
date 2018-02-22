@@ -4,7 +4,6 @@ import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.IntakeSubsystem;
 import frc.team2767.subsystem.LiftSubsystem;
@@ -13,11 +12,30 @@ import frc.team2767.subsystem.ShoulderSubsystem;
 public class IntakeLoad extends CommandGroup {
 
   public IntakeLoad() {
+    addSequential(new Intake());
     addSequential(new DropLift());
     addSequential(new DropShoulder());
-    addSequential(new Intake());
-    addSequential(new Hold());
+    // addSequential(new Hold());
     //    addSequential(new StowShoulder());
+  }
+
+  static class Intake extends Command {
+
+    private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+
+    public Intake() {
+      requires(intakeSubsystem);
+    }
+
+    @Override
+    protected void initialize() {
+      intakeSubsystem.run(LOAD);
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return true;
+    }
   }
 
   // lower lift to lowest position
@@ -63,40 +81,16 @@ public class IntakeLoad extends CommandGroup {
 
     @Override
     protected boolean isFinished() {
-      return shoulderSubsystem.onTarget();
+      return true;
+      //return shoulderSubsystem.onTarget();
     }
   }
 
   // run the intake until a block triggers the limit switch
-  static class Intake extends Command {
 
-    private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
-
-    public Intake() {
-      requires(intakeSubsystem);
-    }
-
-    @Override
-    protected void initialize() {
-      intakeSubsystem.run(LOAD);
-    }
-
-    @Override
-    protected boolean isFinished() {
-      return true;
-      // intakeSubsystem.isLoaded();
-      // FIXME convert from a delay to a stop when limit switch is pressed. Limit switches are
-      // currently broken.
-    }
-    /*
-    @Override
-    protected void end() {
-      intakeSubsystem.stop();
-    }*/
-  }
 
   // continue to run the intake to ensure the block is grasped in the correct orientation
-  static class Hold extends TimedCommand {
+  /*static class Hold extends TimedCommand {
 
     private final IntakeSubsystem intakeSubsystem;
 
@@ -113,37 +107,14 @@ public class IntakeLoad extends CommandGroup {
 
     @Override
     protected boolean isFinished() {
-      return isTimedOut() /*&& intakeSubsystem.isLoaded()*/;
+      return isTimedOut() /*&& intakeSubsystem.isLoaded();
     }
 
     @Override
     protected void end() {
       intakeSubsystem.stop();
     }
-  }
+  }*/
 
-  // lift the shoulder so the lift can be raised with the block
-  static class StowShoulder extends Command {
 
-    private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
-
-    public StowShoulder() {
-      requires(shoulderSubsystem);
-    }
-
-    @Override
-    protected void initialize() {
-      shoulderSubsystem.setPosition(6250);
-    }
-
-    @Override
-    protected boolean isFinished() {
-      return shoulderSubsystem.onTarget();
-    }
-
-    /*@Override
-    protected void end() {
-      shoulderSubsystem.stop();
-    }*/
-  }
 }
