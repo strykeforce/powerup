@@ -1,0 +1,245 @@
+{
+  "dividerPosition": 0.007926023778071334,
+  "tabPane": [
+    {
+      "title": "Pit Dashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/Pit/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Climber",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Climber/Release",
+                  "_title": "Climber Release"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Climber/Unwind",
+                  "_title": "Climber Unwind"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Climber/Stop",
+                  "_title": "Climber Stop"
+                }
+              ]
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Zero",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Lift/Zero",
+                  "_title": "Lift Zero"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Shoulder/Zero",
+                  "_title": "Shoulder Zero"
+                }
+              ]
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Wheels Azimuth Zero",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/0",
+                  "_title": "Wheels/Inc/0"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/0",
+                  "_title": "Wheels/Dec/0"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/1",
+                  "_title": "Wheels/Inc/1"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/1",
+                  "_title": "Wheels/Dec/1"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/2",
+                  "_title": "Wheels/Inc/2"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/2",
+                  "_title": "Wheels/Dec/2"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Inc/3",
+                  "_title": "Wheels/Inc/3"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Dec/3",
+                  "_title": "Wheels/Dec/3"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Reset",
+                  "_title": "Wheels/Reset"
+                }
+              ]
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Wheels",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/LockZero",
+                  "_title": "Wheel Azimuth"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/Lock2000",
+                  "_title": "Wheel Azimuth"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Pit/Wheels/UnlockZero",
+                  "_title": "Wheel Azimuth"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Game Dashboard",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Block obtained?",
+              "_title": "/SmartDashboard/Block obtained?",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Test Dashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/Test/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Azimuth",
+              "_title": "Azimuth"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Path/StraightLine",
+              "_title": "Path/StraightLine"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Drive Zero",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/DriveZero",
+                  "_title": "Drive Zero"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/DriveZeroBackwards",
+                  "_title": "Drive Zero"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

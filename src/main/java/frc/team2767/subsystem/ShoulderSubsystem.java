@@ -18,7 +18,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
-public class ShoulderSubsystem extends Subsystem implements Graphable {
+public class ShoulderSubsystem extends Subsystem implements Graphable, Positionable {
   private static final int ID = 40; // PDP 11
 
   private static final Logger logger = LoggerFactory.getLogger(ShoulderSubsystem.class);
@@ -56,6 +56,13 @@ public class ShoulderSubsystem extends Subsystem implements Graphable {
   public void setPosition(double position) {
     logger.debug("positioning to {}", position);
     talon.set(MotionMagic, position);
+  }
+
+  @Override
+  public void resetPosition() {
+    int position = talon.getSelectedSensorPosition(0);
+    logger.info("resetting position = {}", position);
+    setPosition(position);
   }
 
   public boolean onTarget() {

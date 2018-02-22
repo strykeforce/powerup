@@ -9,21 +9,29 @@ public abstract class SubsystemModule {
 
   @Binds
   @IntoSet
-  public abstract Graphable climberSubsystem(ClimberSubsystem climberSubsystem);
+  public abstract Graphable climberSubsystemGraphable(ClimberSubsystem climberSubsystem);
 
   @Binds
   @IntoSet
-  public abstract Graphable driveSubsystem(DriveSubsystem driveSubsystem);
+  public abstract Graphable driveSubsystemGraphable(DriveSubsystem driveSubsystem);
 
   @Binds
   @IntoSet
-  public abstract Graphable intakeSubsystem(IntakeSubsystem intakeSubsystem);
+  public abstract Graphable intakeSubsystemGraphable(IntakeSubsystem intakeSubsystem);
 
   @Binds
   @IntoSet
-  public abstract Graphable liftSubsystem(LiftSubsystem liftSubsystem);
+  public abstract Graphable liftSubsystemGraphable(LiftSubsystem liftSubsystem);
 
   @Binds
   @IntoSet
-  public abstract Graphable shoulderSubsystem(ShoulderSubsystem shoulderSubsystem);
+  public abstract Graphable shoulderSubsystemGraphable(ShoulderSubsystem shoulderSubsystem);
+
+  @Binds
+  @IntoSet
+  public abstract Positionable liftSubsystemPositionable(LiftSubsystem liftSubsystem);
+
+  @Binds
+  @IntoSet
+  public abstract Positionable shoulderSubsystemPositionable(ShoulderSubsystem shoulderSubsystem);
 }

@@ -3,7 +3,9 @@ package frc.team2767.subsystem;
 import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
 import frc.team2767.command.drive.TeleOpDriveCommand;
@@ -11,6 +13,7 @@ import frc.team2767.motion.AzimuthController;
 import frc.team2767.motion.AzimuthControllerFactory;
 import frc.team2767.motion.PathController;
 import frc.team2767.motion.PathControllerFactory;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
@@ -24,9 +27,13 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 public class DriveSubsystem extends Subsystem implements Graphable {
 
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
+
+  private final int kTicksPerTooth;
+
   private final SwerveDrive swerve;
   private final PathControllerFactory pathControllerFactory;
   private final AzimuthControllerFactory azimuthControllerFactory;
+  private final Settings settings;
   private PathController pathController;
   private AzimuthController azimuthController;
 
@@ -39,8 +46,11 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     this.swerve = swerve;
     this.pathControllerFactory = pathControllerFactory;
     this.azimuthControllerFactory = azimuthControllerFactory;
+    this.settings = settings;
+    kTicksPerTooth = settings.getTable("POWERUP.WHEEL").getLong("ticksPerTooth").intValue();
     if (!settings.isEvent() && settings.getTable("POWERUP.AZIMUTH").getBoolean("test", false))
       azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
+    logger.info("ticksPerTooth = {}", kTicksPerTooth);
   }
 
   @Override
@@ -52,7 +62,32 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     swerve.zeroAzimuthEncoders();
   }
 
-  public void alignWheels() {
+  private int getNominalZero(int wheel) {
+    Toml toml = settings.getTable("POWERUP.WHEEL");
+    List<Long> wheels = toml.getList("nominalZero");
+    return wheels.get(wheel).intValue();
+  }
+
+  public void resetWheelAlignmentToNominal() {
+    Preferences prefs = Preferences.getInstance();
+    for (int i = 0; i < 4; i++) {
+      int position = getNominalZero(i);
+      prefs.putInt(SwerveDrive.getPreferenceKeyForWheel(i), position);
+      logger.warn("set wheel {} to nominal zero = {}", i, position);
+    }
+  }
+
+  public void adjustWheelAlignment(int wheel, int numTeeth) {
+    Preferences prefs = Preferences.getInstance();
+    int nominal = getNominalZero(wheel);
+    String key = SwerveDrive.getPreferenceKeyForWheel(wheel);
+    int current = prefs.getInt(key, nominal);
+    current += numTeeth * kTicksPerTooth;
+    prefs.putInt(key, current);
+    logger.info("adjusted wheel {} by {} teeth, current zero = {}", wheel, numTeeth, current);
+  }
+
+  public void alignWheelsToBar() {
     swerve.saveAzimuthPositions();
     swerve.zeroAzimuthEncoders();
 
@@ -130,6 +165,18 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   public void zeroGyro() {
     logger.warn("setting gyro yaw to zero");
     swerve.getGyro().zeroYaw();
+  }
+
+  public void setAzimuthPosition(int position) {
+    for (Wheel wheel : swerve.getWheels()) {
+      wheel.setAzimuthPosition(position);
+    }
+  }
+
+  public void disableAzimuths() {
+    for (Wheel wheel : swerve.getWheels()) {
+      wheel.disableAzimuth();
+    }
   }
 
   public AHRS getGyro() {

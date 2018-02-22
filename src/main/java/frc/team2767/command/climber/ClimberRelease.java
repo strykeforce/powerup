@@ -1,24 +1,25 @@
 package frc.team2767.command.climber;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.ClimberSubsystem;
 
-public class ClimberClimb extends Command {
+public class ClimberRelease extends TimedCommand {
 
   private final ClimberSubsystem climberSubsystem = Robot.INJECTOR.climberSubsystem();
 
-  public ClimberClimb() {
+  public ClimberRelease() {
+    super("Release", 0.5); // about 1/4 winch shaft rotation
     requires(climberSubsystem);
   }
 
   @Override
   protected void initialize() {
-    climberSubsystem.climb();
+    climberSubsystem.release();
   }
 
   @Override
-  protected boolean isFinished() {
-    return climberSubsystem.isFastClimbFinished();
+  protected void end() {
+    climberSubsystem.stop();
   }
 }

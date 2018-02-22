@@ -53,8 +53,6 @@ dependencies {
         // https://github.com/google/dagger/issues/897
         exclude(group: 'com.google.guava')
     }
-
-
 }
 
 jar {

@@ -19,7 +19,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
-public class LiftSubsystem extends Subsystem implements Graphable {
+public class LiftSubsystem extends Subsystem implements Graphable, Positionable {
   private static final int MASTER_ID = 50; // PDP 15
   private static final int SLAVE_ID = 51; // PDP 14
 
@@ -66,10 +66,6 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       logger.error("Talons not present");
     } else {
       rearTalon.follow(frontTalon);
-      zeroPosition();
-      //      frontTalon.setSelectedSensorPosition(0, 0, TIMEOUT);
-      //      while (frontTalon.getSelectedSensorPosition(0) > 10) Timer.delay(TIMEOUT / 1000);
-      logger.info("done setting encoder to zero");
     }
 
     Toml toml = settings.getTable(TABLE);
@@ -118,6 +114,13 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     checkEncoder = true;
     positionStartTime = System.nanoTime();
     stableCount = 0;
+    frontTalon.set(MotionMagic, position);
+  }
+
+  @Override
+  public void resetPosition() {
+    int position = frontTalon.getSelectedSensorPosition(0);
+    logger.info("resetting position = {}", position);
     frontTalon.set(MotionMagic, position);
   }
 
@@ -176,6 +179,15 @@ public class LiftSubsystem extends Subsystem implements Graphable {
     setPosition(position);
   }
 
+  public void positionToZero() {
+    logger.info("positioning to zero position");
+    frontTalon.set(PercentOutput, kDownOutput);
+  }
+
+  public boolean onZero() {
+    return frontTalon.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
   public void zeroPosition() {
     if (!event && !frontTalon.getSensorCollection().isRevLimitSwitchClosed()) {
       logger.error("LIFT limit switch not detected - disabling closed-loop positioning");
@@ -183,26 +195,12 @@ public class LiftSubsystem extends Subsystem implements Graphable {
       return;
     }
 
-    int zero = preferences.getInt(ZERO, 0);
-    int setpoint = getAbsolutePosition() - zero;
-    ErrorCode e = frontTalon.setSelectedSensorPosition(setpoint, 0, TIMEOUT);
-    Errors.check(e, logger);
+    frontTalon.selectProfileSlot(0, 0);
+    setpoint = 0;
+    ErrorCode err = frontTalon.setSelectedSensorPosition(setpoint, 0, TIMEOUT);
+    Errors.check(err, logger);
     frontTalon.set(MotionMagic, setpoint);
     logger.info("zeroed lift position, setpoint = {}", setpoint);
-  }
-
-  public void saveAbsoluteZeroPosition() {
-    int pos = getAbsolutePosition();
-    preferences.putInt(ZERO, pos);
-    logger.info("saved absolute zero = {}", pos);
-  }
-
-  private int getAbsolutePosition() {
-    if (frontTalon == null) {
-      logger.error("front Talon not present, returning 0 for getAzimuthAbsolutePosition()");
-      return 0;
-    }
-    return frontTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
   }
 
   public void openLoopUp() {

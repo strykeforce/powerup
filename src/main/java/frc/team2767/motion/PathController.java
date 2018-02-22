@@ -1,12 +1,14 @@
 package frc.team2767.motion;
 
+import static edu.wpi.first.wpilibj.DriverStation.Alliance.Red;
+
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 import com.kauailabs.navx.frc.AHRS;
 import com.moandjiezana.toml.Toml;
 import com.squareup.moshi.JsonWriter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
-import frc.team2767.Robot;
 import frc.team2767.Settings;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -35,7 +37,8 @@ public class PathController implements Runnable, Item {
 
   private final double kPAzimuth;
   private final double kPDistance;
-  private final double kTicksPerMeter;
+  private final double kTicksPerMeterRed;
+  private final double kTicksPerMeterBlue;
 
   private final Trajectory.Config config;
   private final Waypoint[] waypoints;
@@ -52,6 +55,7 @@ public class PathController implements Runnable, Item {
 
   private double forward, strafe, azimuth, distance;
   private Segment segment;
+  private double ticksPerMeter;
 
   /**
    * Runs a PathFinder trajectory.
@@ -60,7 +64,6 @@ public class PathController implements Runnable, Item {
    */
   @Inject
   public PathController(String path, @Provided Settings settings, @Provided SwerveDrive drive) {
-    settings = Robot.INJECTOR.settings();
     Toml toml = settings.getPath(path);
     if (toml == null) throw new IllegalArgumentException(path);
     this.drive = drive;
@@ -90,15 +93,22 @@ public class PathController implements Runnable, Item {
     toml = settings.getTable("POWERUP.PATH");
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
-    kTicksPerMeter = toml.getLong("ticksPerInch").doubleValue() * INCHES_PER_METER;
+    kTicksPerMeterRed = toml.getLong("ticksPerInchRed").doubleValue() * INCHES_PER_METER;
+    kTicksPerMeterBlue = toml.getLong("ticksPerInchBlue").doubleValue() * INCHES_PER_METER;
+    ticksPerMeter = kTicksPerMeterRed;
 
     logger.info("p_azimuth = {}", kPAzimuth);
     logger.info("p_distance = {}", kPDistance);
-    logger.info("ticksPerMeter = {}", kTicksPerMeter);
+    logger.info("ticksPerMeterRed = {}", kTicksPerMeterRed);
+    logger.info("ticksPerMeterBlue = {}", kTicksPerMeterBlue);
     logger.info(this.toString());
   }
 
   public void start() {
+    DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
+    ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
+    logger.info("{} alliance, ticks per meter = {}", alliance, ticksPerMeter);
+
     for (int i = 0; i < 4; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
     }
@@ -125,7 +135,8 @@ public class PathController implements Runnable, Item {
     }
     segment = trajectory.get(iteration);
 
-    double vel_desired = segment.velocity / config.max_velocity;
+    double vel_desired =
+        segment.velocity / config.max_velocity; // TODO use max auton velocity to scale
     double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
 
     forward = Math.cos(segment.heading) * vel_setpoint;
@@ -148,7 +159,7 @@ public class PathController implements Runnable, Item {
   }
 
   private double distanceError(double position) {
-    double desired = kTicksPerMeter * position;
+    double desired = ticksPerMeter * position;
     distance = 0;
 
     for (int i = 0; i < 4; i++) {
@@ -220,7 +231,7 @@ public class PathController implements Runnable, Item {
       case PATH_SEG_POSITION_METERS:
         return () -> segment.position;
       case PATH_SEG_POSITION_TICKS:
-        return () -> kTicksPerMeter * segment.position;
+        return () -> kTicksPerMeterRed * segment.position;
       case PATH_SEG_VELOCITY:
         return () -> segment.velocity;
       case PATH_SEG_ACCELERATION:
@@ -232,7 +243,7 @@ public class PathController implements Runnable, Item {
       case PATH_DISTANCE:
         return () -> distance;
       case PATH_POSITION_ERROR:
-        return () -> kTicksPerMeter * segment.position - distance;
+        return () -> kTicksPerMeterRed * segment.position - distance;
       default:
         logger.error("invalid Measure: {}", measure);
     }
