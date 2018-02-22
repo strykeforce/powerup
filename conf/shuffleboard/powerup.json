@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.00545950864422202,
+  "dividerPosition": 0.006787330316742082,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -11,17 +11,6 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Pit/Shoulder/Zero",
-              "_title": "Shoulder"
-            }
-          },
           "0,0": {
             "size": [
               1,
@@ -34,17 +23,17 @@
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Pit/Climber/Release",
-                  "_title": "SmartDashboard/Pit/Climber/Release"
+                  "_title": "Climber Release"
                 },
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Pit/Climber/Unwind",
-                  "_title": "SmartDashboard/Pit/Climber/Unwind"
+                  "_title": "Climber Unwind"
                 },
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Pit/Climber/Stop",
-                  "_title": "SmartDashboard/Pit/Climber/Stop"
+                  "_title": "Climber Stop"
                 }
               ]
             }
@@ -56,30 +45,19 @@
             ],
             "content": {
               "_type": "List Layout",
-              "_title": "Lift",
+              "_title": "Zero",
               "_children": [
                 {
                   "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Pit/Lift/SaveZero",
-                  "_title": "SmartDashboard/Pit/Lift/SaveZero"
+                  "_source0": "network_table:///SmartDashboard/Pit/Lift/Zero",
+                  "_title": "Lift Zero"
                 },
                 {
                   "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Pit/Lift/Zero",
-                  "_title": "SmartDashboard/Pit/Lift/Zero"
+                  "_source0": "network_table:///SmartDashboard/Pit/Shoulder/Zero",
+                  "_title": "Shoulder Zero"
                 }
               ]
-            }
-          },
-          "0,2": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Basic FMS Info",
-              "_source0": "network_table:///FMSInfo",
-              "_title": "FMSInfo"
             }
           },
           "2,0": {
@@ -151,17 +129,17 @@
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Pit/Wheels/LockZero",
-                  "_title": "Wheels/LockZero"
+                  "_title": "Wheel Azimuth"
                 },
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Pit/Wheels/Lock2000",
-                  "_title": "Wheels/Lock2000"
+                  "_title": "Wheel Azimuth"
                 },
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Pit/Wheels/UnlockZero",
-                  "_title": "Wheels/UnlockZero"
+                  "_title": "Wheel Azimuth"
                 }
               ]
             }
@@ -201,17 +179,6 @@
               "_title": "/SmartDashboard/Block obtained?",
               "colorWhenTrue": "#7CFC00FF",
               "colorWhenFalse": "#8B0000FF"
-            }
-          },
-          "3,1": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Basic FMS Info",
-              "_source0": "network_table:///FMSInfo",
-              "_title": "FMSInfo"
             }
           }
         }
