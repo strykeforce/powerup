@@ -10,8 +10,8 @@ public class DriveZero extends Command {
   private final DriveSubsystem drive = Robot.INJECTOR.driveSubsystem();
   private final double output;
 
-  public DriveZero(double output) {
-    super("Drive Zero");
+  public DriveZero(String name, double output) {
+    super(name);
     this.output = output;
     requires(drive);
   }

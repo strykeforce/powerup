@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.006787330316742082,
+  "dividerPosition": 0.007926023778071334,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -160,7 +160,7 @@
           "0,0": {
             "size": [
               3,
-              3
+              1
             ],
             "content": {
               "_type": "Camera Stream",
@@ -194,28 +194,6 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Test/DriveZero",
-              "_title": "DriveZero"
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Test/DriveZeroBackwards",
-              "_title": "DriveZeroBackwards"
-            }
-          },
           "2,0": {
             "size": [
               1,
@@ -236,6 +214,28 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Test/Path/StraightLine",
               "_title": "Path/StraightLine"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Drive Zero",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/DriveZero",
+                  "_title": "Drive Zero"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/DriveZeroBackwards",
+                  "_title": "Drive Zero"
+                }
+              ]
             }
           }
         }

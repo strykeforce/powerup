@@ -21,16 +21,19 @@ public class SmartDashboardControls {
     Controls.logger.debug("initializing SmartDashboard controls");
     if (settings.isIsolatedTestMode()) return;
 
+    if (!settings.isEvent()) {
+      addPitCommands();
+      addTestCommands();
+    }
+  }
+
+  private void addPitCommands() {
+    addWheelPitCommands();
     SmartDashboard.putData("Pit/Climber/Unwind", new ClimberUnwind());
     SmartDashboard.putData("Pit/Climber/Stop", new ClimberStop());
     SmartDashboard.putData("Pit/Climber/Release", new ClimberRelease());
-
     SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
-
     SmartDashboard.putData("Pit/Shoulder/Zero", new ShoulderZero());
-
-    addWheelPitCommands();
-    addTestCommands();
   }
 
   private void addWheelPitCommands() {
@@ -49,8 +52,8 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
-    SmartDashboard.putData("Test/DriveZero", new DriveZero(0.5));
-    SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero(-0.5));
+    SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
+    SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
     SmartDashboard.putData("Test/Azimuth", new AzimuthCommand(0));
     SmartDashboard.putData(
         "Test/Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
