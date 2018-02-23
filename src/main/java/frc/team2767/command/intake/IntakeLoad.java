@@ -82,12 +82,11 @@ public class IntakeLoad extends CommandGroup {
     @Override
     protected boolean isFinished() {
       return true;
-      //return shoulderSubsystem.onTarget();
+      // return shoulderSubsystem.onTarget();
     }
   }
 
   // run the intake until a block triggers the limit switch
-
 
   // continue to run the intake to ensure the block is grasped in the correct orientation
   /*static class Hold extends TimedCommand {
@@ -115,6 +114,5 @@ public class IntakeLoad extends CommandGroup {
       intakeSubsystem.stop();
     }
   }*/
-
 
 }
