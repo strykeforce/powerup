@@ -20,6 +20,7 @@ import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderDown;
 import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.command.shoulder.ShoulderStop;
 import frc.team2767.command.shoulder.ShoulderUp;
 import frc.team2767.command.shoulder.ShoulderZero;
 import javax.inject.Inject;
@@ -91,10 +92,13 @@ public class PowerUpControls {
         .whenActive(new ShoulderPosition(kIntakePosition));
 
     // shoulder
-    new JoystickButton(board, Switch.SHOULDER_UP.index).whileActive(new ShoulderUp());
-    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whileActive(new ShoulderDown());
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whenPressed(new ShoulderUp());
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whenReleased(new ShoulderStop());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whenPressed(new ShoulderDown());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whenReleased(new ShoulderStop());
 
     Controls.logger.info("scaleLowPosition = {}", kScaleLow);
+
     Controls.logger.info("scaleMidPosition = {}", kScaleMid);
     Controls.logger.info("scaleHighPosition = {}", kScaleHigh);
     Controls.logger.info("intakePosition = {}", kIntakePosition);

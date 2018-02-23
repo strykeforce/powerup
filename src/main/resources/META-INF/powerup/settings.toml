@@ -73,8 +73,8 @@ isolatedTestMode = false
   downFastVelocity = 1500
 
 [POWERUP.SHOULDER]
-  upOutput       = 0.2
-  downOutput     = -0.2
+  upOutput       = 0.3
+  downOutput     = -0.3
   stopOutput     = 0.0
   closeEnough    = 75
   jogIncrement   = 300

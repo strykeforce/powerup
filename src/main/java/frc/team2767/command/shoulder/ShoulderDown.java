@@ -14,6 +14,6 @@ public class ShoulderDown extends InstantCommand {
 
   @Override
   protected void initialize() {
-    shoulderSubsystem.down();
+    shoulderSubsystem.openLoopDown();
   }
 }
