@@ -53,6 +53,9 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     logger.info("closeEnough = {}", kCloseEnough);
     logger.info("zeroPosition = {}", kZeroPosition);
     logger.info("jogIncrement = {}", kJogIncrement);
+    logger.info("upOutput = {}", kUpOutput);
+    logger.info("downOutput = {}", kDownOutput);
+    logger.info("stopOutput = {}", kStopOutput);
   }
 
   public void setPosition(int position) {
