@@ -133,8 +133,9 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
 
       if (Math.abs(position - startPosition) == 0) {
         frontTalon.set(Disabled, 0);
+        if (setpoint != 0) logger.error("no encoder movement detected in {} ms", elapsed / 1e6);
         setpoint = position;
-        logger.error("no encoder movement detected in {} ms", elapsed / 1e6);
+        positionStartTime += elapsed;
         return;
       } else checkEncoder = false;
     }
