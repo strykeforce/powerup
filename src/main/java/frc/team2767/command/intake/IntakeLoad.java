@@ -2,21 +2,21 @@ package frc.team2767.command.intake;
 
 import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
 
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
+import frc.team2767.Settings;
 import frc.team2767.subsystem.IntakeSubsystem;
 import frc.team2767.subsystem.LiftSubsystem;
 import frc.team2767.subsystem.ShoulderSubsystem;
 
 public class IntakeLoad extends CommandGroup {
 
-  public IntakeLoad() {
-    addSequential(new Intake());
-    addSequential(new DropLift());
+  public IntakeLoad(Position position) {
+    addParallel(new Intake());
+    addParallel(new PositionLift(position));
     addSequential(new DropShoulder());
-    // addSequential(new Hold());
-    //    addSequential(new StowShoulder());
   }
 
   static class Intake extends Command {
@@ -39,17 +39,33 @@ public class IntakeLoad extends CommandGroup {
   }
 
   // lower lift to lowest position
-  static class DropLift extends Command {
+  static class PositionLift extends Command {
 
     private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();
+    private final int position;
 
-    DropLift() {
+    PositionLift(Position position) {
+      Settings settings = Robot.INJECTOR.settings();
+      Toml toml = settings.getTable("POWERUP.LIFT");
+      int kLiftPortal = toml.getLong("portalPosition").intValue();
+      int kLiftStow = toml.getLong("stowPosition").intValue();
+
+      switch (position) {
+        case GROUND:
+          this.position = kLiftStow;
+          break;
+        case PORTAL:
+          this.position = kLiftPortal;
+          break;
+        default:
+          this.position = kLiftStow;
+      }
       requires(liftSubsystem);
     }
 
     @Override
     protected void initialize() {
-      liftSubsystem.setPosition(0);
+      liftSubsystem.setPosition(position);
     }
 
     @Override
@@ -82,37 +98,11 @@ public class IntakeLoad extends CommandGroup {
     @Override
     protected boolean isFinished() {
       return true;
-      // return shoulderSubsystem.onTarget();
     }
   }
 
-  // run the intake until a block triggers the limit switch
-
-  // continue to run the intake to ensure the block is grasped in the correct orientation
-  /*static class Hold extends TimedCommand {
-
-    private final IntakeSubsystem intakeSubsystem;
-
-    Hold() {
-      super(2);
-      intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
-      requires(intakeSubsystem);
-    }
-
-    @Override
-    protected void initialize() {
-      intakeSubsystem.run(LOAD);
-    }
-
-    @Override
-    protected boolean isFinished() {
-      return isTimedOut() /*&& intakeSubsystem.isLoaded();
-    }
-
-    @Override
-    protected void end() {
-      intakeSubsystem.stop();
-    }
-  }*/
-
+  public enum Position {
+    PORTAL,
+    GROUND
+  }
 }
