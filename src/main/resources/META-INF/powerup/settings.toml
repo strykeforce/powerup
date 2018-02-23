@@ -62,6 +62,7 @@ isolatedTestMode = false
   scaleMidPosition     = 13_300
   scaleHighPosition    = 17_100
   stowPosition         = 0
+  portalPosition       = 5200
   downVelocityShiftPos = 7000
 
   # velocities
