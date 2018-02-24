@@ -88,3 +88,7 @@ isolatedTestMode = false
 [POWERUP.WHEEL]
   ticksPerTooth = 108
   nominalZero   = [1973, 1995, 2045, 2011]
+
+[POWERUP.SMARTDASHBOARD]
+  enablePit  = true
+  enableTest = false
