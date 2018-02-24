@@ -5,8 +5,10 @@
 ##
 
 [THIRDCOAST.SWERVE]
-  length = 20.625
-  width  = 26.125
+  length        = 20.625
+  width         = 26.125
+  gyroRateCoeff = 0.5
+
 
 [THIRDCOAST.WHEEL]
   driveSetpointMax = 10_000

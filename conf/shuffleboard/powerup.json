@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.007926023778071334,
+  "dividerPosition": 0.007913669064748202,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -7,7 +7,6 @@
       "autoPopulatePrefix": "SmartDashboard/Pit/",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -153,7 +152,6 @@
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -190,7 +188,6 @@
       "autoPopulatePrefix": "SmartDashboard/Test/",
       "widgetPane": {
         "gridSize": 128.0,
-        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
