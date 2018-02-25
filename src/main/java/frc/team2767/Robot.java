@@ -1,5 +1,7 @@
 package frc.team2767;
 
+import static frc.team2767.command.StartPosition.*;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -7,9 +9,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.OwnedSidesSettable;
+import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.command.auton.CrossTheLine;
-import frc.team2767.command.auton.PathCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
 
   private int autonSwitchStableCount = 0;
   private int autonSwitchPosition = -1;
+  private StartPosition startPosition;
   private int newAutonSwitchPosition;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
@@ -95,25 +98,17 @@ public class Robot extends TimedRobot {
     }
 
     if (autonHasRun) return;
+    // Most significant digit: 1 - Left, 2 - Center, 3 - Right
     // auton commands need time to compute path trajectories so instantiate as early as possible
     if (checkAutonomousSwitch()) {
-      logger.info("initializing auton command {}", String.format("%02X", autonSwitchPosition));
+      logger.info(
+          "initializing auton command {}, start position = {}",
+          String.format("%02X", autonSwitchPosition),
+          startPosition);
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
-        case 0x01:
+        case 0x20:
           autonCommand = new CenterSwitchCommand();
-          break;
-        case 0x02:
-          autonCommand = new PathCommand("straight_forward_test");
-          break;
-        case 0x03:
-          autonCommand = new PathCommand("corner_test");
-          break;
-        case 0x30:
-          autonCommand = new LogCommand("Running auton command 0x30");
-          break;
-        case 0x3F:
-          autonCommand = new LogCommand("Running auton command 0x3F - Last");
           break;
         case 0x00:
         default:
@@ -130,6 +125,7 @@ public class Robot extends TimedRobot {
     logger.debug("reset auton");
     autonCommand = new LogCommand("NO AUTON SELECTED");
     autonSwitchPosition = -1;
+    startPosition = UNKNOWN;
   }
 
   private boolean checkAutonomousSwitch() {
@@ -146,6 +142,19 @@ public class Robot extends TimedRobot {
     if (autonSwitchStableCount > AUTON_SWITCH_DEBOUNCED && autonSwitchPosition != switchPosition) {
       changed = true;
       autonSwitchPosition = switchPosition;
+      switch (autonSwitchPosition >>> 4) {
+        case 1:
+          startPosition = LEFT;
+          break;
+        case 2:
+          startPosition = CENTER;
+          break;
+        case 3:
+          startPosition = RIGHT;
+          break;
+        default:
+          startPosition = UNKNOWN;
+      }
     }
     return changed;
   }
@@ -172,7 +181,7 @@ public class Robot extends TimedRobot {
     }
 
     if (autonCommand instanceof OwnedSidesSettable)
-      ((OwnedSidesSettable) autonCommand).setOwnedSide(nearSwitch, scale);
+      ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
 
     autonHasRun = true;
     autonCommand.start();
