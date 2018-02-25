@@ -1,6 +1,7 @@
 package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZero;
 
@@ -14,6 +15,7 @@ public abstract class PowerUpCommandGroup extends CommandGroup {
   static class ZeroPositionables extends CommandGroup {
 
     public ZeroPositionables() {
+      addParallel(new ZeroGyroYawCommand());
       addParallel(new ShoulderZero());
       addParallel(new LiftZero());
     }

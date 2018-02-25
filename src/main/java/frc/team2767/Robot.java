@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   private Scheduler scheduler;
   private boolean isolatedTestMode;
   private Command autonCommand;
+  private boolean autonHasRun;
 
   @Override
   public void robotInit() {
@@ -87,6 +88,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    if (isolatedTestMode) return;
+    if (alignWheelsButton.hasActivated()) {
+      logger.debug("align wheels button activated");
+      driveSubsystem.alignWheelsToBar();
+    }
+
+    if (autonHasRun) return;
     // auton commands need time to compute path trajectories so instantiate as early as possible
     if (checkAutonomousSwitch()) {
       logger.info("initializing auton command {}", String.format("%02X", autonSwitchPosition));
@@ -101,11 +109,11 @@ public class Robot extends TimedRobot {
         case 0x03:
           autonCommand = new PathCommand("corner_test");
           break;
-        case 0x3F:
-          autonCommand = new LogCommand("Running auton command 0x3F - Last");
-          break;
         case 0x30:
           autonCommand = new LogCommand("Running auton command 0x30");
+          break;
+        case 0x3F:
+          autonCommand = new LogCommand("Running auton command 0x3F - Last");
           break;
         case 0x00:
         default:
@@ -115,11 +123,6 @@ public class Robot extends TimedRobot {
           autonCommand = new CrossTheLine();
           break;
       }
-    }
-    if (isolatedTestMode) return;
-    if (alignWheelsButton.hasActivated()) {
-      logger.debug("align wheels button activated");
-      driveSubsystem.alignWheelsToBar();
     }
   }
 
@@ -171,6 +174,7 @@ public class Robot extends TimedRobot {
     if (autonCommand instanceof OwnedSidesSettable)
       ((OwnedSidesSettable) autonCommand).setOwnedSide(nearSwitch, scale);
 
+    autonHasRun = true;
     autonCommand.start();
   }
 

@@ -95,7 +95,6 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   public void zeroPosition() {
     logger.info("setting selected sensor to position {}", kZeroPosition);
     talon.setSelectedSensorPosition(kZeroPosition, 0, TIMEOUT);
-    down(); // jog down to avoid lift buttresses
   }
 
   public void up() {
