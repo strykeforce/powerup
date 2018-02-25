@@ -11,7 +11,7 @@
 
 
 [THIRDCOAST.WHEEL]
-  driveSetpointMax = 10_000
+  driveSetpointMax = 25_000
 
 [[TALON]]
   name = "azimuth"

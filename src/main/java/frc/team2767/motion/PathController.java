@@ -86,7 +86,7 @@ public class PathController implements Runnable, Item {
         "{} generated {} segments in {} ms",
         path,
         trajectory.length(),
-        (System.nanoTime() - start) / 1_000_000);
+        (System.nanoTime() - start) / 1e6);
 
     notifier = new Notifier(this);
 
@@ -135,8 +135,7 @@ public class PathController implements Runnable, Item {
     }
     segment = trajectory.get(iteration);
 
-    double vel_desired =
-        segment.velocity / config.max_velocity; // TODO use max auton velocity to scale
+    double vel_desired = segment.velocity / 2.886; // TODO: calc from settings
     double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
 
     forward = Math.cos(segment.heading) * vel_setpoint;
@@ -146,15 +145,6 @@ public class PathController implements Runnable, Item {
     if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
     drive.drive(forward, strafe, azimuth);
-
-    //    logger.debug(
-    //        "iteration = {} position = {} velocity = {}, forward = {}, strafe = {} azimuth = {}",
-    //        iteration,
-    //        segment.position,
-    //        segment.velocity,
-    //        forward,
-    //        strafe,
-    //        azimuth);
     iteration++;
   }
 
@@ -174,8 +164,7 @@ public class PathController implements Runnable, Item {
         position,
         desired,
         error);
-    //    return error;
-    return 0; // FIXME: testing only
+    return error;
   }
 
   @Override

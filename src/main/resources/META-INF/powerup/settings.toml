@@ -17,9 +17,9 @@ isolatedTestMode = false
 
 [POWERUP.PATH]
   p_azimuth        = -0.004
-  p_distance       = 0.01
-  ticksPerInchRed  = 1836 # carpet-x 50% percentile
-  ticksPerInchBlue = 1836 # carpet-x 50% percentile
+  p_distance       = 6e-6
+  ticksPerInchRed  = 2200 # carpet-x pull test
+  ticksPerInchBlue = 2200
 
 [POWERUP.AZIMUTH]
   p = 0.035
