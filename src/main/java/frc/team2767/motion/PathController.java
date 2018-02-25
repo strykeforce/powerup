@@ -56,6 +56,7 @@ public class PathController implements Runnable, Item {
   private double forward, strafe, azimuth, distance;
   private Segment segment;
   private double ticksPerMeter;
+  private double metersPerSecMax;
 
   /**
    * Runs a PathFinder trajectory.
@@ -107,7 +108,13 @@ public class PathController implements Runnable, Item {
   public void start() {
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
-    logger.info("{} alliance, ticks per meter = {}", alliance, ticksPerMeter);
+    double ticksPerSecMax = wheels[0].getDriveSetpointMax() * 10.0;
+    metersPerSecMax = ticksPerSecMax / ticksPerMeter;
+    logger.info(
+        "{} alliance, ticks per meter = {}, max vel = {} m/s",
+        alliance,
+        ticksPerMeter,
+        metersPerSecMax);
 
     for (int i = 0; i < 4; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
@@ -135,7 +142,7 @@ public class PathController implements Runnable, Item {
     }
     segment = trajectory.get(iteration);
 
-    double vel_desired = segment.velocity / 2.886; // TODO: calc from settings
+    double vel_desired = segment.velocity / metersPerSecMax;
     double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
 
     forward = Math.cos(segment.heading) * vel_setpoint;
