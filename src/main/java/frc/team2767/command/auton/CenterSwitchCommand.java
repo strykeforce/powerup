@@ -2,6 +2,7 @@ package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.team2767.command.OwnedSidesSettable;
+import frc.team2767.command.StartPosition;
 import openrio.powerup.MatchData.OwnedSide;
 
 /**
@@ -24,7 +25,7 @@ public class CenterSwitchCommand extends ConditionalCommand implements OwnedSide
   }
 
   @Override
-  public void setOwnedSide(OwnedSide nearSwitch, OwnedSide scale) {
+  public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
     this.ownedSide = nearSwitch;
     // don't care about scale
   }

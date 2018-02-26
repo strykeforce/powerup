@@ -1,5 +1,6 @@
 package frc.team2767.control;
 
+import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
 import frc.team2767.command.auton.AzimuthCommand;
@@ -19,12 +20,10 @@ public class SmartDashboardControls {
   @Inject
   public SmartDashboardControls(Settings settings) {
     Controls.logger.debug("initializing SmartDashboard controls");
-    if (settings.isIsolatedTestMode()) return;
+    Toml toml = settings.getTable("POWERUP.SMARTDASHBOARD");
 
-    if (!settings.isEvent()) {
-      addPitCommands();
-      addTestCommands();
-    }
+    if (toml.getBoolean("enablePit")) addPitCommands();
+    if (toml.getBoolean("enableTest")) addTestCommands();
   }
 
   private void addPitCommands() {

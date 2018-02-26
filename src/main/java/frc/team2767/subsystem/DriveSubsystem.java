@@ -1,6 +1,7 @@
 package frc.team2767.subsystem;
 
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.AZIMUTH;
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.TRAJECTORY;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.moandjiezana.toml.Toml;
@@ -114,7 +115,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   //
   public void drivePath(PathController pathController) {
     this.pathController = pathController;
-    setDriveMode(CLOSED_LOOP);
+    setDriveMode(TRAJECTORY);
     pathController.start();
   }
 
@@ -136,7 +137,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   //
   public void azimuthTo(double setpoint) {
     logger.info("azimuth to {}", setpoint);
-    setDriveMode(CLOSED_LOOP);
+    setDriveMode(AZIMUTH);
     if (azimuthController == null)
       azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
     azimuthController.enable();

@@ -11,6 +11,7 @@ import frc.team2767.command.climber.ClimberClimb;
 import frc.team2767.command.climber.ClimberDeploy;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.intake.IntakeIn;
+import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.lift.LiftDown;
@@ -20,6 +21,7 @@ import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderDown;
 import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.command.shoulder.ShoulderStop;
 import frc.team2767.command.shoulder.ShoulderUp;
 import frc.team2767.command.shoulder.ShoulderZero;
 import javax.inject.Inject;
@@ -89,12 +91,18 @@ public class PowerUpControls {
         .whenActive(new LogCommand("portal intake button"));
     new JoystickButton(board, Switch.GROUND_INTAKE_POS.index)
         .whenActive(new ShoulderPosition(kIntakePosition));
+    new JoystickButton(board, Switch.PORTAL_INTAKE.index)
+        .whenActive(new IntakeLoad(IntakeLoad.Position.PORTAL));
+    new JoystickButton(board, Switch.PORTAL_INTAKE.index).whenReleased(new IntakeStop());
 
     // shoulder
-    new JoystickButton(board, Switch.SHOULDER_UP.index).whileActive(new ShoulderUp());
-    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whileActive(new ShoulderDown());
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whenPressed(new ShoulderUp());
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whenReleased(new ShoulderStop());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whenPressed(new ShoulderDown());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whenReleased(new ShoulderStop());
 
     Controls.logger.info("scaleLowPosition = {}", kScaleLow);
+
     Controls.logger.info("scaleMidPosition = {}", kScaleMid);
     Controls.logger.info("scaleHighPosition = {}", kScaleHigh);
     Controls.logger.info("intakePosition = {}", kIntakePosition);

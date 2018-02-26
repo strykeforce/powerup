@@ -4,6 +4,7 @@ import jaci.openrio.gradle.frc.RoboRIO
 
 plugins {
     id 'java'
+    id 'groovy'
     id 'jaci.openrio.gradle.GradleRIO' version '2018.02.17'
     id 'com.diffplug.gradle.spotless' version '3.9.0'
     id 'net.ltgt.apt-idea' version '0.14'
@@ -50,9 +51,12 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:15.0'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     compileOnly('com.google.auto.factory:auto-factory:1.0-beta5') {
-        // https://github.com/google/dagger/issues/897
-        exclude(group: 'com.google.guava')
+        exclude(group: 'com.google.guava') // https://github.com/google/dagger/issues/897
     }
+
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    testRuntime 'org.objenesis:objenesis:2.6'
+    testRuntime 'net.bytebuddy:byte-buddy:1.7.10'
 }
 
 jar {

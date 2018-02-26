@@ -17,9 +17,10 @@ isolatedTestMode = false
 
 [POWERUP.PATH]
   p_azimuth        = -0.004
-  p_distance       = 0.01
-  ticksPerInchRed  = 1836 # carpet-x 50% percentile
-  ticksPerInchBlue = 1836 # carpet-x 50% percentile
+  p_distance       = 6e-6
+  p_acceleration   = 0.02
+  ticksPerInchRed  = 2273 # carpet-x pull test
+  ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
   p = 0.035
@@ -62,6 +63,7 @@ isolatedTestMode = false
   scaleMidPosition     = 13_300
   scaleHighPosition    = 17_100
   stowPosition         = 0
+  portalPosition       = 5200
   downVelocityShiftPos = 7000
 
   # velocities
@@ -73,8 +75,8 @@ isolatedTestMode = false
   downFastVelocity = 1500
 
 [POWERUP.SHOULDER]
-  upOutput       = 0.2
-  downOutput     = -0.2
+  upOutput       = 0.3
+  downOutput     = -0.3
   stopOutput     = 0.0
   closeEnough    = 75
   jogIncrement   = 300
@@ -87,3 +89,7 @@ isolatedTestMode = false
 [POWERUP.WHEEL]
   ticksPerTooth = 108
   nominalZero   = [1973, 1995, 2045, 2011]
+
+[POWERUP.SMARTDASHBOARD]
+  enablePit  = true
+  enableTest = false
