@@ -18,7 +18,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
-public class ShoulderSubsystem extends Subsystem implements Graphable {
+public class ShoulderSubsystem extends Subsystem implements Graphable, Positionable {
   private static final int ID = 40; // PDP 11
 
   private static final Logger logger = LoggerFactory.getLogger(ShoulderSubsystem.class);
@@ -34,6 +34,8 @@ public class ShoulderSubsystem extends Subsystem implements Graphable {
   private final int kJogIncrement;
 
   private final TalonSRX talon;
+  private int stableCount;
+  private int setpoint;
 
   @Inject
   public ShoulderSubsystem(Talons talons, Settings settings) {
@@ -51,15 +53,34 @@ public class ShoulderSubsystem extends Subsystem implements Graphable {
     logger.info("closeEnough = {}", kCloseEnough);
     logger.info("zeroPosition = {}", kZeroPosition);
     logger.info("jogIncrement = {}", kJogIncrement);
+    logger.info("upOutput = {}", kUpOutput);
+    logger.info("downOutput = {}", kDownOutput);
+    logger.info("stopOutput = {}", kStopOutput);
   }
 
-  public void setPosition(double position) {
+  public void setPosition(int position) {
+    setpoint = position;
     logger.debug("positioning to {}", position);
     talon.set(MotionMagic, position);
+    stableCount = 0;
+  }
+
+  @Override
+  public void resetPosition() {
+    int position = talon.getSelectedSensorPosition(0);
+    logger.info("resetting position = {}", position);
+    setPosition(position);
   }
 
   public boolean onTarget() {
-    return Math.abs(talon.getClosedLoopError(0)) < kCloseEnough;
+    int error = setpoint - talon.getSelectedSensorPosition(0);
+    if (Math.abs(error) > kCloseEnough) stableCount = 0;
+    else stableCount++;
+    if (stableCount > 3) {
+      logger.debug("stableCount > 3");
+      return true;
+    }
+    return false;
   }
 
   public boolean onZero() {

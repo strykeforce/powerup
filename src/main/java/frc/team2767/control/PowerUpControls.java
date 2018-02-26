@@ -7,15 +7,21 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.team2767.Settings;
 import frc.team2767.command.LogCommand;
+import frc.team2767.command.climber.ClimberClimb;
+import frc.team2767.command.climber.ClimberDeploy;
+import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.intake.IntakeIn;
+import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.lift.LiftDown;
 import frc.team2767.command.lift.LiftPosition;
+import frc.team2767.command.lift.LiftStop;
 import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderDown;
 import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.command.shoulder.ShoulderStop;
 import frc.team2767.command.shoulder.ShoulderUp;
 import frc.team2767.command.shoulder.ShoulderZero;
 import javax.inject.Inject;
@@ -48,13 +54,15 @@ public class PowerUpControls {
     intakeOut.whenReleased(new IntakeStop());
 
     // climber
-    new JoystickButton(board, Switch.CLIMB.index).whenActive(new LogCommand("climb"));
-    new JoystickButton(board, Switch.CLIMBER_TRANSFORM.index)
-        .whenActive(new LogCommand("transformers!!!!!!"));
+    new JoystickButton(board, Switch.CLIMBER_DEPLOY.index).whenPressed(new ClimberDeploy());
+    new JoystickButton(board, Switch.CLIMB.index).whenPressed(new ClimberClimb());
+    new JoystickButton(board, Switch.CLIMB.index).whenReleased(new ClimberStop());
 
     // lift
-    new JoystickButton(board, Switch.LIFT_UP.index).whileActive(new LiftUp());
-    new JoystickButton(board, Switch.LIFT_DOWN.index).whileActive(new LiftDown());
+    new JoystickButton(board, Switch.LIFT_UP.index).whenPressed(new LiftUp());
+    new JoystickButton(board, Switch.LIFT_UP.index).whenReleased(new LiftStop());
+    new JoystickButton(board, Switch.LIFT_DOWN.index).whenPressed(new LiftDown());
+    new JoystickButton(board, Switch.LIFT_DOWN.index).whenReleased(new LiftStop());
 
     new Trigger() {
       @Override
@@ -83,12 +91,18 @@ public class PowerUpControls {
         .whenActive(new LogCommand("portal intake button"));
     new JoystickButton(board, Switch.GROUND_INTAKE_POS.index)
         .whenActive(new ShoulderPosition(kIntakePosition));
+    new JoystickButton(board, Switch.PORTAL_INTAKE.index)
+        .whenActive(new IntakeLoad(IntakeLoad.Position.PORTAL));
+    new JoystickButton(board, Switch.PORTAL_INTAKE.index).whenReleased(new IntakeStop());
 
     // shoulder
-    new JoystickButton(board, Switch.SHOULDER_UP.index).whileActive(new ShoulderUp());
-    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whileActive(new ShoulderDown());
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whenPressed(new ShoulderUp());
+    new JoystickButton(board, Switch.SHOULDER_UP.index).whenReleased(new ShoulderStop());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whenPressed(new ShoulderDown());
+    new JoystickButton(board, Switch.SHOULDER_DOWN.index).whenReleased(new ShoulderStop());
 
     Controls.logger.info("scaleLowPosition = {}", kScaleLow);
+
     Controls.logger.info("scaleMidPosition = {}", kScaleMid);
     Controls.logger.info("scaleHighPosition = {}", kScaleHigh);
     Controls.logger.info("intakePosition = {}", kIntakePosition);
@@ -111,7 +125,7 @@ public class PowerUpControls {
     LIFT_UP(2),
     LIFT_DOWN(1),
     CLIMB(5),
-    CLIMBER_TRANSFORM(6),
+    CLIMBER_DEPLOY(6),
     LIFT_MID_SCALE(7),
     PORTAL_INTAKE(8),
     INTAKE_IN(11),

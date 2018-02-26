@@ -14,6 +14,6 @@ public class ShoulderUp extends InstantCommand {
 
   @Override
   protected void initialize() {
-    shoulderSubsystem.up();
+    shoulderSubsystem.openLoopUp();
   }
 }

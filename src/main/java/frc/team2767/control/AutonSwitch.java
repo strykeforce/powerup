@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class AutonSwitch {
 
   private static final int BITS = 6;

@@ -16,9 +16,19 @@ description = "Stryke Force 2018 POWER UP"
 isolatedTestMode = false
 
 [POWERUP.PATH]
-  p_azimuth  = -0.004
-  p_distance = 0.01
-  ticksPerInch = 1836 # carpet-x 50% percentile
+  p_azimuth        = -0.004
+  p_distance       = 6e-6
+  p_acceleration   = 0.02
+  ticksPerInchRed  = 2273 # carpet-x pull test
+  ticksPerInchBlue = 2273
+
+[POWERUP.AZIMUTH]
+  p = 0.035
+  i = 0.0
+  d = 0.0
+  tolerance = 0.5
+  outputMax = 1.0
+  test = false
 
 [POWERUP.JOYSTICK]
   deadband    = 0.05
@@ -27,14 +37,13 @@ isolatedTestMode = false
   rateLimit   = 0.04
 
 [POWERUP.CLIMBER]
-  upOutput   = 1.0
-  stopOutput = 0.1
+  upFastOutput      = 1.0
+  upSlowOutput      = 0.25
+  stopOutput    = 0.0
+  unwindOutput  = -0.15
+  releaseOutput = 0.15
 
-[POWERUP.FLIPPER]
-  upOutput     = 0.5
-  downOutput   = -0.2
-  upPosition   = 1000
-  downPosition = 200
+  slowDownPosition = 37_700
 
 [POWERUP.INTAKE]
   loadOutput  = -1.0
@@ -42,8 +51,9 @@ isolatedTestMode = false
   ejectOutput = 0.8
 
 [POWERUP.LIFT]
-  upOutput     = 0.1
-  downOutput   = -0.05
+  timeout      = 2.5
+  upOutput     = 0.25
+  downOutput   = -0.2
   stopOutput   = 0.0
   closeEnough  = 50
   jogIncrement = 1400
@@ -53,6 +63,7 @@ isolatedTestMode = false
   scaleMidPosition     = 13_300
   scaleHighPosition    = 17_100
   stowPosition         = 0
+  portalPosition       = 5200
   downVelocityShiftPos = 7000
 
   # velocities
@@ -64,13 +75,21 @@ isolatedTestMode = false
   downFastVelocity = 1500
 
 [POWERUP.SHOULDER]
-  upOutput       = 0.2
-  downOutput     = -0.2
+  upOutput       = 0.3
+  downOutput     = -0.3
   stopOutput     = 0.0
-  closeEnough    = 50
+  closeEnough    = 75
   jogIncrement   = 300
 
   # positions
   zeroPosition   = 7000
   stowPosition   = 6500
-  intakePosition = -250
+  intakePosition = 300
+
+[POWERUP.WHEEL]
+  ticksPerTooth = 108
+  nominalZero   = [1973, 1995, 2045, 2011]
+
+[POWERUP.SMARTDASHBOARD]
+  enablePit  = true
+  enableTest = false

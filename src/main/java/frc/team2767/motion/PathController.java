@@ -1,12 +1,14 @@
 package frc.team2767.motion;
 
+import static edu.wpi.first.wpilibj.DriverStation.Alliance.Red;
+
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 import com.kauailabs.navx.frc.AHRS;
 import com.moandjiezana.toml.Toml;
 import com.squareup.moshi.JsonWriter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
-import frc.team2767.Robot;
 import frc.team2767.Settings;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -35,23 +37,24 @@ public class PathController implements Runnable, Item {
 
   private final double kPAzimuth;
   private final double kPDistance;
-  private final double kTicksPerMeter;
-
+  private final double kTicksPerMeterRed;
+  private final double kTicksPerMeterBlue;
   private final Trajectory.Config config;
   private final Waypoint[] waypoints;
   private final Trajectory trajectory;
-
   private final SwerveDrive drive;
   private final Wheel[] wheels;
   private final AHRS gyro;
   private final Notifier notifier;
-
+  private final double kPAccel;
   private int[] start = new int[4];
   private int iteration;
   private volatile boolean running;
 
   private double forward, strafe, azimuth, distance;
   private Segment segment;
+  private double ticksPerMeter;
+  private double metersPerSecMax;
 
   /**
    * Runs a PathFinder trajectory.
@@ -60,7 +63,6 @@ public class PathController implements Runnable, Item {
    */
   @Inject
   public PathController(String path, @Provided Settings settings, @Provided SwerveDrive drive) {
-    settings = Robot.INJECTOR.settings();
     Toml toml = settings.getPath(path);
     if (toml == null) throw new IllegalArgumentException(path);
     this.drive = drive;
@@ -83,22 +85,38 @@ public class PathController implements Runnable, Item {
         "{} generated {} segments in {} ms",
         path,
         trajectory.length(),
-        (System.nanoTime() - start) / 1_000_000);
+        (System.nanoTime() - start) / 1e6);
 
     notifier = new Notifier(this);
 
     toml = settings.getTable("POWERUP.PATH");
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
-    kTicksPerMeter = toml.getLong("ticksPerInch").doubleValue() * INCHES_PER_METER;
+    kPAccel = toml.getDouble("p_acceleration", 0.0);
+    kTicksPerMeterRed = toml.getLong("ticksPerInchRed").doubleValue() * INCHES_PER_METER;
+    kTicksPerMeterBlue = toml.getLong("ticksPerInchBlue").doubleValue() * INCHES_PER_METER;
+    ticksPerMeter = kTicksPerMeterRed;
 
     logger.info("p_azimuth = {}", kPAzimuth);
     logger.info("p_distance = {}", kPDistance);
-    logger.info("ticksPerMeter = {}", kTicksPerMeter);
+    logger.info("p_acceleration = {}", kPAccel);
+    logger.info("ticksPerMeterRed = {}", kTicksPerMeterRed);
+    logger.info("ticksPerMeterBlue = {}", kTicksPerMeterBlue);
     logger.info(this.toString());
   }
 
   public void start() {
+    logger.info("P_Accel = {}", kPAccel);
+    DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
+    ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
+    double ticksPerSecMax = wheels[0].getDriveSetpointMax() * 10.0;
+    metersPerSecMax = ticksPerSecMax / ticksPerMeter;
+    logger.info(
+        "{} alliance, ticks per meter = {}, max vel = {} m/s",
+        alliance,
+        ticksPerMeter,
+        metersPerSecMax);
+
     for (int i = 0; i < 4; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
     }
@@ -125,8 +143,9 @@ public class PathController implements Runnable, Item {
     }
     segment = trajectory.get(iteration);
 
-    double vel_desired = segment.velocity / config.max_velocity;
-    double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
+    double vel_desired = segment.velocity / metersPerSecMax;
+    double vel_setpoint =
+        vel_desired + kPDistance * distanceError(segment.position) + kPAccel * segment.acceleration;
 
     forward = Math.cos(segment.heading) * vel_setpoint;
     strafe = -Math.sin(segment.heading) * vel_setpoint;
@@ -135,20 +154,11 @@ public class PathController implements Runnable, Item {
     if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
     drive.drive(forward, strafe, azimuth);
-
-    //    logger.debug(
-    //        "iteration = {} position = {} velocity = {}, forward = {}, strafe = {} azimuth = {}",
-    //        iteration,
-    //        segment.position,
-    //        segment.velocity,
-    //        forward,
-    //        strafe,
-    //        azimuth);
     iteration++;
   }
 
   private double distanceError(double position) {
-    double desired = kTicksPerMeter * position;
+    double desired = ticksPerMeter * position;
     distance = 0;
 
     for (int i = 0; i < 4; i++) {
@@ -157,14 +167,13 @@ public class PathController implements Runnable, Item {
     distance /= 4;
 
     double error = desired - distance;
-    logger.debug(
-        "distance = {} ticks, position = {} m,  desired = {} ticks, error = {} ticks",
-        distance,
-        position,
-        desired,
-        error);
-    //    return error;
-    return 0; // FIXME: testing only
+    //    logger.debug(
+    //        "distance = {} ticks, position = {} m,  desired = {} ticks, error = {} ticks",
+    //        distance,
+    //        position,
+    //        desired,
+    //        error);
+    return error;
   }
 
   @Override
@@ -174,7 +183,7 @@ public class PathController implements Runnable, Item {
 
   @Override
   public String type() {
-    return "pathfinder";
+    return "controller";
   }
 
   @Override
@@ -220,7 +229,7 @@ public class PathController implements Runnable, Item {
       case PATH_SEG_POSITION_METERS:
         return () -> segment.position;
       case PATH_SEG_POSITION_TICKS:
-        return () -> kTicksPerMeter * segment.position;
+        return () -> kTicksPerMeterRed * segment.position;
       case PATH_SEG_VELOCITY:
         return () -> segment.velocity;
       case PATH_SEG_ACCELERATION:
@@ -232,7 +241,7 @@ public class PathController implements Runnable, Item {
       case PATH_DISTANCE:
         return () -> distance;
       case PATH_POSITION_ERROR:
-        return () -> kTicksPerMeter * segment.position - distance;
+        return () -> kTicksPerMeterRed * segment.position - distance;
       default:
         logger.error("invalid Measure: {}", measure);
     }
