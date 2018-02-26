@@ -5,11 +5,13 @@
 ##
 
 [THIRDCOAST.SWERVE]
-  length = 20.625
-  width  = 26.125
+  length        = 20.625
+  width         = 26.125
+  gyroRateCoeff = 4.0
+
 
 [THIRDCOAST.WHEEL]
-  driveSetpointMax = 10_000
+  driveSetpointMax = 25_000
 
 [[TALON]]
   name = "azimuth"

@@ -39,16 +39,14 @@ public class PathController implements Runnable, Item {
   private final double kPDistance;
   private final double kTicksPerMeterRed;
   private final double kTicksPerMeterBlue;
-
   private final Trajectory.Config config;
   private final Waypoint[] waypoints;
   private final Trajectory trajectory;
-
   private final SwerveDrive drive;
   private final Wheel[] wheels;
   private final AHRS gyro;
   private final Notifier notifier;
-
+  private final double kPAccel;
   private int[] start = new int[4];
   private int iteration;
   private volatile boolean running;
@@ -56,6 +54,7 @@ public class PathController implements Runnable, Item {
   private double forward, strafe, azimuth, distance;
   private Segment segment;
   private double ticksPerMeter;
+  private double metersPerSecMax;
 
   /**
    * Runs a PathFinder trajectory.
@@ -86,28 +85,37 @@ public class PathController implements Runnable, Item {
         "{} generated {} segments in {} ms",
         path,
         trajectory.length(),
-        (System.nanoTime() - start) / 1_000_000);
+        (System.nanoTime() - start) / 1e6);
 
     notifier = new Notifier(this);
 
     toml = settings.getTable("POWERUP.PATH");
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
+    kPAccel = toml.getDouble("p_acceleration", 0.0);
     kTicksPerMeterRed = toml.getLong("ticksPerInchRed").doubleValue() * INCHES_PER_METER;
     kTicksPerMeterBlue = toml.getLong("ticksPerInchBlue").doubleValue() * INCHES_PER_METER;
     ticksPerMeter = kTicksPerMeterRed;
 
     logger.info("p_azimuth = {}", kPAzimuth);
     logger.info("p_distance = {}", kPDistance);
+    logger.info("p_acceleration = {}", kPAccel);
     logger.info("ticksPerMeterRed = {}", kTicksPerMeterRed);
     logger.info("ticksPerMeterBlue = {}", kTicksPerMeterBlue);
     logger.info(this.toString());
   }
 
   public void start() {
+    logger.info("P_Accel = {}", kPAccel);
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
-    logger.info("{} alliance, ticks per meter = {}", alliance, ticksPerMeter);
+    double ticksPerSecMax = wheels[0].getDriveSetpointMax() * 10.0;
+    metersPerSecMax = ticksPerSecMax / ticksPerMeter;
+    logger.info(
+        "{} alliance, ticks per meter = {}, max vel = {} m/s",
+        alliance,
+        ticksPerMeter,
+        metersPerSecMax);
 
     for (int i = 0; i < 4; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
@@ -135,9 +143,9 @@ public class PathController implements Runnable, Item {
     }
     segment = trajectory.get(iteration);
 
-    double vel_desired =
-        segment.velocity / config.max_velocity; // TODO use max auton velocity to scale
-    double vel_setpoint = vel_desired + kPDistance * distanceError(segment.position);
+    double vel_desired = segment.velocity / metersPerSecMax;
+    double vel_setpoint =
+        vel_desired + kPDistance * distanceError(segment.position) + kPAccel * segment.acceleration;
 
     forward = Math.cos(segment.heading) * vel_setpoint;
     strafe = -Math.sin(segment.heading) * vel_setpoint;
@@ -146,15 +154,6 @@ public class PathController implements Runnable, Item {
     if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
     drive.drive(forward, strafe, azimuth);
-
-    //    logger.debug(
-    //        "iteration = {} position = {} velocity = {}, forward = {}, strafe = {} azimuth = {}",
-    //        iteration,
-    //        segment.position,
-    //        segment.velocity,
-    //        forward,
-    //        strafe,
-    //        azimuth);
     iteration++;
   }
 
@@ -168,14 +167,13 @@ public class PathController implements Runnable, Item {
     distance /= 4;
 
     double error = desired - distance;
-    logger.debug(
-        "distance = {} ticks, position = {} m,  desired = {} ticks, error = {} ticks",
-        distance,
-        position,
-        desired,
-        error);
-    //    return error;
-    return 0; // FIXME: testing only
+    //    logger.debug(
+    //        "distance = {} ticks, position = {} m,  desired = {} ticks, error = {} ticks",
+    //        distance,
+    //        position,
+    //        desired,
+    //        error);
+    return error;
   }
 
   @Override

@@ -2,25 +2,22 @@
 
 ## Controls
 
-
-
 ## Talons
 
 Subsystem | Talon   | ID | PDP
 --------- | ------- | -- | ---
 Drive     | azimuth | 0  |
-          | azimuth | 1  |
-          | azimuth | 2  |
-          | azimuth | 3  |
-          | drive   | 10 |
-          | drive   | 11 |
-          | drive   | 12 |
-          | drive   | 13 |
+Drive     | azimuth | 1  |
+Drive     | azimuth | 2  |
+Drive     | azimuth | 3  |
+Drive     | drive   | 10 |
+Drive     | drive   | 11 |
+Drive     | drive   | 12 |
+Drive     | drive   | 13 |
 Climber   | left    | 20 | 12
-          | right   | 21 | 13
+Climber   | right   | 21 | 13
 Intake    | left    | 30 | 10
-          | right   | 31 | 9
-Shoulder  |         | 40 | 11
+Intake    | right   | 31 | 9
+Shoulder  | single  | 40 | 11
 Lift      | front   | 50 | 15
-          | rear    | 51 | 14
-Flipper   |         | 60 | 8
+Lift      | rear    | 51 | 14

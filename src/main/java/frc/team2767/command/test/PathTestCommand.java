@@ -1,6 +1,6 @@
 package frc.team2767.command.test;
 
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.TRAJECTORY;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
@@ -23,7 +23,7 @@ public class PathTestCommand extends Command {
 
   @Override
   protected void initialize() {
-    driveSubsystem.setDriveMode(CLOSED_LOOP);
+    driveSubsystem.setDriveMode(TRAJECTORY);
     pathController.start();
   }
 

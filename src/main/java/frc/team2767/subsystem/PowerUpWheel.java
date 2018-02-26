@@ -19,8 +19,7 @@ public class PowerUpWheel extends Wheel {
 
   public PowerUpWheel(Settings settings, TalonSRX azimuth, TalonSRX drive) {
     super(settings, azimuth, drive);
-    currentDriver =
-        openLoopDriver = (setpoint) -> driveTalon.set(PercentOutput, setpoint * 0.8); // FIXME
+    currentDriver = openLoopDriver = (setpoint) -> driveTalon.set(PercentOutput, setpoint);
     closedLoopDriver = closedLoopDriver();
   }
 
@@ -44,9 +43,12 @@ public class PowerUpWheel extends Wheel {
   public void setDriveMode(DriveMode driveMode) {
     switch (driveMode) {
       case OPEN_LOOP:
+      case TELEOP:
         currentDriver = openLoopDriver;
         break;
       case CLOSED_LOOP:
+      case TRAJECTORY:
+      case AZIMUTH:
         currentDriver = closedLoopDriver;
         state = INIT;
         break;

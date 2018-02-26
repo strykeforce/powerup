@@ -1,6 +1,6 @@
 package frc.team2767.command.test;
 
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.TRAJECTORY;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
@@ -25,7 +25,7 @@ public class ClosedLoopDistTestCommand extends Command {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(CLOSED_LOOP);
+    drive.setDriveMode(TRAJECTORY);
     for (int i = 0; i < 4; i++) {
       talonPositions[i] = drive.getDrivePosition(i);
     }
