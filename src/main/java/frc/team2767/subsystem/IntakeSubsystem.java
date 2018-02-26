@@ -49,7 +49,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
     kLoadOutput = toml.getDouble("loadOutput");
     kHoldOutput = toml.getDouble("holdOutput");
     kFastEjectOutput = toml.getDouble("ejectOutput");
-    kSlowEjectOutput = 0.4; // toml.getDouble("ejectOutput");
+    kSlowEjectOutput = 0.3; // toml.getDouble("ejectOutput");
 
     logger.info("loadOutput = {}", kLoadOutput);
     logger.info("holdOutput = {}", kHoldOutput);
