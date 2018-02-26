@@ -16,7 +16,7 @@ class PowerUpWheelTest extends Specification {
         given:
         def tomlStr = "[THIRDCOAST.WHEEL]\ndriveSetpointMax=10_000"
         def wheel = new PowerUpWheel(new Settings(tomlStr), azimuth, drive)
-        wheel.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP)
+        wheel.setDriveMode(SwerveDrive.DriveMode.TRAJECTORY)
 
         when:
         wheel.set(0, 0)
@@ -100,7 +100,7 @@ class PowerUpWheelTest extends Specification {
         given:
         def tomlStr = "[THIRDCOAST.WHEEL]\ndriveSetpointMax=10_000"
         def wheel = new PowerUpWheel(new Settings(tomlStr), azimuth, drive)
-        wheel.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP)
+        wheel.setDriveMode(SwerveDrive.DriveMode.TRAJECTORY)
 
         when:
         wheel.set(0, 0.01)

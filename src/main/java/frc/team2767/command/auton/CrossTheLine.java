@@ -1,5 +1,7 @@
 package frc.team2767.command.auton;
 
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
+
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
@@ -7,7 +9,6 @@ import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
 import frc.team2767.subsystem.DriveSubsystem;
 import openrio.powerup.MatchData;
-import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 
 /**
  * Fail-safe command, depends on starting position.
@@ -51,7 +52,7 @@ public class CrossTheLine extends ConditionalCommand implements OwnedSidesSettab
 
     @Override
     protected void initialize() {
-      driveSubsystem.setDriveMode(SwerveDrive.DriveMode.OPEN_LOOP);
+      driveSubsystem.setDriveMode(OPEN_LOOP);
       driveSubsystem.driveWheels(0, 0.2);
     }
   }

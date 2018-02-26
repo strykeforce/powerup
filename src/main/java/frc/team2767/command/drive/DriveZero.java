@@ -1,9 +1,10 @@
 package frc.team2767.command.drive;
 
+import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.CLOSED_LOOP;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
-import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 
 public class DriveZero extends Command {
 
@@ -18,7 +19,7 @@ public class DriveZero extends Command {
 
   @Override
   protected void initialize() {
-    drive.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
+    drive.setDriveMode(CLOSED_LOOP);
     drive.driveWheels(0, output);
   }
 

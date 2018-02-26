@@ -43,9 +43,12 @@ public class PowerUpWheel extends Wheel {
   public void setDriveMode(DriveMode driveMode) {
     switch (driveMode) {
       case OPEN_LOOP:
+      case TELEOP:
         currentDriver = openLoopDriver;
         break;
       case CLOSED_LOOP:
+      case TRAJECTORY:
+      case AZIMUTH:
         currentDriver = closedLoopDriver;
         state = INIT;
         break;
