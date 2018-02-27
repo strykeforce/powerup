@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.team2767.Settings;
-import frc.team2767.command.LogCommand;
 import frc.team2767.command.climber.ClimberClimb;
 import frc.team2767.command.climber.ClimberDeploy;
 import frc.team2767.command.climber.ClimberStop;
@@ -87,7 +86,6 @@ public class PowerUpControls {
 
     new JoystickButton(board, Switch.LIFT_MID_SCALE.index).whenActive(new LiftPosition(kScaleMid));
     new JoystickButton(board, Switch.EXCHANGE_POS.index).whenActive(new ShoulderZero());
-    new JoystickButton(board, Switch.EXTENDER.index).whenActive(new LogCommand("extender button"));
     new JoystickButton(board, Switch.GROUND_INTAKE_POS.index)
         .whenActive(new ShoulderPosition(kIntakePosition));
     new JoystickButton(board, Switch.EXTENDER.index).whenActive(new ExtenderToggle());
