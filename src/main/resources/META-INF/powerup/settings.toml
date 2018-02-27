@@ -86,6 +86,12 @@ isolatedTestMode = false
   stowPosition   = 6500
   intakePosition = 300
 
+ [POWERUP.EXTENDER]
+ leftUpPosition     = 0.41
+ leftDownPosition   = 0.2
+ rightDownPosition  = 0.8
+ rightUpPosition    = 0.57
+
 [POWERUP.WHEEL]
   ticksPerTooth = 108
   nominalZero   = [1973, 1995, 2045, 2011]

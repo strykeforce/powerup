@@ -10,8 +10,8 @@ import frc.team2767.command.LogCommand;
 import frc.team2767.command.climber.ClimberClimb;
 import frc.team2767.command.climber.ClimberDeploy;
 import frc.team2767.command.climber.ClimberStop;
+import frc.team2767.command.extender.ExtenderToggle;
 import frc.team2767.command.intake.IntakeIn;
-import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.lift.LiftDown;
@@ -87,13 +87,10 @@ public class PowerUpControls {
 
     new JoystickButton(board, Switch.LIFT_MID_SCALE.index).whenActive(new LiftPosition(kScaleMid));
     new JoystickButton(board, Switch.EXCHANGE_POS.index).whenActive(new ShoulderZero());
-    new JoystickButton(board, Switch.PORTAL_INTAKE.index)
-        .whenActive(new LogCommand("portal intake button"));
+    new JoystickButton(board, Switch.EXTENDER.index).whenActive(new LogCommand("extender button"));
     new JoystickButton(board, Switch.GROUND_INTAKE_POS.index)
         .whenActive(new ShoulderPosition(kIntakePosition));
-    new JoystickButton(board, Switch.PORTAL_INTAKE.index)
-        .whenActive(new IntakeLoad(IntakeLoad.Position.PORTAL));
-    new JoystickButton(board, Switch.PORTAL_INTAKE.index).whenReleased(new IntakeStop());
+    new JoystickButton(board, Switch.EXTENDER.index).whenActive(new ExtenderToggle());
 
     // shoulder
     new JoystickButton(board, Switch.SHOULDER_UP.index).whenPressed(new ShoulderUp());
@@ -127,7 +124,7 @@ public class PowerUpControls {
     CLIMB(5),
     CLIMBER_DEPLOY(6),
     LIFT_MID_SCALE(7),
-    PORTAL_INTAKE(8),
+    EXTENDER(8),
     INTAKE_IN(11),
     INTAKE_OUT(9),
     GROUND_INTAKE_POS(10),
