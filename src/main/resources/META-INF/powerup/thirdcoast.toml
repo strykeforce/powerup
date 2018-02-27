@@ -103,6 +103,27 @@
     peak = 0
     peakDuration = 0
 
+  [[TALON]]
+    name = "intake-release"
+    talonIds = [32]
+    [TALON.selectedFeedbackSensor]
+      feedbackDevice = "CTRE_MagEncoder_Relative"
+    [TALON.currentLimit]
+      continuous = 15
+      peak = 0
+      peakDuration = 0
+    [TALON.motionMagic]
+      acceleration = 10_000
+      cruiseVelocity = 800
+    [[TALON.closedLoopProfile]] # slot 0 MotionMagic
+      pGain = 10.0
+      iGain = 0.0
+      dGain = 100.0
+      fGain = 0.9
+      iZone = 0
+      allowableClosedLoopError = 0
+
+
 [[TALON]]
   name = "lift-master"
   talonIds = [50]
