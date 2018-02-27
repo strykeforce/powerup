@@ -9,11 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.strykeforce.thirdcoast.telemetry.TelemetryService;
-import org.strykeforce.thirdcoast.telemetry.item.ServoItem;
 
 @Singleton
-public class ExtenderSubsystem extends Subsystem implements Graphable {
+public class ExtenderSubsystem extends Subsystem {
   private static final int RIGHT_ID = 1; //
   private static final int LEFT_ID = 2;
 
@@ -88,11 +86,4 @@ public class ExtenderSubsystem extends Subsystem implements Graphable {
 
   @Override
   protected void initDefaultCommand() {}
-
-  @Override
-  public void register(TelemetryService telemetryService) {
-    if (rightServo != null)
-      telemetryService.register(
-          new ServoItem(rightServo, "Right servo (" + 1 + "0")); // FIXME this is weird
-  }
 }
