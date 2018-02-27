@@ -12,6 +12,7 @@ import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.command.auton.CrossTheLine;
+import frc.team2767.command.auton.LeftScaleCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
@@ -109,6 +110,9 @@ public class Robot extends TimedRobot {
       switch (autonSwitchPosition) {
         case 0x20:
           autonCommand = new CenterSwitchCommand();
+          break;
+        case 0x10:
+          autonCommand = new LeftScaleCommand();
           break;
         case 0x00:
         default:

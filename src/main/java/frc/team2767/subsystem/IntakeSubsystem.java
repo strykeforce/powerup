@@ -1,5 +1,6 @@
 package frc.team2767.subsystem;
 
+import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 
 import com.ctre.phoenix.motorcontrol.SensorCollection;
@@ -18,9 +19,11 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
-public class IntakeSubsystem extends Subsystem implements Graphable {
+public class IntakeSubsystem extends Subsystem implements Graphable, Positionable {
   private static final int LEFT_ID = 30; // PDP 10
   private static final int RIGHT_ID = 31; // PDP 9
+  private static final int RELEASE_ID = 32; // PDP 8
+  private static final int TIMEOUT = 10;
 
   private static final String TABLE = Robot.TABLE + ".INTAKE";
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);
@@ -28,16 +31,17 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
   private final double kHoldOutput;
   private final double kFastEjectOutput;
   private final double kSlowEjectOutput;
-  private final TalonSRX leftTalon, rightTalon;
+  private final int kOpenPosition;
+  private final TalonSRX leftTalon, rightTalon, releaseTalon;
   private final SensorCollection rightSensors;
 
   @Inject
   public IntakeSubsystem(Talons talons, Settings settings) {
     leftTalon = talons.getTalon(LEFT_ID);
     rightTalon = talons.getTalon(RIGHT_ID);
-    if (leftTalon == null) {
-      logger.error("Left Talon missing");
-    }
+    releaseTalon = talons.getTalon(RELEASE_ID);
+    if (leftTalon == null) logger.error("Left Talon missing");
+    if (releaseTalon == null) logger.error("Release Talon missing");
     if (rightTalon != null) {
       rightSensors = rightTalon.getSensorCollection();
     } else {
@@ -48,12 +52,35 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
     Toml toml = settings.getTable(TABLE);
     kLoadOutput = toml.getDouble("loadOutput");
     kHoldOutput = toml.getDouble("holdOutput");
-    kFastEjectOutput = toml.getDouble("ejectOutput");
-    kSlowEjectOutput = 0.4; // toml.getDouble("ejectOutput");
+    kFastEjectOutput = toml.getDouble("fastEjectOutput");
+    kSlowEjectOutput = toml.getDouble("slowEjectOutput");
+    kOpenPosition = toml.getLong("openPosition").intValue();
 
+    int zero = toml.getLong("zeroPosition").intValue();
+    int absolute = releaseTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
+    releaseTalon.setSelectedSensorPosition(absolute - zero, 0, TIMEOUT);
+    logger.info("zeroPosition = {}", zero);
+    logger.info("set RELEASE zero position, current position = {}", absolute - zero);
     logger.info("loadOutput = {}", kLoadOutput);
     logger.info("holdOutput = {}", kHoldOutput);
-    logger.info("ejectOutput = {}", kFastEjectOutput);
+    logger.info("fastEjectOutput = {}", kFastEjectOutput);
+    logger.info("slowEjectOutput = {}", kSlowEjectOutput);
+    logger.info("openPosition = {}", kOpenPosition);
+  }
+
+  public void open() {
+    releaseTalon.set(MotionMagic, kOpenPosition);
+    logger.debug("set release to open position");
+  }
+
+  public void close() {
+    releaseTalon.set(MotionMagic, 0);
+    logger.debug("set release to closed position");
+  }
+
+  @Override
+  public void resetPosition() {
+    releaseTalon.set(MotionMagic, releaseTalon.getSelectedSensorPosition(0));
   }
 
   public void run(Mode mode) {
@@ -108,6 +135,8 @@ public class IntakeSubsystem extends Subsystem implements Graphable {
       telemetryService.register(new TalonItem(leftTalon, "Intake Left (" + LEFT_ID + ")"));
     if (rightTalon != null)
       telemetryService.register(new TalonItem(rightTalon, "Intake Right (" + RIGHT_ID + ")"));
+    if (releaseTalon != null)
+      telemetryService.register(new TalonItem(releaseTalon, "Intake Release (" + RELEASE_ID + ")"));
   }
 
   public enum Mode {

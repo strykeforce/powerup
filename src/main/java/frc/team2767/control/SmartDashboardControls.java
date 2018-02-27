@@ -8,6 +8,8 @@ import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
+import frc.team2767.command.intake.IntakeClose;
+import frc.team2767.command.intake.IntakeOpen;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZero;
 import frc.team2767.command.test.PathTestCommand;
@@ -51,6 +53,8 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
+    SmartDashboard.putData("Test/IntakeOpen", new IntakeOpen());
+    SmartDashboard.putData("Test/IntakeClose", new IntakeClose());
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
     SmartDashboard.putData("Test/Azimuth", new AzimuthCommand(0));

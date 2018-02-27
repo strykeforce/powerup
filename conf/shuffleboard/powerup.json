@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.007913669064748202,
+  "dividerPosition": 0.006734006734006734,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -7,6 +7,7 @@
       "autoPopulatePrefix": "SmartDashboard/Pit/",
       "widgetPane": {
         "gridSize": 128.0,
+        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -152,6 +153,7 @@
       "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
+        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -188,6 +190,7 @@
       "autoPopulatePrefix": "SmartDashboard/Test/",
       "widgetPane": {
         "gridSize": 128.0,
+        "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
@@ -231,6 +234,28 @@
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Test/DriveZeroBackwards",
                   "_title": "Drive Zero"
+                }
+              ]
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "List",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/IntakeOpen",
+                  "_title": "IntakeOpen"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/IntakeClose",
+                  "_title": "IntakeClose"
                 }
               ]
             }
