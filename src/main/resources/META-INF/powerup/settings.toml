@@ -48,7 +48,12 @@ isolatedTestMode = false
 [POWERUP.INTAKE]
   loadOutput  = -1.0
   holdOutput  = -1.0
-  ejectOutput = 0.8
+  fastEjectOutput = 0.8
+  slowEjectOutput = 0.3
+
+  # release positions
+  zeroPosition = 2048
+  openPosition = 2500
 
 [POWERUP.LIFT]
   timeout      = 2.5
@@ -85,6 +90,12 @@ isolatedTestMode = false
   zeroPosition   = 7000
   stowPosition   = 6500
   intakePosition = 300
+
+ [POWERUP.EXTENDER]
+ leftUpPosition     = 0.41
+ leftDownPosition   = 0.2
+ rightDownPosition  = 0.8
+ rightUpPosition    = 0.57
 
 [POWERUP.WHEEL]
   ticksPerTooth = 108
