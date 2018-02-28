@@ -4,12 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PathCommand extends Command {
 
-  private static final Logger logger = LoggerFactory.getLogger(PathCommand.class);
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final PathController path;
 
@@ -35,7 +32,6 @@ public class PathCommand extends Command {
 
   @Override
   protected void end() {
-    logger.debug("path command end");
     driveSubsystem.endPath();
   }
 }

@@ -13,7 +13,7 @@ public class RightSwitchCommandGroup extends PowerUpCommandGroup {
     super();
     Settings settings = Robot.INJECTOR.settings();
     Toml toml = settings.getTable("POWERUP.SHOULDER");
-    addParallel(new ShoulderPosition(toml.getLong("stowPosition").intValue()));
+    addParallel(new ShoulderPosition(toml.getLong("stowPosition").intValue())); // FIXME: use enum
 
     addSequential(new PathCommand(path));
 

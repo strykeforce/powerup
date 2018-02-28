@@ -19,7 +19,7 @@ public abstract class PowerUpCommandGroup extends CommandGroup {
       addParallel(new ZeroGyroYawCommand());
       addParallel(new ShoulderZero());
       addParallel(new LiftZero());
-      addParallel(new ExtenderToggle());
+      addParallel(new ExtenderToggle()); // FIXME: make a ExtenderUp command
     }
   }
 }

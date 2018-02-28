@@ -15,7 +15,7 @@ public class RightScaleCommandGroup extends PowerUpCommandGroup {
     super();
     Settings settings = Robot.INJECTOR.settings();
     Toml toml = settings.getTable("POWERUP.SHOULDER");
-    addParallel(new ShoulderPosition(toml.getLong("stowPosition").intValue()));
+    addParallel(new ShoulderPosition(toml.getLong("stowPosition").intValue())); // FIXME: use enum
     toml = settings.getTable("POWERUP.LIFT");
     addParallel(new LiftPosition(toml.getLong("scaleHighPosition").intValue()));
     addSequential(new PathCommand(path));

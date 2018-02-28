@@ -128,7 +128,6 @@ public class PathController implements Runnable, Item {
   public void stop() {
     logger.debug("stopping path controller and swerve drive");
     drive.drive(0, 0, 0);
-    logger.debug("stop: forward = 0, strafe = 0, azimuth = 0");
     notifier.stop();
     running = false;
   }
