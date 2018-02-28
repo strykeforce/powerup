@@ -4,23 +4,23 @@ import com.moandjiezana.toml.Toml;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
 import frc.team2767.command.intake.IntakeEject;
-import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 
-public class LeftScaleCommandGroup extends PowerUpCommandGroup {
+public class LeftSwitchCommandGroup extends PowerUpCommandGroup {
 
-  public LeftScaleCommandGroup(String path) {
+  public LeftSwitchCommandGroup(String path) {
     super();
     Settings settings = Robot.INJECTOR.settings();
     Toml toml = settings.getTable("POWERUP.SHOULDER");
     addParallel(new ShoulderPosition(toml.getLong("stowPosition").intValue()));
-    toml = settings.getTable("POWERUP.LIFT");
-    addParallel(new LiftPosition(toml.getLong("scaleHighPosition").intValue()));
+
     addSequential(new PathCommand(path));
 
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SLOW_EJECT));
+    addSequential(new AzimuthCommand(90));
+
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
     addSequential(new Stow());
   }
 }

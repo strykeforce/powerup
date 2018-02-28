@@ -6,12 +6,12 @@ import frc.team2767.command.StartPosition;
 import openrio.powerup.MatchData;
 
 // 10
-public class LeftScaleCommand extends ConditionalCommand implements OwnedSidesSettable {
+public class LeftCommand extends ConditionalCommand implements OwnedSidesSettable {
 
   private MatchData.OwnedSide ownedSide = MatchData.OwnedSide.UNKNOWN;
 
-  public LeftScaleCommand() {
-    super(new LeftScaleCommandGroup("left_scale"), new LeftScaleCommandGroup("left_scale"));
+  public LeftCommand() {
+    super(new LeftSwitchCommandGroup("left_switch"), new LeftSwitchCommandGroup("left_switch"));
   }
 
   @Override
