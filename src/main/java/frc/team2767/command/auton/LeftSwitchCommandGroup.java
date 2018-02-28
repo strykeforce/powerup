@@ -14,7 +14,9 @@ public class LeftSwitchCommandGroup extends PowerUpCommandGroup {
     super();
     Settings settings = Robot.INJECTOR.settings();
     Toml toml = settings.getTable("POWERUP.SHOULDER");
-    addParallel(new ShoulderPosition(toml.getLong("stowPosition").intValue()));
+    addParallel(
+        new ShoulderPosition(
+            toml.getLong("stowPosition").intValue())); // TODO: make std positions enum
 
     addSequential(new PathCommand(path));
 
