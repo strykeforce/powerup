@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   private int newAutonSwitchPosition;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
-  private SimpleTrigger alignWheelsButton;
+  private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
   private boolean isolatedTestMode;
   private Command autonCommand;
@@ -66,7 +66,8 @@ public class Robot extends TimedRobot {
     }
 
     driveSubsystem = INJECTOR.driveSubsystem();
-    alignWheelsButton = INJECTOR.alignWheelsTrigger();
+
+    alignWheelsButtons = controls.getDriverControls().getAlignWheelsButtons();
 
     driveSubsystem.zeroAzimuthEncoders();
     CameraServer.getInstance().startAutomaticCapture();
@@ -94,8 +95,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     if (isolatedTestMode) return;
-    if (alignWheelsButton.hasActivated()) {
-      logger.debug("align wheels button activated");
+    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+      logger.debug("align wheels buttons have activated");
       driveSubsystem.alignWheelsToBar();
     }
 
