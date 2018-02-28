@@ -5,7 +5,6 @@ import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.team2767.Robot;
-import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
 import frc.team2767.subsystem.DriveSubsystem;
 import openrio.powerup.MatchData;

@@ -8,12 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
-import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
-import frc.team2767.command.auton.CenterSwitchCommand;
-import frc.team2767.command.auton.CrossTheLine;
-import frc.team2767.command.auton.LeftCommand;
-import frc.team2767.command.auton.RightCommand;
+import frc.team2767.command.auton.*;
+import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
@@ -101,14 +98,48 @@ public class Robot extends TimedRobot {
           startPosition);
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
+        case 0x10:
+          Command leftScale = new LeftScaleCommand();
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LeftSwitchCommand(), leftScale, leftScale, new CrossTheLine());
+          break;
+        case 0x11:
+          Command leftSwitch = new LeftSwitchCommand();
+          autonCommand =
+              new CornerConditionalCommand(
+                  leftSwitch, new LeftScaleCommand(), leftSwitch, new CrossTheLine());
+          break;
+        case 0x19:
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LifeCycleTestCommand("Left Near Switch"),
+                  new LifeCycleTestCommand("Left Scale"),
+                  new LifeCycleTestCommand("Left Both"),
+                  new LifeCycleTestCommand("Left Neither"));
+          break;
         case 0x20:
           autonCommand = new CenterSwitchCommand();
           break;
-        case 0x10:
-          autonCommand = new LeftCommand();
-          break;
         case 0x30:
-          autonCommand = new RightCommand();
+          Command rightScale = new RightScaleCommand();
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LeftSwitchCommand(), rightScale, rightScale, new CrossTheLine());
+          break;
+        case 0x31:
+          Command rightSwitch = new RightSwitchCommand();
+          autonCommand =
+              new CornerConditionalCommand(
+                  rightSwitch, new LeftScaleCommand(), rightSwitch, new CrossTheLine());
+          break;
+        case 0x39:
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LifeCycleTestCommand("Right Near Switch"),
+                  new LifeCycleTestCommand("Right Scale"),
+                  new LifeCycleTestCommand("Right Both"),
+                  new LifeCycleTestCommand("Right Neither"));
           break;
         case 0x00:
         default:
@@ -131,7 +162,6 @@ public class Robot extends TimedRobot {
   private boolean checkAutonomousSwitch() {
     boolean changed = false;
     int switchPosition = controls.getAutonomousSwitchPosition();
-
     if (switchPosition != newAutonSwitchPosition) {
       autonSwitchStableCount = 0;
       newAutonSwitchPosition = switchPosition;
