@@ -4,18 +4,12 @@ import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.team2767.command.StartPosition;
 import openrio.powerup.MatchData.OwnedSide;
 
-/**
- * Command group for autonomous mode.
- *
- * <p>Owned side LEFT = onTrue command, Owned side RIGHT = onFalse command
- */
-public class CenterSwitchCommand extends ConditionalCommand implements OwnedSidesSettable {
+public class LeftScaleCommand extends ConditionalCommand implements OwnedSidesSettable {
 
   private OwnedSide ownedSide = OwnedSide.UNKNOWN;
 
-  public CenterSwitchCommand() {
-    super(
-        new CenterSwitchCommandGroup("center_left"), new CenterSwitchCommandGroup("center_right"));
+  public LeftScaleCommand() {
+    super(new LeftScaleCommandGroup("left_scale"), new LeftScaleCommandGroup("left_scale"));
   }
 
   @Override
@@ -25,7 +19,6 @@ public class CenterSwitchCommand extends ConditionalCommand implements OwnedSide
 
   @Override
   public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
-    this.ownedSide = nearSwitch;
-    // don't care about scale
+    this.ownedSide = scale;
   }
 }

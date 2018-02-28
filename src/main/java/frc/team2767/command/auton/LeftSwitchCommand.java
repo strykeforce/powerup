@@ -1,16 +1,15 @@
 package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
 import openrio.powerup.MatchData;
 
 // 10
-public class LeftCommand extends ConditionalCommand implements OwnedSidesSettable {
+public class LeftSwitchCommand extends ConditionalCommand implements OwnedSidesSettable {
 
   private MatchData.OwnedSide ownedSide = MatchData.OwnedSide.UNKNOWN;
 
-  public LeftCommand() {
+  public LeftSwitchCommand() {
     super(new LeftSwitchCommandGroup("left_switch"), new LeftSwitchCommandGroup("left_switch"));
   }
 
