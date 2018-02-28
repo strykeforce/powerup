@@ -43,6 +43,8 @@ public interface SingletonComponent {
 
   ShoulderSubsystem shoulderSubsystem();
 
+  ExtenderSubsystem extenderSubsystem();
+
   Controls controls();
 
   TelemetryService telemetryService();

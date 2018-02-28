@@ -34,4 +34,8 @@ public abstract class SubsystemModule {
   @Binds
   @IntoSet
   public abstract Positionable shoulderSubsystemPositionable(ShoulderSubsystem shoulderSubsystem);
+
+  @Binds
+  @IntoSet
+  public abstract Positionable intakeSubsystemPositionable(IntakeSubsystem intakeSubsystem);
 }
