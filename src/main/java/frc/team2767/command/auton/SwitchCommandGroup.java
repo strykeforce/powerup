@@ -8,9 +8,9 @@ import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 
-public class LeftSwitchCommandGroup extends PowerUpCommandGroup {
+public class SwitchCommandGroup extends PowerUpCommandGroup {
 
-  public LeftSwitchCommandGroup(String path) {
+  public SwitchCommandGroup(Side side) {
     super();
     Settings settings = Robot.INJECTOR.settings();
     Toml toml = settings.getTable("POWERUP.SHOULDER");
@@ -18,11 +18,24 @@ public class LeftSwitchCommandGroup extends PowerUpCommandGroup {
         new ShoulderPosition(
             toml.getLong("stowPosition").intValue())); // TODO: make std positions enum
 
-    addSequential(new PathCommand(path));
-
-    addSequential(new AzimuthCommand(90));
+    addSequential(new PathCommand(side.path));
+    addSequential(new AzimuthCommand(side.azimuth));
 
     addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
     addSequential(new Stow());
+  }
+
+  public enum Side {
+    LEFT("left_switch", 90.0),
+    RIGHT("right_switch", -90.0),
+    ;
+
+    private final String path;
+    private final double azimuth;
+
+    Side(String path, double azimuth) {
+      this.path = path;
+      this.azimuth = azimuth;
+    }
   }
 }

@@ -98,19 +98,25 @@ public class Robot extends TimedRobot {
           startPosition);
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
-        case 0x10:
-          Command leftScale = new LeftScaleCommand();
+        case 0x10: // left corner, scale priority
+          Command leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
           autonCommand =
               new CornerConditionalCommand(
-                  new LeftSwitchCommand(), leftScale, leftScale, new CrossTheLine());
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  leftScale,
+                  leftScale,
+                  new CrossTheLine());
           break;
-        case 0x11:
-          Command leftSwitch = new LeftSwitchCommand();
+        case 0x11: // left corner, switch priority
+          Command leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
           autonCommand =
               new CornerConditionalCommand(
-                  leftSwitch, new LeftScaleCommand(), leftSwitch, new CrossTheLine());
+                  leftSwitch,
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  leftSwitch,
+                  new CrossTheLine());
           break;
-        case 0x19:
+        case 0x19: // left corner, test
           autonCommand =
               new CornerConditionalCommand(
                   new LifeCycleTestCommand("Left Near Switch"),
@@ -118,22 +124,28 @@ public class Robot extends TimedRobot {
                   new LifeCycleTestCommand("Left Both"),
                   new LifeCycleTestCommand("Left Neither"));
           break;
-        case 0x20:
+        case 0x20: // center switch
           autonCommand = new CenterSwitchCommand();
           break;
-        case 0x30:
-          Command rightScale = new RightScaleCommand();
+        case 0x30: // right corner, scale priority
+          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(
-                  new LeftSwitchCommand(), rightScale, rightScale, new CrossTheLine());
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
+                  rightScale,
+                  rightScale,
+                  new CrossTheLine());
           break;
-        case 0x31:
-          Command rightSwitch = new RightSwitchCommand();
+        case 0x31: // right corner, switch priority
+          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(
-                  rightSwitch, new LeftScaleCommand(), rightSwitch, new CrossTheLine());
+                  rightSwitch,
+                  new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
+                  rightSwitch,
+                  new CrossTheLine());
           break;
-        case 0x39:
+        case 0x39: // right corner, test
           autonCommand =
               new CornerConditionalCommand(
                   new LifeCycleTestCommand("Right Near Switch"),
