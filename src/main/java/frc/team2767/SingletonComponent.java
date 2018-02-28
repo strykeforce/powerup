@@ -2,7 +2,6 @@ package frc.team2767;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import frc.team2767.control.AlignWheelsTrigger;
 import frc.team2767.control.Controls;
 import frc.team2767.motion.AzimuthControllerFactory;
 import frc.team2767.motion.PathControllerFactory;
@@ -52,8 +51,6 @@ public interface SingletonComponent {
   Talons talons();
 
   Settings settings();
-
-  AlignWheelsTrigger alignWheelsTrigger();
 
   PathControllerFactory pathControllerFactory();
 

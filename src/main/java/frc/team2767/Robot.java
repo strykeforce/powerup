@@ -45,9 +45,8 @@ public class Robot extends TimedRobot {
   private int newAutonSwitchPosition;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
-  private SimpleTrigger alignWheelsButton;
+  private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
-  private boolean isolatedTestMode;
   private Command autonCommand;
   private boolean autonHasRun;
 
@@ -59,17 +58,11 @@ public class Robot extends TimedRobot {
 
     logger.info("INIT in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
-    isolatedTestMode = settings.isIsolatedTestMode();
-    if (isolatedTestMode) {
-      logger.warn("INIT {}", isolatedTestModeMessage());
-      return;
-    }
-
+    alignWheelsButtons = controls.getDriverControls().getAlignWheelsButtons();
     driveSubsystem = INJECTOR.driveSubsystem();
-    alignWheelsButton = INJECTOR.alignWheelsTrigger();
-
     driveSubsystem.zeroAzimuthEncoders();
-    CameraServer.getInstance().startAutomaticCapture();
+
+    if (settings.isCameraEnabled()) CameraServer.getInstance().startAutomaticCapture();
 
     LiveWindow.disableAllTelemetry();
     if (!settings.isEvent()) {
@@ -85,7 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    logger.info("DISABLED {}", isolatedTestModeMessage());
+    logger.info("DISABLED");
     INJECTOR.positionables().forEach(Positionable::resetPosition);
     resetAutonomous();
     Logging.flushLogs();
@@ -93,9 +86,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if (isolatedTestMode) return;
-    if (alignWheelsButton.hasActivated()) {
-      logger.debug("align wheels button activated");
+    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+      logger.debug("align wheels buttons have activated");
       driveSubsystem.alignWheelsToBar();
     }
 
@@ -169,7 +161,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    logger.info("AUTONOMOUS {}", isolatedTestModeMessage());
+    logger.info("AUTONOMOUS");
 
     MatchData.OwnedSide nearSwitch = OwnedSide.UNKNOWN;
     MatchData.OwnedSide scale = OwnedSide.UNKNOWN;
@@ -202,18 +194,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    logger.info("TELEOP {}", isolatedTestModeMessage());
-    if (!isolatedTestMode) {
-      driveSubsystem.stop();
-    }
+    logger.info("TELEOP");
+    driveSubsystem.stop();
   }
 
   @Override
   public void teleopPeriodic() {
     scheduler.run();
-  }
-
-  private String isolatedTestModeMessage() {
-    return isolatedTestMode ? "(isolated test mode)" : "";
   }
 }

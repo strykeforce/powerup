@@ -1,6 +1,7 @@
 package frc.team2767.control;
 
 import com.moandjiezana.toml.Toml;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -18,23 +19,24 @@ import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.lift.LiftStop;
 import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
-import frc.team2767.command.shoulder.ShoulderDown;
-import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.command.shoulder.ShoulderStop;
-import frc.team2767.command.shoulder.ShoulderUp;
-import frc.team2767.command.shoulder.ShoulderZero;
+import frc.team2767.command.shoulder.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class PowerUpControls {
 
-  private final Joystick board = new Joystick(0);
+  private final Joystick board;
 
   @Inject
   public PowerUpControls(Settings settings) {
-    Controls.logger.debug("initializing POWER UP button board controls");
-    if (settings.isIsolatedTestMode()) return;
+    if (!settings.isEvent() && DriverStation.getInstance().getJoystickName(1).isEmpty()) {
+      Controls.logger.warn("POWER UP joystick check failed, skipping initialization");
+      board = null;
+      return;
+    }
+    board = new Joystick(0);
+    Controls.logger.debug("initializing POWER UP button board with joystick {}", board.getName());
 
     Toml toml = settings.getTable("POWERUP.LIFT");
     int kScaleLow = toml.getLong("scaleLowPosition").intValue();
