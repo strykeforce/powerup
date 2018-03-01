@@ -8,6 +8,8 @@ import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
+import frc.team2767.command.extender.ExtenderDown;
+import frc.team2767.command.extender.ExtenderUp;
 import frc.team2767.command.intake.IntakeClose;
 import frc.team2767.command.intake.IntakeOpen;
 import frc.team2767.command.lift.LiftZero;
@@ -60,5 +62,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/Azimuth", new AzimuthCommand(0));
     SmartDashboard.putData(
         "Test/Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
+    SmartDashboard.putData("Test/ExtenderUp", new ExtenderUp());
+    SmartDashboard.putData("Test/ExtenderDown", new ExtenderDown());
   }
 }
