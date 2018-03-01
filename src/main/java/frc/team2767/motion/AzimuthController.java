@@ -68,6 +68,7 @@ public class AzimuthController extends AbstractItem {
 
   public void setSetpoint(double setpoint) {
     this.setpoint = setpoint;
+    pid.setSetpoint(setpoint);
   }
 
   public double getYaw() {

@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.006734006734006734,
+  "dividerPosition": 0.006615214994487321,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -245,17 +245,39 @@
             ],
             "content": {
               "_type": "List Layout",
-              "_title": "List",
+              "_title": "Intake",
               "_children": [
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Test/IntakeOpen",
-                  "_title": "IntakeOpen"
+                  "_title": "Intake Open"
                 },
                 {
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Test/IntakeClose",
-                  "_title": "IntakeClose"
+                  "_title": "Intake Close"
+                }
+              ]
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Extender",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/ExtenderUp",
+                  "_title": "Extender Up"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Test/ExtenderDown",
+                  "_title": "Extender Down"
                 }
               ]
             }

@@ -140,6 +140,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     setDriveMode(AZIMUTH);
     if (azimuthController == null)
       azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
+    azimuthController.setSetpoint(setpoint);
     azimuthController.enable();
   }
 

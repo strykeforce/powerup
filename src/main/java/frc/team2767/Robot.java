@@ -8,11 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
-import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
-import frc.team2767.command.auton.CenterSwitchCommand;
-import frc.team2767.command.auton.CrossTheLine;
-import frc.team2767.command.auton.LeftScaleCommand;
+import frc.team2767.command.auton.*;
+import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
@@ -44,9 +42,8 @@ public class Robot extends TimedRobot {
   private int newAutonSwitchPosition;
   private Controls controls;
   private DriveSubsystem driveSubsystem;
-  private SimpleTrigger alignWheelsButton;
+  private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
-  private boolean isolatedTestMode;
   private Command autonCommand;
   private boolean autonHasRun;
 
@@ -58,17 +55,11 @@ public class Robot extends TimedRobot {
 
     logger.info("INIT in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
-    isolatedTestMode = settings.isIsolatedTestMode();
-    if (isolatedTestMode) {
-      logger.warn("INIT {}", isolatedTestModeMessage());
-      return;
-    }
-
+    alignWheelsButtons = controls.getDriverControls().getAlignWheelsButtons();
     driveSubsystem = INJECTOR.driveSubsystem();
-    alignWheelsButton = INJECTOR.alignWheelsTrigger();
-
     driveSubsystem.zeroAzimuthEncoders();
-    CameraServer.getInstance().startAutomaticCapture();
+
+    if (settings.isCameraEnabled()) CameraServer.getInstance().startAutomaticCapture();
 
     LiveWindow.disableAllTelemetry();
     if (!settings.isEvent()) {
@@ -84,7 +75,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    logger.info("DISABLED {}", isolatedTestModeMessage());
+    logger.info("DISABLED");
     INJECTOR.positionables().forEach(Positionable::resetPosition);
     resetAutonomous();
     Logging.flushLogs();
@@ -92,9 +83,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if (isolatedTestMode) return;
-    if (alignWheelsButton.hasActivated()) {
-      logger.debug("align wheels button activated");
+    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+      logger.debug("align wheels buttons have activated");
       driveSubsystem.alignWheelsToBar();
     }
 
@@ -108,11 +98,60 @@ public class Robot extends TimedRobot {
           startPosition);
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
       switch (autonSwitchPosition) {
-        case 0x20:
+        case 0x10: // left corner, scale priority
+          Command leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  leftScale,
+                  leftScale,
+                  new CrossTheLine());
+          break;
+        case 0x11: // left corner, switch priority
+          Command leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  leftSwitch,
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  leftSwitch,
+                  new CrossTheLine());
+          break;
+        case 0x19: // left corner, test
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LifeCycleTestCommand("Left Near Switch"),
+                  new LifeCycleTestCommand("Left Scale"),
+                  new LifeCycleTestCommand("Left Both"),
+                  new LifeCycleTestCommand("Left Neither"));
+          break;
+        case 0x20: // center switch
           autonCommand = new CenterSwitchCommand();
           break;
-        case 0x10:
-          autonCommand = new LeftScaleCommand();
+        case 0x30: // right corner, scale priority
+          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
+                  rightScale,
+                  rightScale,
+                  new CrossTheLine());
+          break;
+        case 0x31: // right corner, switch priority
+          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  rightSwitch,
+                  new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
+                  rightSwitch,
+                  new CrossTheLine());
+          break;
+        case 0x39: // right corner, test
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LifeCycleTestCommand("Right Near Switch"),
+                  new LifeCycleTestCommand("Right Scale"),
+                  new LifeCycleTestCommand("Right Both"),
+                  new LifeCycleTestCommand("Right Neither"));
           break;
         case 0x00:
         default:
@@ -135,7 +174,6 @@ public class Robot extends TimedRobot {
   private boolean checkAutonomousSwitch() {
     boolean changed = false;
     int switchPosition = controls.getAutonomousSwitchPosition();
-
     if (switchPosition != newAutonSwitchPosition) {
       autonSwitchStableCount = 0;
       newAutonSwitchPosition = switchPosition;
@@ -165,7 +203,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    logger.info("AUTONOMOUS {}", isolatedTestModeMessage());
+    logger.info("AUTONOMOUS");
 
     MatchData.OwnedSide nearSwitch = OwnedSide.UNKNOWN;
     MatchData.OwnedSide scale = OwnedSide.UNKNOWN;
@@ -198,18 +236,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    logger.info("TELEOP {}", isolatedTestModeMessage());
-    if (!isolatedTestMode) {
-      driveSubsystem.stop();
-    }
+    logger.info("TELEOP");
+    driveSubsystem.stop();
   }
 
   @Override
   public void teleopPeriodic() {
     scheduler.run();
-  }
-
-  private String isolatedTestModeMessage() {
-    return isolatedTestMode ? "(isolated test mode)" : "";
   }
 }
