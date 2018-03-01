@@ -1,8 +1,5 @@
 package frc.team2767.command.auton;
 
-import com.moandjiezana.toml.Toml;
-import frc.team2767.Robot;
-import frc.team2767.Settings;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
@@ -12,11 +9,7 @@ public class SwitchCommandGroup extends PowerUpCommandGroup {
 
   public SwitchCommandGroup(Side side) {
     super();
-    Settings settings = Robot.INJECTOR.settings();
-    Toml toml = settings.getTable("POWERUP.SHOULDER");
-    addParallel(
-        new ShoulderPosition(
-            toml.getLong("stowPosition").intValue())); // TODO: make std positions enum
+    addParallel(new ShoulderPosition(ShoulderPosition.Position.STOW));
 
     addSequential(new PathCommand(side.path));
     addSequential(new AzimuthCommand(side.azimuth));
