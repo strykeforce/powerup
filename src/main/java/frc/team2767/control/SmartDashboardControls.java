@@ -10,6 +10,7 @@ import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
 import frc.team2767.command.extender.ExtenderDown;
 import frc.team2767.command.extender.ExtenderUp;
+import frc.team2767.command.health.HealthCheck;
 import frc.team2767.command.intake.IntakeClose;
 import frc.team2767.command.intake.IntakeOpen;
 import frc.team2767.command.lift.LiftZero;
@@ -55,6 +56,7 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
+    SmartDashboard.putData("Test/HealthCheck", new HealthCheck());
     SmartDashboard.putData("Test/IntakeOpen", new IntakeOpen());
     SmartDashboard.putData("Test/IntakeClose", new IntakeClose());
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));

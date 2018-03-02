@@ -44,6 +44,8 @@ public interface SingletonComponent {
 
   ExtenderSubsystem extenderSubsystem();
 
+  HealthCheckSubsystem healthCheckSubsystem();
+
   Controls controls();
 
   TelemetryService telemetryService();

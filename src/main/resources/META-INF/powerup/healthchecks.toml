@@ -1,0 +1,46 @@
+iterations = 50
+runTimeSec = 2.0
+warmUpSec = 1.0
+
+#[[TEST]]
+#name = "Swerve Drive Motors"
+#type = "DRIVE"
+#ids = [10, 11, 12, 13]
+#percentOutputs = [0.5, 1.0]
+#
+#[TEST.current]
+#  low = 3.0
+#  high = 4.0
+#
+#[TEST.speed]
+#  low = 5000.0
+#  high = 6000.0
+
+[[TEST]]
+name = "Swerve Azimuth Motors"
+type = "AZIMUTH"
+ids = [0, 1, 2, 3]
+percentOutputs = [0.5, 1.0]
+
+[TEST.current]
+  low = 30.0
+  high = 40.0
+
+[TEST.speed]
+  low = 500.0
+  high = 600.0
+
+#[[TEST]]
+#name = "Intake Grab Motors"
+#type = "INTAKE"
+#ids = [11, 12, 13]
+#percentOutputs = [0.5, 1.0]
+#
+#[TEST.current]
+#  low = 30.0
+#  high = 40.0
+#
+#[TEST.speed]
+#  low = 500.0
+#  high = 600.0
+#
