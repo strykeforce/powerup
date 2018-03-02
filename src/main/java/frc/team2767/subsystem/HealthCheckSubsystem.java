@@ -85,19 +85,15 @@ public class HealthCheckSubsystem extends Subsystem implements Runnable {
     List<TalonSRX> talons =
         test.ids.stream().map(talonFactory::getTalon).collect(Collectors.toList());
 
-    Map<Integer, List<Result>> results = new HashMap<>();
-    test.results = results;
-
-    for (TalonSRX talon : talons) {
-      results.put(talon.getDeviceID(), new ArrayList<>());
-      for (double output : test.percentOutputs) {
+    for (Case tc : test.cases) {
+      tc.results = new HashMap<>();
+      for (TalonSRX talon : talons) {
+        tc.results.put(talon.getDeviceID(), new ArrayList<>());
         if (checkCanceled(talon)) return;
         Result result = new Result();
-        results.get(talon.getDeviceID()).add(result);
-
-        logger.debug("setting talon {} to output {}", talon.getDeviceID(), output);
-        talon.set(ControlMode.PercentOutput, output);
-        result.output = output;
+        tc.results.get(talon.getDeviceID()).add(result);
+        logger.debug("setting talon {} to output {}", talon.getDeviceID(), tc.output);
+        talon.set(ControlMode.PercentOutput, tc.output);
 
         // come up to speed
         long start = System.nanoTime();
@@ -106,16 +102,18 @@ public class HealthCheckSubsystem extends Subsystem implements Runnable {
           if (checkCanceled(talon)) return;
         }
 
+        // run test
         for (int i = 0; i < kIterations; i++) {
           if (checkCanceled(talon)) return;
+
           result.velocity += talon.getSelectedSensorVelocity(0);
           result.current += talon.getOutputCurrent();
           Timer.delay(kRunTimeSec / kIterations);
         }
+        talon.set(ControlMode.PercentOutput, 0);
         result.velocity /= kIterations;
         result.current /= kIterations;
       }
-      talon.set(ControlMode.PercentOutput, 0);
     }
   }
 
@@ -130,12 +128,19 @@ public class HealthCheckSubsystem extends Subsystem implements Runnable {
   private void outputTest(Test test) {
     logger.info(test.name);
     logger.info(String.format("%2s  %4s   %4s   %6s", "id", "volt", "curr", "speed"));
-    for (int id : test.results.keySet()) {
-      for (Result result : test.results.get(id)) {
-        logger.info(
-            String.format(
-                "%2d  %4.1f   %4.2f   %6d",
-                id, result.output * 12, result.current, result.velocity));
+
+    for (Case tc : test.cases) {
+      for (int id : tc.results.keySet()) {
+        for (Result result : tc.results.get(id)) {
+          logger.info(
+              String.format(
+                  "%2d  %4.1f   %4.2f   %6d  %s",
+                  id,
+                  tc.output * 12,
+                  result.current,
+                  result.velocity,
+                  tc.passFailString(result.current, result.velocity)));
+        }
       }
     }
   }
@@ -175,10 +180,33 @@ public class HealthCheckSubsystem extends Subsystem implements Runnable {
     String name;
     TestType type;
     List<Integer> ids;
-    List<Double> percentOutputs;
+    List<Case> cases;
+  }
+
+  static class Case {
+    double output;
     Range current;
     Range speed;
     Map<Integer, List<Result>> results;
+
+    boolean hasCurrentPassed(double current) {
+      return this.current.inRange(current);
+    }
+
+    boolean hasSpeedPassed(int speed) {
+      return this.speed.inRange(speed);
+    }
+
+    String passFailString(double current, int speed) {
+      if (hasSpeedPassed(speed) && hasCurrentPassed(current)) return "PASS";
+      String msg = "";
+      if (!hasCurrentPassed(current))
+        msg = String.format("current = [%.2f, %.2f]", this.current.low, this.current.high);
+
+      if (!hasSpeedPassed(speed))
+        msg += String.format("speed = [%.0f, %.0f]", this.speed.low, this.speed.high);
+      return msg;
+    }
   }
 
   static class Range {
@@ -195,7 +223,6 @@ public class HealthCheckSubsystem extends Subsystem implements Runnable {
   }
 
   static class Result {
-    double output;
     double current;
     int velocity;
   }

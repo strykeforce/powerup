@@ -2,45 +2,57 @@ iterations = 50
 runTimeSec = 2.0
 warmUpSec = 1.0
 
-#[[TEST]]
-#name = "Swerve Drive Motors"
-#type = "DRIVE"
-#ids = [10, 11, 12, 13]
-#percentOutputs = [0.5, 1.0]
-#
-#[TEST.current]
-#  low = 3.0
-#  high = 4.0
-#
-#[TEST.speed]
-#  low = 5000.0
-#  high = 6000.0
-
 [[TEST]]
 name = "Swerve Azimuth Motors"
 type = "AZIMUTH"
 ids = [0, 1, 2, 3]
-percentOutputs = [0.5, 1.0]
 
-[TEST.current]
-  low = 30.0
-  high = 40.0
+[[TEST.cases]]
+output = 0.5
 
-[TEST.speed]
+[TEST.cases.current]
+  low = 0.1
+  high = 0.5
+
+[TEST.cases.speed]
   low = 500.0
   high = 600.0
 
-#[[TEST]]
-#name = "Intake Grab Motors"
-#type = "INTAKE"
-#ids = [11, 12, 13]
-#percentOutputs = [0.5, 1.0]
+#[[TEST.cases]]
+#output = 1.0
 #
-#[TEST.current]
-#  low = 30.0
-#  high = 40.0
+#[TEST.cases.current]
+#  low = 0.6
+#  high = 1.2
 #
-#[TEST.speed]
-#  low = 500.0
-#  high = 600.0
+#[TEST.cases.speed]
+#  low = 1000.0
+#  high = 1100.0
+
+[[TEST]]
+name = "Swerve Drive Motors"
+type = "DRIVE"
+ids = [10, 11, 12, 13]
+
+[[TEST.cases]]
+output = 0.5
+
+[TEST.cases.current]
+  low = 1.4
+  high = 2.0
+
+[TEST.cases.speed]
+  low = 18500.0
+  high = 19000.0
+
+#[[TEST.cases]]
+#output = 1.0
 #
+#[TEST.cases.current]
+#  low = 4.4
+#  high = 5.0
+#
+#[TEST.cases.speed]
+#  low = 38000.0
+#  high = 41000.0
+
