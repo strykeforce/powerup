@@ -48,7 +48,7 @@ enableCamera  = true
 [POWERUP.INTAKE]
   loadOutput  = -1.0
   holdOutput  = -1.0
-  fastEjectOutput = 0.8
+  fastEjectOutput = 1.0
   slowEjectOutput = 0.35
 
   # release positions
@@ -91,6 +91,8 @@ enableCamera  = true
   absEncoderZeroPosition  = 2955
   stowPosition            = 4705
   intakePosition          = 0
+  launchSwitchPosition    = 4000
+  launchScalePosition     = 3750
 
 [POWERUP.EXTENDER]
   leftUpPosition     = 0.41

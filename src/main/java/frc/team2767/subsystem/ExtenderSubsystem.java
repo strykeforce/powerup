@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 public class ExtenderSubsystem extends Subsystem {
-  private static final int RIGHT_ID = 1; //
+  private static final int RIGHT_ID = 1;
   private static final int LEFT_ID = 2;
 
   private static final Logger logger = LoggerFactory.getLogger(ExtenderSubsystem.class);
@@ -24,18 +24,10 @@ public class ExtenderSubsystem extends Subsystem {
   private final Servo rightServo = new Servo(RIGHT_ID);
   private final Servo leftServo = new Servo(LEFT_ID);
 
-  public boolean servoUp = false;
+  private boolean servoUp = false;
 
   @Inject
   public ExtenderSubsystem(Settings settings) {
-
-    if (rightServo == null) {
-      logger.error("Right Servo missing");
-    }
-    if (leftServo == null) {
-      logger.error("Left Servo missing");
-    }
-
     Toml toml = settings.getTable(TABLE);
     kRightUpPosition = toml.getDouble("rightUpPosition");
     kRightDownPosition = toml.getDouble("rightDownPosition");
@@ -62,9 +54,8 @@ public class ExtenderSubsystem extends Subsystem {
     leftServo.set(kLeftUpPosition);
   }
 
-  public void run() {
-    logger.debug("Sam-servo position", rightServo.getPosition());
-    if (servoUp == false) { // if the servo is below the midpoint of the two positions
+  public void toggle() {
+    if (!servoUp) { // if the servo is below the midpoint of the two positions
       // go up
       logger.debug("right extender at {}", kRightUpPosition);
       logger.debug("left extender at {}", kLeftUpPosition);

@@ -29,6 +29,8 @@ public class ShoulderPosition extends Command {
   public enum Position {
     ZERO("zeroPosition"),
     STOW("stowPosition"),
+    LAUNCH_SWITCH("launchSwitchPosition"),
+    LAUNCH_SCALE("launchScalePosition"),
     INTAKE("intakePosition");
 
     private final String key;

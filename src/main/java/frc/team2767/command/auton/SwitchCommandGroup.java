@@ -9,7 +9,7 @@ public class SwitchCommandGroup extends PowerUpCommandGroup {
 
   public SwitchCommandGroup(Side side) {
     super();
-    addParallel(new ShoulderPosition(ShoulderPosition.Position.STOW));
+    addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
 
     addSequential(new PathCommand(side.path));
     addSequential(new AzimuthCommand(side.azimuth));

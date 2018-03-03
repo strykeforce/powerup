@@ -14,6 +14,6 @@ public class ExtenderToggle extends InstantCommand {
 
   @Override
   protected void initialize() {
-    extenderSubsystem.run();
+    extenderSubsystem.toggle();
   }
 }

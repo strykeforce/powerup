@@ -11,9 +11,9 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
   public ScaleCommandGroup(Side side) {
     super();
     addSequential(new PathCommand(side.path));
-    addParallel(new ShoulderPosition(ShoulderPosition.Position.STOW));
     addParallel(new AzimuthCommand(side.azimuth));
     addSequential(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+    addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
     addSequential(new Stow());
   }
