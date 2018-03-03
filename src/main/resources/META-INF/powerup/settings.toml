@@ -87,15 +87,16 @@ enableCamera  = true
   jogIncrement   = 300
 
   # positions
-  zeroPosition   = 7000
-  stowPosition   = 6500
-  intakePosition = 1050
+  limitSwitchZeroPosition = 4740
+  absEncoderZeroPosition  = 2955
+  stowPosition            = 4705
+  intakePosition          = 0
 
- [POWERUP.EXTENDER]
- leftUpPosition     = 0.41
- leftDownPosition   = 0.2
- rightDownPosition  = 0.8
- rightUpPosition    = 0.57
+[POWERUP.EXTENDER]
+  leftUpPosition     = 0.41
+  leftDownPosition   = 0.2
+  rightDownPosition  = 0.8
+  rightUpPosition    = 0.57
 
 [POWERUP.WHEEL]
   ticksPerTooth = 108

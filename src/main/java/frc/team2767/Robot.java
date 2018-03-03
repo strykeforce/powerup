@@ -14,7 +14,6 @@ import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import frc.team2767.subsystem.Positionable;
 import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
@@ -76,7 +75,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("DISABLED");
-    INJECTOR.positionables().forEach(Positionable::resetPosition);
     resetAutonomous();
     Logging.flushLogs();
   }

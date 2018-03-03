@@ -30,15 +30,19 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private final double kDownOutput;
   private final double kStopOutput;
   private final int kCloseEnough;
-  private final int kZeroPosition;
+  private final int kLimitSwitchZeroPosition;
+  private final int kAbsEncoderZeroPosition;
   private final int kJogIncrement;
 
+  private final IntakeSubsystem intakeSubsystem;
   private final TalonSRX talon;
+  private int positionOffset;
   private int stableCount;
   private int setpoint;
 
   @Inject
-  public ShoulderSubsystem(Talons talons, Settings settings) {
+  public ShoulderSubsystem(Talons talons, Settings settings, IntakeSubsystem intakeSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
     talon = talons.getTalon(ID);
     if (talon == null) {
       logger.error("Talon not present");
@@ -48,10 +52,12 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     kDownOutput = toml.getDouble("downOutput");
     kStopOutput = toml.getDouble("stopOutput");
     kCloseEnough = toml.getLong("closeEnough").intValue();
-    kZeroPosition = toml.getLong("zeroPosition").intValue();
+    kLimitSwitchZeroPosition = toml.getLong("limitSwitchZeroPosition").intValue();
+    kAbsEncoderZeroPosition = toml.getLong("absEncoderZeroPosition").intValue();
     kJogIncrement = toml.getLong("jogIncrement").intValue();
     logger.info("closeEnough = {}", kCloseEnough);
-    logger.info("zeroPosition = {}", kZeroPosition);
+    logger.info("limitSwitchZeroPosition = {}", kLimitSwitchZeroPosition);
+    logger.info("absEncoderZeroPosition = {}", kAbsEncoderZeroPosition);
     logger.info("jogIncrement = {}", kJogIncrement);
     logger.info("upOutput = {}", kUpOutput);
     logger.info("downOutput = {}", kDownOutput);
@@ -92,9 +98,16 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     talon.set(PercentOutput, kUpOutput);
   }
 
-  public void zeroPosition() {
-    logger.info("setting selected sensor to position {}", kZeroPosition);
-    talon.setSelectedSensorPosition(kZeroPosition, 0, TIMEOUT);
+  public void zeroPositionWithLimitSwitch() {
+    logger.info("setting selected sensor to position {}", kLimitSwitchZeroPosition);
+    talon.setSelectedSensorPosition(kLimitSwitchZeroPosition, 0, TIMEOUT);
+  }
+
+  public void zeroPositionWithEncoder() {
+    int absolute = intakeSubsystem.getShoulderAbsolutePosition();
+    positionOffset = absolute - kAbsEncoderZeroPosition;
+    talon.setSelectedSensorPosition(5 * positionOffset, 0, TIMEOUT);
+    logger.info("absolute position = {} set position = {}", absolute, positionOffset);
   }
 
   public void up() {
