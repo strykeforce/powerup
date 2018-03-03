@@ -19,23 +19,24 @@ import frc.team2767.command.lift.LiftStop;
 import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.*;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class PowerUpControls {
 
+  private static final int USB = 0;
+
   private static final double AXIS_THRESH = 0.9;
   private final Joystick board;
 
   @Inject
   PowerUpControls(Settings settings) {
-    if (!settings.isEvent() && DriverStation.getInstance().getJoystickName(1).isEmpty()) {
-      Controls.logger.warn("POWER UP joystick check failed, skipping initialization");
-      board = null;
-      return;
-    }
-    board = new Joystick(0);
+    if (DriverStation.getInstance().getJoystickName(USB).isEmpty())
+      Controls.logger.error("POWER UP joystick check failed");
+
+    board = new Joystick(USB);
     Controls.logger.debug("initializing POWER UP button board with joystick {}", board.getName());
 
     // intake

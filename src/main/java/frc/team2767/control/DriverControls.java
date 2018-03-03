@@ -10,6 +10,7 @@ import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.subsystem.IntakeSubsystem;
+
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,16 +19,16 @@ import javax.inject.Singleton;
 @Singleton
 public class DriverControls {
 
+  private static final int USB = 1;
+
   private final Joystick joystick;
 
   @Inject
   public DriverControls(Settings settings) {
-    if (!settings.isEvent() && DriverStation.getInstance().getJoystickName(1).isEmpty()) {
-      Controls.logger.warn("Driver joystick check failed, skipping initialization");
-      joystick = null;
-      return;
-    }
-    joystick = new Joystick(1);
+    if (DriverStation.getInstance().getJoystickName(USB).isEmpty())
+      Controls.logger.error("Driver joystick check failed");
+
+    joystick = new Joystick(USB);
     Controls.logger.debug("initializing driver controls with joystick {}", joystick.getName());
 
     // gyro
