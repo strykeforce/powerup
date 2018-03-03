@@ -10,7 +10,6 @@ import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.subsystem.IntakeSubsystem;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;

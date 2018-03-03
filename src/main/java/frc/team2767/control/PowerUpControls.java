@@ -19,7 +19,6 @@ import frc.team2767.command.lift.LiftStop;
 import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.*;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
