@@ -11,11 +11,11 @@ public class HealthCheck extends Command {
   public HealthCheck() {
     super("Health Check");
     requires(healthCheckSubsystem);
-    //    requires(Robot.INJECTOR.driveSubsystem());
-    //    requires(Robot.INJECTOR.climberSubsystem());
-    //    requires(Robot.INJECTOR.intakeSubsystem());
-    //    requires(Robot.INJECTOR.liftSubsystem());
-    //    requires(Robot.INJECTOR.shoulderSubsystem());
+    requires(Robot.INJECTOR.driveSubsystem());
+    requires(Robot.INJECTOR.climberSubsystem());
+    requires(Robot.INJECTOR.intakeSubsystem());
+    requires(Robot.INJECTOR.liftSubsystem());
+    requires(Robot.INJECTOR.shoulderSubsystem());
   }
 
   @Override

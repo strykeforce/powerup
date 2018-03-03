@@ -96,6 +96,7 @@
   talonIds = [30, 31]
   [TALON.selectedFeedbackSensor]
     feedbackDevice = "CTRE_MagEncoder_Relative"
+    phaseSensor = false
   [TALON.output]
     neutralMode = "Brake"
   [TALON.currentLimit]
@@ -185,8 +186,8 @@
     peak = 0
     peakDuration = 0
   [TALON.motionMagic]
-    acceleration = 5000
-    cruiseVelocity = 1000
+    acceleration = 4000
+    cruiseVelocity = 800
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic
     pGain = 1.0
     iGain = 0.0

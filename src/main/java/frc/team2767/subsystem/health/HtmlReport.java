@@ -42,7 +42,7 @@ class HtmlReport {
   private static Tag result(Result r) {
     return tr(
             td(String.valueOf(r.id)).withClass("id"),
-            td(String.valueOf(r.current)).withClass("current"),
+            td(String.valueOf(String.format("%4.2f", r.current))).withClass("current"),
             td(String.valueOf(r.velocity)).withClass("speed"),
             td(String.valueOf(r.comment())).withClass("status"))
         .withClass(r.hasPassed() ? "pass" : "fail");
