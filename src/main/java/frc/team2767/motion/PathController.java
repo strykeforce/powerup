@@ -150,7 +150,7 @@ public class PathController implements Runnable, Item {
 
     forward = Math.cos(segment.heading) * vel_setpoint;
     strafe = -Math.sin(segment.heading) * vel_setpoint;
-    azimuth = kPAzimuth * gyro.getYaw(); // target = 0 deg
+    azimuth = kPAzimuth * Math.IEEEremainder(gyro.getAngle(), 360.0); // target = 0 deg
 
     if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 

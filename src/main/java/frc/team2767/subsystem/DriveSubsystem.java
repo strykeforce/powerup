@@ -151,9 +151,9 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   public void endAzimuth() {
     azimuthController.disable();
     logger.info(
-        "azimuth ended setpoint = {} gyro yaw = {}",
+        "azimuth ended setpoint = {} gyro angle = {}",
         azimuthController.getSetpoint(),
-        azimuthController.getYaw());
+        azimuthController.getAngle());
   }
 
   public int getDrivePosition(int wheel) {
@@ -165,8 +165,11 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   }
 
   public void zeroGyro() {
-    logger.warn("setting gyro yaw to zero");
-    swerve.getGyro().zeroYaw();
+    AHRS gyro = swerve.getGyro();
+    gyro.setAngleAdjustment(0);
+    double adj = gyro.getAngle() % 360;
+    gyro.setAngleAdjustment(-adj);
+    logger.info("resetting gyro zero ({})", adj);
   }
 
   public void setAzimuthPosition(int position) {

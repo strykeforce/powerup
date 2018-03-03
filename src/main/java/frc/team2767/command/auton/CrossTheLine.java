@@ -1,12 +1,7 @@
 package frc.team2767.command.auton;
 
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.OPEN_LOOP;
-
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.TimedCommand;
-import frc.team2767.Robot;
 import frc.team2767.command.StartPosition;
-import frc.team2767.subsystem.DriveSubsystem;
 import openrio.powerup.MatchData;
 
 /**
@@ -33,6 +28,11 @@ public class CrossTheLine extends ConditionalCommand implements OwnedSidesSettab
     this.startPosition = startPosition;
   }
 
+  public enum Side {
+    LEFT,
+    RIGHT,
+  }
+
   static class CenterCrossTheLine extends PowerUpCommandGroup {
     public CenterCrossTheLine() {
       super();
@@ -40,19 +40,10 @@ public class CrossTheLine extends ConditionalCommand implements OwnedSidesSettab
     }
   }
 
-  static class DriveForward extends TimedCommand {
-
-    private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
+  static class DriveForward extends PowerUpCommandGroup {
 
     public DriveForward() {
-      super(5);
-      requires(driveSubsystem);
-    }
-
-    @Override
-    protected void initialize() {
-      driveSubsystem.setDriveMode(OPEN_LOOP);
-      driveSubsystem.driveWheels(0, 0.2);
+      super();
     }
   }
 }

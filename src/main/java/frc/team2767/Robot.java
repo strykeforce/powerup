@@ -2,6 +2,7 @@ package frc.team2767;
 
 import static frc.team2767.command.StartPosition.*;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -222,6 +223,22 @@ public class Robot extends TimedRobot {
 
     if (autonCommand instanceof OwnedSidesSettable)
       ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
+
+    AHRS gyro = driveSubsystem.getGyro();
+    double adj = -gyro.getAngle() % 360;
+    switch (startPosition) {
+      case UNKNOWN:
+      case CENTER:
+        break;
+      case LEFT:
+        adj += 90d;
+        gyro.setAngleAdjustment(adj);
+        break;
+      case RIGHT:
+        adj -= 90d;
+        gyro.setAngleAdjustment(adj);
+        break;
+    }
 
     autonHasRun = true;
     autonCommand.start();

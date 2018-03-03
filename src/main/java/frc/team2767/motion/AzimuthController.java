@@ -71,8 +71,8 @@ public class AzimuthController extends AbstractItem {
     pid.setSetpoint(setpoint);
   }
 
-  public double getYaw() {
-    return gyro.getYaw();
+  public double getAngle() {
+    return gyro.getAngle();
   }
 
   @Override
