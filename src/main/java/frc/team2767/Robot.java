@@ -225,6 +225,8 @@ public class Robot extends TimedRobot {
       ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
 
     AHRS gyro = driveSubsystem.getGyro();
+    gyro.zeroYaw();
+    gyro.setAngleAdjustment(0);
     double adj = -gyro.getAngle() % 360;
     switch (startPosition) {
       case UNKNOWN:
@@ -253,6 +255,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     logger.info("TELEOP");
     driveSubsystem.stop();
+    scheduler.removeAll();
   }
 
   @Override

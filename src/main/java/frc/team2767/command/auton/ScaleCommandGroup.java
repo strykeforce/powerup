@@ -1,5 +1,6 @@
 package frc.team2767.command.auton;
 
+import frc.team2767.command.StartPosition;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.sequence.Stow;
@@ -10,7 +11,7 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
 
   public ScaleCommandGroup(Side side) {
     super();
-    addSequential(new PathCommand(side.path));
+    addSequential(new PathCommand(side.path, side.startPosition));
     addParallel(new AzimuthCommand(side.azimuth));
     addSequential(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
     addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
@@ -19,16 +20,18 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
   }
 
   public enum Side {
-    LEFT("left_scale", 45.0),
-    RIGHT("right_scale", -50.0),
+    LEFT("left_scale", -45.0, StartPosition.LEFT),
+    RIGHT("right_scale", 45.0, StartPosition.RIGHT),
     ;
 
     private final String path;
     private final double azimuth;
+    private final StartPosition startPosition;
 
-    Side(String path, double azimuth) {
+    Side(String path, double azimuth, StartPosition startPosition) {
       this.path = path;
       this.azimuth = azimuth;
+      this.startPosition = startPosition;
     }
   }
 }

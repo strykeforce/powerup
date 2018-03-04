@@ -1,7 +1,7 @@
 waypoints = [
   {x = 0.0, y = 0.0, angle = 0.0},
-  {x = 3.418, y = 0.0, angle = 0.0},
-  {x = 3.861, y = 0.523, angle = -90.0},
+#  {x = 3.418, y = 0.0, angle = 0.0},
+  {x = 3.861, y = 0.45, angle = 0.0},
 ]
 fit              = "HERMITE_CUBIC"
 sample_count     = 100_000
