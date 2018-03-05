@@ -48,8 +48,8 @@ enableCamera  = true
 [POWERUP.INTAKE]
   loadOutput  = -1.0
   holdOutput  = -1.0
-  fastEjectOutput = 0.8
-  slowEjectOutput = 0.35
+  fastEjectOutput = 1.0
+  slowEjectOutput = 0.30
 
   # release positions
   zeroPosition = 2048
@@ -87,15 +87,18 @@ enableCamera  = true
   jogIncrement   = 300
 
   # positions
-  zeroPosition   = 7000
-  stowPosition   = 6500
-  intakePosition = 1050
+  limitSwitchZeroPosition = 4740
+  absEncoderZeroPosition  = 2955
+  stowPosition            = 3918
+  intakePosition          = 0
+  launchSwitchPosition    = 4000
+  launchScalePosition     = 3750
 
- [POWERUP.EXTENDER]
- leftUpPosition     = 0.41
- leftDownPosition   = 0.2
- rightDownPosition  = 0.8
- rightUpPosition    = 0.57
+[POWERUP.EXTENDER]
+  leftUpPosition     = 0.41
+  leftDownPosition   = 0.2
+  rightDownPosition  = 0.8
+  rightUpPosition    = 0.57
 
 [POWERUP.WHEEL]
   ticksPerTooth = 108

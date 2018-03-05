@@ -33,20 +33,27 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final double kSlowEjectOutput;
   private final int kOpenPosition;
   private final TalonSRX leftTalon, rightTalon, releaseTalon;
-  private final SensorCollection rightSensors;
+  private final SensorCollection cubeSensors;
+  private final SensorCollection shoulderAbsoluteSensor;
 
   @Inject
   public IntakeSubsystem(Talons talons, Settings settings) {
     leftTalon = talons.getTalon(LEFT_ID);
     rightTalon = talons.getTalon(RIGHT_ID);
     releaseTalon = talons.getTalon(RELEASE_ID);
-    if (leftTalon == null) logger.error("Left Talon missing");
+    if (rightTalon == null) logger.error("Right Talon missing");
     if (releaseTalon == null) logger.error("Release Talon missing");
     if (rightTalon != null) {
-      rightSensors = rightTalon.getSensorCollection();
+      shoulderAbsoluteSensor = rightTalon.getSensorCollection();
     } else {
       logger.error("Right Talon missing");
-      rightSensors = null;
+      shoulderAbsoluteSensor = null;
+    }
+    if (leftTalon != null) {
+      cubeSensors = leftTalon.getSensorCollection();
+    } else {
+      logger.error("Right Talon missing");
+      cubeSensors = null;
     }
 
     Toml toml = settings.getTable(TABLE);
@@ -115,8 +122,12 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     rightTalon.set(PercentOutput, 0d);
   }
 
+  public int getShoulderAbsolutePosition() {
+    return shoulderAbsoluteSensor.getPulseWidthPosition() & 0xFFF;
+  }
+
   public boolean isLoaded() {
-    return rightSensors.isRevLimitSwitchClosed();
+    return cubeSensors.isFwdLimitSwitchClosed() && cubeSensors.isRevLimitSwitchClosed();
   }
 
   @Override

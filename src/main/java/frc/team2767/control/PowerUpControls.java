@@ -25,17 +25,17 @@ import javax.inject.Singleton;
 @Singleton
 public class PowerUpControls {
 
+  private static final int USB = 0;
+
   private static final double AXIS_THRESH = 0.9;
   private final Joystick board;
 
   @Inject
   PowerUpControls(Settings settings) {
-    if (!settings.isEvent() && DriverStation.getInstance().getJoystickName(1).isEmpty()) {
-      Controls.logger.warn("POWER UP joystick check failed, skipping initialization");
-      board = null;
-      return;
-    }
-    board = new Joystick(0);
+    if (DriverStation.getInstance().getJoystickName(USB).isEmpty())
+      Controls.logger.error("POWER UP joystick check failed");
+
+    board = new Joystick(USB);
     Controls.logger.debug("initializing POWER UP button board with joystick {}", board.getName());
 
     // intake
@@ -81,7 +81,7 @@ public class PowerUpControls {
 
     new JoystickButton(board, Switch.LIFT_MID_SCALE.index)
         .whenActive(new LiftPosition(LiftPosition.Position.SCALE_MID));
-    new JoystickButton(board, Switch.EXCHANGE_POS.index).whenActive(new ShoulderZero());
+    new JoystickButton(board, Switch.SHOULDER_ZERO.index).whenActive(new ShoulderZeroWithEncoder());
     new JoystickButton(board, Switch.GROUND_INTAKE_POS.index)
         .whenActive(new ShoulderPosition(ShoulderPosition.Position.INTAKE));
     new JoystickButton(board, Switch.EXTENDER.index).whenActive(new ExtenderToggle());
@@ -116,7 +116,7 @@ public class PowerUpControls {
     INTAKE_IN(11),
     INTAKE_OUT(9),
     GROUND_INTAKE_POS(10),
-    EXCHANGE_POS(12);
+    SHOULDER_ZERO(12);
     private final int index;
 
     Switch(int index) {
