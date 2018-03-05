@@ -43,6 +43,7 @@ dependencies {
     compile 'org.strykeforce.thirdcoast:core:18.3.1'
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile group: 'com.j2html', name: 'j2html', version: '1.2.2'
     compile 'com.google.dagger:dagger:2.14.1'
 
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'

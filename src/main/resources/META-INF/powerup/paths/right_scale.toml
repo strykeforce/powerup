@@ -1,8 +1,8 @@
-# left scale
+# right scale
 
 waypoints = [
   {x = 0.0, y = 0.0, angle = 0.0},
-  {x = 6.7, y = -0.2, angle = 0.0},
+  {x = 6.7, y = -0.1, angle = 0.0},
 ]
 
 fit              = "HERMITE_CUBIC"

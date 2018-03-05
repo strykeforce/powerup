@@ -2,21 +2,19 @@ package frc.team2767;
 
 import static frc.team2767.command.StartPosition.*;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
-import frc.team2767.command.OwnedSidesSettable;
 import frc.team2767.command.StartPosition;
-import frc.team2767.command.auton.CenterSwitchCommand;
-import frc.team2767.command.auton.CrossTheLine;
-import frc.team2767.command.auton.LeftScaleCommand;
+import frc.team2767.command.auton.*;
+import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import frc.team2767.subsystem.Positionable;
 import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
@@ -43,32 +41,26 @@ public class Robot extends TimedRobot {
   private StartPosition startPosition;
   private int newAutonSwitchPosition;
   private Controls controls;
+  private Settings settings;
   private DriveSubsystem driveSubsystem;
-  private SimpleTrigger alignWheelsButton;
+  private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
-  private boolean isolatedTestMode;
   private Command autonCommand;
   private boolean autonHasRun;
 
   @Override
   public void robotInit() {
-    Settings settings = INJECTOR.settings();
+    settings = INJECTOR.settings();
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
     logger.info("INIT in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
-    isolatedTestMode = settings.isIsolatedTestMode();
-    if (isolatedTestMode) {
-      logger.warn("INIT {}", isolatedTestModeMessage());
-      return;
-    }
-
+    alignWheelsButtons = controls.getDriverControls().getAlignWheelsButtons();
     driveSubsystem = INJECTOR.driveSubsystem();
-    alignWheelsButton = INJECTOR.alignWheelsTrigger();
-
     driveSubsystem.zeroAzimuthEncoders();
-    CameraServer.getInstance().startAutomaticCapture();
+
+    if (settings.isCameraEnabled()) CameraServer.getInstance().startAutomaticCapture();
 
     LiveWindow.disableAllTelemetry();
     if (!settings.isEvent()) {
@@ -84,42 +76,90 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    logger.info("DISABLED {}", isolatedTestModeMessage());
-    INJECTOR.positionables().forEach(Positionable::resetPosition);
+    logger.info("DISABLED");
     resetAutonomous();
     Logging.flushLogs();
   }
 
   @Override
   public void disabledPeriodic() {
-    if (isolatedTestMode) return;
-    if (alignWheelsButton.hasActivated()) {
-      logger.debug("align wheels button activated");
+    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+      logger.debug("align wheels buttons have activated");
       driveSubsystem.alignWheelsToBar();
     }
 
     if (autonHasRun) return;
-    // Most significant digit: 1 - Left, 2 - Center, 3 - Right
+
     // auton commands need time to compute path trajectories so instantiate as early as possible
     if (checkAutonomousSwitch()) {
       logger.info(
-          "initializing auton command {}, start position = {}",
+          "auton switch initializing auton command {}, start position = {}",
           String.format("%02X", autonSwitchPosition),
           startPosition);
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
+      // Most significant digit: 1 - Left, 2 - Center, 3 - Right
       switch (autonSwitchPosition) {
-        case 0x20:
+        case 0x10: // left corner, scale priority
+          Command leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  leftScale,
+                  leftScale,
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.LEFT));
+          break;
+        case 0x11: // left corner, switch priority
+          Command leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  leftSwitch,
+                  new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
+                  leftSwitch,
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.LEFT));
+          break;
+        case 0x19: // left corner, test
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LifeCycleTestCommand("Left Near Switch"),
+                  new LifeCycleTestCommand("Left Scale"),
+                  new LifeCycleTestCommand("Left Both"),
+                  new LifeCycleTestCommand("Left Neither"));
+          break;
+        case 0x20: // center switch
           autonCommand = new CenterSwitchCommand();
           break;
-        case 0x10:
-          autonCommand = new LeftScaleCommand();
+        case 0x30: // right corner, scale priority
+          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
+                  rightScale,
+                  rightScale,
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.RIGHT));
+          break;
+        case 0x31: // right corner, switch priority
+          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  rightSwitch,
+                  new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT),
+                  rightSwitch,
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.RIGHT));
+          break;
+        case 0x39: // right corner, test
+          autonCommand =
+              new CornerConditionalCommand(
+                  new LifeCycleTestCommand("Right Near Switch"),
+                  new LifeCycleTestCommand("Right Scale"),
+                  new LifeCycleTestCommand("Right Both"),
+                  new LifeCycleTestCommand("Right Neither"));
           break;
         case 0x00:
         default:
           logger.warn(
               "no auton command assigned for switch position {}",
               String.format("%02X", autonSwitchPosition));
-          autonCommand = new CrossTheLine();
+          autonCommand = new LogCommand("Invalid auton switch position");
           break;
       }
     }
@@ -135,7 +175,6 @@ public class Robot extends TimedRobot {
   private boolean checkAutonomousSwitch() {
     boolean changed = false;
     int switchPosition = controls.getAutonomousSwitchPosition();
-
     if (switchPosition != newAutonSwitchPosition) {
       autonSwitchStableCount = 0;
       newAutonSwitchPosition = switchPosition;
@@ -165,7 +204,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    logger.info("AUTONOMOUS {}", isolatedTestModeMessage());
+    logger.info("AUTONOMOUS");
 
     MatchData.OwnedSide nearSwitch = OwnedSide.UNKNOWN;
     MatchData.OwnedSide scale = OwnedSide.UNKNOWN;
@@ -178,7 +217,20 @@ public class Robot extends TimedRobot {
 
     if (nearSwitch == OwnedSide.UNKNOWN) {
       logger.error("GAME DATA TIMEOUT");
-      autonCommand = new CrossTheLine();
+      switch (startPosition) {
+        case UNKNOWN:
+          autonCommand = new LogCommand("Invalid auton switch position");
+          break;
+        case LEFT:
+          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.LEFT);
+          break;
+        case CENTER:
+          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.CENTER);
+          break;
+        case RIGHT:
+          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.RIGHT);
+          break;
+      }
     } else {
       logger.info("NEAR SWITCH owned side = {}", nearSwitch);
       logger.info("SCALE owned side = {}", scale);
@@ -187,7 +239,24 @@ public class Robot extends TimedRobot {
     if (autonCommand instanceof OwnedSidesSettable)
       ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
 
-    autonHasRun = true;
+    AHRS gyro = driveSubsystem.getGyro();
+    gyro.setAngleAdjustment(0);
+    double adj = -gyro.getAngle() % 360;
+    switch (startPosition) {
+      case UNKNOWN:
+      case CENTER:
+        break;
+      case LEFT:
+        adj += 90d;
+        break;
+      case RIGHT:
+        adj -= 90d;
+        break;
+    }
+    gyro.setAngleAdjustment(adj);
+    gyro.zeroYaw();
+
+    autonHasRun = settings.isEvent();
     autonCommand.start();
   }
 
@@ -198,18 +267,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    logger.info("TELEOP {}", isolatedTestModeMessage());
-    if (!isolatedTestMode) {
-      driveSubsystem.stop();
-    }
+    logger.info("TELEOP");
+    driveSubsystem.stop();
+    scheduler.removeAll();
   }
 
   @Override
   public void teleopPeriodic() {
     scheduler.run();
-  }
-
-  private String isolatedTestModeMessage() {
-    return isolatedTestMode ? "(isolated test mode)" : "";
   }
 }

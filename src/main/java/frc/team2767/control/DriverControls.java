@@ -1,5 +1,6 @@
 package frc.team2767.control;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.Settings;
@@ -9,6 +10,7 @@ import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.subsystem.IntakeSubsystem;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -16,12 +18,17 @@ import javax.inject.Singleton;
 @Singleton
 public class DriverControls {
 
-  private final Joystick joystick = new Joystick(1);
+  private static final int USB = 1;
+
+  private final Joystick joystick;
 
   @Inject
   public DriverControls(Settings settings) {
-    Controls.logger.debug("initializing driver controls");
-    if (settings.isIsolatedTestMode()) return;
+    if (DriverStation.getInstance().getJoystickName(USB).isEmpty())
+      Controls.logger.error("Driver joystick check failed");
+
+    joystick = new Joystick(USB);
+    Controls.logger.debug("initializing driver controls with joystick {}", joystick.getName());
 
     // gyro
     new JoystickButton(joystick, Switch.RESET.index).whenPressed(new ZeroGyroYawCommand());
@@ -35,6 +42,11 @@ public class DriverControls {
         .whenPressed(new IntakeLoad(IntakeLoad.Position.GROUND));
     new JoystickButton(joystick, Shoulder.RIGHT.index).whenReleased(new IntakeStop());
     new JoystickButton(joystick, Shoulder.RIGHT.index).whenReleased(new Stow());
+  }
+
+  @Nullable
+  public SimpleTrigger getAlignWheelsButtons() {
+    return joystick != null ? new AlignWheelsTrigger(this) : null;
   }
 
   public double getForward() {

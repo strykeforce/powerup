@@ -12,8 +12,8 @@
 # These settings are used if not overridden in ~lvuser/powerup.toml on roboRIO
 
 [POWERUP]
-description = "Stryke Force 2018 POWER UP"
-isolatedTestMode = false
+description   = "Stryke Force 2018 POWER UP"
+enableCamera  = true
 
 [POWERUP.PATH]
   p_azimuth        = -0.004
@@ -23,11 +23,11 @@ isolatedTestMode = false
   ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
-  p = 0.035
+  p = 0.02
   i = 0.0
   d = 0.0
   tolerance = 0.5
-  outputMax = 1.0
+  outputMax = 0.3
   test = false
 
 [POWERUP.JOYSTICK]
@@ -48,8 +48,8 @@ isolatedTestMode = false
 [POWERUP.INTAKE]
   loadOutput  = -1.0
   holdOutput  = -1.0
-  fastEjectOutput = 0.8
-  slowEjectOutput = 0.3
+  fastEjectOutput = 1.0
+  slowEjectOutput = 0.30
 
   # release positions
   zeroPosition = 2048
@@ -60,7 +60,7 @@ isolatedTestMode = false
   upOutput     = 0.25
   downOutput   = -0.2
   stopOutput   = 0.0
-  closeEnough  = 50
+  closeEnough  = 100
   jogIncrement = 1400
 
   # positions
@@ -87,15 +87,18 @@ isolatedTestMode = false
   jogIncrement   = 300
 
   # positions
-  zeroPosition   = 7000
-  stowPosition   = 6500
-  intakePosition = 300
+  limitSwitchZeroPosition = 4740
+  absEncoderZeroPosition  = 2955
+  stowPosition            = 3918
+  intakePosition          = 0
+  launchSwitchPosition    = 4000
+  launchScalePosition     = 3750
 
- [POWERUP.EXTENDER]
- leftUpPosition     = 0.41
- leftDownPosition   = 0.2
- rightDownPosition  = 0.8
- rightUpPosition    = 0.57
+[POWERUP.EXTENDER]
+  leftUpPosition     = 0.41
+  leftDownPosition   = 0.2
+  rightDownPosition  = 0.8
+  rightUpPosition    = 0.57
 
 [POWERUP.WHEEL]
   ticksPerTooth = 108

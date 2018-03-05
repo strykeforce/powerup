@@ -45,6 +45,10 @@ public class Settings {
     return jumperRemoved;
   }
 
+  public boolean isCameraEnabled() {
+    return getTable(TABLE).getBoolean("enableCamera", true);
+  }
+
   public Toml getTable(String key) {
     if (!toml.contains(key)) {
       logger.error("table with key '{}' not present", key);
@@ -63,11 +67,6 @@ public class Settings {
       return null;
     }
     return new Toml().read(in);
-  }
-
-  public boolean isIsolatedTestMode() {
-    Toml toml = getTable(TABLE);
-    return toml.getBoolean("isolatedTestMode", false);
   }
 
   private Toml defaults() {

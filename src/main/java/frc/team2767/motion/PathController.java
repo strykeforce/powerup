@@ -55,6 +55,7 @@ public class PathController implements Runnable, Item {
   private Segment segment;
   private double ticksPerMeter;
   private double metersPerSecMax;
+  private double targetAzimuth;
 
   /**
    * Runs a PathFinder trajectory.
@@ -127,6 +128,7 @@ public class PathController implements Runnable, Item {
 
   public void stop() {
     logger.debug("stopping path controller and swerve drive");
+    drive.drive(0, 0, 0);
     notifier.stop();
     running = false;
   }
@@ -149,7 +151,8 @@ public class PathController implements Runnable, Item {
 
     forward = Math.cos(segment.heading) * vel_setpoint;
     strafe = -Math.sin(segment.heading) * vel_setpoint;
-    azimuth = kPAzimuth * gyro.getYaw(); // target = 0 deg
+    azimuth =
+        kPAzimuth * (Math.IEEEremainder(gyro.getAngle(), 360.0) - targetAzimuth); // target = 0 deg
 
     if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
@@ -167,13 +170,11 @@ public class PathController implements Runnable, Item {
     distance /= 4;
 
     double error = desired - distance;
-    //    logger.debug(
-    //        "distance = {} ticks, position = {} m,  desired = {} ticks, error = {} ticks",
-    //        distance,
-    //        position,
-    //        desired,
-    //        error);
     return error;
+  }
+
+  public void setTargetAzimuth(double targetAzimuth) {
+    this.targetAzimuth = targetAzimuth;
   }
 
   @Override
