@@ -1,49 +1,30 @@
 package frc.team2767.command.auton;
 
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.team2767.command.StartPosition;
-import openrio.powerup.MatchData;
 
 /**
  * Fail-safe command, depends on starting position.
  *
  * <p>Center = onTrue command, Left or Right = onFalse command
  */
-public class CrossTheLine extends ConditionalCommand implements OwnedSidesSettable {
+public class CrossTheLine extends PowerUpCommandGroup {
 
-  private StartPosition startPosition;
-
-  public CrossTheLine() {
-    super(new CenterCrossTheLine(), new DriveForward());
-  }
-
-  @Override
-  protected boolean condition() {
-    return startPosition == StartPosition.CENTER;
-  }
-
-  @Override
-  public void setOwnedSide(
-      StartPosition startPosition, MatchData.OwnedSide nearSwitch, MatchData.OwnedSide scale) {
-    this.startPosition = startPosition;
+  public CrossTheLine(Side side) {
+    super();
+    addSequential(new PathCommand(side.path, side.startPosition));
   }
 
   public enum Side {
-    LEFT,
-    RIGHT,
-  }
+    LEFT("straight_line", StartPosition.LEFT),
+    RIGHT("straight_line", StartPosition.RIGHT),
+    CENTER("center_left", StartPosition.CENTER);
 
-  static class CenterCrossTheLine extends PowerUpCommandGroup {
-    public CenterCrossTheLine() {
-      super();
-      addSequential(new PathCommand("center_left"));
-    }
-  }
+    private final String path;
+    private final StartPosition startPosition;
 
-  static class DriveForward extends PowerUpCommandGroup {
-
-    public DriveForward() {
-      super();
+    Side(String path, StartPosition startPosition) {
+      this.path = path;
+      this.startPosition = startPosition;
     }
   }
 }

@@ -5,7 +5,7 @@ waypoints = [
 ]
 
 fit              = "HERMITE_CUBIC"
-sample_count     = 100_000
+sample_count     = 20_000
 dt               = 0.05  # sec
 max_velocity     = 2.0   # m/sec
 max_acceleration = 1.5   # m/sec/sec

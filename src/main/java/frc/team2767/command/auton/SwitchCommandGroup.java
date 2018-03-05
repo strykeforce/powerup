@@ -19,17 +19,15 @@ public class SwitchCommandGroup extends PowerUpCommandGroup {
   }
 
   public enum Side {
-    LEFT("left_switch", 90.0, StartPosition.LEFT),
-    RIGHT("right_switch", -90.0, StartPosition.RIGHT),
+    LEFT("left_switch", StartPosition.LEFT),
+    RIGHT("right_switch", StartPosition.RIGHT),
     ;
 
     private final String path;
-    private final double azimuth;
     private final StartPosition startPosition;
 
-    Side(String path, double azimuth, StartPosition startPosition) {
+    Side(String path, StartPosition startPosition) {
       this.path = path;
-      this.azimuth = azimuth;
       this.startPosition = startPosition;
     }
   }

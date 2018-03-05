@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
                   new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
                   leftScale,
                   leftScale,
-                  new CrossTheLine());
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.LEFT));
           break;
         case 0x11: // left corner, switch priority
           Command leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
                   leftSwitch,
                   new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
                   leftSwitch,
-                  new CrossTheLine());
+                  new CrossTheLine(CrossTheLine.Side.LEFT));
           break;
         case 0x19: // left corner, test
           autonCommand =
@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
                   new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
                   rightScale,
                   rightScale,
-                  new CrossTheLine());
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.RIGHT));
           break;
         case 0x31: // right corner, switch priority
           Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
@@ -142,7 +142,7 @@ public class Robot extends TimedRobot {
                   rightSwitch,
                   new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
                   rightSwitch,
-                  new CrossTheLine());
+                  new CrossTheLine(CrossTheLine.Side.RIGHT));
           break;
         case 0x39: // right corner, test
           autonCommand =
@@ -157,7 +157,7 @@ public class Robot extends TimedRobot {
           logger.warn(
               "no auton command assigned for switch position {}",
               String.format("%02X", autonSwitchPosition));
-          autonCommand = new CrossTheLine();
+          autonCommand = new LogCommand("Invalid auton switch position");
           break;
       }
     }
@@ -215,7 +215,20 @@ public class Robot extends TimedRobot {
 
     if (nearSwitch == OwnedSide.UNKNOWN) {
       logger.error("GAME DATA TIMEOUT");
-      autonCommand = new CrossTheLine();
+      switch (startPosition) {
+        case UNKNOWN:
+          autonCommand = new LogCommand("Invalid auton switch position");
+          break;
+        case LEFT:
+          autonCommand = new CrossTheLine(CrossTheLine.Side.LEFT);
+          break;
+        case CENTER:
+          autonCommand = new CrossTheLine(CrossTheLine.Side.CENTER);
+          break;
+        case RIGHT:
+          autonCommand = new CrossTheLine(CrossTheLine.Side.RIGHT);
+          break;
+      }
     } else {
       logger.info("NEAR SWITCH owned side = {}", nearSwitch);
       logger.info("SCALE owned side = {}", scale);

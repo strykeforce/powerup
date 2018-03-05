@@ -49,7 +49,7 @@ enableCamera  = true
   loadOutput  = -1.0
   holdOutput  = -1.0
   fastEjectOutput = 1.0
-  slowEjectOutput = 0.35
+  slowEjectOutput = 0.30
 
   # release positions
   zeroPosition = 2048
@@ -89,7 +89,7 @@ enableCamera  = true
   # positions
   limitSwitchZeroPosition = 4740
   absEncoderZeroPosition  = 2955
-  stowPosition            = 4705
+  stowPosition            = 3918
   intakePosition          = 0
   launchSwitchPosition    = 4000
   launchScalePosition     = 3750
