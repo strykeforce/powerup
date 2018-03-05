@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.ShoulderSubsystem;
 
-public class ShoulderZero extends Command {
+public class ShoulderZeroWithLimitSwitch extends Command {
 
   private final ShoulderSubsystem shoulderSubsystem = Robot.INJECTOR.shoulderSubsystem();
 
-  public ShoulderZero() {
-    super("Shoulder Zero");
+  public ShoulderZeroWithLimitSwitch() {
+    super("Shoulder LS Zero");
     requires(shoulderSubsystem);
   }
 
@@ -25,6 +25,6 @@ public class ShoulderZero extends Command {
 
   @Override
   protected void end() {
-    shoulderSubsystem.zeroPosition();
+    shoulderSubsystem.zeroPositionWithLimitSwitch();
   }
 }

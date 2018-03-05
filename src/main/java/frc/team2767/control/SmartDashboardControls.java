@@ -8,8 +8,14 @@ import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
+import frc.team2767.command.extender.ExtenderDown;
+import frc.team2767.command.extender.ExtenderUp;
+import frc.team2767.command.health.HealthCheck;
+import frc.team2767.command.intake.IntakeClose;
+import frc.team2767.command.intake.IntakeOpen;
 import frc.team2767.command.lift.LiftZero;
-import frc.team2767.command.shoulder.ShoulderZero;
+import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
+import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
 import frc.team2767.command.test.PathTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,7 +38,8 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Climber/Stop", new ClimberStop());
     SmartDashboard.putData("Pit/Climber/Release", new ClimberRelease());
     SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
-    SmartDashboard.putData("Pit/Shoulder/Zero", new ShoulderZero());
+    SmartDashboard.putData("Pit/Shoulder/ZeroLS", new ShoulderZeroWithLimitSwitch());
+    SmartDashboard.putData("Pit/Shoulder/ZeroEnc", new ShoulderZeroWithEncoder());
   }
 
   private void addWheelPitCommands() {
@@ -51,10 +58,15 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
+    SmartDashboard.putData("Test/HealthCheck", new HealthCheck());
+    SmartDashboard.putData("Test/IntakeOpen", new IntakeOpen());
+    SmartDashboard.putData("Test/IntakeClose", new IntakeClose());
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
     SmartDashboard.putData("Test/Azimuth", new AzimuthCommand(0));
     SmartDashboard.putData(
         "Test/Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
+    SmartDashboard.putData("Test/ExtenderUp", new ExtenderUp());
+    SmartDashboard.putData("Test/ExtenderDown", new ExtenderDown());
   }
 }
