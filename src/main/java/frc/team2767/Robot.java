@@ -1,7 +1,5 @@
 package frc.team2767;
 
-import static frc.team2767.command.StartPosition.*;
-
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -15,13 +13,16 @@ import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
 import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
+
+import java.net.URL;
+
+import static frc.team2767.command.StartPosition.*;
 
 public class Robot extends TimedRobot {
 
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
   private StartPosition startPosition;
   private int newAutonSwitchPosition;
   private Controls controls;
+  private Settings settings;
   private DriveSubsystem driveSubsystem;
   private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
@@ -49,7 +51,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    Settings settings = INJECTOR.settings();
+    settings = INJECTOR.settings();
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
 
@@ -88,14 +90,15 @@ public class Robot extends TimedRobot {
     }
 
     if (autonHasRun) return;
-    // Most significant digit: 1 - Left, 2 - Center, 3 - Right
+
     // auton commands need time to compute path trajectories so instantiate as early as possible
     if (checkAutonomousSwitch()) {
       logger.info(
-          "initializing auton command {}, start position = {}",
+          "auton switch initializing auton command {}, start position = {}",
           String.format("%02X", autonSwitchPosition),
           startPosition);
       // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
+      // Most significant digit: 1 - Left, 2 - Center, 3 - Right
       switch (autonSwitchPosition) {
         case 0x10: // left corner, scale priority
           Command leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
@@ -111,9 +114,9 @@ public class Robot extends TimedRobot {
           autonCommand =
               new CornerConditionalCommand(
                   leftSwitch,
-                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
                   leftSwitch,
-                  new CrossTheLine(CrossTheLine.Side.LEFT));
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.LEFT));
           break;
         case 0x19: // left corner, test
           autonCommand =
@@ -140,9 +143,9 @@ public class Robot extends TimedRobot {
           autonCommand =
               new CornerConditionalCommand(
                   rightSwitch,
-                  new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
+                  new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT),
                   rightSwitch,
-                  new CrossTheLine(CrossTheLine.Side.RIGHT));
+                  new NeitherCommandGroup(NeitherCommandGroup.Side.RIGHT));
           break;
         case 0x39: // right corner, test
           autonCommand =
@@ -220,13 +223,13 @@ public class Robot extends TimedRobot {
           autonCommand = new LogCommand("Invalid auton switch position");
           break;
         case LEFT:
-          autonCommand = new CrossTheLine(CrossTheLine.Side.LEFT);
+          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.LEFT);
           break;
         case CENTER:
-          autonCommand = new CrossTheLine(CrossTheLine.Side.CENTER);
+          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.CENTER);
           break;
         case RIGHT:
-          autonCommand = new CrossTheLine(CrossTheLine.Side.RIGHT);
+          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.RIGHT);
           break;
       }
     } else {
@@ -238,7 +241,6 @@ public class Robot extends TimedRobot {
       ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
 
     AHRS gyro = driveSubsystem.getGyro();
-    gyro.zeroYaw();
     gyro.setAngleAdjustment(0);
     double adj = -gyro.getAngle() % 360;
     switch (startPosition) {
@@ -247,15 +249,15 @@ public class Robot extends TimedRobot {
         break;
       case LEFT:
         adj += 90d;
-        gyro.setAngleAdjustment(adj);
         break;
       case RIGHT:
         adj -= 90d;
-        gyro.setAngleAdjustment(adj);
         break;
     }
+    gyro.setAngleAdjustment(adj);
+    gyro.zeroYaw();
 
-    autonHasRun = true;
+    autonHasRun = settings.isEvent();
     autonCommand.start();
   }
 

@@ -7,9 +7,9 @@ import frc.team2767.command.StartPosition;
  *
  * <p>Center = onTrue command, Left or Right = onFalse command
  */
-public class CrossTheLine extends PowerUpCommandGroup {
+public class CrossTheLineCommandGroup extends PowerUpCommandGroup {
 
-  public CrossTheLine(Side side) {
+  public CrossTheLineCommandGroup(Side side) {
     super();
     addSequential(new PathCommand(side.path, side.startPosition));
   }
