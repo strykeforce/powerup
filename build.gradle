@@ -6,9 +6,9 @@ plugins {
     id 'java'
     id 'groovy'
     id 'jaci.openrio.gradle.GradleRIO' version '2018.03.06'
-    id 'com.diffplug.gradle.spotless' version '3.9.0'
-    id 'net.ltgt.apt-idea' version '0.14'
-    id "net.ltgt.errorprone" version "0.0.13"
+    id 'com.diffplug.gradle.spotless' version '3.10.0'
+    id 'net.ltgt.apt-idea' version '0.15'
+    id 'net.ltgt.errorprone' version "0.0.13"
 }
 
 def TEAM = 2767
@@ -40,7 +40,7 @@ dependencies {
     compile navx()
     compile openrio.powerup.matchData()
     compile pathfinder()
-    compile 'org.strykeforce.thirdcoast:core:18.3.1'
+    compile 'org.strykeforce.thirdcoast:core:18.4.0'
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'ch.qos.logback:logback-classic:1.2.3'
     compile group: 'com.j2html', name: 'j2html', version: '1.2.2'
