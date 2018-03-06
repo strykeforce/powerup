@@ -161,8 +161,11 @@
     enabled = false
   [TALON.softLimit.reverse]
     limit = -300
-    enabled = true
+    enabled = false
   [TALON.limitSwitch.forward]
+    source = "FeedbackConnector"
+    normal = "NormallyOpen"
+  [TALON.limitSwitch.reverse]
     source = "FeedbackConnector"
     normal = "NormallyOpen"
   [TALON.currentLimit]
