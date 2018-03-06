@@ -5,9 +5,9 @@ import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 
-public class NeitherCommandGroup extends PowerUpCommandGroup {
+public class OppositeSwitchCommandGroup extends PowerUpCommandGroup {
 
-  public NeitherCommandGroup(Side side) {
+  public OppositeSwitchCommandGroup(Side side) {
     super();
     addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
 
@@ -23,8 +23,8 @@ public class NeitherCommandGroup extends PowerUpCommandGroup {
   }
 
   public enum Side {
-    LEFT("left_neither", StartPosition.LEFT, 45.0, 70.0, -1.0),
-    RIGHT("right_neither", StartPosition.RIGHT, -45.0, -70.0, 1.0),
+    LEFT("left_opposite_switch", StartPosition.LEFT, 45.0, 70.0, -1.0),
+    RIGHT("right_opposite_switch", StartPosition.RIGHT, -45.0, -70.0, 1.0),
     ;
 
     private final String path;
