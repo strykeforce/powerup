@@ -10,7 +10,6 @@ import frc.team2767.subsystem.health.HealthCheckSubsystem;
 import java.net.URL;
 import java.util.Set;
 import javax.inject.Singleton;
-import org.strykeforce.thirdcoast.swerve.GraphableSwerveDriveModule;
 import org.strykeforce.thirdcoast.swerve.GyroModule;
 import org.strykeforce.thirdcoast.swerve.WheelModule;
 import org.strykeforce.thirdcoast.talon.Talons;
@@ -25,7 +24,7 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
     GyroModule.class,
     WheelModule.class,
     SubsystemModule.class,
-    GraphableSwerveDriveModule.class,
+    //    GraphableSwerveDriveModule.class,
   }
 )
 public interface SingletonComponent {
