@@ -37,8 +37,8 @@ enableCamera  = true
   rateLimit   = 0.04
 
 [POWERUP.CLIMBER]
-  upFastOutput      = 1.0
-  upSlowOutput      = 0.25
+  upFastOutput  = 1.0
+  upSlowOutput  = 0.35
   stopOutput    = 0.0
   unwindOutput  = -0.15
   releaseOutput = 0.15
