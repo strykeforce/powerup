@@ -40,6 +40,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
     SmartDashboard.putData("Pit/Shoulder/ZeroLS", new ShoulderZeroWithLimitSwitch());
     SmartDashboard.putData("Pit/Shoulder/ZeroEnc", new ShoulderZeroWithEncoder());
+    SmartDashboard.putData("Pit/HealthCheck", new HealthCheck());
   }
 
   private void addWheelPitCommands() {
@@ -58,7 +59,6 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
-    SmartDashboard.putData("Test/HealthCheck", new HealthCheck());
     SmartDashboard.putData("Test/IntakeOpen", new IntakeOpen());
     SmartDashboard.putData("Test/IntakeClose", new IntakeClose());
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
