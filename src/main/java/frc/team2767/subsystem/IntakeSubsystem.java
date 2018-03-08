@@ -1,6 +1,5 @@
 package frc.team2767.subsystem;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 
 import com.ctre.phoenix.motorcontrol.SensorCollection;
@@ -32,7 +31,8 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final double kFastEjectOutput;
   private final double kSlowEjectOutput;
   private final int kOpenPosition;
-  private final TalonSRX leftTalon, rightTalon, releaseTalon;
+  private final TalonSRX leftTalon, rightTalon;
+  //  private final TalonSRX releaseTalon;
   private final SensorCollection cubeSensors;
   private final SensorCollection shoulderAbsoluteSensor;
 
@@ -40,9 +40,9 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   public IntakeSubsystem(Talons talons, Settings settings) {
     leftTalon = talons.getTalon(LEFT_ID);
     rightTalon = talons.getTalon(RIGHT_ID);
-    releaseTalon = talons.getTalon(RELEASE_ID);
+    //    releaseTalon = talons.getTalon(RELEASE_ID);
     if (rightTalon == null) logger.error("Right Talon missing");
-    if (releaseTalon == null) logger.error("Release Talon missing");
+    //    if (releaseTalon == null) logger.error("Release Talon missing");
     if (rightTalon != null) {
       shoulderAbsoluteSensor = rightTalon.getSensorCollection();
     } else {
@@ -64,30 +64,30 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     kOpenPosition = toml.getLong("openPosition").intValue();
 
     int zero = toml.getLong("zeroPosition").intValue();
-    int absolute = releaseTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
-    releaseTalon.setSelectedSensorPosition(absolute - zero, 0, TIMEOUT);
+    //    int absolute = releaseTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
+    //    releaseTalon.setSelectedSensorPosition(absolute - zero, 0, TIMEOUT);
     logger.info("zeroPosition = {}", zero);
-    logger.info("set RELEASE zero position, current position = {}", absolute - zero);
+    //    logger.info("set RELEASE zero position, current position = {}", absolute - zero);
     logger.info("loadOutput = {}", kLoadOutput);
     logger.info("holdOutput = {}", kHoldOutput);
     logger.info("fastEjectOutput = {}", kFastEjectOutput);
     logger.info("slowEjectOutput = {}", kSlowEjectOutput);
     logger.info("openPosition = {}", kOpenPosition);
   }
-
-  public void open() {
-    releaseTalon.set(MotionMagic, kOpenPosition);
-    logger.debug("set release to open position");
-  }
-
-  public void close() {
-    releaseTalon.set(MotionMagic, 0);
-    logger.debug("set release to closed position");
-  }
+  //
+  //  public void open() {
+  //    releaseTalon.set(MotionMagic, kOpenPosition);
+  //    logger.debug("set release to open position");
+  //  }
+  //
+  //  public void close() {
+  //    releaseTalon.set(MotionMagic, 0);
+  //    logger.debug("set release to closed position");
+  //  }
 
   @Override
   public void resetPosition() {
-    releaseTalon.set(MotionMagic, releaseTalon.getSelectedSensorPosition(0));
+    //    releaseTalon.set(MotionMagic, releaseTalon.getSelectedSensorPosition(0));
   }
 
   public void run(Mode mode) {
@@ -146,8 +146,9 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
       telemetryService.register(new TalonItem(leftTalon, "Intake Left (" + LEFT_ID + ")"));
     if (rightTalon != null)
       telemetryService.register(new TalonItem(rightTalon, "Intake Right (" + RIGHT_ID + ")"));
-    if (releaseTalon != null)
-      telemetryService.register(new TalonItem(releaseTalon, "Intake Release (" + RELEASE_ID + ")"));
+    //    if (releaseTalon != null)
+    //      telemetryService.register(new TalonItem(releaseTalon, "Intake Release (" + RELEASE_ID +
+    // ")"));
   }
 
   public enum Mode {

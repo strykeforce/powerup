@@ -15,6 +15,6 @@ public class IntakeOpen extends InstantCommand {
 
   @Override
   protected void initialize() {
-    intakeSubsystem.open();
+    //    intakeSubsystem.open();
   }
 }
