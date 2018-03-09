@@ -126,6 +126,17 @@ public class Robot extends TimedRobot {
                   leftScale,
                   new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.LEFT));
           break;
+        case 0x13: // left corner, always switch
+          leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
+          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(leftSwitch, rightSwitch, leftSwitch, rightSwitch);
+          break;
+        case 14: // left corner, always scale
+          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand = new CornerConditionalCommand(rightScale, leftScale, leftScale, rightScale);
+          break;
         case 0x19: // left corner, test
           autonCommand =
               new CornerConditionalCommand(
@@ -138,7 +149,7 @@ public class Robot extends TimedRobot {
           autonCommand = new CenterSwitchCommand();
           break;
         case 0x30: // right corner, scale priority
-          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(
                   new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
@@ -147,7 +158,7 @@ public class Robot extends TimedRobot {
                   new OppositeScaleCommandGroup(OppositeScaleCommandGroup.Side.RIGHT));
           break;
         case 0x31: // right corner, switch priority
-          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(
                   rightSwitch,
@@ -163,6 +174,17 @@ public class Robot extends TimedRobot {
                   rightScale,
                   rightScale,
                   new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
+          break;
+        case 33: // right corner, always switch
+          leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
+          rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(rightSwitch, leftSwitch, rightSwitch, leftSwitch);
+          break;
+        case 34: // right corner, always scale
+          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);
           break;
         case 0x39: // right corner, test
           autonCommand =
