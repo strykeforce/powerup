@@ -20,8 +20,8 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
   }
 
   public enum Side {
-    LEFT("left_scale", -40.0, StartPosition.LEFT),
-    RIGHT("right_scale", 38.0, StartPosition.RIGHT),
+    LEFT("left_scale", -42.0, StartPosition.LEFT),
+    RIGHT("right_scale", 40.0, StartPosition.RIGHT),
     ;
 
     private final String path;
