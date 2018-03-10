@@ -1,7 +1,5 @@
 package frc.team2767;
 
-import static frc.team2767.command.StartPosition.*;
-
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -15,13 +13,16 @@ import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
 import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
+
+import java.net.URL;
+
+import static frc.team2767.command.StartPosition.*;
 
 public class Robot extends TimedRobot {
 
@@ -132,7 +133,7 @@ public class Robot extends TimedRobot {
           autonCommand =
               new CornerConditionalCommand(leftSwitch, rightSwitch, leftSwitch, rightSwitch);
           break;
-        case 14: // left corner, always scale
+        case 0x14: // left corner, always scale
           leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
           Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
           autonCommand = new CornerConditionalCommand(rightScale, leftScale, leftScale, rightScale);
@@ -175,13 +176,13 @@ public class Robot extends TimedRobot {
                   rightScale,
                   new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
           break;
-        case 33: // right corner, always switch
+        case 0x33: // right corner, always switch
           leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
           rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(rightSwitch, leftSwitch, rightSwitch, leftSwitch);
           break;
-        case 34: // right corner, always scale
+        case 0x34: // right corner, always scale
           leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
           rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
           autonCommand = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);

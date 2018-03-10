@@ -16,7 +16,7 @@ public abstract class PowerUpCommandGroup extends CommandGroup {
 
     public ZeroPositionables() {
       addParallel(new ShoulderZeroWithEncoder());
-      addParallel(new LiftZero());
+      addParallel(new LiftZero(),1.0);
       addParallel(new ExtenderUp());
     }
   }
