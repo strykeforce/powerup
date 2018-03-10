@@ -1,5 +1,7 @@
 package frc.team2767;
 
+import static frc.team2767.command.StartPosition.*;
+
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,16 +15,13 @@ import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
+import java.net.URL;
 import openrio.powerup.MatchData;
 import openrio.powerup.MatchData.GameFeature;
 import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
-
-import java.net.URL;
-
-import static frc.team2767.command.StartPosition.*;
 
 public class Robot extends TimedRobot {
 
