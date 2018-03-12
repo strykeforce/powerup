@@ -108,3 +108,4 @@ enableCamera  = true
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
   enableTest = false
+  enableGame = true
