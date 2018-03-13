@@ -17,7 +17,7 @@ enableCamera  = true
 
 [POWERUP.PATH]
   p_azimuth        = -0.004
-  p_distance       = 6e-6
+  p_distance       = 4e-6
   p_acceleration   = 0.02
   ticksPerInchRed  = 2273 # carpet-x pull test
   ticksPerInchBlue = 2273
@@ -27,7 +27,7 @@ enableCamera  = true
   i = 0.0
   d = 0.0
   tolerance = 0.5
-  outputMax = 0.3
+  outputMax = 0.4
   test = false
 
 [POWERUP.JOYSTICK]
@@ -37,8 +37,8 @@ enableCamera  = true
   rateLimit   = 0.04
 
 [POWERUP.CLIMBER]
-  upFastOutput      = 1.0
-  upSlowOutput      = 0.25
+  upFastOutput  = 1.0
+  upSlowOutput  = 0.35
   stopOutput    = 0.0
   unwindOutput  = -0.15
   releaseOutput = 0.15
@@ -87,8 +87,9 @@ enableCamera  = true
   jogIncrement   = 300
 
   # positions
-  limitSwitchZeroPosition = 4740
-  absEncoderZeroPosition  = 2955
+  limitSwitchZeroPosition = 9394
+  absEncoderZeroPosition  = 1127
+  tightStowPosition       = 5200
   stowPosition            = 3918
   intakePosition          = 0
   launchSwitchPosition    = 4000
@@ -107,3 +108,4 @@ enableCamera  = true
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
   enableTest = false
+  enableGame = true

@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.00949667616334283,
+  "dividerPosition": 0.004163197335553705,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -148,6 +148,17 @@
                 }
               ]
             }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Pit/HealthCheck",
+              "_title": "HealthCheck"
+            }
           }
         }
       }
@@ -184,6 +195,72 @@
               "_title": "/SmartDashboard/Block obtained?",
               "colorWhenTrue": "#7CFC00FF",
               "colorWhenFalse": "#8B0000FF"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Game/IntakeIn",
+              "_title": "Intake In"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Game/IntakeStop",
+              "_title": "Intake Stop"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Game/IntakeOut",
+              "_title": "Intake Out"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Game/ElevatorUp",
+              "_title": "Lift Up"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Game/ElevatorStop",
+              "_title": "Lift Stop"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Game/ElevatorDown",
+              "_title": "Lift Down"
             }
           }
         }
@@ -293,9 +370,11 @@
               1
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Test/HealthCheck",
-              "_title": "HealthCheck"
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Test/HealthCheck/running",
+              "_title": "HealthCheck/running",
+              "colorWhenTrue": "#7CFC00FF",
+              "colorWhenFalse": "#8B0000FF"
             }
           }
         }

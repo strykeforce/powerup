@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
                   new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
                   leftScale,
                   leftScale,
-                  new NeitherCommandGroup(NeitherCommandGroup.Side.LEFT));
+                  new OppositeScaleCommandGroup(OppositeScaleCommandGroup.Side.LEFT));
           break;
         case 0x11: // left corner, switch priority
           Command leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
@@ -115,7 +115,27 @@ public class Robot extends TimedRobot {
                   leftSwitch,
                   new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
                   leftSwitch,
-                  new NeitherCommandGroup(NeitherCommandGroup.Side.LEFT));
+                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.LEFT));
+          break;
+        case 0x12: // left corner, scale priority, opposite switch
+          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
+                  leftScale,
+                  leftScale,
+                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.LEFT));
+          break;
+        case 0x13: // left corner, always switch
+          leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
+          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(leftSwitch, rightSwitch, leftSwitch, rightSwitch);
+          break;
+        case 0x14: // left corner, always scale
+          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand = new CornerConditionalCommand(rightScale, leftScale, leftScale, rightScale);
           break;
         case 0x19: // left corner, test
           autonCommand =
@@ -129,22 +149,42 @@ public class Robot extends TimedRobot {
           autonCommand = new CenterSwitchCommand();
           break;
         case 0x30: // right corner, scale priority
-          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(
                   new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
                   rightScale,
                   rightScale,
-                  new NeitherCommandGroup(NeitherCommandGroup.Side.RIGHT));
+                  new OppositeScaleCommandGroup(OppositeScaleCommandGroup.Side.RIGHT));
           break;
         case 0x31: // right corner, switch priority
-          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
           autonCommand =
               new CornerConditionalCommand(
                   rightSwitch,
                   new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT),
                   rightSwitch,
-                  new NeitherCommandGroup(NeitherCommandGroup.Side.RIGHT));
+                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
+          break;
+        case 0x32: // right corner, scale priority, opposite switch
+          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(
+                  new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
+                  rightScale,
+                  rightScale,
+                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
+          break;
+        case 0x33: // right corner, always switch
+          leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
+          rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
+          autonCommand =
+              new CornerConditionalCommand(rightSwitch, leftSwitch, rightSwitch, leftSwitch);
+          break;
+        case 0x34: // right corner, always scale
+          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          autonCommand = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);
           break;
         case 0x39: // right corner, test
           autonCommand =
@@ -240,6 +280,7 @@ public class Robot extends TimedRobot {
       ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
 
     AHRS gyro = driveSubsystem.getGyro();
+    gyro.zeroYaw();
     gyro.setAngleAdjustment(0);
     double adj = -gyro.getAngle() % 360;
     switch (startPosition) {
@@ -248,13 +289,13 @@ public class Robot extends TimedRobot {
         break;
       case LEFT:
         adj += 90d;
+        gyro.setAngleAdjustment(adj);
         break;
       case RIGHT:
         adj -= 90d;
+        gyro.setAngleAdjustment(adj);
         break;
     }
-    gyro.setAngleAdjustment(adj);
-    gyro.zeroYaw();
 
     autonHasRun = settings.isEvent();
     autonCommand.start();

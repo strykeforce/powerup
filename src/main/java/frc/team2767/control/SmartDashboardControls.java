@@ -11,8 +11,10 @@ import frc.team2767.command.drive.*;
 import frc.team2767.command.extender.ExtenderDown;
 import frc.team2767.command.extender.ExtenderUp;
 import frc.team2767.command.health.HealthCheck;
-import frc.team2767.command.intake.IntakeClose;
-import frc.team2767.command.intake.IntakeOpen;
+import frc.team2767.command.intake.*;
+import frc.team2767.command.lift.LiftDown;
+import frc.team2767.command.lift.LiftStop;
+import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
@@ -30,6 +32,7 @@ public class SmartDashboardControls {
 
     if (toml.getBoolean("enablePit")) addPitCommands();
     if (toml.getBoolean("enableTest")) addTestCommands();
+    if (toml.getBoolean("enableGame")) addGameCommands();
   }
 
   private void addPitCommands() {
@@ -40,6 +43,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
     SmartDashboard.putData("Pit/Shoulder/ZeroLS", new ShoulderZeroWithLimitSwitch());
     SmartDashboard.putData("Pit/Shoulder/ZeroEnc", new ShoulderZeroWithEncoder());
+    SmartDashboard.putData("Pit/HealthCheck", new HealthCheck());
   }
 
   private void addWheelPitCommands() {
@@ -58,7 +62,6 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
-    SmartDashboard.putData("Test/HealthCheck", new HealthCheck());
     SmartDashboard.putData("Test/IntakeOpen", new IntakeOpen());
     SmartDashboard.putData("Test/IntakeClose", new IntakeClose());
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
@@ -68,5 +71,14 @@ public class SmartDashboardControls {
         "Test/Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
     SmartDashboard.putData("Test/ExtenderUp", new ExtenderUp());
     SmartDashboard.putData("Test/ExtenderDown", new ExtenderDown());
+  }
+
+  private void addGameCommands() {
+    SmartDashboard.putData("Game/IntakeIn", new IntakeIn());
+    SmartDashboard.putData("Game/IntakeStop", new IntakeStop());
+    SmartDashboard.putData("Game/IntakeOut", new IntakeOut());
+    SmartDashboard.putData("Game/ElevatorUp", new LiftUp());
+    SmartDashboard.putData("Game/ElevatorStop", new LiftStop());
+    SmartDashboard.putData("Game/Elevator/Down", new LiftDown());
   }
 }

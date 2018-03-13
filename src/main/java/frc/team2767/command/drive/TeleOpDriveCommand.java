@@ -17,39 +17,39 @@ public final class TeleOpDriveCommand extends Command {
   private static final String TABLE = Robot.TABLE + ".JOYSTICK";
 
   private static final Logger logger = LoggerFactory.getLogger(TeleOpDriveCommand.class);
-  private final DriveSubsystem drive;
-  private final DriverControls controls;
+
+  private final double kRateLimit;
+
+  private final DriveSubsystem drive = Robot.INJECTOR.driveSubsystem();
+  private final DriverControls controls = Robot.INJECTOR.controls().getDriverControls();
   private final ExpoScale driveExpo;
   private final ExpoScale azimuthExpo;
-  private final RateLimit forwardRateLimit;
-  private final RateLimit strafeRateLimit;
+  private RateLimit forwardRateLimit;
+  private RateLimit strafeRateLimit;
 
   public TeleOpDriveCommand() {
-    drive = Robot.INJECTOR.driveSubsystem();
     requires(drive);
-
-    controls = Robot.INJECTOR.controls().getDriverControls();
-
     Toml toml = Robot.INJECTOR.settings().getTable(TABLE);
-    double kDeadband = toml.getDouble("deadband");
-    double kDriveExpo = toml.getDouble("driveExpo");
-    double kAzimuthExpo = toml.getDouble("azimuthExpo");
-    double kRateLimit = toml.getDouble("rateLimit");
+    double deadband = toml.getDouble("deadband");
+    double driveExpo = toml.getDouble("driveExpo");
+    double azimuthExpo = toml.getDouble("azimuthExpo");
+    kRateLimit = toml.getDouble("rateLimit");
 
-    forwardRateLimit = new RateLimit(kRateLimit);
-    driveExpo = new ExpoScale(kDeadband, kDriveExpo);
-    strafeRateLimit = new RateLimit(kRateLimit);
-    azimuthExpo = new ExpoScale(kDeadband, kAzimuthExpo);
+    this.driveExpo = new ExpoScale(deadband, driveExpo);
 
-    logger.info("deadband = {}", kDeadband);
-    logger.info("driveExpo = {}", kDriveExpo);
-    logger.info("azimuthExpo = {}", kAzimuthExpo);
+    this.azimuthExpo = new ExpoScale(deadband, azimuthExpo);
+
+    logger.info("deadband = {}", deadband);
+    logger.info("driveExpo = {}", driveExpo);
+    logger.info("azimuthExpo = {}", azimuthExpo);
     logger.info("rateLimit = {}", kRateLimit);
   }
 
   @Override
   protected void initialize() {
     drive.setDriveMode(TELEOP);
+    forwardRateLimit = new RateLimit(kRateLimit);
+    strafeRateLimit = new RateLimit(kRateLimit);
   }
 
   @Override

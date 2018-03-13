@@ -38,23 +38,23 @@ ids = [10, 11, 12, 13]
 output = 0.5
 
 [TEST.testCases.current]
-  low = 1.4
+  low = 1.2
   high = 2.0
 
 [TEST.testCases.speed]
-  low = 18500.0
+  low = 18000.0
   high = 19000.0
 
 [[TEST.testCases]]
 output = 1.0
 
 [TEST.testCases.current]
-  low = 4.4
+  low = 3.875
   high = 5.0
 
 [TEST.testCases.speed]
-  low = 38000.0
-  high = 41000.0
+  low = 37500.0
+  high = 39000.0
 
 [[TEST]]
 name = "Intake Drive Motors"
@@ -65,21 +65,21 @@ ids = [30, 31]
 output = 0.5
 
 [TEST.testCases.current]
-  low = 1.4
-  high = 2.0
+  low = 0.125
+  high = 0.5
 
 [TEST.testCases.speed]
-  low = 18500.0
-  high = 19000.0
+  low = 0.0
+  high = 0.0
 
 [[TEST.testCases]]
 output = 1.0
 
 [TEST.testCases.current]
-  low = 4.4
-  high = 5.0
+  low = 0.5
+  high = 1.25
 
 [TEST.testCases.speed]
-  low = 38000.0
-  high = 41000.0
+  low = 0.0
+  high = 0.0
 
