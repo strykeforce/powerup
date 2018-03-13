@@ -41,6 +41,7 @@ public class ExtenderSubsystem extends Subsystem {
   }
 
   public void down() {
+    servoUp = false;
     logger.debug("right extender {}", kRightDownPosition);
     logger.debug("left extender {}", kLeftDownPosition);
     rightServo.set(kRightDownPosition);
@@ -48,6 +49,7 @@ public class ExtenderSubsystem extends Subsystem {
   }
 
   public void up() {
+    servoUp = true;
     logger.debug("right extender at {}", kRightUpPosition);
     logger.debug("left extender at {}", kLeftUpPosition);
     rightServo.set(kRightUpPosition);
