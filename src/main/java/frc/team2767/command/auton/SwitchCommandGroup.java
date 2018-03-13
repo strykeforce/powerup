@@ -10,10 +10,9 @@ public class SwitchCommandGroup extends PowerUpCommandGroup {
 
   public SwitchCommandGroup(Side side) {
     super();
-    addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
 
     addSequential(new PathCommand(side.path, side.startPosition));
-
+    addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
     addSequential(new Stow());
   }

@@ -15,6 +15,6 @@ public class IntakeClose extends InstantCommand {
 
   @Override
   protected void initialize() {
-    intakeSubsystem.close();
+    //    intakeSubsystem.close();
   }
 }
