@@ -34,6 +34,7 @@ public class PathController implements Runnable, Item {
   private static final Logger logger = LoggerFactory.getLogger(PathController.class);
   private static final int PID = 0;
   private static final double INCHES_PER_METER = 39.3701;
+  private static final int NUM_WHEELS = 4;
 
   private final double kPAzimuth;
   private final double kPDistance;
@@ -118,10 +119,10 @@ public class PathController implements Runnable, Item {
         ticksPerMeter,
         metersPerSecMax);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < NUM_WHEELS; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
     }
-    iteration = 0;
+    iteration = 1;
     notifier.startPeriodic(config.dt);
     running = true;
   }
@@ -164,7 +165,7 @@ public class PathController implements Runnable, Item {
     double desired = ticksPerMeter * position;
     distance = 0;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < NUM_WHEELS; i++) {
       distance += Math.abs(wheels[i].getDriveTalon().getSelectedSensorPosition(PID) - start[i]);
     }
     distance /= 4;
