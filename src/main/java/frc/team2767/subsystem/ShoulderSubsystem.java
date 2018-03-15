@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
+import frc.team2767.command.shoulder.ShoulderZeroCheck;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
@@ -24,6 +25,9 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private static final Logger logger = LoggerFactory.getLogger(ShoulderSubsystem.class);
   private static final String TABLE = Robot.TABLE + ".SHOULDER";
   private static final int TIMEOUT = 10;
+  private static final int ABS_TO_REL_RATIO = 5;
+  private static final int ENC_EPSILON = 400;
+  private static final int STABLE_THRESH = 1;
   private final Preferences preferences = Preferences.getInstance();
 
   private final double kUpOutput;
@@ -82,8 +86,8 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     int error = setpoint - talon.getSelectedSensorPosition(0);
     if (Math.abs(error) > kCloseEnough) stableCount = 0;
     else stableCount++;
-    if (stableCount > 3) {
-      logger.debug("stableCount > 3");
+    if (stableCount > STABLE_THRESH) {
+      logger.debug("stableCount > {}", STABLE_THRESH);
       return true;
     }
     return false;
@@ -103,10 +107,22 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     talon.setSelectedSensorPosition(kLimitSwitchZeroPosition, 0, TIMEOUT);
   }
 
+  public void zeroPositionWithEncoderIfNeeded() {
+    if (talon.getSelectedSensorVelocity(0) != 0) return;
+    int position = talon.getSelectedSensorPosition(0);
+    int absolute = intakeSubsystem.getShoulderAbsolutePosition();
+    int error = Math.abs((absolute - kAbsEncoderZeroPosition) * ABS_TO_REL_RATIO - position);
+    if (error > ENC_EPSILON) {
+      logger.debug("encoder position error = {}, re-zeroing", error);
+      zeroPositionWithEncoder();
+    }
+  }
+
   public void zeroPositionWithEncoder() {
+    if (talon.getSelectedSensorVelocity(0) != 0) return;
     int absolute = intakeSubsystem.getShoulderAbsolutePosition();
     positionOffset = absolute - kAbsEncoderZeroPosition;
-    talon.setSelectedSensorPosition(5 * positionOffset, 0, TIMEOUT);
+    talon.setSelectedSensorPosition(ABS_TO_REL_RATIO * positionOffset, 0, 0);
     logger.info("absolute position = {} set position = {}", absolute, positionOffset);
   }
 
@@ -163,7 +179,9 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   }
 
   @Override
-  protected void initDefaultCommand() {}
+  protected void initDefaultCommand() {
+    setDefaultCommand(new ShoulderZeroCheck());
+  }
 
   @Override
   public void register(TelemetryService telemetryService) {

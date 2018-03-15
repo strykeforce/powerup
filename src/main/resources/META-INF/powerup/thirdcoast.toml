@@ -11,7 +11,7 @@
 
 
 [THIRDCOAST.WHEEL]
-  driveSetpointMax = 25_000
+  driveSetpointMax = 40_000
 
 [[TALON]]
   name = "azimuth"
@@ -88,26 +88,6 @@
     peak = 0
     peakDuration = 0
 
-#  [[TALON]]
-#    name = "intake-release"
-#    talonIds = [32]
-#    [TALON.selectedFeedbackSensor]
-#      feedbackDevice = "CTRE_MagEncoder_Relative"
-#    [TALON.currentLimit]
-#      continuous = 15
-#      peak = 0
-#      peakDuration = 0
-#    [TALON.motionMagic]
-#      acceleration = 10_000
-#      cruiseVelocity = 800
-#    [[TALON.closedLoopProfile]] # slot 0 MotionMagic
-#      pGain = 10.0
-#      iGain = 0.0
-#      dGain = 100.0
-#      fGain = 0.9
-#      iZone = 0
-#      allowableClosedLoopError = 0
-
 [[TALON]]
   name = "lift-master"
   talonIds = [50]
@@ -117,26 +97,26 @@
   [TALON.output]
     neutralMode = "Brake"
   [TALON.currentLimit]
-    continuous = 40
-    peak = 0
-    peakDuration = 0
+    continuous = 10
+    peak = 40
+    peakDuration = 500
   [TALON.limitSwitch.reverse]
     source = "FeedbackConnector"
     normal = "NormallyOpen"
   [TALON.softLimit.forward]
-    limit = 17500
+    limit = 18500
     enabled = true
   [TALON.softLimit.reverse]
     limit = 0
     enabled = false
-  [TALON.motionMagic] # down
-    acceleration = 2500  # 10000 up
-    cruiseVelocity = 750 # 1500
+  [TALON.motionMagic] # these are set dynamically in settings.toml
+    acceleration = 7500
+    cruiseVelocity = 1500
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic
     pGain = 1.0
     iGain = 0.0
     dGain = 75.0
-    fGain = 0.4
+    fGain = 0.3
     iZone = 0
     allowableClosedLoopError = 0
 

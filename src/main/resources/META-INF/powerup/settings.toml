@@ -27,7 +27,7 @@ enableCamera  = true
   i = 0.0
   d = 0.0
   tolerance = 0.5
-  outputMax = 0.4
+  outputMax = 0.3
   test = false
 
 [POWERUP.JOYSTICK]
@@ -47,7 +47,7 @@ enableCamera  = true
 
 [POWERUP.INTAKE]
   loadOutput  = -1.0
-  holdOutput  = -1.0
+  holdOutput  = -0.15
   fastEjectOutput = 1.0
   slowEjectOutput = 0.30
 
@@ -65,23 +65,23 @@ enableCamera  = true
 
   # positions
   scaleLowPosition     = 9100
-  scaleMidPosition     = 13_300
-  scaleHighPosition    = 17_100
+  scaleMidPosition     = 14_700
+  scaleHighPosition    = 18_000
   stowPosition         = 0
   portalPosition       = 5200
   downVelocityShiftPos = 7000
 
   # velocities
-  upAccel          = 10_000
-  upVelocity       = 1500
-  downSlowAccel    = 2500
-  downSlowVelocity = 750
-  downFastAccel    = 10_000
-  downFastVelocity = 1500
+  upAccel          = 7500
+  upVelocity       = 2500
+  downSlowAccel    = 7500
+  downSlowVelocity = 3000
+  downFastAccel    = 7500
+  downFastVelocity = 3000
 
 [POWERUP.SHOULDER]
-  upOutput       = 0.3
-  downOutput     = -0.3
+  upOutput       = 0.4
+  downOutput     = -0.4
   stopOutput     = 0.0
   closeEnough    = 75
   jogIncrement   = 300
@@ -90,8 +90,8 @@ enableCamera  = true
   limitSwitchZeroPosition = 9394
   absEncoderZeroPosition  = 1127
   tightStowPosition       = 5200
-  stowPosition            = 3918
-  intakePosition          = 0
+  stowPosition            = 4500 # 3918
+  intakePosition          = -100
   launchSwitchPosition    = 4000
   launchScalePosition     = 3750
 
