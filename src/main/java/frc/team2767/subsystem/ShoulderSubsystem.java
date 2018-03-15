@@ -26,7 +26,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private static final String TABLE = Robot.TABLE + ".SHOULDER";
   private static final int TIMEOUT = 10;
   private static final int ABS_TO_REL_RATIO = 5;
-  private static final int ENC_EPSILON = 350;
+  private static final int ENC_EPSILON = 400;
   private static final int STABLE_THRESH = 1;
   private final Preferences preferences = Preferences.getInstance();
 
@@ -109,8 +109,8 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
 
   public void zeroPositionWithEncoderIfNeeded() {
     if (talon.getSelectedSensorVelocity(0) != 0) return;
-    int absolute = intakeSubsystem.getShoulderAbsolutePosition();
     int position = talon.getSelectedSensorPosition(0);
+    int absolute = intakeSubsystem.getShoulderAbsolutePosition();
     int error = Math.abs((absolute - kAbsEncoderZeroPosition) * ABS_TO_REL_RATIO - position);
     if (error > ENC_EPSILON) {
       logger.debug("encoder position error = {}, re-zeroing", error);
