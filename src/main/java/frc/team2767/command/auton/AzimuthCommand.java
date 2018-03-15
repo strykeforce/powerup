@@ -6,7 +6,7 @@ import frc.team2767.subsystem.DriveSubsystem;
 
 public class AzimuthCommand extends Command {
 
-  private static final int STABLE = 3;
+  private static final int STABLE = 2;
 
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
 
