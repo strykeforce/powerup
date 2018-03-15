@@ -47,7 +47,7 @@ enableCamera  = true
 
 [POWERUP.INTAKE]
   loadOutput  = -1.0
-  holdOutput  = -1.0
+  holdOutput  = -0.15
   fastEjectOutput = 1.0
   slowEjectOutput = 0.30
 

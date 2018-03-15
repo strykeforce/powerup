@@ -101,7 +101,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         break;
       case HOLD:
         leftOutput = kHoldOutput;
-        rightOutput = 0.25 * kHoldOutput;
+        rightOutput = kHoldOutput;
         logger.debug("running in HOLD at {}", leftOutput);
         break;
       case FAST_EJECT:

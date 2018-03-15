@@ -10,6 +10,7 @@ import frc.team2767.command.climber.ClimberClimb;
 import frc.team2767.command.climber.ClimberDeploy;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.extender.ExtenderToggle;
+import frc.team2767.command.intake.IntakeHold;
 import frc.team2767.command.intake.IntakeIn;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
@@ -41,7 +42,7 @@ public class PowerUpControls {
     // intake
     Button intakeIn = new JoystickButton(board, Switch.INTAKE_IN.index);
     intakeIn.whenActive(new IntakeIn());
-    intakeIn.whenReleased(new IntakeStop());
+    intakeIn.whenReleased(new IntakeHold());
 
     Button intakeOut = new JoystickButton(board, Switch.INTAKE_OUT.index);
     intakeOut.whenActive(new IntakeOut());
