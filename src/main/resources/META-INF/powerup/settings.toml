@@ -31,7 +31,7 @@ enableCamera  = true
   test = false
 
 [POWERUP.JOYSTICK]
-  deadband    = 0.05
+  deadband    = 0.10
   driveExpo   = 0.5
   azimuthExpo = 0.2
   rateLimit   = 0.04
