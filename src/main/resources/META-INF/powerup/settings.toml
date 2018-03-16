@@ -18,7 +18,7 @@ enableCamera  = true
 [POWERUP.PATH]
   p_azimuth        = -0.004
   p_distance       = 4e-6
-  p_acceleration   = 0.02
+  f_acceleration   = 0.02
   ticksPerInchRed  = 2273 # carpet-x pull test
   ticksPerInchBlue = 2273
 
@@ -72,7 +72,7 @@ enableCamera  = true
   downVelocityShiftPos = 7000
 
   # velocities
-  upAccel          = 7500
+  upAccel          = 6000
   upVelocity       = 2500
   downSlowAccel    = 7500
   downSlowVelocity = 3000

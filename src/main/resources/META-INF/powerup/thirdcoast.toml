@@ -59,9 +59,9 @@
    peak = 0
    peakDuration = 0
  [[TALON.closedLoopProfile]] # slot 0 Velocity
-   pGain = 0.03
+   pGain = 0.01
    iGain = 0.0003
-   dGain = 0.0
+   dGain = 0.6
    fGain = 0.028
    iZone = 3000
    maxIntegralAccumulator = 200_000
