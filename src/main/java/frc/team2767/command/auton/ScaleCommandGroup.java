@@ -1,9 +1,10 @@
 package frc.team2767.command.auton;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.command.StartPosition;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
-import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 
@@ -11,12 +12,12 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
 
   public ScaleCommandGroup(Side side) {
     super();
+    addParallel(new LiftUp(side));
     addSequential(new PathCommand(side.path, side.startPosition));
-    addParallel(new AzimuthCommand(side.azimuth));
-    addSequential(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
-    addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
+
+    addSequential(new AzimuthShoulderMoveCommandGroup(side));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
-    addSequential(new Stow());
+    //    addSequential(new Stow());
   }
 
   public enum Side {
@@ -32,6 +33,21 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
       this.path = path;
       this.azimuth = azimuth;
       this.startPosition = startPosition;
+    }
+  }
+
+  private static class AzimuthShoulderMoveCommandGroup extends CommandGroup {
+
+    private AzimuthShoulderMoveCommandGroup(Side side) {
+      addParallel(new AzimuthCommand(side.azimuth));
+      addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
+    }
+  }
+
+  private static class LiftUp extends CommandGroup {
+    private LiftUp(Side side) {
+      addSequential(new WaitCommand(0.5));
+      addSequential(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
     }
   }
 }
