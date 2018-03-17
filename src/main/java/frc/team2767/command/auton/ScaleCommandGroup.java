@@ -17,13 +17,11 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     PathCommand pathCommand = new PathCommand(side.path, side.startPosition);
     addParallel(new PositionForCubeLaunch(pathCommand.getPathController(), side));
     addSequential(pathCommand);
-    addSequential(new AzimuthCommand(side.azimuth));
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
   }
 
   public enum Side {
-    LEFT("left_scale", -42.0, 500_000, StartPosition.LEFT),
-    RIGHT("right_scale", 15.0, 492_400, StartPosition.RIGHT),
+    LEFT("left_scale", -42.0, 492_400, StartPosition.LEFT),
+    RIGHT("right_scale", 15.0, 210_000, StartPosition.RIGHT),
     ;
 
     private final String path;
@@ -39,11 +37,19 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     }
   }
 
-  private static class PositionForCubeLaunch extends CommandGroup {
+  private class PositionForCubeLaunch extends CommandGroup {
 
     private PositionForCubeLaunch(PathController pathController, Side side) {
+
       addSequential(new WaitForDistance(pathController, side.distance));
-      addSequential(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+      addSequential(new ElevatorShoulderUp());
+      addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+    }
+  }
+
+  private class ElevatorShoulderUp extends CommandGroup {
+    private ElevatorShoulderUp() {
+      addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
       addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
     }
   }
@@ -52,7 +58,7 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     private final PathController pathController;
     private final int distance;
 
-    public WaitForDistance(PathController pathController, int distance) {
+    private WaitForDistance(PathController pathController, int distance) {
       this.pathController = pathController;
       this.distance = distance;
     }

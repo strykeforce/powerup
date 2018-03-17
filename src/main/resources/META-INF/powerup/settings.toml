@@ -94,7 +94,7 @@ enableCamera  = true
   stowPosition            = 4500 # 3918
   intakePosition          = -100
   launchSwitchPosition    = 4000
-  launchScalePosition     = 3000
+  launchScalePosition     = 2500
 
 [POWERUP.EXTENDER]
   leftUpPosition     = 0.41
