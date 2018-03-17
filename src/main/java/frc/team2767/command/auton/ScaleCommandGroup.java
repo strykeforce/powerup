@@ -8,8 +8,11 @@ import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.IntakeSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScaleCommandGroup extends PowerUpCommandGroup {
+  private static final Logger logger = LoggerFactory.getLogger(ScaleCommandGroup.class);
 
   public ScaleCommandGroup(Side side) {
     super();
