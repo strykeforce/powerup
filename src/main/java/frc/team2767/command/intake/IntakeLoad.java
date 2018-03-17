@@ -1,7 +1,5 @@
 package frc.team2767.command.intake;
 
-import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
@@ -9,7 +7,17 @@ import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 
+import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
+
 public class IntakeLoad extends CommandGroup {
+
+  @Override
+  protected void initialize() {
+  }
+
+  @Override
+  protected void end() {
+  }
 
   public IntakeLoad(Position position) {
     addParallel(new Intake());

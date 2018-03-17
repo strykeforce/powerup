@@ -10,7 +10,7 @@ public class LidarCommand extends Command {
 
   private static final Logger logger = LoggerFactory.getLogger(LidarCommand.class);
   private LidarSubsystem lidarSubsystem;
-  private static final int SAMPLE_SIZE = 3;
+  private static final int SAMPLE_SIZE = 4;
   private final int LIDAR_WAIT_DISTANCE;
 
   public LidarCommand(int distance) {
@@ -49,13 +49,14 @@ public class LidarCommand extends Command {
   }
 
   public boolean isInRange() {
-    int distanceSum = 0;
+    int counter = 0;
 
     for (int i = 0; i < SAMPLE_SIZE; i++) {
-      distanceSum += getDistance();
+      if (getDistance() < LIDAR_WAIT_DISTANCE) {
+        counter++;
+      }
     }
 
-    logger.debug("isIn = {}", distanceSum / SAMPLE_SIZE < LIDAR_WAIT_DISTANCE);
-    return distanceSum / SAMPLE_SIZE < LIDAR_WAIT_DISTANCE;
+    return counter >= SAMPLE_SIZE * 0.75;
   }
 }

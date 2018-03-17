@@ -10,4 +10,8 @@ public class Stow extends CommandGroup {
     addParallel(new LiftPosition(LiftPosition.Position.STOW));
     addParallel(new ShoulderPosition(ShoulderPosition.Position.STOW));
   }
+
+  @Override
+  protected void end() {
+  }
 }
