@@ -23,7 +23,7 @@ enableCamera  = true
   ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
-  p = 0.02
+  p = 0.01
   i = 0.0
   d = 0.0
   tolerance = 0.5
@@ -49,6 +49,7 @@ enableCamera  = true
   loadOutput  = -1.0
   holdOutput  = -0.15
   fastEjectOutput = 1.0
+  scaleEjectOutput = 0.4
   slowEjectOutput = 0.30
 
   # release positions

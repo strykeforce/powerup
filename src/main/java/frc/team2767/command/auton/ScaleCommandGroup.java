@@ -18,12 +18,12 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     addParallel(new PositionForCubeLaunch(pathCommand.getPathController(), side));
     addSequential(pathCommand);
     addSequential(new AzimuthCommand(side.azimuth));
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
   }
 
   public enum Side {
     LEFT("left_scale", -42.0, 500_000, StartPosition.LEFT),
-    RIGHT("right_scale", 15.0, 500_000, StartPosition.RIGHT),
+    RIGHT("right_scale", 15.0, 492_400, StartPosition.RIGHT),
     ;
 
     private final String path;
