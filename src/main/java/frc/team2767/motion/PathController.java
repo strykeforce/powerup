@@ -163,15 +163,17 @@ public class PathController implements Runnable, Item {
 
   private double distanceError(double position) {
     double desired = ticksPerMeter * position;
-    distance = 0;
+    double error = desired - getDistance();
+    return error;
+  }
 
+  public double getDistance() {
+    distance = 0;
     for (int i = 0; i < NUM_WHEELS; i++) {
       distance += Math.abs(wheels[i].getDriveTalon().getSelectedSensorPosition(PID) - start[i]);
     }
     distance /= 4;
-
-    double error = desired - distance;
-    return error;
+    return distance;
   }
 
   public void setTargetAzimuth(double targetAzimuth) {

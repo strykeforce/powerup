@@ -17,13 +17,13 @@ enableCamera  = true
 
 [POWERUP.PATH]
   p_azimuth        = -0.004
-  p_distance       = 4e-6
-  f_acceleration   = 0.02
+  p_distance       = 2e-6
+  f_acceleration   = 0.0
   ticksPerInchRed  = 2273 # carpet-x pull test
   ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
-  p = 0.02
+  p = 0.01
   i = 0.0
   d = 0.0
   tolerance = 0.5
@@ -31,7 +31,7 @@ enableCamera  = true
   test = false
 
 [POWERUP.JOYSTICK]
-  deadband    = 0.05
+  deadband    = 0.10
   driveExpo   = 0.5
   azimuthExpo = 0.2
   rateLimit   = 0.04
@@ -49,6 +49,7 @@ enableCamera  = true
   loadOutput  = -1.0
   holdOutput  = -0.15
   fastEjectOutput = 1.0
+  scaleEjectOutput = 0.4
   slowEjectOutput = 0.30
 
   # release positions
@@ -83,7 +84,7 @@ enableCamera  = true
   upOutput       = 0.4
   downOutput     = -0.4
   stopOutput     = 0.0
-  closeEnough    = 75
+  closeEnough    = 250
   jogIncrement   = 300
 
   # positions
@@ -93,7 +94,7 @@ enableCamera  = true
   stowPosition            = 4500 # 3918
   intakePosition          = -100
   launchSwitchPosition    = 4000
-  launchScalePosition     = 3750
+  launchScalePosition     = 2500
 
 [POWERUP.EXTENDER]
   leftUpPosition     = 0.41

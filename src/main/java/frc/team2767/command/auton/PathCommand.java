@@ -51,4 +51,8 @@ public class PathCommand extends Command {
   protected void end() {
     driveSubsystem.endPath();
   }
+
+  public PathController getPathController() {
+    return path;
+  }
 }
