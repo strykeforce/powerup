@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.*;
+import frc.team2767.command.sensors.LidarCommand;
 import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
@@ -48,12 +49,13 @@ public class Robot extends TimedRobot {
   private Command autonCommand;
   private boolean autonHasRun;
 
+  private LidarCommand lidarCommand;
+
   @Override
   public void robotInit() {
     settings = INJECTOR.settings();
     controls = INJECTOR.controls();
     scheduler = Scheduler.getInstance();
-
     logger.info("INIT in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
     alignWheelsButtons = controls.getDriverControls().getAlignWheelsButtons();
@@ -183,7 +185,7 @@ public class Robot extends TimedRobot {
           break;
         case 0x34: // right corner, always scale
           leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
-          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+          rightScale = new TwoCubeScaleRightCommandGroup();
           autonCommand = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);
           break;
         case 0x39: // right corner, test

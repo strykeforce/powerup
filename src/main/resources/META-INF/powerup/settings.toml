@@ -23,7 +23,7 @@ enableCamera  = true
   ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
-  p = 0.01
+  p = 0.009
   i = 0.0
   d = 0.0
   tolerance = 0.5
@@ -61,7 +61,7 @@ enableCamera  = true
   upOutput     = 0.25
   downOutput   = -0.2
   stopOutput   = 0.0
-  closeEnough  = 100
+  closeEnough  = 250
   jogIncrement = 1400
 
   # positions
