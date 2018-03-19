@@ -35,7 +35,7 @@ public class DriveToCube extends Command {
   @Override
   protected boolean isFinished() {
 
-    return lidarCommand.isInRange();
+    return lidarCommand.isInRange(); // FIXME: can call subsystem
   }
 
   @Override

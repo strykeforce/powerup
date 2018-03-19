@@ -11,7 +11,7 @@ public class LidarCommand extends Command {
   private static final Logger logger = LoggerFactory.getLogger(LidarCommand.class);
   private LidarSubsystem lidarSubsystem;
   private static final int SAMPLE_SIZE = 4;
-  private final int LIDAR_WAIT_DISTANCE;
+  private final int LIDAR_WAIT_DISTANCE; // FIXME: not a static const
 
   public LidarCommand(int distance) {
     lidarSubsystem = Robot.INJECTOR.lidarSubsystem();
@@ -26,7 +26,7 @@ public class LidarCommand extends Command {
 
   @Override
   protected void execute() {
-    int distanceSum = 0;
+    double distanceSum = 0; // FIXME: loops faster than CAN bus reads
     for (int i = 0; i < 5; i++) {
       distanceSum += lidarSubsystem.getDistance();
     }
@@ -44,14 +44,14 @@ public class LidarCommand extends Command {
 
   @Override
   protected void end() {
-    lidarSubsystem.end();
-    super.end();
+    lidarSubsystem.end(); // FIXME: not needed
+    super.end(); // FIXME: this does nothing
   }
 
   public boolean isInRange() {
     int counter = 0;
 
-    for (int i = 0; i < SAMPLE_SIZE; i++) {
+    for (int i = 0; i < SAMPLE_SIZE; i++) { // FIXME: loops faster than CAN bus reads
       if (getDistance() < LIDAR_WAIT_DISTANCE) {
         counter++;
       }

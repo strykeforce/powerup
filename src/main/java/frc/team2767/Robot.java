@@ -11,7 +11,12 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.*;
-import frc.team2767.command.sensors.LidarCommand;
+import frc.team2767.command.auton.nearswitch.CenterSwitchCommand;
+import frc.team2767.command.auton.nearswitch.OppositeSwitchCommandGroup;
+import frc.team2767.command.auton.nearswitch.SwitchCommandGroup;
+import frc.team2767.command.auton.scale.OppositeScaleCommandGroup;
+import frc.team2767.command.auton.scale.ScaleCommandGroup;
+import frc.team2767.command.auton.scale.TwoCubeScaleRightCommandGroup;
 import frc.team2767.command.test.LifeCycleTestCommand;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
@@ -48,8 +53,6 @@ public class Robot extends TimedRobot {
   private Scheduler scheduler;
   private Command autonCommand;
   private boolean autonHasRun;
-
-  private LidarCommand lidarCommand;
 
   @Override
   public void robotInit() {

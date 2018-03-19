@@ -1,4 +1,4 @@
-package frc.team2767.command.intake;
+package frc.team2767.command.auton.scale;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
@@ -22,7 +22,7 @@ public class IntakeInCubeTwo extends Command {
 
   @Override
   protected boolean isFinished() {
-    return lidarCommand.isInRange();
+    return lidarCommand.isInRange(); // FIXME: can call subsystem
   }
 
   @Override

@@ -1,4 +1,4 @@
-package frc.team2767.command.auton;
+package frc.team2767.command.auton.scale;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.slf4j.Logger;
