@@ -47,6 +47,8 @@ public interface SingletonComponent {
 
   HealthCheckSubsystem healthCheckSubsystem();
 
+  LidarSubsystem lidarSubsystem();
+
   Controls controls();
 
   TelemetryService telemetryService();
