@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.004163197335553705,
+  "dividerPosition": 0.011058451816745656,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -197,70 +197,58 @@
               "colorWhenFalse": "#8B0000FF"
             }
           },
-          "4,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Game/IntakeIn",
-              "_title": "Intake In"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Game/IntakeStop",
-              "_title": "Intake Stop"
-            }
-          },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Game/IntakeOut",
-              "_title": "Intake Out"
-            }
-          },
           "5,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Game/ElevatorUp",
-              "_title": "Lift Up"
+              "_type": "List Layout",
+              "_title": "Lift",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Game/ElevatorUp",
+                  "_title": "Lift Up"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Game/ElevatorStop",
+                  "_title": "Lift Stop"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Game/ElevatorDown",
+                  "_title": "Lift Down"
+                }
+              ]
             }
           },
-          "6,0": {
+          "4,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Game/ElevatorStop",
-              "_title": "Lift Stop"
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Game/ElevatorDown",
-              "_title": "Lift Down"
+              "_type": "List Layout",
+              "_title": "Intake",
+              "_children": [
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Game/IntakeIn",
+                  "_title": "Intake In"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Game/IntakeStop",
+                  "_title": "Intake Stop"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Game/IntakeOut",
+                  "_title": "Intake Out"
+                }
+              ]
             }
           }
         }
@@ -276,28 +264,6 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "2,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Test/Azimuth",
-              "_title": "Azimuth"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Test/Path/StraightLine",
-              "_title": "Path/StraightLine"
-            }
-          },
           "0,0": {
             "size": [
               1,
@@ -320,61 +286,37 @@
               ]
             }
           },
-          "4,0": {
+          "2,0": {
             "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "List Layout",
-              "_title": "Intake",
-              "_children": [
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Test/IntakeOpen",
-                  "_title": "Intake Open"
-                },
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Test/IntakeClose",
-                  "_title": "Intake Close"
-                }
-              ]
-            }
-          },
-          "1,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "List Layout",
-              "_title": "Extender",
-              "_children": [
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Test/ExtenderUp",
-                  "_title": "Extender Up"
-                },
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Test/ExtenderDown",
-                  "_title": "Extender Down"
-                }
-              ]
-            }
-          },
-          "5,0": {
-            "size": [
-              1,
+              2,
               1
             ],
             "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Test/HealthCheck/running",
-              "_title": "HealthCheck/running",
-              "colorWhenTrue": "#7CFC00FF",
-              "colorWhenFalse": "#8B0000FF"
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Test/SwitchSideChooser",
+              "_title": "Switch Side"
+            }
+          },
+          "2,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Test/ScaleSideChooser",
+              "_title": "Scale Side"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Test/CommandChooser",
+              "_title": "Auton Command"
             }
           }
         }

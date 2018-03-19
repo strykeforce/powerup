@@ -10,6 +10,7 @@ public class IntakeIn extends InstantCommand {
   private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
 
   public IntakeIn() {
+    super("Intake In");
     requires(intakeSubsystem);
   }
 

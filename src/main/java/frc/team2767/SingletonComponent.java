@@ -2,8 +2,8 @@ package frc.team2767;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
-import frc.team2767.motion.AzimuthControllerFactory;
 import frc.team2767.motion.PathControllerFactory;
 import frc.team2767.subsystem.*;
 import frc.team2767.subsystem.health.HealthCheckSubsystem;
@@ -31,8 +31,6 @@ public interface SingletonComponent {
 
   Set<Graphable> graphables();
 
-  Set<Positionable> positionables();
-
   ClimberSubsystem climberSubsystem();
 
   DriveSubsystem driveSubsystem();
@@ -57,9 +55,9 @@ public interface SingletonComponent {
 
   Settings settings();
 
-  PathControllerFactory pathControllerFactory();
+  AutonChooser autonChooser();
 
-  AzimuthControllerFactory azimuthControllerFactory();
+  PathControllerFactory pathControllerFactory();
 
   @Component.Builder
   interface Builder {

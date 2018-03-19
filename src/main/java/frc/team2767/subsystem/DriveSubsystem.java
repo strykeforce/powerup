@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
+import frc.team2767.command.StartPosition;
 import frc.team2767.command.drive.TeleOpDriveCommand;
 import frc.team2767.motion.AzimuthController;
 import frc.team2767.motion.AzimuthControllerFactory;
@@ -181,6 +182,26 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   public void disableAzimuths() {
     for (Wheel wheel : swerve.getWheels()) {
       wheel.disableAzimuth();
+    }
+  }
+
+  public void setAngleAdjustment(StartPosition startPosition) {
+    AHRS gyro = getGyro();
+    gyro.zeroYaw();
+    gyro.setAngleAdjustment(0);
+    double adj = -gyro.getAngle() % 360;
+    switch (startPosition) {
+      case UNKNOWN:
+      case CENTER:
+        break;
+      case LEFT:
+        adj += 90d;
+        gyro.setAngleAdjustment(adj);
+        break;
+      case RIGHT:
+        adj -= 90d;
+        gyro.setAngleAdjustment(adj);
+        break;
     }
   }
 
