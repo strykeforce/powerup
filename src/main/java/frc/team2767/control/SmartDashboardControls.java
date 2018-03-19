@@ -3,22 +3,20 @@ package frc.team2767.control;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
-import frc.team2767.command.auton.AzimuthCommand;
 import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
-import frc.team2767.command.extender.ExtenderDown;
-import frc.team2767.command.extender.ExtenderUp;
 import frc.team2767.command.health.HealthCheck;
-import frc.team2767.command.intake.*;
+import frc.team2767.command.intake.IntakeIn;
+import frc.team2767.command.intake.IntakeOut;
+import frc.team2767.command.intake.IntakeStop;
 import frc.team2767.command.lift.LiftDown;
 import frc.team2767.command.lift.LiftStop;
 import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
-import frc.team2767.command.test.PathTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -62,15 +60,8 @@ public class SmartDashboardControls {
   }
 
   private void addTestCommands() {
-    SmartDashboard.putData("Test/IntakeOpen", new IntakeOpen());
-    SmartDashboard.putData("Test/IntakeClose", new IntakeClose());
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
-    SmartDashboard.putData("Test/Azimuth", new AzimuthCommand(0));
-    SmartDashboard.putData(
-        "Test/Path/StraightLine", new PathTestCommand("Straight Line", "straight_line"));
-    SmartDashboard.putData("Test/ExtenderUp", new ExtenderUp());
-    SmartDashboard.putData("Test/ExtenderDown", new ExtenderDown());
   }
 
   private void addGameCommands() {
@@ -79,6 +70,6 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Game/IntakeOut", new IntakeOut());
     SmartDashboard.putData("Game/ElevatorUp", new LiftUp());
     SmartDashboard.putData("Game/ElevatorStop", new LiftStop());
-    SmartDashboard.putData("Game/Elevator/Down", new LiftDown());
+    SmartDashboard.putData("Game/ElevatorDown", new LiftDown());
   }
 }

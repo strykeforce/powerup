@@ -6,10 +6,10 @@ import frc.team2767.subsystem.LiftSubsystem;
 
 public class LiftStop extends InstantCommand {
 
-  private final LiftSubsystem liftSubsystem;
+  private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();;
 
   public LiftStop() {
-    liftSubsystem = Robot.INJECTOR.liftSubsystem();
+    super("Lift Stop");
     requires(liftSubsystem);
   }
 
