@@ -1,15 +1,20 @@
-package frc.team2767.command.auton;
+package frc.team2767.command.auton.scale;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.command.StartPosition;
+import frc.team2767.command.auton.PathCommand;
+import frc.team2767.command.auton.PowerUpCommandGroup;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.IntakeSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScaleCommandGroup extends PowerUpCommandGroup {
+  private static final Logger logger = LoggerFactory.getLogger(ScaleCommandGroup.class);
 
   public ScaleCommandGroup(Side side) {
     super();
@@ -37,7 +42,7 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     }
   }
 
-  private class PositionForCubeLaunch extends CommandGroup {
+  private static class PositionForCubeLaunch extends CommandGroup {
 
     private PositionForCubeLaunch(PathController pathController, Side side) {
 
@@ -47,7 +52,7 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     }
   }
 
-  private class ElevatorShoulderUp extends CommandGroup {
+  private static class ElevatorShoulderUp extends CommandGroup {
     private ElevatorShoulderUp() {
       addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
       addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
