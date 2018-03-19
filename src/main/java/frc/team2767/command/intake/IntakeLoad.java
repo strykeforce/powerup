@@ -11,6 +11,12 @@ import frc.team2767.subsystem.IntakeSubsystem;
 
 public class IntakeLoad extends CommandGroup {
 
+  @Override
+  protected void initialize() {}
+
+  @Override
+  protected void end() {}
+
   public IntakeLoad(Position position) {
     addParallel(new Intake());
     LiftPosition.Position liftPosition;

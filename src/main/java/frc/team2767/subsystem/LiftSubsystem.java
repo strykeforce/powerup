@@ -27,6 +27,7 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
   private static final String TABLE = Robot.TABLE + ".LIFT";
   private static final String ZERO = "Lift/zero";
   private static final int TIMEOUT = 10;
+  private static final int STABLE_THRESH = 1;
 
   private final int kUpAccel;
   private final int kUpVelocity;
@@ -162,7 +163,7 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
     int error = setpoint - frontTalon.getSelectedSensorPosition(0);
     if (Math.abs(error) > kCloseEnough) stableCount = 0;
     else stableCount++;
-    if (stableCount > 3) {
+    if (stableCount > STABLE_THRESH) {
       logger.debug("stableCount > 3");
       return true;
     }

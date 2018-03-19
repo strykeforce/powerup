@@ -29,6 +29,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final double kLoadOutput;
   private final double kHoldOutput;
   private final double kFastEjectOutput;
+  private final double kScaleEjectOutput;
   private final double kSlowEjectOutput;
   private final int kOpenPosition;
   private final TalonSRX leftTalon, rightTalon;
@@ -60,6 +61,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     kLoadOutput = toml.getDouble("loadOutput");
     kHoldOutput = toml.getDouble("holdOutput");
     kFastEjectOutput = toml.getDouble("fastEjectOutput");
+    kScaleEjectOutput = toml.getDouble("scaleEjectOutput");
     kSlowEjectOutput = toml.getDouble("slowEjectOutput");
     kOpenPosition = toml.getLong("openPosition").intValue();
 
@@ -71,6 +73,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     logger.info("loadOutput = {}", kLoadOutput);
     logger.info("holdOutput = {}", kHoldOutput);
     logger.info("fastEjectOutput = {}", kFastEjectOutput);
+    logger.info("scaleEjectOutput = {}", kScaleEjectOutput);
     logger.info("slowEjectOutput = {}", kSlowEjectOutput);
     logger.info("openPosition = {}", kOpenPosition);
   }
@@ -101,12 +104,16 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         break;
       case HOLD:
         leftOutput = kHoldOutput;
-        rightOutput = 0.25 * kHoldOutput;
+        rightOutput = kHoldOutput;
         logger.debug("running in HOLD at {}", leftOutput);
         break;
       case FAST_EJECT:
         leftOutput = kFastEjectOutput;
         rightOutput = kFastEjectOutput;
+        break;
+      case SCALE_EJECT:
+        leftOutput = kScaleEjectOutput;
+        rightOutput = kScaleEjectOutput;
         break;
       case SLOW_EJECT:
         leftOutput = kSlowEjectOutput;
@@ -155,6 +162,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     LOAD,
     HOLD,
     FAST_EJECT,
+    SCALE_EJECT,
     SLOW_EJECT
   }
 }

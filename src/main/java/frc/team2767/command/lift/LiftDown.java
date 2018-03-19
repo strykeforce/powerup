@@ -9,6 +9,7 @@ public class LiftDown extends InstantCommand {
   private final LiftSubsystem liftSubsystem = Robot.INJECTOR.liftSubsystem();
 
   public LiftDown() {
+    super("Lift Down");
     requires(liftSubsystem);
   }
 

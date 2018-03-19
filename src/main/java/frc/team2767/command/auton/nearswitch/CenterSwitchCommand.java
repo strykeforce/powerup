@@ -1,7 +1,8 @@
-package frc.team2767.command.auton;
+package frc.team2767.command.auton.nearswitch;
 
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.team2767.command.StartPosition;
+import frc.team2767.command.auton.OwnedSidesSettable;
 import openrio.powerup.MatchData.OwnedSide;
 
 /**

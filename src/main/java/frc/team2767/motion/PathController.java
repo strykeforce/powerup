@@ -34,6 +34,7 @@ public class PathController implements Runnable, Item {
   private static final Logger logger = LoggerFactory.getLogger(PathController.class);
   private static final int PID = 0;
   private static final double INCHES_PER_METER = 39.3701;
+  private static final int NUM_WHEELS = 4;
 
   private final double kPAzimuth;
   private final double kPDistance;
@@ -46,7 +47,7 @@ public class PathController implements Runnable, Item {
   private final Wheel[] wheels;
   private final AHRS gyro;
   private final Notifier notifier;
-  private final double kPAccel;
+  private final double kFAccel;
   private int[] start = new int[4];
   private int iteration;
   private volatile boolean running;
@@ -93,21 +94,21 @@ public class PathController implements Runnable, Item {
     toml = settings.getTable("POWERUP.PATH");
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
-    kPAccel = toml.getDouble("p_acceleration", 0.0);
+    kFAccel = toml.getDouble("f_acceleration", 0.0);
     kTicksPerMeterRed = toml.getLong("ticksPerInchRed").doubleValue() * INCHES_PER_METER;
     kTicksPerMeterBlue = toml.getLong("ticksPerInchBlue").doubleValue() * INCHES_PER_METER;
     ticksPerMeter = kTicksPerMeterRed;
 
     logger.info("p_azimuth = {}", kPAzimuth);
     logger.info("p_distance = {}", kPDistance);
-    logger.info("p_acceleration = {}", kPAccel);
+    logger.info("f_acceleration = {}", kFAccel);
     logger.info("ticksPerMeterRed = {}", kTicksPerMeterRed);
     logger.info("ticksPerMeterBlue = {}", kTicksPerMeterBlue);
     logger.info(this.toString());
   }
 
   public void start() {
-    logger.info("P_Accel = {}", kPAccel);
+    logger.info("P_Accel = {}", kFAccel);
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
     double ticksPerSecMax = wheels[0].getDriveSetpointMax() * 10.0;
@@ -118,10 +119,10 @@ public class PathController implements Runnable, Item {
         ticksPerMeter,
         metersPerSecMax);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < NUM_WHEELS; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
     }
-    iteration = 0;
+    iteration = 1;
     notifier.startPeriodic(config.dt);
     running = true;
   }
@@ -147,7 +148,7 @@ public class PathController implements Runnable, Item {
 
     double vel_desired = segment.velocity / metersPerSecMax;
     double vel_setpoint =
-        vel_desired + kPDistance * distanceError(segment.position) + kPAccel * segment.acceleration;
+        vel_desired + kPDistance * distanceError(segment.position) + kFAccel * segment.acceleration;
 
     forward = Math.cos(segment.heading) * vel_setpoint;
     strafe = -Math.sin(segment.heading) * vel_setpoint;
@@ -162,15 +163,17 @@ public class PathController implements Runnable, Item {
 
   private double distanceError(double position) {
     double desired = ticksPerMeter * position;
-    distance = 0;
+    double error = desired - getDistance();
+    return error;
+  }
 
-    for (int i = 0; i < 4; i++) {
+  public double getDistance() {
+    distance = 0;
+    for (int i = 0; i < NUM_WHEELS; i++) {
       distance += Math.abs(wheels[i].getDriveTalon().getSelectedSensorPosition(PID) - start[i]);
     }
     distance /= 4;
-
-    double error = desired - distance;
-    return error;
+    return distance;
   }
 
   public void setTargetAzimuth(double targetAzimuth) {
