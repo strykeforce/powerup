@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import frc.team2767.command.test.LidarTestCommand;
 import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   private Scheduler scheduler;
   private Command autonCommand;
   private boolean autonDone;
+  private LidarTestCommand lidarTestCommand;
 
   @Override
   public void robotInit() {
@@ -56,6 +58,9 @@ public class Robot extends TimedRobot {
       INJECTOR.graphables().forEach(g -> g.register(telemetryService));
       telemetryService.start();
     }
+
+    lidarTestCommand = new LidarTestCommand();
+    lidarTestCommand.start();
   }
 
   @Override
