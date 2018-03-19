@@ -1,30 +1,15 @@
 package frc.team2767;
 
-import static frc.team2767.command.StartPosition.*;
-
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.team2767.command.LogCommand;
-import frc.team2767.command.StartPosition;
-import frc.team2767.command.auton.*;
-import frc.team2767.command.auton.nearswitch.CenterSwitchCommand;
-import frc.team2767.command.auton.nearswitch.OppositeSwitchCommandGroup;
-import frc.team2767.command.auton.nearswitch.SwitchCommandGroup;
-import frc.team2767.command.auton.scale.OppositeScaleCommandGroup;
-import frc.team2767.command.auton.scale.ScaleCommandGroup;
-import frc.team2767.command.auton.scale.TwoCubeScaleRightCommandGroup;
-import frc.team2767.command.test.LifeCycleTestCommand;
+import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
 import java.net.URL;
-import openrio.powerup.MatchData;
-import openrio.powerup.MatchData.GameFeature;
-import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
@@ -33,7 +18,6 @@ public class Robot extends TimedRobot {
 
   public static final SingletonComponent INJECTOR;
   public static final String TABLE = "POWERUP";
-  private static final int AUTON_SWITCH_DEBOUNCED = 100;
   private static final Logger logger;
 
   static {
@@ -42,22 +26,20 @@ public class Robot extends TimedRobot {
     logger = LoggerFactory.getLogger(Robot.class);
   }
 
-  private int autonSwitchStableCount = 0;
-  private int autonSwitchPosition = -1;
-  private StartPosition startPosition;
-  private int newAutonSwitchPosition;
+  private AutonChooser autonChooser;
   private Controls controls;
   private Settings settings;
   private DriveSubsystem driveSubsystem;
   private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
   private Command autonCommand;
-  private boolean autonHasRun;
+  private boolean autonDone;
 
   @Override
   public void robotInit() {
     settings = INJECTOR.settings();
     controls = INJECTOR.controls();
+    autonChooser = INJECTOR.autonChooser();
     scheduler = Scheduler.getInstance();
     logger.info("INIT in {} mode", settings.isEvent() ? "EVENT" : "SAFE");
 
@@ -82,7 +64,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("DISABLED");
-    resetAutonomous();
+    driveSubsystem.stop();
+    scheduler.removeAll();
+    if (autonDone) {
+      autonChooser = null;
+      autonCommand = null;
+    }
     Logging.flushLogs();
   }
 
@@ -93,216 +80,15 @@ public class Robot extends TimedRobot {
       driveSubsystem.alignWheelsToBar();
     }
 
-    if (autonHasRun) return;
-
-    // auton commands need time to compute path trajectories so instantiate as early as possible
-    if (checkAutonomousSwitch()) {
-      logger.info(
-          "auton switch initializing auton command {}, start position = {}",
-          String.format("%02X", autonSwitchPosition),
-          startPosition);
-      // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
-      // Most significant digit: 1 - Left, 2 - Center, 3 - Right
-      switch (autonSwitchPosition) {
-        case 0x10: // left corner, scale priority
-          Command leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
-          autonCommand =
-              new CornerConditionalCommand(
-                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
-                  leftScale,
-                  leftScale,
-                  new OppositeScaleCommandGroup(OppositeScaleCommandGroup.Side.LEFT));
-          break;
-        case 0x11: // left corner, switch priority
-          Command leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
-          autonCommand =
-              new CornerConditionalCommand(
-                  leftSwitch,
-                  new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
-                  leftSwitch,
-                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.LEFT));
-          break;
-        case 0x12: // left corner, scale priority, opposite switch
-          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
-          autonCommand =
-              new CornerConditionalCommand(
-                  new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
-                  leftScale,
-                  leftScale,
-                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.LEFT));
-          break;
-        case 0x13: // left corner, always switch
-          leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
-          Command rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
-          autonCommand =
-              new CornerConditionalCommand(leftSwitch, rightSwitch, leftSwitch, rightSwitch);
-          break;
-        case 0x14: // left corner, always scale
-          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
-          Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
-          autonCommand = new CornerConditionalCommand(rightScale, leftScale, leftScale, rightScale);
-          break;
-        case 0x19: // left corner, test
-          autonCommand =
-              new CornerConditionalCommand(
-                  new LifeCycleTestCommand("Left Near Switch"),
-                  new LifeCycleTestCommand("Left Scale"),
-                  new LifeCycleTestCommand("Left Both"),
-                  new LifeCycleTestCommand("Left Neither"));
-          break;
-        case 0x20: // center switch
-          autonCommand = new CenterSwitchCommand();
-          break;
-        case 0x30: // right corner, scale priority
-          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
-          autonCommand =
-              new CornerConditionalCommand(
-                  new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
-                  rightScale,
-                  rightScale,
-                  new OppositeScaleCommandGroup(OppositeScaleCommandGroup.Side.RIGHT));
-          break;
-        case 0x31: // right corner, switch priority
-          rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
-          autonCommand =
-              new CornerConditionalCommand(
-                  rightSwitch,
-                  new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT),
-                  rightSwitch,
-                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
-          break;
-        case 0x32: // right corner, scale priority, opposite switch
-          rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
-          autonCommand =
-              new CornerConditionalCommand(
-                  new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
-                  rightScale,
-                  rightScale,
-                  new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
-          break;
-        case 0x33: // right corner, always switch
-          leftSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT);
-          rightSwitch = new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT);
-          autonCommand =
-              new CornerConditionalCommand(rightSwitch, leftSwitch, rightSwitch, leftSwitch);
-          break;
-        case 0x34: // right corner, always scale
-          leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
-          rightScale = new TwoCubeScaleRightCommandGroup();
-          autonCommand = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);
-          break;
-        case 0x39: // right corner, test
-          autonCommand =
-              new CornerConditionalCommand(
-                  new LifeCycleTestCommand("Right Near Switch"),
-                  new LifeCycleTestCommand("Right Scale"),
-                  new LifeCycleTestCommand("Right Both"),
-                  new LifeCycleTestCommand("Right Neither"));
-          break;
-        case 0x00:
-        default:
-          logger.warn(
-              "no auton command assigned for switch position {}",
-              String.format("%02X", autonSwitchPosition));
-          autonCommand = new LogCommand("Invalid auton switch position");
-          break;
-      }
-    }
-  }
-
-  private void resetAutonomous() {
-    logger.debug("reset auton");
-    autonCommand = new LogCommand("NO AUTON SELECTED");
-    autonSwitchPosition = -1;
-    startPosition = UNKNOWN;
-  }
-
-  private boolean checkAutonomousSwitch() {
-    boolean changed = false;
-    int switchPosition = controls.getAutonomousSwitchPosition();
-    if (switchPosition != newAutonSwitchPosition) {
-      autonSwitchStableCount = 0;
-      newAutonSwitchPosition = switchPosition;
-    } else {
-      autonSwitchStableCount++;
-    }
-
-    if (autonSwitchStableCount > AUTON_SWITCH_DEBOUNCED && autonSwitchPosition != switchPosition) {
-      changed = true;
-      autonSwitchPosition = switchPosition;
-      switch (autonSwitchPosition >>> 4) {
-        case 1:
-          startPosition = LEFT;
-          break;
-        case 2:
-          startPosition = CENTER;
-          break;
-        case 3:
-          startPosition = RIGHT;
-          break;
-        default:
-          startPosition = UNKNOWN;
-      }
-    }
-    return changed;
+    if (!autonDone) autonChooser.checkAutonSwitch();
   }
 
   @Override
   public void autonomousInit() {
     logger.info("AUTONOMOUS");
-
-    MatchData.OwnedSide nearSwitch = OwnedSide.UNKNOWN;
-    MatchData.OwnedSide scale = OwnedSide.UNKNOWN;
-    long start = System.nanoTime();
-
-    while (nearSwitch == OwnedSide.UNKNOWN && System.nanoTime() - start < 5e9) {
-      nearSwitch = MatchData.getOwnedSide(GameFeature.SWITCH_NEAR);
-      scale = MatchData.getOwnedSide(GameFeature.SCALE);
-    }
-
-    if (nearSwitch == OwnedSide.UNKNOWN) {
-      logger.error("GAME DATA TIMEOUT");
-      switch (startPosition) {
-        case UNKNOWN:
-          autonCommand = new LogCommand("Invalid auton switch position");
-          break;
-        case LEFT:
-          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.LEFT);
-          break;
-        case CENTER:
-          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.CENTER);
-          break;
-        case RIGHT:
-          autonCommand = new CrossTheLineCommandGroup(CrossTheLineCommandGroup.Side.RIGHT);
-          break;
-      }
-    } else {
-      logger.info("NEAR SWITCH owned side = {}", nearSwitch);
-      logger.info("SCALE owned side = {}", scale);
-    }
-
-    if (autonCommand instanceof OwnedSidesSettable)
-      ((OwnedSidesSettable) autonCommand).setOwnedSide(startPosition, nearSwitch, scale);
-
-    AHRS gyro = driveSubsystem.getGyro();
-    gyro.zeroYaw();
-    gyro.setAngleAdjustment(0);
-    double adj = -gyro.getAngle() % 360;
-    switch (startPosition) {
-      case UNKNOWN:
-      case CENTER:
-        break;
-      case LEFT:
-        adj += 90d;
-        gyro.setAngleAdjustment(adj);
-        break;
-      case RIGHT:
-        adj -= 90d;
-        gyro.setAngleAdjustment(adj);
-        break;
-    }
-
-    autonHasRun = settings.isEvent();
+    autonCommand = autonChooser.getCommand();
+    driveSubsystem.setAngleAdjustment(autonChooser.getStartPosition());
+    autonDone = settings.isEvent();
     autonCommand.start();
   }
 
@@ -314,8 +100,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("TELEOP");
-    driveSubsystem.stop();
-    scheduler.removeAll();
   }
 
   @Override
