@@ -2,28 +2,26 @@ package frc.team2767.command.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
-import frc.team2767.command.sensors.LidarCommand;
 import frc.team2767.subsystem.DriveSubsystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import frc.team2767.subsystem.LidarSubsystem;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 
 public class DriveToCube extends Command {
 
-  private static final Logger logger = LoggerFactory.getLogger(DriveToCube.class);
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
-  private final LidarCommand lidarCommand;
+  private final LidarSubsystem lidarSubsystem = Robot.INJECTOR.lidarSubsystem();
 
   private final double forward;
   private final double strafe;
   private final double azimuth;
+  private final int distance;
 
   public DriveToCube(int distance, double forward, double strafe, double azimuth) {
-
-    lidarCommand = new LidarCommand(distance);
+    this.distance = distance;
     this.forward = forward;
     this.strafe = strafe;
     this.azimuth = azimuth;
+    requires(lidarSubsystem);
     requires(driveSubsystem);
 
     driveSubsystem.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
@@ -37,12 +35,12 @@ public class DriveToCube extends Command {
   @Override
   protected boolean isFinished() {
 
-    return lidarCommand.isInRange(); // FIXME: can call subsystem
+    return lidarSubsystem.isInRange(distance);
   }
 
   @Override
   protected void end() {
-    logger.debug("end");
+    System.out.println("Ending Drive to Cube");
     driveSubsystem.stop();
   }
 }

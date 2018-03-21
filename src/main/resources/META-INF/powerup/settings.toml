@@ -84,7 +84,7 @@ enableCamera  = true
   upOutput       = 0.4
   downOutput     = -0.4
   stopOutput     = 0.0
-  closeEnough    = 250
+  closeEnough    = 500
   jogIncrement   = 300
 
   # positions
