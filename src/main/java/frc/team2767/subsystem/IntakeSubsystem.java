@@ -105,6 +105,10 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     return shoulderAbsoluteSensor.getPulseWidthPosition() & 0xFFF;
   }
 
+  public SensorCollection getShoulderAbsoluteSensor() {
+    return shoulderAbsoluteSensor;
+  }
+
   @Override
   protected void initDefaultCommand() {}
 
@@ -114,9 +118,6 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
       telemetryService.register(new TalonItem(leftTalon, "Intake Left (" + LEFT_ID + ")"));
     if (rightTalon != null)
       telemetryService.register(new TalonItem(rightTalon, "Intake Right (" + RIGHT_ID + ")"));
-    //    if (releaseTalon != null)
-    //      telemetryService.register(new TalonItem(releaseTalon, "Intake Release (" + RELEASE_ID +
-    // ")"));
   }
 
   public enum Mode {

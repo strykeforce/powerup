@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
+import frc.team2767.Robot;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -20,11 +21,12 @@ import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.grapher.Measure;
 import org.strykeforce.thirdcoast.telemetry.item.Item;
 
 @Singleton
-public class IntakeSensorsSubsystem extends Subsystem implements Item {
+public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item {
 
   private static final Logger logger = LoggerFactory.getLogger(IntakeSensorsSubsystem.class);
 
@@ -36,6 +38,9 @@ public class IntakeSensorsSubsystem extends Subsystem implements Item {
   private final double lidarPwmData[] = new double[2];
   private final double shoulderPwmData[] = new double[2];
   private final LinearDigitalFilter lidarFilter;
+
+  private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+
   private boolean lidarEnabled = false;
   private Timer lidarTimer;
 
@@ -66,8 +71,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Item {
 
   @Override
   public void periodic() {
-    if (lidarEnabled && lidarTimer.hasPeriodPassed(LIDAR_READ_PERIOD))
-      logger.trace("lidar distance = {}", lidarFilter.pidGet());
+    if (lidarEnabled && lidarTimer.hasPeriodPassed(LIDAR_READ_PERIOD)) lidarFilter.pidGet();
   }
 
   public void enableLidar(boolean enable) {
@@ -91,8 +95,9 @@ public class IntakeSensorsSubsystem extends Subsystem implements Item {
   }
 
   public int getShoulderAbsolutePosition() {
-    canifier.getPWMInput(CANifier.PWMChannel.PWMChannel1, shoulderPwmData);
-    return ((int) shoulderPwmData[0]) * 1000;
+    //    canifier.getPWMInput(CANifier.PWMChannel.PWMChannel1, shoulderPwmData);
+    //    return ((int) shoulderPwmData[0]) * 1000;
+    return intakeSubsystem.getShoulderAbsolutePosition();
   }
 
   @Override
@@ -135,5 +140,10 @@ public class IntakeSensorsSubsystem extends Subsystem implements Item {
     int result = type().compareTo(other.type());
     if (result != 0) return result;
     return Integer.compare(deviceId(), other.deviceId());
+  }
+
+  @Override
+  public void register(TelemetryService telemetryService) {
+    telemetryService.register(this);
   }
 }

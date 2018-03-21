@@ -5,7 +5,6 @@ import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
@@ -28,7 +27,6 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private static final int ABS_TO_REL_RATIO = 5;
   private static final int ENC_EPSILON = 400;
   private static final int STABLE_THRESH = 1;
-  private final Preferences preferences = Preferences.getInstance();
 
   private final double kUpOutput;
   private final double kDownOutput;
@@ -36,11 +34,9 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private final int kCloseEnough;
   private final int kLimitSwitchZeroPosition;
   private final int kAbsEncoderZeroPosition;
-  private final int kJogIncrement;
 
   private final IntakeSensorsSubsystem intakeSensorsSubsystem;
   private final TalonSRX talon;
-  private int positionOffset;
   private int stableCount;
   private int setpoint;
 
@@ -59,11 +55,9 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     kCloseEnough = toml.getLong("closeEnough").intValue();
     kLimitSwitchZeroPosition = toml.getLong("limitSwitchZeroPosition").intValue();
     kAbsEncoderZeroPosition = toml.getLong("absEncoderZeroPosition").intValue();
-    kJogIncrement = toml.getLong("jogIncrement").intValue();
     logger.info("closeEnough = {}", kCloseEnough);
     logger.info("limitSwitchZeroPosition = {}", kLimitSwitchZeroPosition);
     logger.info("absEncoderZeroPosition = {}", kAbsEncoderZeroPosition);
-    logger.info("jogIncrement = {}", kJogIncrement);
     logger.info("upOutput = {}", kUpOutput);
     logger.info("downOutput = {}", kDownOutput);
     logger.info("stopOutput = {}", kStopOutput);
@@ -122,19 +116,9 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   public void zeroPositionWithEncoder() {
     if (talon.getSelectedSensorVelocity(0) != 0) return;
     int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
-    positionOffset = absolute - kAbsEncoderZeroPosition;
+    int positionOffset = absolute - kAbsEncoderZeroPosition;
     talon.setSelectedSensorPosition(ABS_TO_REL_RATIO * positionOffset, 0, 0);
     logger.info("absolute position = {} set position = {}", absolute, positionOffset);
-  }
-
-  public void up() {
-    int position = talon.getSelectedSensorPosition(0) + kJogIncrement;
-    setPosition(position);
-  }
-
-  public void down() {
-    int position = talon.getSelectedSensorPosition(0) - kJogIncrement;
-    setPosition(position);
   }
 
   public void openLoopUp() {
@@ -150,33 +134,6 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   public void stop() {
     logger.debug("shoulder stop at position {}", talon.getSelectedSensorPosition(0));
     talon.set(PercentOutput, kStopOutput);
-  }
-
-  public void loadParameters() {
-    double p = preferences.getDouble("Shoulder/0/K_P", 0d);
-    double i = preferences.getDouble("Shoulder/1/K_I", 0d);
-    double d = preferences.getDouble("Shoulder/2/K_D", 0d);
-    double f = preferences.getDouble("Shoulder/3/K_F", 0d);
-    int iZone = preferences.getInt("Shoulder/4/iZone", 0);
-    int accel = preferences.getInt("Shoulder/5/accel", 0);
-    int cruise = preferences.getInt("Shoulder/6/cruise", 0);
-
-    if (talon != null) {
-      talon.config_kP(0, p, TIMEOUT);
-      talon.config_kI(0, i, TIMEOUT);
-      talon.config_kD(0, d, TIMEOUT);
-      talon.config_kF(0, f, TIMEOUT);
-      talon.config_IntegralZone(0, iZone, TIMEOUT);
-      talon.configMotionCruiseVelocity(cruise, TIMEOUT);
-      talon.configMotionAcceleration(accel, TIMEOUT);
-    }
-    logger.info("P = {}", p);
-    logger.info("I = {}", i);
-    logger.info("D = {}", d);
-    logger.info("F = {}", f);
-    logger.info("iZone = {}", iZone);
-    logger.info("accel = {}", accel);
-    logger.info("cruise = {}", cruise);
   }
 
   @Override

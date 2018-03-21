@@ -25,6 +25,9 @@ import org.slf4j.LoggerFactory;
 
 public class Logging extends ContextAwareBase implements Configurator {
 
+  private static final Level CONSOLE_LEVEL = Level.TRACE;
+  private static final Level EVENT_LEVEL = Level.INFO;
+
   private static final String CONSOLE_NAME = "console";
   private static final String CONSOLE_PATTERN =
       "%-23(%d{HH:mm:ss.SSS} [%thread]) %highlight(%-5level) %logger{32} - %msg%n";
@@ -117,6 +120,6 @@ public class Logging extends ContextAwareBase implements Configurator {
 
     Logger rootLogger = lc.getLogger(Logger.ROOT_LOGGER_NAME);
     rootLogger.addAppender(appender);
-    rootLogger.setLevel(event ? Level.INFO : Level.DEBUG);
+    rootLogger.setLevel(event ? EVENT_LEVEL : CONSOLE_LEVEL);
   }
 }
