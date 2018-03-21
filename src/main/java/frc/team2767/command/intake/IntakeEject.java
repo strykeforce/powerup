@@ -11,7 +11,7 @@ public class IntakeEject extends TimedCommand {
   public final Mode speed;
 
   public IntakeEject(Mode mode) {
-    super(mode == Mode.FAST_EJECT ? 0.5 : 2.0); // FIXME: constants for timeout
+    super(mode == Mode.FAST_EJECT ? 0.5 : 0.5); // FIXME: constants for timeout
     speed = mode;
     requires(intakeSubsystem);
   }

@@ -19,6 +19,8 @@ public class LidarSubsystem extends Subsystem {
   public LidarSubsystem() {
     caNifier = new CANifier(32);
     dutyCyclePerdiod = new double[2];
+    logger.warn("LIDAR Dist = {}", getDistance());
+    logger.warn("{} " + dutyCyclePerdiod[0]);
     //    caNifierWrap = new CANifierWrap();
   }
 
