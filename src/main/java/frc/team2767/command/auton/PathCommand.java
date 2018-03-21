@@ -29,6 +29,13 @@ public class PathCommand extends Command {
     requires(driveSubsystem);
   }
 
+  // TODO: Look at designated constructor
+  public PathCommand(String pathName, double azimuth) {
+    path = Robot.INJECTOR.pathControllerFactory().create(pathName);
+    path.setTargetAzimuth(azimuth);
+    requires(driveSubsystem);
+  }
+
   public PathCommand(String path, StartPosition startPosition) {
     this("Path", path, startPosition);
   }

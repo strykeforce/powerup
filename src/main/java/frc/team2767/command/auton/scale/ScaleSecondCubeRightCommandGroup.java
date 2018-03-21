@@ -21,8 +21,7 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
   public ScaleSecondCubeRightCommandGroup() {
 
     addSequential(new PathStowCommandGroup());
-    addSequential(new IntakeLoad(IntakeLoad.Position.GROUND));
-    addSequential(new AzimuthCommand(-45.0));
+
 
     addSequential(new DriveToSecondCube());
     //    addSequential(new IntakeHold());
@@ -32,8 +31,11 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
   private static class PathStowCommandGroup extends CommandGroup {
 
     public PathStowCommandGroup() {
+      addSequential(new AzimuthCommand(-45.0));
       addParallel(new Stow());
-      addSequential(new PathCommand("right_secondcube_1", StartPosition.RIGHT));
+      addSequential(new PathCommand("right_secondcube_1", -50.0));
+      addSequential(new IntakeLoad(IntakeLoad.Position.GROUND));
+
     }
   }
 
