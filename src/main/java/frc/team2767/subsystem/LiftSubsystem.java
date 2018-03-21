@@ -164,7 +164,7 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
     if (Math.abs(error) > kCloseEnough) stableCount = 0;
     else stableCount++;
     if (stableCount > STABLE_THRESH) {
-      logger.debug("stableCount > 3");
+      logger.debug("stableCount > {}", STABLE_THRESH);
       return true;
     }
     return false;
