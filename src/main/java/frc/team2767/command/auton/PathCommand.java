@@ -5,11 +5,14 @@ import frc.team2767.Robot;
 import frc.team2767.command.StartPosition;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PathCommand extends Command {
 
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final PathController path;
+  private static final Logger logger = LoggerFactory.getLogger(PathCommand.class);
 
   public PathCommand(String name, String pathName, StartPosition startPosition) {
     super(name);
@@ -29,6 +32,13 @@ public class PathCommand extends Command {
     requires(driveSubsystem);
   }
 
+  // TODO: Look at designated constructor
+  public PathCommand(String pathName, double azimuth) {
+    path = Robot.INJECTOR.pathControllerFactory().create(pathName);
+    path.setTargetAzimuth(azimuth);
+    requires(driveSubsystem);
+  }
+
   public PathCommand(String path, StartPosition startPosition) {
     this("Path", path, startPosition);
   }
@@ -39,6 +49,7 @@ public class PathCommand extends Command {
 
   @Override
   protected void initialize() {
+    logger.debug("init");
     driveSubsystem.drivePath(path);
   }
 
@@ -49,6 +60,7 @@ public class PathCommand extends Command {
 
   @Override
   protected void end() {
+    logger.debug("end");
     driveSubsystem.endPath();
   }
 

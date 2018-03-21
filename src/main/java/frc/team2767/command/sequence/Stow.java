@@ -12,5 +12,7 @@ public class Stow extends CommandGroup {
   }
 
   @Override
-  protected void end() {}
+  protected void end() {
+    System.out.println("end stow");
+  }
 }
