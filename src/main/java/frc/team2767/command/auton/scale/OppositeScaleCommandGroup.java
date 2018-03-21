@@ -13,7 +13,6 @@ import frc.team2767.subsystem.IntakeSubsystem;
 public class OppositeScaleCommandGroup extends PowerUpCommandGroup {
 
   public OppositeScaleCommandGroup(Side side) {
-    super();
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
     addSequential(new PathCommand(side.path, side.startPosition));
     addSequential(new AzimuthCommand(side.azimuth1));

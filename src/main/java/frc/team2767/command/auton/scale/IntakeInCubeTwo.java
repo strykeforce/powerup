@@ -4,8 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.IntakeSubsystem;
 import frc.team2767.subsystem.LidarSubsystem;
+import org.slf4j.Logger;
 
 public class IntakeInCubeTwo extends Command {
+
+  static final Logger logger = ScaleCommandGroup.logger;
 
   private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
   private final LidarSubsystem lidarSubsystem = Robot.INJECTOR.lidarSubsystem();
@@ -29,8 +32,7 @@ public class IntakeInCubeTwo extends Command {
 
   @Override
   protected void end() {
-
-    System.out.println("Ending IntakeInCubeTwo");
     intakeSubsystem.stop();
+    logger.trace("IntakeInCubeTwo ENDED");
   }
 }
