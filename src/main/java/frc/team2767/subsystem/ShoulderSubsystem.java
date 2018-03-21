@@ -38,15 +38,16 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private final int kAbsEncoderZeroPosition;
   private final int kJogIncrement;
 
-  private final IntakeSubsystem intakeSubsystem;
+  private final IntakeSensorsSubsystem intakeSensorsSubsystem;
   private final TalonSRX talon;
   private int positionOffset;
   private int stableCount;
   private int setpoint;
 
   @Inject
-  public ShoulderSubsystem(Talons talons, Settings settings, IntakeSubsystem intakeSubsystem) {
-    this.intakeSubsystem = intakeSubsystem;
+  public ShoulderSubsystem(
+      Talons talons, Settings settings, IntakeSensorsSubsystem intakeSensorsSubsystem) {
+    this.intakeSensorsSubsystem = intakeSensorsSubsystem;
     talon = talons.getTalon(ID);
     if (talon == null) {
       logger.error("Talon not present");
@@ -110,7 +111,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   public void zeroPositionWithEncoderIfNeeded() {
     if (talon.getSelectedSensorVelocity(0) != 0) return;
     int position = talon.getSelectedSensorPosition(0);
-    int absolute = intakeSubsystem.getShoulderAbsolutePosition();
+    int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
     int error = Math.abs((absolute - kAbsEncoderZeroPosition) * ABS_TO_REL_RATIO - position);
     if (error > ENC_EPSILON) {
       logger.debug("encoder position error = {}, re-zeroing", error);
@@ -120,7 +121,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
 
   public void zeroPositionWithEncoder() {
     if (talon.getSelectedSensorVelocity(0) != 0) return;
-    int absolute = intakeSubsystem.getShoulderAbsolutePosition();
+    int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
     positionOffset = absolute - kAbsEncoderZeroPosition;
     talon.setSelectedSensorPosition(ABS_TO_REL_RATIO * positionOffset, 0, 0);
     logger.info("absolute position = {} set position = {}", absolute, positionOffset);

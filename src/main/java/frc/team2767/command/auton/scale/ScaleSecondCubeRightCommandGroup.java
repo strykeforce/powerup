@@ -5,9 +5,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.AzimuthCommand;
 import frc.team2767.command.auton.PathCommand;
-import frc.team2767.command.intake.IntakeEject;
-import frc.team2767.command.intake.IntakeLoad;
-import frc.team2767.command.intake.StartIntakeHold;
+import frc.team2767.command.intake.*;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
@@ -23,6 +21,8 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
   private final int INTAKE_STOP_DISTANCE = 35;
 
   public ScaleSecondCubeRightCommandGroup() {
+
+    addParallel(new EnableLidar());
 
     addSequential(
         new CommandGroup() {
@@ -62,6 +62,8 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
             logger.trace("IntakeInCubeTwo || DriveToCube ENDED");
           }
         });
+
+    addParallel(new DisableLidar());
 
     addSequential(
         new CommandGroup() {
