@@ -1,8 +1,6 @@
 package frc.team2767.command;
 
-import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.CLOSED_LOOP_ERROR;
-import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.CLOSED_LOOP_TARGET;
-import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.POSITION;
+import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.*;
 
 import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.command.PIDCommand;
@@ -31,7 +29,7 @@ public abstract class GraphablePIDCommand extends PIDCommand implements Item {
 
   @Override
   public String type() {
-    return "command";
+    return "pidCommand";
   }
 
   @Override
@@ -66,7 +64,9 @@ public abstract class GraphablePIDCommand extends PIDCommand implements Item {
   public void toJson(JsonWriter writer) throws IOException {}
 
   @Override
-  public int compareTo(@NotNull Item o) {
-    return 0;
+  public int compareTo(@NotNull Item other) {
+    int result = type().compareTo(other.type());
+    if (result != 0) return result;
+    return Integer.compare(deviceId(), other.deviceId());
   }
 }
