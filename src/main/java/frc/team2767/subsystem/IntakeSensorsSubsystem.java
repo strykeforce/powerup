@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
-import frc.team2767.Robot;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -38,8 +37,6 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   private final double lidarPwmData[] = new double[2];
   private final double shoulderPwmData[] = new double[2];
   private final LinearDigitalFilter lidarFilter;
-
-  private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
 
   private boolean lidarEnabled = false;
   private Timer lidarTimer;
@@ -95,9 +92,8 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   }
 
   public int getShoulderAbsolutePosition() {
-    //    canifier.getPWMInput(CANifier.PWMChannel.PWMChannel1, shoulderPwmData);
-    //    return ((int) shoulderPwmData[0]) * 1000;
-    return intakeSubsystem.getShoulderAbsolutePosition();
+    canifier.getPWMInput(CANifier.PWMChannel.PWMChannel1, shoulderPwmData);
+    return (int) ((shoulderPwmData[0] / shoulderPwmData[1]) * 4096d);
   }
 
   @Override

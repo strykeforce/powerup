@@ -2,7 +2,6 @@ package frc.team2767.subsystem;
 
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 
-import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -31,20 +30,13 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final double kScaleEjectOutput;
   private final double kSlowEjectOutput;
   private final TalonSRX leftTalon, rightTalon;
-  private final SensorCollection shoulderAbsoluteSensor;
 
   @Inject
   public IntakeSubsystem(Talons talons, Settings settings) {
     leftTalon = talons.getTalon(LEFT_ID);
     rightTalon = talons.getTalon(RIGHT_ID);
     if (rightTalon == null) logger.error("Right Talon missing");
-    if (rightTalon != null) {
-      shoulderAbsoluteSensor = rightTalon.getSensorCollection();
-    } else {
-      logger.error("Right Talon missing");
-      shoulderAbsoluteSensor = null;
-    }
-    if (leftTalon != null) logger.error("Left Talon missing");
+    if (leftTalon == null) logger.error("Left Talon missing");
 
     Toml toml = settings.getTable(TABLE);
     kLoadOutput = toml.getDouble("loadOutput");
@@ -92,21 +84,13 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         rightOutput = kSlowEjectOutput;
         break;
     }
-    leftTalon.set(PercentOutput, leftOutput);
+    leftTalon.set(PercentOutput, -leftOutput);
     rightTalon.set(PercentOutput, rightOutput);
   }
 
   public void stop() {
     leftTalon.set(PercentOutput, 0d);
     rightTalon.set(PercentOutput, 0d);
-  }
-
-  public int getShoulderAbsolutePosition() {
-    return shoulderAbsoluteSensor.getPulseWidthPosition() & 0xFFF;
-  }
-
-  public SensorCollection getShoulderAbsoluteSensor() {
-    return shoulderAbsoluteSensor;
   }
 
   @Override
