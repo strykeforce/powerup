@@ -70,8 +70,8 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
   private static class DriveToSecondCube extends CommandGroup {
     private static final Logger logger = LoggerFactory.getLogger(DriveToSecondCube.class);
 
-    private final int DRIVE_STOP_DISTANCE = 55;
-    private final int INTAKE_STOP_DISTANCE = 44;
+    private final int DRIVE_STOP_DISTANCE = 44;
+    private final int INTAKE_STOP_DISTANCE = 35;
 
     public DriveToSecondCube() {
       addParallel(new IntakeInCubeTwo(INTAKE_STOP_DISTANCE), 3.0);
