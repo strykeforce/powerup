@@ -14,7 +14,6 @@ public class IntakeHold extends Command {
 
   @Override
   protected void initialize() {
-    System.out.println("Holding");
     intakeSubsystem.run(IntakeSubsystem.Mode.HOLD);
   }
 

@@ -12,7 +12,6 @@ import frc.team2767.subsystem.IntakeSubsystem;
 public class OppositeSwitchCommandGroup extends PowerUpCommandGroup {
 
   public OppositeSwitchCommandGroup(Side side) {
-    super();
     addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
 
     addSequential(new PathCommand(side.path, side.startPosition));

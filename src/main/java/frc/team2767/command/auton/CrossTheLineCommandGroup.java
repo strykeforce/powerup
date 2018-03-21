@@ -10,7 +10,6 @@ import frc.team2767.command.StartPosition;
 public class CrossTheLineCommandGroup extends PowerUpCommandGroup {
 
   public CrossTheLineCommandGroup(Side side) {
-    super();
     addSequential(new PathCommand(side.path, side.startPosition));
   }
 

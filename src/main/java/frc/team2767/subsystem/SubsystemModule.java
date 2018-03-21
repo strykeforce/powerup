@@ -29,6 +29,10 @@ public abstract class SubsystemModule {
 
   @Binds
   @IntoSet
+  public abstract Graphable intakeSensorsSubsystem(IntakeSensorsSubsystem intakeSensorsSubsystem);
+
+  @Binds
+  @IntoSet
   public abstract Positionable liftSubsystemPositionable(LiftSubsystem liftSubsystem);
 
   @Binds

@@ -85,7 +85,6 @@ enableCamera  = true
   downOutput     = -0.4
   stopOutput     = 0.0
   closeEnough    = 500
-  jogIncrement   = 300
 
   # positions
   limitSwitchZeroPosition = 9394
