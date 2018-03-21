@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.PathCommand;
-import frc.team2767.command.auton.PowerUpCommandGroup;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
@@ -13,7 +12,7 @@ import frc.team2767.subsystem.IntakeSubsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScaleCommandGroup extends PowerUpCommandGroup {
+public class ScaleCommandGroup extends CommandGroup {
   private static final Logger logger = LoggerFactory.getLogger(ScaleCommandGroup.class);
 
   public ScaleCommandGroup(Side side) {
@@ -42,7 +41,13 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     }
   }
 
+  @Override
+  protected void end() {
+    logger.debug("ENDING");
+  }
+
   private static class PositionForCubeLaunch extends CommandGroup {
+    private static final Logger logger = LoggerFactory.getLogger(PositionForCubeLaunch.class);
 
     private PositionForCubeLaunch(PathController pathController, Side side) {
 
@@ -50,12 +55,24 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
       addSequential(new ElevatorShoulderUp());
       addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
     }
+
+    @Override
+    protected void end() {
+      logger.debug("ENDING");
+    }
   }
 
   private static class ElevatorShoulderUp extends CommandGroup {
+    private static final Logger logger = LoggerFactory.getLogger(ElevatorShoulderUp.class);
+
     private ElevatorShoulderUp() {
       addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
       addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
+    }
+
+    @Override
+    protected void end() {
+      logger.debug("ENDING");
     }
   }
 
@@ -63,9 +80,16 @@ public class ScaleCommandGroup extends PowerUpCommandGroup {
     private final PathController pathController;
     private final int distance;
 
+    private static final Logger logger = LoggerFactory.getLogger(WaitForDistance.class);
+
     private WaitForDistance(PathController pathController, int distance) {
       this.pathController = pathController;
       this.distance = distance;
+    }
+
+    @Override
+    protected void end() {
+      logger.debug("ENDING");
     }
 
     @Override

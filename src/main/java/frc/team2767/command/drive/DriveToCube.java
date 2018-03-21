@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.command.sensors.LidarCommand;
 import frc.team2767.subsystem.DriveSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 
 public class DriveToCube extends Command {
 
+  private static final Logger logger = LoggerFactory.getLogger(DriveToCube.class);
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
-
   private final LidarCommand lidarCommand;
 
   private final double forward;
@@ -40,7 +42,7 @@ public class DriveToCube extends Command {
 
   @Override
   protected void end() {
-    System.out.println("Ending Drive to Cube");
+    logger.debug("end");
     driveSubsystem.stop();
   }
 }
