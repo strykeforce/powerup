@@ -4,13 +4,14 @@ import com.moandjiezana.toml.Toml;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
 import frc.team2767.command.StartPosition;
-import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 public class ScaleSettings {
 
-  public static final String TABLE = Robot.TABLE + "SCALESETTINGS";
+  public static final String TABLE = Robot.TABLE + ".SCALESETTINGS";
   private static final Logger logger = LoggerFactory.getLogger(Settings.class);
   private static final File CONFIG = new File("/home/lvuser/powerup.toml");
   private static final Settings SETTINGS = new Settings();

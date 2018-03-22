@@ -115,21 +115,21 @@ enableCamera  = true
   path2 = "right_secondcube_1"
   path3 = "right_secondcube_2"
   distance = 210_000
-  intakeStopDistance = 35.0
-  driveStopDistance = 44.0
+  intakeStopDist = 35
+  driveStopDist = 44
   azimuth1 = -50.0
   azimuth2 = -130.0
   azimuth3 = 20.0
   drive1 = 0.2
   strafe1 = -0.2
 
-[POWERUP.SCALESETTINGS.RIGHT]
+[POWERUP.SCALESETTINGS.LEFT]
   path1 = "left_scale"
   path2 = "right_secondcube_1"
   path3 = "right_secondcube_2"
   distance = 210_000
-  intakeStopDistance = 35.0
-  driveStopDistance = 44.0
+  intakeStopDist = 35
+  driveStopDist = 44
   azimuth1 = 50.0
   azimuth2 = 130.0
   azimuth3 = -20.0
