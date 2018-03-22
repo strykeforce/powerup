@@ -3,12 +3,14 @@ package frc.team2767.control;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.command.LogCommand;
+import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.CornerConditionalCommand;
 import frc.team2767.command.auton.nearswitch.CenterSwitchCommand;
 import frc.team2767.command.auton.nearswitch.OppositeSwitchCommandGroup;
 import frc.team2767.command.auton.nearswitch.SwitchCommandGroup;
 import frc.team2767.command.auton.scale.OppositeScaleCommandGroup;
 import frc.team2767.command.auton.scale.ScaleCommandGroup;
+import frc.team2767.command.auton.scale.ScaleSettings;
 import frc.team2767.command.auton.scale.TwoCubeScaleRightCommandGroup;
 import frc.team2767.command.test.LifeCycleTestCommand;
 
@@ -21,7 +23,7 @@ public class AutonCommands {
     Command command;
     switch (switchPosition) {
       case 0x10: // left corner, scale priority
-        Command leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+        Command leftScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.LEFT));
         command =
             new CornerConditionalCommand(
                 new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
@@ -34,12 +36,12 @@ public class AutonCommands {
         command =
             new CornerConditionalCommand(
                 leftSwitch,
-                new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT),
+                new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.LEFT)),
                 leftSwitch,
                 new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.LEFT));
         break;
       case 0x12: // left corner, scale priority, opposite switch
-        leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+        leftScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.LEFT));
         command =
             new CornerConditionalCommand(
                 new SwitchCommandGroup(SwitchCommandGroup.Side.LEFT),
@@ -53,8 +55,8 @@ public class AutonCommands {
         command = new CornerConditionalCommand(leftSwitch, rightSwitch, leftSwitch, rightSwitch);
         break;
       case 0x14: // left corner, always scale
-        leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
-        Command rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+        leftScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.LEFT));
+        Command rightScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.RIGHT));
         command = new CornerConditionalCommand(rightScale, leftScale, leftScale, rightScale);
         break;
       case 0x1F: // left corner, test
@@ -69,7 +71,7 @@ public class AutonCommands {
         command = new CenterSwitchCommand();
         break;
       case 0x30: // right corner, scale priority
-        rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+        rightScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.RIGHT));
         command =
             new CornerConditionalCommand(
                 new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
@@ -82,12 +84,12 @@ public class AutonCommands {
         command =
             new CornerConditionalCommand(
                 rightSwitch,
-                new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT),
+                new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.RIGHT)),
                 rightSwitch,
                 new OppositeSwitchCommandGroup(OppositeSwitchCommandGroup.Side.RIGHT));
         break;
       case 0x32: // right corner, scale priority, opposite switch
-        rightScale = new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT);
+        rightScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.RIGHT));
         command =
             new CornerConditionalCommand(
                 new SwitchCommandGroup(SwitchCommandGroup.Side.RIGHT),
@@ -101,7 +103,7 @@ public class AutonCommands {
         command = new CornerConditionalCommand(rightSwitch, leftSwitch, rightSwitch, leftSwitch);
         break;
       case 0x34: // right corner, always scale
-        leftScale = new ScaleCommandGroup(ScaleCommandGroup.Side.LEFT);
+        leftScale = new ScaleCommandGroup(ScaleSettings.getInstance(StartPosition.LEFT));
         rightScale = new TwoCubeScaleRightCommandGroup();
         command = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);
         break;
