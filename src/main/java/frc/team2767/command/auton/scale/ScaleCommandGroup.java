@@ -16,7 +16,7 @@ public class ScaleCommandGroup extends CommandGroup {
 
   public ScaleCommandGroup(ScaleSettings scaleSettings) {
     PathCommand pathCommand =
-        new PathCommand(scaleSettings.getkPath1(), scaleSettings.getkStartPosition());
+        new PathCommand(scaleSettings.getPath1(), scaleSettings.getStartPosition());
 
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
 
@@ -24,7 +24,7 @@ public class ScaleCommandGroup extends CommandGroup {
         new CommandGroup() {
           {
             addSequential(
-                new WaitForDistance(pathCommand.getPathController(), scaleSettings.getkDistance()));
+                new WaitForDistance(pathCommand.getPathController(), scaleSettings.getDistance()));
 
             addSequential(
                 new CommandGroup() {

@@ -2,33 +2,28 @@ package frc.team2767.command.auton.scale;
 
 import com.moandjiezana.toml.Toml;
 import frc.team2767.Robot;
-import frc.team2767.Settings;
 import frc.team2767.command.StartPosition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
 
 public class ScaleSettings {
 
+  public final static ScaleSettings LEFT = getInstance(frc.team2767.command.StartPosition.LEFT);
+  public final static ScaleSettings RIGHT = getInstance(frc.team2767.command.StartPosition.RIGHT);
+
   public static final String TABLE = Robot.TABLE + ".SCALESETTINGS";
-  private static final Logger logger = LoggerFactory.getLogger(Settings.class);
-  private static final File CONFIG = new File("/home/lvuser/powerup.toml");
-  private static final Settings SETTINGS = new Settings();
 
-  private final String kPath1;
-  private final String kPath2;
-  private final String kPath3;
-  private final int kDistance;
-  private final StartPosition kStartPosition;
-  private final int kDriveStopDistance;
-  private final int kIntakeStopDistance;
+  private final String Path1;
+  private final String Path2;
+  private final String Path3;
+  private final int Distance;
+  private final StartPosition StartPosition;
+  private final int DriveStopDistance;
+  private final int IntakeStopDistance;
 
-  private final double kAzimuth1;
-  private final double kAzimuth2;
-  private final double kAzimuth3;
-  private final double kDrive1;
-  private final double kStrafe1;
+  private final double Azimuth1;
+  private final double Azimuth2;
+  private final double Azimuth3;
+  private final double Drive1;
+  private final double Strafe1;
 
   private ScaleSettings(
       String path1,
@@ -44,28 +39,25 @@ public class ScaleSettings {
       double drive1,
       double strafe1) {
 
-    this.kPath1 = path1;
-    this.kPath2 = path2;
-    this.kPath3 = path3;
-    this.kDistance = distance;
-    this.kStartPosition = startPosition;
-    this.kIntakeStopDistance = intakeStopDistance;
-    this.kDriveStopDistance = driveStopDistance;
+    this.Path1 = path1;
+    this.Path2 = path2;
+    this.Path3 = path3;
+    this.Distance = distance;
+    this.StartPosition = startPosition;
+    this.IntakeStopDistance = intakeStopDistance;
+    this.DriveStopDistance = driveStopDistance;
 
-    this.kAzimuth1 = azimuth1;
-    this.kAzimuth2 = azimuth2;
-    this.kAzimuth3 = azimuth3;
+    this.Azimuth1 = azimuth1;
+    this.Azimuth2 = azimuth2;
+    this.Azimuth3 = azimuth3;
 
-    this.kDrive1 = drive1;
-    this.kStrafe1 = strafe1;
+    this.Drive1 = drive1;
+    this.Strafe1 = strafe1;
   }
 
-  public static ScaleSettings getInstance(StartPosition startPosition) {
-    Toml toml;
-
-    if (startPosition.equals(StartPosition.RIGHT)) {
-      toml = Robot.INJECTOR.settings().getTable(TABLE.concat(".RIGHT"));
-    } else toml = Robot.INJECTOR.settings().getTable(TABLE.concat(".LEFT"));
+  private static ScaleSettings getInstance(StartPosition startPosition) {
+    Toml toml = (startPosition == frc.team2767.command.StartPosition.RIGHT ? Robot.INJECTOR.settings().getTable(TABLE
+            .concat(".RIGHT")) : Robot.INJECTOR.settings().getTable(TABLE.concat(".LEFT")));
 
     return new ScaleSettings(
         toml.getString("path1"),
@@ -82,51 +74,51 @@ public class ScaleSettings {
         toml.getDouble("strafe1"));
   }
 
-  public String getkPath1() {
-    return kPath1;
+  public String getPath1() {
+    return Path1;
   }
 
-  public String getkPath2() {
-    return kPath2;
+  public String getPath2() {
+    return Path2;
   }
 
-  public String getkPath3() {
-    return kPath3;
+  public String getPath3() {
+    return Path3;
   }
 
-  public int getkDistance() {
-    return kDistance;
+  public int getDistance() {
+    return Distance;
   }
 
-  public StartPosition getkStartPosition() {
-    return kStartPosition;
+  public StartPosition getStartPosition() {
+    return StartPosition;
   }
 
-  public int getkDriveStopDistance() {
-    return kDriveStopDistance;
+  public int getDriveStopDistance() {
+    return DriveStopDistance;
   }
 
-  public int getkIntakeStopDistance() {
-    return kIntakeStopDistance;
+  public int getIntakeStopDistance() {
+    return IntakeStopDistance;
   }
 
-  public double getkAzimuth1() {
-    return kAzimuth1;
+  public double getAzimuth1() {
+    return Azimuth1;
   }
 
-  public double getkAzimuth2() {
-    return kAzimuth2;
+  public double getAzimuth2() {
+    return Azimuth2;
   }
 
-  public double getkAzimuth3() {
-    return kAzimuth3;
+  public double getAzimuth3() {
+    return Azimuth3;
   }
 
-  public double getkDrive1() {
-    return kDrive1;
+  public double getDrive1() {
+    return Drive1;
   }
 
-  public double getkStrafe1() {
-    return kStrafe1;
+  public double getStrafe1() {
+    return Strafe1;
   }
 }

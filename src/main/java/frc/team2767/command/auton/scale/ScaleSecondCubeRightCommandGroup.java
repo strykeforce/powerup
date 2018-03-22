@@ -32,14 +32,14 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
                     addParallel(new Stow(), 1.0);
                     addParallel(
                         new PathCommand(
-                            scaleSettings.getkPath2(), scaleSettings.getkStartPosition()));
+                            scaleSettings.getPath2(), scaleSettings.getStartPosition()));
                   }
                 });
 
             addSequential(
                 new CommandGroup() {
                   {
-                    addParallel(new AzimuthCommand(scaleSettings.getkAzimuth1()));
+                    addParallel(new AzimuthCommand(scaleSettings.getAzimuth1()));
                     addParallel(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
                   }
                 });
@@ -54,12 +54,12 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new IntakeInCubeTwo(scaleSettings.getkIntakeStopDistance()), 3.0);
+            addParallel(new IntakeInCubeTwo(scaleSettings.getIntakeStopDistance()), 3.0);
             addParallel(
                 new DriveToCube(
-                    scaleSettings.getkDriveStopDistance(),
-                    scaleSettings.getkDrive1(),
-                    scaleSettings.getkStrafe1()));
+                    scaleSettings.getDriveStopDistance(),
+                    scaleSettings.getDrive1(),
+                    scaleSettings.getStrafe1()));
           }
 
           @Override
@@ -74,7 +74,7 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
         new CommandGroup() {
           {
             addSequential(new StartIntakeHold());
-            addParallel(new PathCommand(scaleSettings.getkPath3(), scaleSettings.getkAzimuth2()));
+            addParallel(new PathCommand(scaleSettings.getPath3(), scaleSettings.getAzimuth2()));
             addSequential(new WaitCommand(0.5));
             addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
           }
@@ -89,7 +89,7 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new AzimuthCommand(scaleSettings.getkAzimuth3()));
+            addParallel(new AzimuthCommand(scaleSettings.getAzimuth3()));
             addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
           }
 
