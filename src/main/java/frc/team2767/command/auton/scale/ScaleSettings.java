@@ -11,19 +11,19 @@ public class ScaleSettings {
 
   public static final String TABLE = Robot.TABLE + ".SCALESETTINGS";
 
-  private final String Path1;
-  private final String Path2;
-  private final String Path3;
-  private final int Distance;
-  private final StartPosition StartPosition;
-  private final int DriveStopDistance;
-  private final int IntakeStopDistance;
+  private final String path1;
+  private final String path2;
+  private final String path3;
+  private final int distance;
+  private final StartPosition startPosition;
+  private final int driveStopDistance;
+  private final int intakeStopDistance;
 
-  private final double Azimuth1;
-  private final double Azimuth2;
-  private final double Azimuth3;
-  private final double Drive1;
-  private final double Strafe1;
+  private final double azimuth1;
+  private final double azimuth2;
+  private final double azimuth3;
+  private final double drive1;
+  private final double strafe1;
 
   private ScaleSettings(
       String path1,
@@ -39,20 +39,20 @@ public class ScaleSettings {
       double drive1,
       double strafe1) {
 
-    this.Path1 = path1;
-    this.Path2 = path2;
-    this.Path3 = path3;
-    this.Distance = distance;
-    this.StartPosition = startPosition;
-    this.IntakeStopDistance = intakeStopDistance;
-    this.DriveStopDistance = driveStopDistance;
+    this.path1 = path1;
+    this.path2 = path2;
+    this.path3 = path3;
+    this.distance = distance;
+    this.startPosition = startPosition;
+    this.intakeStopDistance = intakeStopDistance;
+    this.driveStopDistance = driveStopDistance;
 
-    this.Azimuth1 = azimuth1;
-    this.Azimuth2 = azimuth2;
-    this.Azimuth3 = azimuth3;
+    this.azimuth1 = azimuth1;
+    this.azimuth2 = azimuth2;
+    this.azimuth3 = azimuth3;
 
-    this.Drive1 = drive1;
-    this.Strafe1 = strafe1;
+    this.drive1 = drive1;
+    this.strafe1 = strafe1;
   }
 
   private static ScaleSettings getInstance(StartPosition startPosition) {
@@ -75,50 +75,50 @@ public class ScaleSettings {
   }
 
   public String getPath1() {
-    return Path1;
+    return path1;
   }
 
   public String getPath2() {
-    return Path2;
+    return path2;
   }
 
   public String getPath3() {
-    return Path3;
+    return path3;
   }
 
   public int getDistance() {
-    return Distance;
+    return distance;
   }
 
   public StartPosition getStartPosition() {
-    return StartPosition;
+    return startPosition;
   }
 
   public int getDriveStopDistance() {
-    return DriveStopDistance;
+    return driveStopDistance;
   }
 
   public int getIntakeStopDistance() {
-    return IntakeStopDistance;
+    return intakeStopDistance;
   }
 
   public double getAzimuth1() {
-    return Azimuth1;
+    return azimuth1;
   }
 
   public double getAzimuth2() {
-    return Azimuth2;
+    return azimuth2;
   }
 
   public double getAzimuth3() {
-    return Azimuth3;
+    return azimuth3;
   }
 
   public double getDrive1() {
-    return Drive1;
+    return drive1;
   }
 
   public double getStrafe1() {
-    return Strafe1;
+    return strafe1;
   }
 }
