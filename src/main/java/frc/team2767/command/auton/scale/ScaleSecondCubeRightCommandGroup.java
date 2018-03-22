@@ -2,7 +2,6 @@ package frc.team2767.command.auton.scale;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.AzimuthCommand;
 import frc.team2767.command.auton.PathCommand;
 import frc.team2767.command.intake.*;
@@ -20,7 +19,7 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
   private final int DRIVE_STOP_DISTANCE = 44;
   private final int INTAKE_STOP_DISTANCE = 35;
 
-  public ScaleSecondCubeRightCommandGroup() {
+  public ScaleSecondCubeRightCommandGroup(ScaleSettings scaleSettings) {
 
     addParallel(new EnableLidar());
 
@@ -31,14 +30,16 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
                 new CommandGroup() {
                   {
                     addParallel(new Stow(), 1.0);
-                    addParallel(new PathCommand("right_secondcube_1", StartPosition.RIGHT));
+                    addParallel(
+                        new PathCommand(
+                            scaleSettings.getkPath2(), scaleSettings.getkStartPosition()));
                   }
                 });
 
             addSequential(
                 new CommandGroup() {
                   {
-                    addParallel(new AzimuthCommand(-50.0));
+                    addParallel(new AzimuthCommand(scaleSettings.getkAzimuth1()));
                     addParallel(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
                   }
                 });
@@ -53,8 +54,12 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new IntakeInCubeTwo(INTAKE_STOP_DISTANCE), 3.0);
-            addParallel(new DriveToCube(DRIVE_STOP_DISTANCE, 0.2, -0.2));
+            addParallel(new IntakeInCubeTwo(scaleSettings.getkIntakeStopDistance()), 3.0);
+            addParallel(
+                new DriveToCube(
+                    scaleSettings.getkDriveStopDistance(),
+                    scaleSettings.getkDrive1(),
+                    scaleSettings.getkStrafe1()));
           }
 
           @Override
@@ -69,7 +74,7 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
         new CommandGroup() {
           {
             addSequential(new StartIntakeHold());
-            addParallel(new PathCommand("right_secondcube_2", -130.0));
+            addParallel(new PathCommand(scaleSettings.getkPath3(), scaleSettings.getkAzimuth2()));
             addSequential(new WaitCommand(0.5));
             addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
           }
@@ -84,7 +89,7 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new AzimuthCommand(20.0));
+            addParallel(new AzimuthCommand(scaleSettings.getkAzimuth3()));
             addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
           }
 

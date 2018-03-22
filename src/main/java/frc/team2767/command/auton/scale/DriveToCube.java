@@ -29,8 +29,7 @@ public class DriveToCube extends Command {
 
   @Override
   protected void initialize() {
-    driveSubsystem.setDriveMode(
-        SwerveDrive.DriveMode.CLOSED_LOOP); // TODO: discuss - this was in constructor
+    driveSubsystem.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
     driveSubsystem.drive(-forward, strafe, 0d);
     logger.info("driving to cube, lidar distance = {}", intakeSensorsSubsystem.getLidarDistance());
   }
