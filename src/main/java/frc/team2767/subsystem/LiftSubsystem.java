@@ -3,6 +3,7 @@ package frc.team2767.subsystem;
 import static com.ctre.phoenix.motorcontrol.ControlMode.*;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.Preferences;
@@ -20,8 +21,8 @@ import org.strykeforce.thirdcoast.telemetry.item.TalonItem;
 
 @Singleton
 public class LiftSubsystem extends Subsystem implements Graphable, Positionable {
-  private static final int MASTER_ID = 50; // PDP 15
-  private static final int SLAVE_ID = 51; // PDP 14
+  public static final int MASTER_ID = 50; // PDP 15
+  public static final int SLAVE_ID = 51; // PDP 14
 
   private static final Logger logger = LoggerFactory.getLogger(LiftSubsystem.class);
   private static final String TABLE = Robot.TABLE + ".LIFT";
@@ -218,6 +219,20 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
   public void stop() {
     logger.info("lift stop at position {}", frontTalon.getSelectedSensorPosition(0));
     frontTalon.set(PercentOutput, kStopOutput);
+  }
+
+  public void setHealthCheckMode(boolean enabled) {
+    if (enabled) {
+      logger.warn("enabling health check mode");
+      rearTalon.set(Disabled, 0);
+      frontTalon.setNeutralMode(NeutralMode.Coast);
+      rearTalon.setNeutralMode(NeutralMode.Coast);
+    } else {
+      logger.info("disabling health check mode");
+      rearTalon.follow(frontTalon);
+      frontTalon.setNeutralMode(NeutralMode.Brake);
+      rearTalon.setNeutralMode(NeutralMode.Brake);
+    }
   }
 
   @Override

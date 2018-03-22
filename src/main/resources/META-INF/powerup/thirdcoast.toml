@@ -133,10 +133,12 @@
 [[TALON]]
   name = "lift-slave"
   talonIds = [51]
+  [TALON.output]
+    neutralMode = "Brake"
   [TALON.currentLimit]
-    continuous = 40
-    peak = 0
-    peakDuration = 0
+    continuous = 10
+    peak = 40
+    peakDuration = 500
 
 [[TALON]]
   name = "shoulder"
