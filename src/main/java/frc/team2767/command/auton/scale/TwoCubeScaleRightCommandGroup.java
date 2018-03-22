@@ -6,7 +6,8 @@ import frc.team2767.command.auton.PowerUpCommandGroup;
 public class TwoCubeScaleRightCommandGroup extends PowerUpCommandGroup {
 
   public TwoCubeScaleRightCommandGroup() {
-    addSequential(new ScaleCommandGroup(ScaleCommandGroup.Side.RIGHT));
-    addSequential(new ScaleSecondCubeRightCommandGroup());
+    addSequential(new ScaleCommandGroup(ScaleSettings.RIGHT));
+    addSequential(
+        new ScaleSecondCubeRightCommandGroup(ScaleSettings.RIGHT));
   }
 }
