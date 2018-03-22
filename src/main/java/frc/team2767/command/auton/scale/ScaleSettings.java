@@ -2,15 +2,14 @@ package frc.team2767.command.auton.scale;
 
 import com.moandjiezana.toml.Toml;
 import frc.team2767.Robot;
+import frc.team2767.Settings;
 import frc.team2767.command.StartPosition;
 
 public class ScaleSettings {
 
-  public final static ScaleSettings LEFT = getInstance(frc.team2767.command.StartPosition.LEFT);
-  public final static ScaleSettings RIGHT = getInstance(frc.team2767.command.StartPosition.RIGHT);
-
   public static final String TABLE = Robot.TABLE + ".SCALESETTINGS";
-
+  public static final ScaleSettings LEFT = getInstance(StartPosition.LEFT);
+  public static final ScaleSettings RIGHT = getInstance(StartPosition.RIGHT);
   private final String path1;
   private final String path2;
   private final String path3;
@@ -56,8 +55,11 @@ public class ScaleSettings {
   }
 
   private static ScaleSettings getInstance(StartPosition startPosition) {
-    Toml toml = (startPosition == frc.team2767.command.StartPosition.RIGHT ? Robot.INJECTOR.settings().getTable(TABLE
-            .concat(".RIGHT")) : Robot.INJECTOR.settings().getTable(TABLE.concat(".LEFT")));
+    Settings settings = Robot.INJECTOR.settings();
+    Toml toml =
+        startPosition == StartPosition.RIGHT
+            ? settings.getTable(TABLE.concat(".RIGHT"))
+            : settings.getTable(TABLE.concat(".LEFT"));
 
     return new ScaleSettings(
         toml.getString("path1"),

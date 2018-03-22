@@ -7,7 +7,6 @@ public class TwoCubeScaleRightCommandGroup extends PowerUpCommandGroup {
 
   public TwoCubeScaleRightCommandGroup() {
     addSequential(new ScaleCommandGroup(ScaleSettings.RIGHT));
-    addSequential(
-        new ScaleSecondCubeRightCommandGroup(ScaleSettings.RIGHT));
+    addSequential(new ScaleSecondCubeRightCommandGroup(ScaleSettings.RIGHT));
   }
 }

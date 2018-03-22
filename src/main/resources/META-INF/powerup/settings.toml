@@ -125,8 +125,8 @@ enableCamera  = true
 
 [POWERUP.SCALESETTINGS.LEFT]
   path1 = "left_scale"
-  path2 = "right_secondcube_1"
-  path3 = "right_secondcube_2"
+  path2 = "left_secondcube_1"
+  path3 = "left_secondcube_2"
   distance = 210_000
   intakeStopDist = 35
   driveStopDist = 44
