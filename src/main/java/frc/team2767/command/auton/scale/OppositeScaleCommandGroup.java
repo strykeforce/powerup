@@ -18,7 +18,7 @@ public class OppositeScaleCommandGroup extends PowerUpCommandGroup {
     addSequential(new AzimuthCommand(side.azimuth1));
     addSequential(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
     addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
     addSequential(new Stow());
   }
 

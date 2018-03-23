@@ -14,19 +14,27 @@ public class PathCommand extends Command {
   private final PathController path;
   private static final Logger logger = LoggerFactory.getLogger(PathCommand.class);
 
+  private String pathName;
+
   public PathCommand(String name, String pathName, StartPosition startPosition) {
     super(name);
+
+    this.pathName = pathName;
+
     path = Robot.INJECTOR.pathControllerFactory().create(pathName);
     switch (startPosition) {
       case UNKNOWN:
       case CENTER:
         path.setTargetAzimuth(0);
+        logger.debug("target azm = {}", 0.0);
         break;
       case LEFT:
         path.setTargetAzimuth(90.0);
+        logger.debug("target azm = {}", 90.0);
         break;
       case RIGHT:
         path.setTargetAzimuth(-90.0);
+        logger.debug("target azm = {}", -90.0);
         break;
     }
     requires(driveSubsystem);
@@ -49,7 +57,7 @@ public class PathCommand extends Command {
 
   @Override
   protected void initialize() {
-    logger.debug("init");
+    logger.debug("starting {}", pathName);
     driveSubsystem.drivePath(path);
   }
 
