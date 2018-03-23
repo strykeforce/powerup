@@ -4,12 +4,17 @@ import com.moandjiezana.toml.Toml;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
 import frc.team2767.command.StartPosition;
+import openrio.powerup.MatchData;
 
 public class ScaleSettings {
 
   public static final String TABLE = Robot.TABLE + ".SCALESETTINGS";
   public static final ScaleSettings LEFT = getInstance(StartPosition.LEFT);
   public static final ScaleSettings RIGHT = getInstance(StartPosition.RIGHT);
+
+  public static final ScaleSettings RIGHTTOLEFT = getInstance(StartPosition.RIGHT);
+  public static final ScaleSettings LEFTTORIGHT = getInstance(StartPosition.LEFT);
+
   private final String path1;
   private final String path2;
   private final String path3;
@@ -56,10 +61,27 @@ public class ScaleSettings {
 
   private static ScaleSettings getInstance(StartPosition startPosition) {
     Settings settings = Robot.INJECTOR.settings();
-    Toml toml =
-        startPosition == StartPosition.RIGHT
-            ? settings.getTable(TABLE.concat(".RIGHT"))
-            : settings.getTable(TABLE.concat(".LEFT"));
+    //    Toml toml =
+    //            startPosition == StartPosition.RIGHT
+    //                    ? settings.getTable(TABLE.concat(".RIGHT"))
+    //                    : settings.getTable(TABLE.concat(".LEFT"));
+
+    Toml toml = settings.getTable(TABLE);
+
+    switch (MatchData.getOwnedSide(MatchData.GameFeature.SCALE)) {
+      case LEFT:
+        toml =
+            (startPosition == StartPosition.LEFT
+                ? settings.getTable(TABLE.concat(".LEFT"))
+                : settings.getTable(TABLE.concat(".RIGHTTOLEFT")));
+        break;
+      case RIGHT:
+        toml =
+            (startPosition == StartPosition.LEFT)
+                ? settings.getTable(TABLE.concat(".LEFTTORIGHT"))
+                : settings.getTable(TABLE.concat(".RIGHT"));
+        break;
+    }
 
     return new ScaleSettings(
         toml.getString("path1"),
