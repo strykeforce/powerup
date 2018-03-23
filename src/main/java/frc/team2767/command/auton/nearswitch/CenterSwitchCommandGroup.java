@@ -9,7 +9,6 @@ import frc.team2767.subsystem.IntakeSubsystem;
 public class CenterSwitchCommandGroup extends PowerUpCommandGroup {
 
   public CenterSwitchCommandGroup(String path) {
-    super();
     addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
     addSequential(new PathCommand(path));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));

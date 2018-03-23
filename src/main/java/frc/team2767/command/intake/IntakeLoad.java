@@ -8,6 +8,8 @@ import frc.team2767.Robot;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IntakeLoad extends CommandGroup {
 
@@ -42,6 +44,7 @@ public class IntakeLoad extends CommandGroup {
   static class Intake extends Command {
 
     private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+    private static final Logger logger = LoggerFactory.getLogger(Intake.class);
 
     public Intake() {
       requires(intakeSubsystem);
@@ -50,6 +53,12 @@ public class IntakeLoad extends CommandGroup {
     @Override
     protected void initialize() {
       intakeSubsystem.run(LOAD);
+      logger.debug("init");
+    }
+
+    @Override
+    protected void end() {
+      logger.debug("end");
     }
 
     @Override

@@ -64,8 +64,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("DISABLED");
-    driveSubsystem.stop();
-    scheduler.removeAll();
     if (autonDone) {
       autonChooser = null;
       autonCommand = null;
@@ -100,6 +98,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("TELEOP");
+    scheduler.removeAll();
+    driveSubsystem.stop();
   }
 
   @Override

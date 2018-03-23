@@ -11,30 +11,38 @@ public class PathCommand extends Command {
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final PathController path;
 
-  public PathCommand(String name, String pathName, StartPosition startPosition) {
+  public PathCommand(String name, String pathName, double azimuth) {
     super(name);
     path = Robot.INJECTOR.pathControllerFactory().create(pathName);
-    switch (startPosition) {
-      case UNKNOWN:
-      case CENTER:
-        path.setTargetAzimuth(0);
-        break;
-      case LEFT:
-        path.setTargetAzimuth(90.0);
-        break;
-      case RIGHT:
-        path.setTargetAzimuth(-90.0);
-        break;
-    }
+    path.setTargetAzimuth(azimuth);
     requires(driveSubsystem);
   }
 
+  public PathCommand(String pathName, double azimuth) {
+    this("PathCommand", pathName, azimuth);
+  }
+
+  public PathCommand(String name, String pathName, StartPosition startPosition) {
+    this(name, pathName, targetAzimuth(startPosition));
+  }
+
   public PathCommand(String path, StartPosition startPosition) {
-    this("Path", path, startPosition);
+    this("PathCommand", path, startPosition);
   }
 
   public PathCommand(String path) {
     this(path, StartPosition.UNKNOWN);
+  }
+
+  private static double targetAzimuth(StartPosition startPosition) {
+    switch (startPosition) {
+      case LEFT:
+        return 90d;
+      case RIGHT:
+        return -90d;
+      default:
+        return 0d;
+    }
   }
 
   @Override

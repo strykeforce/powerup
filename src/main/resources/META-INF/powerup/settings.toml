@@ -23,7 +23,7 @@ enableCamera  = true
   ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
-  p = 0.009
+  p = 0.013
   i = 0.0
   d = 0.0
   tolerance = 0.5
@@ -50,7 +50,7 @@ enableCamera  = true
   holdOutput  = -0.15
   fastEjectOutput = 1.0
   scaleEjectOutput = 0.4
-  slowEjectOutput = 0.30
+  slowEjectOutput = 0.20
 
   # release positions
   zeroPosition = 2048
@@ -84,8 +84,7 @@ enableCamera  = true
   upOutput       = 0.4
   downOutput     = -0.4
   stopOutput     = 0.0
-  closeEnough    = 250
-  jogIncrement   = 300
+  closeEnough    = 500
 
   # positions
   limitSwitchZeroPosition = 9394
@@ -110,3 +109,55 @@ enableCamera  = true
   enablePit  = true
   enableTest = false
   enableGame = true
+
+[POWERUP.SCALESETTINGS.RIGHT]
+  path1 = "right_scale"
+  path2 = "right_secondcube_1"
+  path3 = "right_secondcube_2"
+  distance = 210_000
+  intakeStopDist = 35
+  driveStopDist = 44
+  azimuth1 = -50.0
+  azimuth2 = -130.0
+  azimuth3 = 20.0
+  drive1 = 0.2
+  strafe1 = -0.2
+
+[POWERUP.SCALESETTINGS.LEFT]
+  path1 = "left_scale"
+  path2 = "left_secondcube_1"
+  path3 = "left_secondcube_2"
+  distance = 210_000
+  intakeStopDist = 35
+  driveStopDist = 44
+  azimuth1 = 50.0
+  azimuth2 = 130.0
+  azimuth3 = -20.0
+  drive1 = 0.2
+  strafe1 = 0.2
+
+[POWERUP.SCALESETTINGS.RIGHTTOLEFT]
+  path1 = "right_opposite_scale"
+  path2 = "left_secondcube_1"
+  path3 = "left_secondcube_2"
+  distance = 0
+  intakeStopDist = 35
+  driveStopDist = 44
+  azimuth1 = -130.0
+  azimuth2 = -130.0
+  azimuth3 = 20.0
+  drive1 = 0.2
+  strafe1 = 0.2
+
+[POWERUP.SCALESETTINGS.LEFTTORIGHT]
+  path1 = "left_opposite_scale"
+  path2 = "right_secondcube_1"
+  path3 = "right_secondcube_2"
+  distance = 0
+  intakeStopDist = 35
+  driveStopDist = 44
+  azimuth1 = 50.0
+  azimuth2 = 130.0
+  azimuth3 = -20.0
+  drive1 = 0.2
+  strafe1 = 0.2

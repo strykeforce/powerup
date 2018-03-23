@@ -3,12 +3,15 @@ package frc.team2767.command.auton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AzimuthCommand extends Command {
 
   private static final int STABLE = 2;
 
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
+  private static final Logger logger = LoggerFactory.getLogger(AzimuthCommand.class);
 
   private volatile double setpoint;
   private int stableCount;
@@ -20,6 +23,7 @@ public class AzimuthCommand extends Command {
 
   @Override
   protected void initialize() {
+    logger.debug("Azimuth init");
     stableCount = 0;
     driveSubsystem.azimuthTo(setpoint);
   }
@@ -32,6 +36,7 @@ public class AzimuthCommand extends Command {
 
   @Override
   protected void end() {
+    logger.debug("Azimuth end");
     driveSubsystem.endAzimuth();
   }
 }

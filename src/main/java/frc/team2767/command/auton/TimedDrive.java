@@ -26,6 +26,7 @@ public class TimedDrive extends TimedCommand {
 
   @Override
   protected void initialize() {
+    logger.debug("timed drive end");
     drive.drive(-forward, strafe, azimuth);
     logger.debug("forward = {}, strafe = {}, azimuth = {}", forward, strafe, azimuth);
   }
