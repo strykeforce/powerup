@@ -11,15 +11,11 @@ import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 import org.slf4j.Logger;
 
-// FIXME: this probably can be generalized like ScaleCommandGroup
-public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
+public class ScaleSecondCubeCommandGroup extends CommandGroup {
 
   static final Logger logger = ScaleCommandGroup.logger;
 
-  private final int DRIVE_STOP_DISTANCE = 44;
-  private final int INTAKE_STOP_DISTANCE = 35;
-
-  public ScaleSecondCubeRightCommandGroup(ScaleSettings scaleSettings) {
+  public ScaleSecondCubeCommandGroup(ScaleSettings scaleSettings) {
 
     addParallel(new EnableLidar());
 
@@ -101,10 +97,11 @@ public class ScaleSecondCubeRightCommandGroup extends CommandGroup {
 
     addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+    addSequential(new Stow());
   }
 
   @Override
   protected void end() {
-    logger.trace("ScaleSecondCubeRightCommandGroup ENDED");
+    logger.trace("ScaleSecondCubeCommandGroup ENDED");
   }
 }
