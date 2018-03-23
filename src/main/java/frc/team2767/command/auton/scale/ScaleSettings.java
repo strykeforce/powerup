@@ -68,7 +68,8 @@ public class ScaleSettings {
 
     Toml toml = settings.getTable(TABLE);
 
-    switch (MatchData.getOwnedSide(MatchData.GameFeature.SCALE)) {
+    switch (MatchData.getOwnedSide(
+        MatchData.GameFeature.SCALE)) { // FIXME: you don't know this yet!
       case LEFT:
         toml =
             (startPosition == StartPosition.LEFT
@@ -81,6 +82,7 @@ public class ScaleSettings {
                 ? settings.getTable(TABLE.concat(".LEFTTORIGHT"))
                 : settings.getTable(TABLE.concat(".RIGHT"));
         break;
+      default:
     }
 
     return new ScaleSettings(

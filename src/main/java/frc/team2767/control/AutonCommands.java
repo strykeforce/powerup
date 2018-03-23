@@ -3,7 +3,9 @@ package frc.team2767.control;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.command.LogCommand;
+import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.CornerConditionalCommand;
+import frc.team2767.command.auton.PowerUpAutonCommand;
 import frc.team2767.command.auton.nearswitch.CenterSwitchCommand;
 import frc.team2767.command.auton.nearswitch.OppositeSwitchCommandGroup;
 import frc.team2767.command.auton.nearswitch.SwitchCommandGroup;
@@ -12,6 +14,7 @@ import frc.team2767.command.auton.scale.ScaleSettings;
 import frc.team2767.command.auton.scale.TwoCubeScaleCommandGroup;
 import frc.team2767.command.auton.scale.TwoCubeScaleOppositeSideCommandGroup;
 import frc.team2767.command.test.LifeCycleTestCommand;
+import openrio.powerup.MatchData.GameFeature;
 
 public class AutonCommands {
 
@@ -106,11 +109,14 @@ public class AutonCommands {
         command = new CornerConditionalCommand(rightSwitch, leftSwitch, rightSwitch, leftSwitch);
         break;
       case 0x34: // right corner, always scale
-        leftScale =
-            new TwoCubeScaleOppositeSideCommandGroup(
-                OppositeScaleCommandGroup.Side.RIGHT, ScaleSettings.RIGHTTOLEFT);
-        rightScale = new TwoCubeScaleCommandGroup(ScaleSettings.RIGHT);
-        command = new CornerConditionalCommand(leftScale, rightScale, rightScale, leftScale);
+        command =
+            PowerUpAutonCommand.builder()
+                .startPosition(StartPosition.RIGHT)
+                .cube1(GameFeature.SCALE)
+                .crossForScale(false)
+                .crossForSwitch(false)
+                .cube2(GameFeature.SCALE)
+                .build();
         break;
       case 0x3F: // right corner, test
         command =

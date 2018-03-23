@@ -18,6 +18,7 @@ public class Settings {
   private static final File CONFIG = new File("/home/lvuser/powerup.toml");
   private static final String DEFAULTS = "/META-INF/powerup/settings.toml";
   private static final String PATHS = "/META-INF/powerup/paths/";
+  private static final String AUTONS = "/META-INF/powerup/autons/";
 
   private final Toml toml;
   private final Toml defaults;
@@ -61,9 +62,17 @@ public class Settings {
   }
 
   public Toml getPath(String name) {
-    InputStream in = this.getClass().getResourceAsStream(PATHS + name + ".toml");
+    return getToml(PATHS, name);
+  }
+
+  public Toml getAutonSettings(String name) {
+    return getToml(AUTONS, name);
+  }
+
+  private Toml getToml(String path, String name) {
+    InputStream in = this.getClass().getResourceAsStream(path + name + ".toml");
     if (in == null) {
-      logger.error("path '{}{}{}' not found", PATHS, name, ".toml");
+      logger.error("path '{}{}{}' not found", path, name, ".toml");
       return null;
     }
     return new Toml().read(in);

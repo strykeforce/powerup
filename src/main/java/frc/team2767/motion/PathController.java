@@ -40,6 +40,8 @@ public class PathController implements Runnable, Item {
   private final double kPDistance;
   private final double kTicksPerMeterRed;
   private final double kTicksPerMeterBlue;
+
+  private final String path;
   private final Trajectory.Config config;
   private final Waypoint[] waypoints;
   private final Trajectory trajectory;
@@ -65,6 +67,7 @@ public class PathController implements Runnable, Item {
    */
   @Inject
   public PathController(String path, @Provided Settings settings, @Provided SwerveDrive drive) {
+    this.path = path;
     Toml toml = settings.getPath(path);
     if (toml == null) throw new IllegalArgumentException(path);
     this.drive = drive;
@@ -84,7 +87,7 @@ public class PathController implements Runnable, Item {
     long start = System.nanoTime();
     trajectory = Pathfinder.generate(waypoints, config);
     logger.info(
-        "{} generated {} segments in {} ms",
+        "CONFIGURE path {}, {} segments in {} ms",
         path,
         trajectory.length(),
         (System.nanoTime() - start) / 1e6);
@@ -108,16 +111,11 @@ public class PathController implements Runnable, Item {
   }
 
   public void start() {
-    logger.info("P_Accel = {}", kFAccel);
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
     double ticksPerSecMax = wheels[0].getDriveSetpointMax() * 10.0;
     metersPerSecMax = ticksPerSecMax / ticksPerMeter;
-    logger.info(
-        "{} alliance, ticks per meter = {}, max vel = {} m/s",
-        alliance,
-        ticksPerMeter,
-        metersPerSecMax);
+    logger.info("START path {}, target azimuth = {}", path, targetAzimuth);
 
     for (int i = 0; i < NUM_WHEELS; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
@@ -128,7 +126,7 @@ public class PathController implements Runnable, Item {
   }
 
   public void stop() {
-    logger.debug("stopping path controller and swerve drive");
+    logger.info("FINISH path {}", path);
     drive.drive(0, 0, 0);
     notifier.stop();
     running = false;
@@ -163,8 +161,7 @@ public class PathController implements Runnable, Item {
 
   private double distanceError(double position) {
     double desired = ticksPerMeter * position;
-    double error = desired - getDistance();
-    return error;
+    return desired - getDistance();
   }
 
   public double getDistance() {
@@ -256,8 +253,10 @@ public class PathController implements Runnable, Item {
   public void toJson(JsonWriter writer) throws IOException {}
 
   @Override
-  public int compareTo(@NotNull Item o) {
-    return 0;
+  public int compareTo(@NotNull Item other) {
+    int result = type().compareTo(other.type());
+    if (result != 0) return result;
+    return Integer.compare(deviceId(), other.deviceId());
   }
 
   @Override
