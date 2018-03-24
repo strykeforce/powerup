@@ -1,7 +1,6 @@
 package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team2767.command.StartPosition;
 import openrio.powerup.MatchData.OwnedSide;
 
 public class CornerConditionalCommand extends Command implements OwnedSidesSettable {

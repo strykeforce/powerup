@@ -3,7 +3,6 @@ package frc.team2767.command.auton;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
-import frc.team2767.command.StartPosition;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;

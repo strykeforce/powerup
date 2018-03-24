@@ -2,7 +2,6 @@ package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
-import frc.team2767.command.StartPosition;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
 
