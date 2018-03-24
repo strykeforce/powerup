@@ -2,6 +2,7 @@ package frc.team2767.command.auton;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
 import frc.team2767.command.auton.scale.DriveToCube;
 import frc.team2767.command.auton.scale.IntakeInCubeTwo;
@@ -47,8 +48,10 @@ public class Cube2Fetch extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new Stow(), 1.0);
-            addParallel(new PathCommand(kPath, kPathAzimuth));
+            addParallel(new PathCommand(kPath, startPosition.getPathAngle(kPathAzimuth)));
+            addSequential(new Stow());
+            addSequential(new WaitCommand(0.5));
+            addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
           }
 
           @Override
@@ -61,7 +64,6 @@ public class Cube2Fetch extends CommandGroup {
         new CommandGroup() {
           {
             addParallel(new AzimuthCommand(kIntakeAzimuth));
-            addParallel(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
           }
 
           @Override

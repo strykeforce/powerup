@@ -1,6 +1,7 @@
-path = "left_secondcube_1"
+#path = "left_secondcube_1"
+path = "L_SC_S_C2F"
 intakeAzimuth = -130.0
-pathAzimuth = 30.0
+pathAzimuth = 155.0
 intakeStopDistance = 35
 driveStopDistance = 44
 drive = 0.2
