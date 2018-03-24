@@ -1,6 +1,7 @@
 path = "left_secondcube_1"
-azimuth = -50.0
+intakeAzimuth = -130.0
+pathAzimuth = 30.0
 intakeStopDistance = 35
 driveStopDistance = 44
 drive = 0.2
-strafe = -0.2
+strafe = 0.2
