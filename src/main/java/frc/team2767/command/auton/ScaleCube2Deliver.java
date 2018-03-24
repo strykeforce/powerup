@@ -31,7 +31,7 @@ public class ScaleCube2Deliver extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new PathCommand(kPath, kPathAzimuth));
+            addParallel(new PathCommand(kPath, startPosition.getPathAngle(kPathAzimuth)));
             addSequential(new WaitCommand(0.5));
             addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
           }
@@ -47,6 +47,7 @@ public class ScaleCube2Deliver extends CommandGroup {
           {
             addParallel(new AzimuthCommand(kEjectAzimuth));
             addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+            addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
           }
 
           @Override
@@ -55,7 +56,6 @@ public class ScaleCube2Deliver extends CommandGroup {
           }
         });
 
-    addSequential(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
     addSequential(new Stow());
   }

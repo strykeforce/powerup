@@ -48,7 +48,7 @@ public class Cube2Fetch extends CommandGroup {
         new CommandGroup() {
           {
             addParallel(new Stow(), 1.0);
-            addParallel(new PathCommand(kPath, kPathAzimuth));
+            addParallel(new PathCommand(kPath, startPosition.getPathAngle(kPathAzimuth)));
           }
 
           @Override
