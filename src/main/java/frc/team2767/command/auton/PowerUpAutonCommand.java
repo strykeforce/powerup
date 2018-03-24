@@ -1,7 +1,6 @@
 package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team2767.command.LogCommand;
 import frc.team2767.command.StartPosition;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,9 +43,9 @@ public class PowerUpAutonCommand extends PowerUpCommandGroup implements OwnedSid
     //    cube1Deliver = new ScaleSameCube1Deliver(startPosition);
     cube1Deliver = new ScaleOppositeCube1Deliver(startPosition);
     cube2Fetch = new Cube2Fetch(startPosition, GameFeature.SCALE);
-    //    cube2Deliver = new ScaleSameCube2Deliver(startPosition);
+    cube2Deliver = new ScaleCube2Deliver(startPosition);
     //    cube2Fetch = new LogCommand("new Cube2Fetch(startPosition, GameFeature.SCALE)");
-    cube2Deliver = new LogCommand("new ScaleSameCube2Deliver(startPosition)");
+    //    cube2Deliver = new LogCommand("new ScaleSameCube2Deliver(startPosition)");
   }
 
   public static Builder builder() {

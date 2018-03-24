@@ -29,8 +29,9 @@ public class Cube2Fetch extends CommandGroup {
 
   public Cube2Fetch(StartPosition startPosition, GameFeature startFeature) {
     String settings;
+    // Fix Me
     if (startFeature == GameFeature.SCALE)
-      settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C2F" : "L_SC_C2F";
+      settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C2F" : "L_SC_O_C2F";
     else settings = startPosition == StartPosition.RIGHT ? "R_SW_C2F" : "L_SW_C2F";
 
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
