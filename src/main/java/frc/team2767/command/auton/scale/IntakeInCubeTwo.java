@@ -17,7 +17,6 @@ public class IntakeInCubeTwo extends Command {
 
   public IntakeInCubeTwo(int distance) {
     this.distance = distance;
-    requires(intakeSensorsSubsystem);
     requires(intakeSubsystem);
   }
 

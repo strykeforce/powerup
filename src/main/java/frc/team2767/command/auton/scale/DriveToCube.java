@@ -23,7 +23,6 @@ public class DriveToCube extends Command {
     this.distance = distance;
     this.forward = forward;
     this.strafe = strafe;
-    requires(intakeSensorsSubsystem);
     requires(driveSubsystem);
   }
 
