@@ -1,2 +1,3 @@
-path = "right_scale"
+#path = "right_scale"
+path = "R_SC_S_C1D"
 distance = 210_000
