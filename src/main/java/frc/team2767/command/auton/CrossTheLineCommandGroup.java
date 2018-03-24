@@ -1,7 +1,5 @@
 package frc.team2767.command.auton;
 
-import frc.team2767.command.StartPosition;
-
 /**
  * Fail-safe command, depends on starting position.
  *

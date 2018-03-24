@@ -3,7 +3,7 @@ package frc.team2767.command.auton.scale;
 import com.moandjiezana.toml.Toml;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
-import frc.team2767.command.StartPosition;
+import frc.team2767.command.auton.StartPosition;
 import openrio.powerup.MatchData;
 
 public class ScaleSettings {

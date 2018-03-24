@@ -1,13 +1,13 @@
 package frc.team2767.control;
 
-import static frc.team2767.command.StartPosition.*;
+import static frc.team2767.command.auton.StartPosition.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.command.LogCommand;
-import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.OwnedSidesSettable;
+import frc.team2767.command.auton.StartPosition;
 import openrio.powerup.MatchData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,23 +45,30 @@ public class AutonPracticeChooser {
 
     switch (autonSwitchPosition) {
       case 0x01:
-        commandChooser.addObject("10: scale", AutonCommands.createFor(0x10));
-        commandChooser.addObject("11: switch", AutonCommands.createFor(0x11));
-        commandChooser.addObject("12: scale, opp switch", AutonCommands.createFor(0x12));
-        commandChooser.addObject("13: switch always", AutonCommands.createFor(0x13));
-        commandChooser.addObject("14: scale always", AutonCommands.createFor(0x14));
-        commandChooser.addObject("1F: log only", AutonCommands.createFor(0x1F));
+        commandChooser.addObject("10: scale", AutonCommands.createFor(0x10, StartPosition.LEFT));
+        commandChooser.addObject("11: switch", AutonCommands.createFor(0x11, StartPosition.LEFT));
+        commandChooser.addObject(
+            "12: scale, opp switch", AutonCommands.createFor(0x12, StartPosition.LEFT));
+        commandChooser.addObject(
+            "13: switch always", AutonCommands.createFor(0x13, StartPosition.LEFT));
+        commandChooser.addObject(
+            "14: scale always", AutonCommands.createFor(0x14, StartPosition.LEFT));
+        commandChooser.addObject("1F: log only", AutonCommands.createFor(0x1F, StartPosition.LEFT));
         break;
       case 0x02:
-        commandChooser.addObject("20 - switch", AutonCommands.createFor(0x20));
+        commandChooser.addObject(
+            "20 - switch", AutonCommands.createFor(0x20, StartPosition.CENTER));
         break;
       case 0x03:
-        commandChooser.addObject("30: scale", AutonCommands.createFor(0x30));
-        commandChooser.addObject("31: switch", AutonCommands.createFor(0x31));
-        commandChooser.addObject("32: scale, opp switch", AutonCommands.createFor(0x32));
-        commandChooser.addObject("33: switch always", AutonCommands.createFor(0x33));
-        commandChooser.addObject("34: scale always", AutonCommands.createFor(0x34));
-        commandChooser.addObject("3F: log only", AutonCommands.createFor(0x3F));
+        commandChooser.addObject("30: scale", AutonCommands.createFor(0x30, StartPosition.LEFT));
+        commandChooser.addObject("31: switch", AutonCommands.createFor(0x31, StartPosition.LEFT));
+        commandChooser.addObject(
+            "32: scale, opp switch", AutonCommands.createFor(0x32, StartPosition.LEFT));
+        commandChooser.addObject(
+            "33: switch always", AutonCommands.createFor(0x33, StartPosition.LEFT));
+        commandChooser.addObject(
+            "34: scale always", AutonCommands.createFor(0x34, StartPosition.LEFT));
+        commandChooser.addObject("3F: log only", AutonCommands.createFor(0x3F, StartPosition.LEFT));
         break;
       default:
         logger.error("invalid auton switch position {}", autonSwitchPosition);

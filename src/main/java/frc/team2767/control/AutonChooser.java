@@ -1,12 +1,12 @@
 package frc.team2767.control;
 
-import static frc.team2767.command.StartPosition.*;
+import static frc.team2767.command.auton.StartPosition.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.command.LogCommand;
-import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.CrossTheLineCommandGroup;
 import frc.team2767.command.auton.OwnedSidesSettable;
+import frc.team2767.command.auton.StartPosition;
 import javax.inject.Inject;
 import openrio.powerup.MatchData;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class AutonChooser {
           String.format("%02X", autonSwitchPosition),
           startPosition);
       if (isAutonTest()) autonPracticeChooser = new AutonPracticeChooser(autonSwitchPosition);
-      else command = AutonCommands.createFor(autonSwitchPosition);
+      else command = AutonCommands.createFor(autonSwitchPosition, startPosition);
     }
   }
 

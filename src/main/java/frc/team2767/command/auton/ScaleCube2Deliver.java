@@ -4,7 +4,6 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
-import frc.team2767.command.StartPosition;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.sequence.Stow;

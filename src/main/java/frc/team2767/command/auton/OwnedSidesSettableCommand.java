@@ -2,7 +2,6 @@ package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import frc.team2767.command.StartPosition;
 import java.util.ArrayList;
 import java.util.List;
 import openrio.powerup.MatchData.OwnedSide;

@@ -1,8 +1,8 @@
 package frc.team2767.command.auton.nearswitch;
 
-import frc.team2767.command.StartPosition;
 import frc.team2767.command.auton.PathCommand;
 import frc.team2767.command.auton.PowerUpCommandGroup;
+import frc.team2767.command.auton.StartPosition;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
