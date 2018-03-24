@@ -22,7 +22,7 @@ public class ScaleCube2Deliver extends CommandGroup {
   private final double kEjectAzimuth;
 
   public ScaleCube2Deliver(StartPosition startPosition) {
-    // Fix Me
+    // FIXME
     String settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C2D" : "L_SC_O_C2D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     kPath = toml.getString("path");
