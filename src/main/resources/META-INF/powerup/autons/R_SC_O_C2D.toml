@@ -1,3 +1,3 @@
-path = "right_secondcube_2"
-pathAzimuth = -130.0
-ejectAzimuth = 20.0
+path = "left_secondcube_2"
+pathAzimuth = 130.0
+ejectAzimuth = 130.0

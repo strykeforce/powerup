@@ -73,7 +73,7 @@ public class PowerUpControls {
       }
     }.whenActive(new LiftPosition(LiftPosition.Position.SCALE_LOW));
 
-    new Trigger() { // TODO: check sign of axis
+    new Trigger() {
       @Override
       public boolean get() {
         return Math.abs(board.getRawAxis(Axis.LIFT_HIGH_SCALE.index)) > AXIS_THRESH;

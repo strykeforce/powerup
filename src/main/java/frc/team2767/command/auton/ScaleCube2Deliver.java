@@ -13,16 +13,17 @@ import frc.team2767.subsystem.IntakeSubsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScaleSameCube2Deliver extends CommandGroup {
+public class ScaleCube2Deliver extends CommandGroup {
 
-  private static final Logger logger = LoggerFactory.getLogger(ScaleSameCube2Deliver.class);
+  private static final Logger logger = LoggerFactory.getLogger(ScaleCube2Deliver.class);
 
   private final String kPath;
   private final double kPathAzimuth;
   private final double kEjectAzimuth;
 
-  public ScaleSameCube2Deliver(StartPosition startPosition) {
-    String settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C2D" : "L_SC_S_C2D";
+  public ScaleCube2Deliver(StartPosition startPosition) {
+    // FIXME
+    String settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C2D" : "L_SC_O_C2D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     kPath = toml.getString("path");
     kPathAzimuth = toml.getDouble("pathAzimuth");
