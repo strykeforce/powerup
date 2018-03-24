@@ -1,5 +1,6 @@
 package frc.team2767;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -47,7 +48,14 @@ public class Robot extends TimedRobot {
     driveSubsystem = INJECTOR.driveSubsystem();
     driveSubsystem.zeroAzimuthEncoders();
 
-    if (settings.isCameraEnabled()) CameraServer.getInstance().startAutomaticCapture();
+    if (settings.isCameraEnabled()) {
+      System.out.println("Camera is enabled");
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setBrightness(40);
+      camera.setExposureManual(30);
+      camera.setExposureHoldCurrent();
+      camera.setResolution(320, 240);
+    }
 
     LiveWindow.disableAllTelemetry();
     if (!settings.isEvent()) {
