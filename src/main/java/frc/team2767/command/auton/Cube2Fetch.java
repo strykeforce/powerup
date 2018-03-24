@@ -56,7 +56,7 @@ public class Cube2Fetch extends CommandGroup {
 
           @Override
           protected void end() {
-            logger.trace("Stow || PathCommand ENDED");
+            logger.trace("PathCommand || (Stow → Wait → IntakeLoad) ENDED");
           }
         });
 
