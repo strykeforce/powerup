@@ -84,9 +84,19 @@
   [TALON.output]
     neutralMode = "Brake"
   [TALON.currentLimit]
-    continuous = 10
+    continuous = 15 # when changing, also change in [POWERUP.INTAKE] of settings
     peak = 0
     peakDuration = 0
+   [[TALON.closedLoopProfile]] # slot 0 Velocity, 250 - 10_000 ticks/100ms
+     pGain = 0.15
+     iGain = 0.003
+     dGain = 0.0
+     fGain = 0.1
+     iZone = 1000
+     allowableClosedLoopError = 0
+   [TALON.velocityMeasurement]
+     period = "Period_25Ms"
+     window = 16
 
 [[TALON]]
   name = "lift-master"
