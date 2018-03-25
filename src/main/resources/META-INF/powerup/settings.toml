@@ -46,11 +46,15 @@ enableCamera  = true
   slowDownPosition = 37_700
 
 [POWERUP.INTAKE]
-  loadOutput  = -1.0
-  holdOutput  = -0.15
-  fastEjectOutput = 1.0
-  scaleEjectOutput = 0.4
-  slowEjectOutput = 0.20
+  normalCurrentLimit = 15  # when changing, also change in thirdcoast.toml
+  holdCurrentLimit   = 2
+
+  # velocities
+  loadVelocity       = -10_000
+  holdVelocity       = -1500
+  fastEjectVelocity  =  10_000
+  scaleEjectVelocity =  4000
+  slowEjectVelocity  =  1000 #2000
 
   # release positions
   zeroPosition = 2048
