@@ -6,6 +6,7 @@ import static openrio.powerup.MatchData.OwnedSide.RIGHT;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.team2767.command.auton.CenterSwitchCommand;
 import frc.team2767.command.auton.PowerUpAutonCommand;
 import frc.team2767.command.auton.StartPosition;
 
@@ -15,11 +16,10 @@ public class AutonCommands {
     // use hexadecimal notation below to correspond to switch input, range is [0x00, 0x3F]
     // Most significant digit: 1 - Left, 2 - Center, 3 - Right
 
+    if (switchPosition == 0x20) return new CenterSwitchCommand();
+
     PowerUpAutonCommand command = new PowerUpAutonCommand(startPosition);
     switch (switchPosition) {
-      case 0x20: // center switch
-        break;
-
         // scale always
       case 0x10:
       case 0x30:
