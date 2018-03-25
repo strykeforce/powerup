@@ -76,7 +76,8 @@ public class AutonChooser {
   }
 
   public void reset() {
-    if (autonSwitchPosition != -1) logger.debug("reset auton chooser");
+    if (autonSwitchPosition == -1) return;
+    logger.debug("reset auton chooser");
     command = new LogCommand("NO AUTON SELECTED");
     autonSwitchPosition = -1;
     startPosition = UNKNOWN;

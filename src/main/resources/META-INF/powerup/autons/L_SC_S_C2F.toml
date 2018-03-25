@@ -1,0 +1,9 @@
+# FIXME: right side copy, needs to be converted to left side
+#path = "right_secondcube_1"
+path = "R_SC_S_C2F"
+pathAzimuth = 40.0
+intakeAzimuth = -130.0
+intakeStopDistance = 35
+driveStopDistance = 44
+drive = 0.2
+strafe = -0.2

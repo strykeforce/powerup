@@ -1,5 +1,8 @@
 package frc.team2767.command.auton;
 
+import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
+import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
+
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -13,45 +16,85 @@ import frc.team2767.command.sequence.Stow;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.IntakeSensorsSubsystem;
 import frc.team2767.subsystem.IntakeSubsystem;
-import openrio.powerup.MatchData.GameFeature;
+import java.util.HashMap;
+import java.util.Map;
+import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 
-public class Cube2Fetch extends CommandGroup {
+public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable {
 
   private static final Logger logger = LoggerFactory.getLogger(Cube2Fetch.class);
 
-  private final String kPath;
-  private final double kPathAzimuth;
-  private final double kIntakeAzimuth;
-  private final int kIntakeStopDistance;
-  private final int kDriveStopDistance;
-  private final double kDrive;
-  private final double kStrafe;
+  private static final Map<Scenario, String> SETTINGS = new HashMap<>();
 
-  public Cube2Fetch(StartPosition startPosition, GameFeature startFeature) {
-    String settings;
-    // FIXME
-    if (startFeature == GameFeature.SCALE)
-      settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C2F" : "L_SC_O_C2F";
-    else settings = startPosition == StartPosition.RIGHT ? "R_SW_C2F" : "L_SW_C2F";
+  static {
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.LEFT), "L_SW_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.RIGHT), "L_SW_O_C2F");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, OwnedSide.LEFT), "L_SC_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, OwnedSide.RIGHT), "L_SC_O_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.LEFT), "R_SW_O_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.RIGHT), "R_SW_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.LEFT), "R_SC_O_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.RIGHT), "R_SC_S_C2F");
+  }
 
+  private final double kLeftIntakeAzimuth;
+  private final int kLeftIntakeStopDistance;
+  private final int kLeftDriveStopDistance;
+  private final double kLeftDrive;
+  private final double kLeftStrafe;
+
+  private final double kRightIntakeAzimuth;
+  private final int kRightIntakeStopDistance;
+  private final int kRightDriveStopDistance;
+  private final double kRightDrive;
+  private final double kRightStrafe;
+
+  private final Command leftPath;
+  private final Command rightPath;
+  private final PowerUpGameFeature startFeature;
+  private String settings;
+
+  Cube2Fetch(StartPosition startPosition, PowerUpGameFeature startFeature) {
+    this.startFeature = startFeature;
+    String settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    kPath = toml.getString("path");
-    kPathAzimuth = toml.getDouble("pathAzimuth");
-    kIntakeAzimuth = toml.getDouble("intakeAzimuth");
-    kDrive = toml.getDouble("drive");
-    kStrafe = toml.getDouble("strafe");
-    kIntakeStopDistance = toml.getLong("intakeStopDistance").intValue();
-    kDriveStopDistance = toml.getLong("driveStopDistance").intValue();
+    leftPath =
+        new PathCommand(
+            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    kLeftIntakeAzimuth = toml.getDouble("intakeAzimuth");
+    kLeftDrive = toml.getDouble("drive");
+    kLeftStrafe = toml.getDouble("strafe");
+    kLeftIntakeStopDistance = toml.getLong("intakeStopDistance").intValue();
+    kLeftDriveStopDistance = toml.getLong("driveStopDistance").intValue();
+
+    settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.RIGHT));
+    toml = Robot.INJECTOR.settings().getAutonSettings(settings);
+    rightPath =
+        new PathCommand(
+            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    kRightIntakeAzimuth = toml.getDouble("intakeAzimuth");
+    kRightDrive = toml.getDouble("drive");
+    kRightStrafe = toml.getDouble("strafe");
+    kRightIntakeStopDistance = toml.getLong("intakeStopDistance").intValue();
+    kRightDriveStopDistance = toml.getLong("driveStopDistance").intValue();
+  }
+
+  @Override
+  public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
+    boolean isLeft = (startFeature == SWITCH ? nearSwitch : scale) == OwnedSide.LEFT;
+    settings =
+        SETTINGS.get(
+            new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
 
     addParallel(new EnableLidar());
 
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new PathCommand(kPath, startPosition.getPathAngle(kPathAzimuth)));
+            addParallel(isLeft ? leftPath : rightPath);
             addSequential(new Stow());
             addSequential(new WaitCommand(0.5));
             addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
@@ -66,7 +109,7 @@ public class Cube2Fetch extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new AzimuthCommand(kIntakeAzimuth));
+            addParallel(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
           }
 
           @Override
@@ -78,8 +121,13 @@ public class Cube2Fetch extends CommandGroup {
     addSequential(
         new CommandGroup() {
           {
-            addParallel(new IntakeInCubeTwo(kIntakeStopDistance), 3.0);
-            addParallel(new DriveToCube(kDriveStopDistance, kDrive, kStrafe));
+            addParallel(
+                new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance : kRightIntakeStopDistance),
+                3.0);
+            addParallel(
+                isLeft
+                    ? new DriveToCube(kLeftDriveStopDistance, kLeftDrive, kLeftStrafe)
+                    : new DriveToCube(kRightDriveStopDistance, kRightDrive, kRightStrafe));
           }
 
           @Override
@@ -92,7 +140,12 @@ public class Cube2Fetch extends CommandGroup {
     addSequential(new StartIntakeHold());
   }
 
-  private static class DriveToCube extends Command {
+  @Override
+  public String toString() {
+    return "Cube2Fetch{" + "settings='" + settings + '\'' + '}';
+  }
+
+  static final class DriveToCube extends Command {
 
     private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
     private final IntakeSensorsSubsystem intakeSensorsSubsystem =
@@ -102,7 +155,7 @@ public class Cube2Fetch extends CommandGroup {
     private final double strafe;
     private final int distance;
 
-    public DriveToCube(int distance, double forward, double strafe) {
+    DriveToCube(int distance, double forward, double strafe) {
       this.distance = distance;
       this.forward = forward;
       this.strafe = strafe;
@@ -132,14 +185,14 @@ public class Cube2Fetch extends CommandGroup {
     }
   }
 
-  private static class IntakeInCubeTwo extends Command {
+  static final class IntakeInCubeTwo extends Command {
 
     private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
     private final IntakeSensorsSubsystem intakeSensorsSubsystem =
         Robot.INJECTOR.intakeSensorsSubsystem();
     private final int distance;
 
-    public IntakeInCubeTwo(int distance) {
+    IntakeInCubeTwo(int distance) {
       this.distance = distance;
       requires(intakeSubsystem);
     }

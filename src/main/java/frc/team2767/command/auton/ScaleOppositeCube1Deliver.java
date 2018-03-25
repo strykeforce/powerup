@@ -13,9 +13,10 @@ import org.slf4j.LoggerFactory;
 public class ScaleOppositeCube1Deliver extends CommandGroup {
 
   private static final Logger logger = LoggerFactory.getLogger(ScaleSameCube1Deliver.class);
+  private final String settings;
 
   public ScaleOppositeCube1Deliver(StartPosition startPosition) {
-    String settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C1D" : "L_SC_O_C1D";
+    settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C1D" : "L_SC_O_C1D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     String kPath = toml.getString("path");
     double kAzimuth = toml.getDouble("azimuth");
@@ -33,5 +34,10 @@ public class ScaleOppositeCube1Deliver extends CommandGroup {
         });
 
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+  }
+
+  @Override
+  public String toString() {
+    return "ScaleOppositeCube1Deliver{" + "settings='" + settings + '\'' + '}';
   }
 }

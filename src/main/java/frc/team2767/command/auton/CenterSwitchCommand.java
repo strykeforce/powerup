@@ -1,8 +1,9 @@
-package frc.team2767.command.auton.nearswitch;
+package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import frc.team2767.command.auton.OwnedSidesSettable;
-import frc.team2767.command.auton.StartPosition;
+import frc.team2767.command.intake.IntakeEject;
+import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.subsystem.IntakeSubsystem;
 import openrio.powerup.MatchData.OwnedSide;
 
 /**
@@ -15,8 +16,7 @@ public class CenterSwitchCommand extends ConditionalCommand implements OwnedSide
   private OwnedSide ownedSide = OwnedSide.UNKNOWN;
 
   public CenterSwitchCommand() {
-    super(
-        new CenterSwitchCommandGroup("center_left"), new CenterSwitchCommandGroup("center_right"));
+    super(new CenterSwitchCommandGroup("C_SW_L_C1D"), new CenterSwitchCommandGroup("C_SW_R_C1D"));
   }
 
   @Override
@@ -28,5 +28,14 @@ public class CenterSwitchCommand extends ConditionalCommand implements OwnedSide
   public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
     this.ownedSide = nearSwitch;
     // don't care about scale
+  }
+
+  static class CenterSwitchCommandGroup extends PowerUpCommandGroup {
+
+    public CenterSwitchCommandGroup(String path) {
+      addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
+      addSequential(new PathCommand(path));
+      addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
+    }
   }
 }
