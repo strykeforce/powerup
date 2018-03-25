@@ -41,7 +41,7 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
     Sequence sequence =
         new Sequence(
             getCube1Deliver(scenario, cube1),
-            getCube2Fetch(scenario, cube1),
+            getCube2Fetch(scenario, cube1, cube2),
             getCube2Deliver(scenario, cube2));
     scenarios.put(scenario, sequence);
   }
@@ -72,11 +72,12 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
     else return new ScaleOppositeCube1Deliver(startPosition);
   }
 
-  private Command getCube2Fetch(Scenario scenario, PowerUpGameFeature startFeature) {
+  private Command getCube2Fetch(
+      Scenario scenario, PowerUpGameFeature cube1, PowerUpGameFeature cube2) {
     Command command =
-        startFeature == PowerUpGameFeature.NONE
+        cube2 == PowerUpGameFeature.NONE
             ? new LogCommand("Cube2Fetch game feature is NONE for " + scenario)
-            : new Cube2Fetch(startPosition, startFeature);
+            : new Cube2Fetch(startPosition, cube1);
     logger.debug("cube 2 fetch = {}", command);
     return command;
   }
