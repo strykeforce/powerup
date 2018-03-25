@@ -67,6 +67,8 @@ public class Robot extends TimedRobot {
     if (autonDone) {
       autonChooser = null;
       autonCommand = null;
+    } else {
+      autonChooser.reset();
     }
     Logging.flushLogs();
   }
@@ -87,12 +89,12 @@ public class Robot extends TimedRobot {
     autonCommand = autonChooser.getCommand();
     driveSubsystem.setAngleAdjustment(autonChooser.getStartPosition());
     autonDone = settings.isEvent();
-    autonCommand.start();
+    //    autonCommand.start();
   }
 
   @Override
   public void autonomousPeriodic() {
-    scheduler.run();
+    //    scheduler.run();
   }
 
   @Override

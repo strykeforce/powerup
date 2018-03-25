@@ -1,71 +1,133 @@
 package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team2767.command.LogCommand;
+import frc.team2767.command.extender.ExtenderUp;
+import frc.team2767.command.intake.StartIntakeHold;
+import frc.team2767.command.lift.LiftZero;
+import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import openrio.powerup.MatchData.GameFeature;
 import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PowerUpAutonCommand extends PowerUpCommandGroup implements OwnedSidesSettable {
+public final class PowerUpAutonCommand extends CommandGroup implements OwnedSidesSettable {
 
   private static final Logger logger = LoggerFactory.getLogger(PowerUpAutonCommand.class);
 
   private final Map<Scenario, Sequence> scenarios = new HashMap<>();
 
   private final StartPosition startPosition;
-  private final Sequence sequence;
 
   public PowerUpAutonCommand(StartPosition startPosition) {
     this.startPosition = startPosition;
-
-    Sequence scaleOpposite =
-        new Sequence(
-            new ScaleOppositeCube1Deliver(startPosition),
-            new Cube2Fetch(startPosition, GameFeature.SCALE),
-            new ScaleCube2Deliver(startPosition));
-
-    Sequence scaleSame =
-        new Sequence(
-            new ScaleSameCube1Deliver(startPosition),
-            new Cube2Fetch(startPosition, GameFeature.SCALE),
-            new ScaleCube2Deliver(startPosition));
-
-    sequence = scaleOpposite;
+    addSequential(
+        new CommandGroup() {
+          {
+            addParallel(new LiftZero());
+            addParallel(new ShoulderZeroWithEncoder());
+            addParallel(new ExtenderUp());
+            addParallel(new StartIntakeHold());
+          }
+        });
   }
 
   public void addScenario(
       OwnedSide nearSwitch, OwnedSide scale, PowerUpGameFeature cube1, PowerUpGameFeature cube2) {
     Scenario scenario = new Scenario(nearSwitch, scale);
-    Sequence sequence;
-    switch (startPosition) {
-      case UNKNOWN:
+    Sequence sequence =
+        new Sequence(
+            getCube1Deliver(scenario, cube1),
+            getCube2Fetch(scenario, cube1),
+            getCube2Deliver(scenario, cube2));
+    scenarios.put(scenario, sequence);
+  }
+
+  private Command getCube1Deliver(Scenario scenario, PowerUpGameFeature cube1) {
+    Command command;
+    switch (cube1) {
+      case SWITCH:
+        command = getSwitchCube1Deliver(scenario);
         break;
-      case LEFT:
+      case SCALE:
+        command = getScaleCube1Deliver(scenario);
         break;
-      case CENTER:
-        break;
-      case RIGHT:
-        break;
+      default:
+        command = command = new LogCommand("Cube1Deliver game feature is NONE for " + scenario);
     }
+    logger.debug("cube 1 deliver = {}", command);
+    return command;
+  }
+
+  private Command getSwitchCube1Deliver(Scenario scenario) {
+    if (scenario.isSwitchSameSide(startPosition)) return new SwitchSameCube1Deliver(startPosition);
+    else return new SwitchOppositeCube1Deliver(startPosition);
+  }
+
+  private Command getScaleCube1Deliver(Scenario scenario) {
+    if (scenario.isScaleSameSide(startPosition)) return new ScaleSameCube1Deliver(startPosition);
+    else return new ScaleOppositeCube1Deliver(startPosition);
+  }
+
+  private Command getCube2Fetch(Scenario scenario, PowerUpGameFeature startFeature) {
+    Command command =
+        startFeature == PowerUpGameFeature.NONE
+            ? new LogCommand("Cube2Fetch game feature is NONE for " + scenario)
+            : new Cube2Fetch(startPosition, startFeature);
+    logger.debug("cube 2 fetch = {}", command);
+    return command;
+  }
+
+  private Command getCube2Deliver(Scenario scenario, PowerUpGameFeature cube2) {
+    Command command;
+    switch (cube2) {
+      case SWITCH:
+        command = new SwitchCube2Deliver(startPosition);
+        break;
+      case SCALE:
+        command = new ScaleCube2Deliver(startPosition);
+        break;
+      default:
+        command = new LogCommand("Cube2Deliver game feature is NONE for " + scenario);
+    }
+    logger.debug("cube 2 deliver = {}", command);
+    return command;
   }
 
   @Override
   public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
+    Scenario scenario = new Scenario(nearSwitch, scale);
+    Sequence sequence = scenarios.get(scenario);
+    sequence.setOwnedSide(startPosition, nearSwitch, scale);
     addSequential(sequence.cube1Deliver);
     addSequential(sequence.cube2Fetch);
     addSequential(sequence.cube2Deliver);
+    logger.debug("configured {} for {}", sequence, scenario);
   }
 
-  private static class Scenario {
+  static final class Scenario {
     private final OwnedSide nearSwitch;
     private final OwnedSide scale;
 
-    public Scenario(OwnedSide nearSwitch, OwnedSide scale) {
+    Scenario(OwnedSide nearSwitch, OwnedSide scale) {
       this.nearSwitch = nearSwitch;
       this.scale = scale;
+    }
+
+    boolean isSwitchSameSide(StartPosition startPosition) {
+      return isSameSide(nearSwitch, startPosition);
+    }
+
+    boolean isScaleSameSide(StartPosition startPosition) {
+      return isSameSide(scale, startPosition);
+    }
+
+    boolean isSameSide(OwnedSide gameFeature, StartPosition startPosition) {
+      return (startPosition == StartPosition.LEFT && gameFeature == OwnedSide.LEFT)
+          || (startPosition == StartPosition.RIGHT && gameFeature == OwnedSide.RIGHT);
     }
 
     @Override
@@ -80,17 +142,42 @@ public class PowerUpAutonCommand extends PowerUpCommandGroup implements OwnedSid
     public int hashCode() {
       return Objects.hash(nearSwitch, scale);
     }
+
+    @Override
+    public String toString() {
+      return "Scenario{" + "nearSwitch=" + nearSwitch + ", scale=" + scale + '}';
+    }
   }
 
-  private static class Sequence {
-    private final Command cube1Deliver;
-    private final Command cube2Fetch;
-    private final Command cube2Deliver;
+  static final class Sequence implements OwnedSidesSettable {
+    final Command cube1Deliver;
+    final Command cube2Fetch;
+    final Command cube2Deliver;
 
-    public Sequence(Command cube1Deliver, Command cube2Fetch, Command cube2Deliver) {
+    Sequence(Command cube1Deliver, Command cube2Fetch, Command cube2Deliver) {
       this.cube1Deliver = cube1Deliver;
       this.cube2Fetch = cube2Fetch;
       this.cube2Deliver = cube2Deliver;
+    }
+
+    @Override
+    public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
+      if (cube2Fetch instanceof OwnedSidesSettable)
+        ((OwnedSidesSettable) cube2Fetch).setOwnedSide(startPosition, nearSwitch, scale);
+      if (cube2Deliver instanceof OwnedSidesSettable)
+        ((OwnedSidesSettable) cube2Deliver).setOwnedSide(startPosition, nearSwitch, scale);
+    }
+
+    @Override
+    public String toString() {
+      return "Sequence{"
+          + "cube1Deliver="
+          + cube1Deliver
+          + ", cube2Fetch="
+          + cube2Fetch
+          + ", cube2Deliver="
+          + cube2Deliver
+          + '}';
     }
   }
 }

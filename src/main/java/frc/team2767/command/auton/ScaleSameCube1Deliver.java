@@ -14,16 +14,16 @@ public class ScaleSameCube1Deliver extends CommandGroup {
 
   private static final Logger logger = LoggerFactory.getLogger(ScaleSameCube1Deliver.class);
 
-  private final String kPath;
   private final int kDistance;
+  private final String settings;
 
-  public ScaleSameCube1Deliver(StartPosition startPosition) {
-    String settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C1D" : "L_SC_S_C1D";
+  ScaleSameCube1Deliver(StartPosition startPosition) {
+    settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C1D" : "L_SC_S_C1D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    kPath = toml.getString("path");
+    String path = toml.getString("path");
     kDistance = toml.getLong("distance").intValue();
 
-    PathCommand pathCommand = new PathCommand(kPath, startPosition);
+    PathCommand pathCommand = new PathCommand(path, startPosition);
 
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
 
@@ -56,5 +56,10 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
+  }
+
+  @Override
+  public String toString() {
+    return "ScaleSameCube1Deliver{" + "settings='" + settings + '\'' + '}';
   }
 }
