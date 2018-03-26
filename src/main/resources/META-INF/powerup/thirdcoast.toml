@@ -84,7 +84,7 @@
   [TALON.output]
     neutralMode = "Brake"
   [TALON.currentLimit]
-    continuous = 15 # when changing, also change in [POWERUP.INTAKE] of settings
+    continuous = 12 # when changing, also change in [POWERUP.INTAKE] of settings
     peak = 0
     peakDuration = 0
    [[TALON.closedLoopProfile]] # slot 0 Velocity, 250 - 10_000 ticks/100ms
