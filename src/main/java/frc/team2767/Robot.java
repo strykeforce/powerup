@@ -55,11 +55,9 @@ public class Robot extends TimedRobot {
       TelemetryService telemetryService = INJECTOR.telemetryService();
       INJECTOR.graphables().forEach(g -> g.register(telemetryService));
       telemetryService.start();
+      INJECTOR.intakeSensorsSubsystem().enableLidar(true);
     }
   }
-
-  @Override
-  public void robotPeriodic() {}
 
   @Override
   public void disabledInit() {
@@ -74,6 +72,25 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void autonomousInit() {
+    logger.info("AUTONOMOUS");
+    autonCommand = autonChooser.getCommand();
+    driveSubsystem.setAngleAdjustment(autonChooser.getStartPosition());
+    autonDone = settings.isEvent();
+    autonCommand.start();
+  }
+
+  @Override
+  public void teleopInit() {
+    logger.info("TELEOP");
+    scheduler.removeAll();
+    driveSubsystem.stop();
+  }
+
+  @Override
+  public void robotPeriodic() {}
+
+  @Override
   public void disabledPeriodic() {
     if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
       logger.debug("align wheels buttons have activated");
@@ -84,24 +101,8 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() {
-    logger.info("AUTONOMOUS");
-    autonCommand = autonChooser.getCommand();
-    driveSubsystem.setAngleAdjustment(autonChooser.getStartPosition());
-    autonDone = settings.isEvent();
-    //    autonCommand.start();
-  }
-
-  @Override
   public void autonomousPeriodic() {
-    //    scheduler.run();
-  }
-
-  @Override
-  public void teleopInit() {
-    logger.info("TELEOP");
-    scheduler.removeAll();
-    driveSubsystem.stop();
+    scheduler.run();
   }
 
   @Override

@@ -1,8 +1,10 @@
-#path = "right_secondcube_1"
+# e kentwood
+
+
 path = "R_SC_S_C2F"
-pathAzimuth = 40.0
-intakeAzimuth = -130.0
+pathAzimuth = 0.0
+intakeAzimuth = -40.0
 intakeStopDistance = 35
 driveStopDistance = 44
-drive = 0.2
-strafe = -0.2
+drive = -0.2
+strafe = 0.2

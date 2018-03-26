@@ -57,10 +57,12 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
               @Override
               public double pidGet() {
                 canifier.getPWMInput(CANifier.PWMChannel.PWMChannel0, lidarPwmData);
+                logger.debug("lidar pulse width = {}", lidarPwmData[0]);
                 return lidarPwmData[0] / 10.0;
               }
             },
             NUM_TAPS);
+    enableLidar(true);
   }
 
   @Override
