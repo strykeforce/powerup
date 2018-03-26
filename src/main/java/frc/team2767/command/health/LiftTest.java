@@ -6,8 +6,7 @@ import frc.team2767.Robot;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.subsystem.LiftSubsystem;
 import frc.team2767.subsystem.health.TestCase;
-
-import java.util.Arrays;
+import java.util.Collections;
 
 public class LiftTest extends CommandGroup {
 
@@ -16,14 +15,53 @@ public class LiftTest extends CommandGroup {
     addSequential(new HealthCheckMode(true));
 
     addSequential(
-        new FollowerVelocityTestCommand("Lift Motors", 50, Arrays.asList(51, 50)) {
+        new FollowerVelocityTestCommand("Lift Master Motor Up", 50, Collections.singletonList(50)) {
           {
             setWarmUp(300);
             TestCase testCase = newTestCase();
-            testCase.setOutput(0.5);
+            testCase.setOutput(0.25);
             testCase.setDuration(2000);
-            testCase.setCurrentRange(1.0, 2.0);
-            testCase.setSpeedRange(1000.0, 10_000.0);
+            testCase.setCurrentRange(4.0, 5.25);
+            testCase.setSpeedRange(300.0, 350.0);
+          }
+        });
+
+    addSequential(
+        new FollowerVelocityTestCommand(
+            "Lift Master Motor Down", 50, Collections.singletonList(50)) {
+          {
+            setWarmUp(300);
+            TestCase testCase = newTestCase();
+            testCase.setOutput(-0.25);
+            testCase.setDuration(2000);
+            testCase.setCurrentRange(4.0, 5.25);
+            testCase.setSpeedRange(-350.0, -300.0);
+          }
+        });
+
+    addSequential(
+        new FollowerVelocityTestCommand(
+            "Lift Follower Motor Up", 50, Collections.singletonList(51)) {
+          {
+            setWarmUp(300);
+            TestCase testCase = newTestCase();
+            testCase.setOutput(0.25);
+            testCase.setDuration(2000);
+            testCase.setCurrentRange(4.0, 5.25);
+            testCase.setSpeedRange(300.0, 350.0);
+          }
+        });
+
+    addSequential(
+        new FollowerVelocityTestCommand(
+            "Lift Follower Motor Down", 50, Collections.singletonList(51)) {
+          {
+            setWarmUp(300);
+            TestCase testCase = newTestCase();
+            testCase.setOutput(-0.25);
+            testCase.setDuration(2000);
+            testCase.setCurrentRange(4.0, 5.25);
+            testCase.setSpeedRange(-350.0, -300.0);
           }
         });
 

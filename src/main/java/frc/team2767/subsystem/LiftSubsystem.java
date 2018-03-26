@@ -224,7 +224,8 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
   public void setHealthCheckMode(boolean enabled) {
     if (enabled) {
       logger.warn("enabling health check mode");
-      rearTalon.set(Disabled, 0);
+      frontTalon.set(PercentOutput, 0);
+      rearTalon.set(PercentOutput, 0);
       frontTalon.setNeutralMode(NeutralMode.Coast);
       rearTalon.setNeutralMode(NeutralMode.Coast);
     } else {
