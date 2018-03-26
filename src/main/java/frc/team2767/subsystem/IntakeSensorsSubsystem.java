@@ -1,5 +1,8 @@
 package frc.team2767.subsystem;
 
+import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.POSITION;
+import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.PULSE_WIDTH_POSITION;
+
 import com.ctre.phoenix.CANifier;
 import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -7,23 +10,19 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.function.DoubleSupplier;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 import org.strykeforce.thirdcoast.telemetry.grapher.Measure;
 import org.strykeforce.thirdcoast.telemetry.item.Item;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.function.DoubleSupplier;
-
-import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.POSITION;
-import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.PULSE_WIDTH_POSITION;
 
 @Singleton
 public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item {
