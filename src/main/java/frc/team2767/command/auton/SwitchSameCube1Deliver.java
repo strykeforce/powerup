@@ -8,10 +8,9 @@ import org.slf4j.LoggerFactory;
 
 public class SwitchSameCube1Deliver extends CommandGroup {
 
+  private static final Logger logger = LoggerFactory.getLogger(SwitchSameCube1Deliver.class);
   private final int kDistance;
   private final String settings;
-
-  private static final Logger logger = LoggerFactory.getLogger(SwitchSameCube1Deliver.class);
 
   public SwitchSameCube1Deliver(StartPosition startPosition) {
     settings = startPosition == StartPosition.RIGHT ? "R_SW_S_C1D" : "L_SW_S_C1D";
@@ -20,5 +19,10 @@ public class SwitchSameCube1Deliver extends CommandGroup {
     kDistance = toml.getLong("distance").intValue();
 
     PathCommand pathCommand = new PathCommand(path, startPosition);
+  }
+
+  @Override
+  public String toString() {
+    return "SwitchSameCube1Deliver{" + "settings='" + settings + '\'' + '}';
   }
 }

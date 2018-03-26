@@ -50,4 +50,9 @@ public class SwitchCube2Deliver extends InstantCommand {
 
     kRightEjectAzimuth = toml.getDouble("ejectAzimuth");
   }
+
+  @Override
+  public String toString() {
+    return "SwitchCube2Deliver{" + "settings='" + settings + '\'' + '}';
+  }
 }
