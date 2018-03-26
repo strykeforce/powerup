@@ -4,12 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.health.HealthCheckSubsystem;
 
-public class HealthCheck extends Command {
+abstract class PowerUpHealthCheckCommand extends Command {
 
-  private final HealthCheckSubsystem healthCheckSubsystem = Robot.INJECTOR.healthCheckSubsystem();
+  final HealthCheckSubsystem healthCheckSubsystem = Robot.INJECTOR.healthCheckSubsystem();
 
-  public HealthCheck() {
-    super("Health Check");
+  PowerUpHealthCheckCommand() {
     requires(healthCheckSubsystem);
     requires(Robot.INJECTOR.driveSubsystem());
     requires(Robot.INJECTOR.climberSubsystem());
@@ -19,23 +18,7 @@ public class HealthCheck extends Command {
   }
 
   @Override
-  protected void initialize() {
-    healthCheckSubsystem.initialize();
-  }
-
-  @Override
-  protected boolean isFinished() {
-    return healthCheckSubsystem.isFinished();
-  }
-
-  @Override
   protected void interrupted() {
     healthCheckSubsystem.cancel();
-    healthCheckSubsystem.end();
-  }
-
-  @Override
-  protected void end() {
-    healthCheckSubsystem.end();
   }
 }

@@ -46,7 +46,7 @@ enableCamera  = true
   slowDownPosition = 37_700
 
 [POWERUP.INTAKE]
-  normalCurrentLimit = 15  # when changing, also change in thirdcoast.toml
+  normalCurrentLimit = 12  # when changing, also change in thirdcoast.toml
   holdCurrentLimit   = 2
 
   # velocities
@@ -92,7 +92,8 @@ enableCamera  = true
 
   # positions
   limitSwitchZeroPosition = 9394
-  absEncoderZeroPosition  = 1127
+  #absEncoderZeroPosition  = 1127
+  absEncoderZeroPosition  = 1900
   tightStowPosition       = 5200
   stowPosition            = 4500 # 3918
   intakePosition          = -100
@@ -113,55 +114,3 @@ enableCamera  = true
   enablePit  = true
   enableTest = false
   enableGame = true
-
-[POWERUP.SCALESETTINGS.RIGHT]
-  path1 = "right_scale"
-  path2 = "right_secondcube_1"
-  path3 = "right_secondcube_2"
-  distance = 210_000
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = -50.0
-  azimuth2 = -130.0
-  azimuth3 = 20.0
-  drive1 = 0.2
-  strafe1 = -0.2
-
-[POWERUP.SCALESETTINGS.LEFT]
-  path1 = "left_scale"
-  path2 = "left_secondcube_1"
-  path3 = "left_secondcube_2"
-  distance = 210_000
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = 50.0
-  azimuth2 = 130.0
-  azimuth3 = -20.0
-  drive1 = 0.2
-  strafe1 = 0.2
-
-[POWERUP.SCALESETTINGS.RIGHTTOLEFT]
-  path1 = "right_opposite_scale"
-  path2 = "left_secondcube_1"
-  path3 = "left_secondcube_2"
-  distance = 0
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = -130.0
-  azimuth2 = -130.0
-  azimuth3 = 20.0
-  drive1 = 0.2
-  strafe1 = 0.2
-
-[POWERUP.SCALESETTINGS.LEFTTORIGHT]
-  path1 = "left_opposite_scale"
-  path2 = "right_secondcube_1"
-  path3 = "right_secondcube_2"
-  distance = 0
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = 50.0
-  azimuth2 = 130.0
-  azimuth3 = -20.0
-  drive1 = 0.2
-  strafe1 = 0.2

@@ -92,7 +92,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
 
     int currentLimit = mode == Mode.HOLD ? kHoldCurrentLimit : kNormalCurrentLimit;
     leftTalon.configContinuousCurrentLimit(currentLimit, 0);
-    leftTalon.configContinuousCurrentLimit(currentLimit, 0);
+    rightTalon.configContinuousCurrentLimit(currentLimit, 0);
 
     leftTalon.set(Velocity, -leftOutput);
     rightTalon.set(Velocity, rightOutput);
