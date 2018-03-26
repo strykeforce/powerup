@@ -31,10 +31,12 @@ public class HealthCheckSubsystem extends Subsystem {
     if (executorService == null) executorService = Executors.newSingleThreadExecutor();
     tests = new ArrayList<>();
     initialized = true;
+    logger.debug("initialized health check subsystem");
   }
 
   public void runTest(Test test) {
     if (!initialized) throw new IllegalStateException("must initialize before running tests");
+    test.testCases.forEach(tc -> tc.results.clear());
     tests.add(test);
     future = executorService.submit(test);
   }
