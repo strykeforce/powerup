@@ -9,20 +9,23 @@ public class PathCommand extends Command {
 
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final PathController path;
+  private boolean autoPathAzimuth;
 
-  public PathCommand(String name, String pathName, double azimuth) {
-    super(name);
+  PathCommand(String pathName, double azimuth) {
     path = Robot.INJECTOR.pathControllerFactory().create(pathName);
     path.setTargetAzimuth(azimuth);
     requires(driveSubsystem);
   }
 
-  public PathCommand(String pathName, double azimuth) {
-    this("PathCommand", pathName, azimuth);
+  PathCommand(String pathName) {
+    this(pathName, 0d);
+    autoPathAzimuth = true;
   }
 
   @Override
   protected void initialize() {
+    if (autoPathAzimuth)
+      path.setTargetAzimuth(Math.IEEEremainder(driveSubsystem.getGyro().getAngle(), 360.0));
     driveSubsystem.drivePath(path);
   }
 

@@ -3,7 +3,7 @@
 
 path = "R_SC_S_C2F"
 intakeAzimuth = 155.0
-pathAzimuth = 0.0
+pathAzimuth = 0.0 # TODO: remove all these, using auto azimuth
 intakeStopDistance = 35
 driveStopDistance = 44
 drive = 0.2

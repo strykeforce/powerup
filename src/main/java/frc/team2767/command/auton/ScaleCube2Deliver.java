@@ -44,17 +44,13 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
   ScaleCube2Deliver(StartPosition startPosition) {
     String settings = SETTINGS.get(new Scenario(startPosition, SCALE, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    leftPath =
-        new PathCommand(
-            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    leftPath = new PathCommand(toml.getString("path")); // auto path azimuth
 
     kLeftEjectAzimuth = toml.getDouble("ejectAzimuth");
 
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    rightPath =
-        new PathCommand(
-            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    rightPath = new PathCommand(toml.getString("path"));
 
     kRightEjectAzimuth = toml.getDouble("ejectAzimuth");
   }

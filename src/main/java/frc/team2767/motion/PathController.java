@@ -125,6 +125,7 @@ public class PathController implements Runnable, Item {
   }
 
   public void stop() {
+    if (!running) return;
     logger.info("FINISH path {}", path);
     drive.drive(0, 0, 0);
     notifier.stop();
