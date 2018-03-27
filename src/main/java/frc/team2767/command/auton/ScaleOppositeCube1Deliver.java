@@ -35,7 +35,7 @@ public class ScaleOppositeCube1Deliver extends CommandGroup {
           }
         });
 
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override

@@ -53,7 +53,7 @@ enableCamera  = true
   loadVelocity       = -10_000
   holdVelocity       = -1500
   fastEjectVelocity  =  10_000
-  scaleEjectVelocity =  4000
+  scaleEjectVelocity =  3000
   slowEjectVelocity  =  1000 #2000
 
   # release positions
