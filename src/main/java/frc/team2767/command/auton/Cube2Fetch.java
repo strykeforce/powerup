@@ -89,8 +89,6 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
 
-    addParallel(new EnableLidar());
-
     addSequential(
         new CommandGroup() {
           {
@@ -106,6 +104,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           }
         });
 
+    addParallel(new EnableLidar());
     addSequential(
         new CommandGroup() {
           {

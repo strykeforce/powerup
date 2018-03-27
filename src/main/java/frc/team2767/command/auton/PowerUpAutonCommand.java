@@ -2,6 +2,7 @@ package frc.team2767.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.team2767.Robot;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.extender.ExtenderUp;
 import frc.team2767.command.intake.StartIntakeHold;
@@ -33,6 +34,7 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
             addParallel(new StartIntakeHold());
           }
         });
+    Robot.INJECTOR.intakeSensorsSubsystem().setAutonCommand(this);
   }
 
   public void addScenario(
