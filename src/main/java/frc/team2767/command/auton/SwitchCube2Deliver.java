@@ -25,8 +25,8 @@ public class SwitchCube2Deliver extends InstantCommand {
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, MatchData.OwnedSide.RIGHT), "R_SW_S_C2D");
   }
 
-  private final double kLeftEjectAzimuth;
-  private final double kRightEjectAzimuth;
+  //  private final double kLeftEjectAzimuth;
+  //  private final double kRightEjectAzimuth;
 
   private final Command leftPath;
   private final Command rightPath;
@@ -40,7 +40,7 @@ public class SwitchCube2Deliver extends InstantCommand {
         new PathCommand(
             toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
 
-    kLeftEjectAzimuth = toml.getDouble("ejectAzimuth");
+    //    kLeftEjectAzimuth = toml.getDouble("ejectAzimuth");
 
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, MatchData.OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
@@ -48,7 +48,7 @@ public class SwitchCube2Deliver extends InstantCommand {
         new PathCommand(
             toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
 
-    kRightEjectAzimuth = toml.getDouble("ejectAzimuth");
+    //    kRightEjectAzimuth = toml.getDouble("ejectAzimuth");
   }
 
   @Override

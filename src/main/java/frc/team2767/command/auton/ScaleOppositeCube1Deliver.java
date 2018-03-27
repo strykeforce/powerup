@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ScaleOppositeCube1Deliver extends CommandGroup {
+  private static final double EJECT_DURATION = 0.5;
+  private static final double START_POSITION_YAW = 0d;
 
   private static final Logger logger = LoggerFactory.getLogger(ScaleSameCube1Deliver.class);
   private final String settings;
@@ -22,7 +24,7 @@ public class ScaleOppositeCube1Deliver extends CommandGroup {
     double kAzimuth = toml.getDouble("azimuth");
 
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
-    addSequential(new PathCommand(kPath, startPosition.getPathAngle(0)));
+    addSequential(new PathCommand(kPath, startPosition.getPathAngle(START_POSITION_YAW)));
 
     addSequential(
         new CommandGroup() {
@@ -33,7 +35,7 @@ public class ScaleOppositeCube1Deliver extends CommandGroup {
           }
         });
 
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override

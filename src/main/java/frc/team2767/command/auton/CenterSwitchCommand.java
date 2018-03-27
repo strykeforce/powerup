@@ -12,6 +12,7 @@ import openrio.powerup.MatchData.OwnedSide;
  * <p>Owned side LEFT = onTrue command, Owned side RIGHT = onFalse command
  */
 public class CenterSwitchCommand extends ConditionalCommand implements OwnedSidesSettable {
+  private static final double START_POSITION_YAW = 0d;
 
   private OwnedSide ownedSide = OwnedSide.UNKNOWN;
 
@@ -34,7 +35,7 @@ public class CenterSwitchCommand extends ConditionalCommand implements OwnedSide
 
     public CenterSwitchCommandGroup(String path) {
       addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
-      addSequential(new PathCommand(path));
+      addSequential(new PathCommand(path, START_POSITION_YAW));
       addSequential(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
     }
   }

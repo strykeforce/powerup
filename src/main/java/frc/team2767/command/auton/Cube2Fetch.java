@@ -61,9 +61,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     this.startFeature = startFeature;
     String settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    leftPath =
-        new PathCommand(
-            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    leftPath = new PathCommand(toml.getString("path")); // auto path azimuth
     kLeftIntakeAzimuth = toml.getDouble("intakeAzimuth");
     kLeftDrive = toml.getDouble("drive");
     kLeftStrafe = toml.getDouble("strafe");
@@ -72,9 +70,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
 
     settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    rightPath =
-        new PathCommand(
-            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    rightPath = new PathCommand(toml.getString("path"));
     kRightIntakeAzimuth = toml.getDouble("intakeAzimuth");
     kRightDrive = toml.getDouble("drive");
     kRightStrafe = toml.getDouble("strafe");
@@ -89,14 +85,12 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
 
-    addParallel(new EnableLidar());
-
     addSequential(
         new CommandGroup() {
           {
             addParallel(isLeft ? leftPath : rightPath);
             addSequential(new Stow());
-            addSequential(new WaitCommand(0.5));
+            addSequential(new WaitCommand(0.25));
             addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
           }
 
@@ -106,17 +100,8 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           }
         });
 
-    addSequential(
-        new CommandGroup() {
-          {
-            addParallel(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
-          }
-
-          @Override
-          protected void end() {
-            logger.trace("AzimuthCommand || IntakeLoad ENDED");
-          }
-        });
+    addParallel(new EnableLidar());
+    addSequential(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
 
     addSequential(
         new CommandGroup() {

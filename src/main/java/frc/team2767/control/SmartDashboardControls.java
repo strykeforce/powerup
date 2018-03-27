@@ -17,6 +17,7 @@ import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
+import frc.team2767.command.test.LidarTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -65,6 +66,7 @@ public class SmartDashboardControls {
   private void addTestCommands() {
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
+    SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
   }
 
   private void addGameCommands() {

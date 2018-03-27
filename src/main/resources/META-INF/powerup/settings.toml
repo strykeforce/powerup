@@ -26,7 +26,7 @@ enableCamera  = true
   p = 0.013
   i = 0.0
   d = 0.0
-  tolerance = 0.5
+  tolerance = 1.0
   outputMax = 0.3
   test = false
 
@@ -49,11 +49,19 @@ enableCamera  = true
   normalCurrentLimit = 12  # when changing, also change in thirdcoast.toml
   holdCurrentLimit   = 2
 
+  # practice
+  lidarSlope  = 1.0
+  lidarOffset = 1.0
+
+  # comp
+#  lidarSlope  = 1.0
+#  lidarOffset = 1.0
+
   # velocities
   loadVelocity       = -10_000
   holdVelocity       = -1500
   fastEjectVelocity  =  10_000
-  scaleEjectVelocity =  4000
+  scaleEjectVelocity =  3000
   slowEjectVelocity  =  1000 #2000
 
   # release positions
@@ -92,7 +100,7 @@ enableCamera  = true
 
   # positions
   limitSwitchZeroPosition = 9394
-  #absEncoderZeroPosition  = 1127
+  # practice absEncoderZeroPosition  = 1127
   absEncoderZeroPosition  = 1900
   tightStowPosition       = 5200
   stowPosition            = 4500 # 3918

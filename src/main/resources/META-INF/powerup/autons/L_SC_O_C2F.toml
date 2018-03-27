@@ -1,8 +1,9 @@
-# FIXME: right side copy, needs to be converted to left side
-#path = "left_secondcube_1"
-path = "L_SC_S_C2F"
-intakeAzimuth = -130.0
-pathAzimuth = 155.0
+# e kentwood
+
+
+path = "R_SC_S_C2F"
+intakeAzimuth = 155.0
+pathAzimuth = 0.0 # TODO: remove all these, using auto azimuth
 intakeStopDistance = 35
 driveStopDistance = 44
 drive = 0.2

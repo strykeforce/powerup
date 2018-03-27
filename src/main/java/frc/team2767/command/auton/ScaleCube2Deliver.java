@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettable {
+  private static final double EJECT_DURATION = 0.5;
+  private static final double SHOULDER_DELAY = 0.5;
 
   private static final Logger logger = LoggerFactory.getLogger(ScaleCube2Deliver.class);
 
@@ -42,17 +44,13 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
   ScaleCube2Deliver(StartPosition startPosition) {
     String settings = SETTINGS.get(new Scenario(startPosition, SCALE, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    leftPath =
-        new PathCommand(
-            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    leftPath = new PathCommand(toml.getString("path")); // auto path azimuth
 
     kLeftEjectAzimuth = toml.getDouble("ejectAzimuth");
 
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-    rightPath =
-        new PathCommand(
-            toml.getString("path"), startPosition.getPathAngle(toml.getDouble("pathAzimuth")));
+    rightPath = new PathCommand(toml.getString("path"));
 
     kRightEjectAzimuth = toml.getDouble("ejectAzimuth");
   }
@@ -65,7 +63,7 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
         new CommandGroup() {
           {
             addParallel(isLeft ? leftPath : rightPath);
-            addSequential(new WaitCommand(0.5));
+            addSequential(new WaitCommand(SHOULDER_DELAY));
             addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
           }
 
@@ -89,7 +87,7 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
           }
         });
 
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
     addSequential(new Stow());
   }
 

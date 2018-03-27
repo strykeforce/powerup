@@ -7,13 +7,20 @@ import frc.team2767.subsystem.IntakeSubsystem.Mode;
 
 public class IntakeEject extends TimedCommand {
 
-  private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+  private static final double FAST_DURATION = 0.5;
+  private static final double SLOW_DURATION = 1.0;
+
   public final Mode speed;
+  private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+
+  public IntakeEject(Mode speed, double duration) {
+    super(duration);
+    this.speed = speed;
+    requires(intakeSubsystem);
+  }
 
   public IntakeEject(Mode mode) {
-    super(mode == Mode.FAST_EJECT ? 0.5 : 1.0); // FIXME: constants for timeout
-    speed = mode;
-    requires(intakeSubsystem);
+    this(mode, mode == Mode.FAST_EJECT ? FAST_DURATION : SLOW_DURATION);
   }
 
   @Override

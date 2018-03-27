@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.011432926829268292,
+  "dividerPosition": 0.020338983050847456,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -311,6 +311,17 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Test/CommandChooser",
               "_title": "Auton Command"
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Lidar",
+              "_title": "Lidar"
             }
           }
         }

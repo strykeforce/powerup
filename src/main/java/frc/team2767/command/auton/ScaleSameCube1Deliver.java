@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ScaleSameCube1Deliver extends CommandGroup {
+  private static final double EJECT_DURATION = 0.5;
+  private static final double START_POSITION_YAW = 0d;
 
   private static final Logger logger = LoggerFactory.getLogger(ScaleSameCube1Deliver.class);
 
@@ -23,7 +25,7 @@ public class ScaleSameCube1Deliver extends CommandGroup {
     String path = toml.getString("path");
     kDistance = toml.getLong("distance").intValue();
 
-    PathCommand pathCommand = new PathCommand(path, startPosition);
+    PathCommand pathCommand = new PathCommand(path, startPosition.getPathAngle(START_POSITION_YAW));
 
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
 
@@ -45,7 +47,7 @@ public class ScaleSameCube1Deliver extends CommandGroup {
                   }
                 });
 
-            addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT));
+            addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
           }
 
           @Override
