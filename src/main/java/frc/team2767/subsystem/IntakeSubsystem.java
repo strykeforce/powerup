@@ -28,6 +28,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final int kFastEjectVelocity;
   private final int kScaleEjectVelocity;
   private final int kSlowEjectVelocity;
+  private final int kSwitchEjectVelocity;
   private final int kNormalCurrentLimit;
   private final int kHoldCurrentLimit;
 
@@ -46,6 +47,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     kFastEjectVelocity = toml.getLong("fastEjectVelocity").intValue();
     kScaleEjectVelocity = toml.getLong("scaleEjectVelocity").intValue();
     kSlowEjectVelocity = toml.getLong("slowEjectVelocity").intValue();
+    kSwitchEjectVelocity = toml.getLong("switchEjectVelocity").intValue();
 
     kNormalCurrentLimit = toml.getLong("normalCurrentLimit").intValue();
     kHoldCurrentLimit = toml.getLong("holdCurrentLimit").intValue();
@@ -57,6 +59,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     logger.info("fastEjectVelocity = {}", kFastEjectVelocity);
     logger.info("scaleEjectVelocity = {}", kScaleEjectVelocity);
     logger.info("slowEjectVelocity = {}", kSlowEjectVelocity);
+    logger.info("switchEjectVelocity = {}", kSwitchEjectVelocity);
   }
 
   @Override
@@ -87,6 +90,10 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
       case SLOW_EJECT:
         leftOutput = kSlowEjectVelocity;
         rightOutput = kSlowEjectVelocity;
+        break;
+      case SWITCH_EJECT:
+        leftOutput = kSwitchEjectVelocity;
+        rightOutput = kSwitchEjectVelocity;
         break;
     }
 
@@ -119,6 +126,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     HOLD,
     FAST_EJECT,
     SCALE_EJECT,
-    SLOW_EJECT
+    SLOW_EJECT,
+    SWITCH_EJECT
   }
 }
