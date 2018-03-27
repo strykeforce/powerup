@@ -21,29 +21,6 @@ public class PathCommand extends Command {
     this("PathCommand", pathName, azimuth);
   }
 
-  public PathCommand(String name, String pathName, StartPosition startPosition) {
-    this(name, pathName, targetAzimuth(startPosition));
-  }
-
-  public PathCommand(String path, StartPosition startPosition) {
-    this("PathCommand", path, startPosition);
-  }
-
-  public PathCommand(String path) {
-    this(path, StartPosition.UNKNOWN);
-  }
-
-  private static double targetAzimuth(StartPosition startPosition) {
-    switch (startPosition) {
-      case LEFT:
-        return 90d;
-      case RIGHT:
-        return -90d;
-      default:
-        return 0d;
-    }
-  }
-
   @Override
   protected void initialize() {
     driveSubsystem.drivePath(path);

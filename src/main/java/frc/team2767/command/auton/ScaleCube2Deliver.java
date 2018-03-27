@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettable {
+  private static final double EJECT_DURATION = 0.5;
+  private static final double SHOULDER_DELAY = 0.5;
 
   private static final Logger logger = LoggerFactory.getLogger(ScaleCube2Deliver.class);
 
@@ -65,7 +67,7 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
         new CommandGroup() {
           {
             addParallel(isLeft ? leftPath : rightPath);
-            addSequential(new WaitCommand(0.5));
+            addSequential(new WaitCommand(SHOULDER_DELAY));
             addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
           }
 

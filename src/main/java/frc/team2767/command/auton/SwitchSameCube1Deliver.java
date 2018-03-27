@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SwitchSameCube1Deliver extends CommandGroup {
+  private static final double START_POSITION_YAW = 0d;
 
   private static final Logger logger = LoggerFactory.getLogger(SwitchSameCube1Deliver.class);
   private final int kDistance;
@@ -18,7 +19,7 @@ public class SwitchSameCube1Deliver extends CommandGroup {
     String path = toml.getString("path");
     kDistance = toml.getLong("distance").intValue();
 
-    PathCommand pathCommand = new PathCommand(path, startPosition);
+    PathCommand pathCommand = new PathCommand(path, startPosition.getPathAngle(START_POSITION_YAW));
   }
 
   @Override
