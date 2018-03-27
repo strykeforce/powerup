@@ -90,7 +90,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           {
             addParallel(isLeft ? leftPath : rightPath);
             addSequential(new Stow());
-            addSequential(new WaitCommand(0.5));
+            addSequential(new WaitCommand(0.25));
             addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
           }
 
@@ -101,17 +101,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         });
 
     addParallel(new EnableLidar());
-    addSequential(
-        new CommandGroup() {
-          {
-            addParallel(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
-          }
-
-          @Override
-          protected void end() {
-            logger.trace("AzimuthCommand || IntakeLoad ENDED");
-          }
-        });
+    addSequential(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
 
     addSequential(
         new CommandGroup() {
