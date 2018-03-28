@@ -2,9 +2,8 @@
 
 
 path = "R_SC_S_C2F"
-intakeAzimuth = 155.0
-pathAzimuth = 0.0 # TODO: remove all these, using auto azimuth
-intakeStopDistance = 35
+intakeAzimuth = 145.0
+intakeStopDistance = 25
 driveStopDistance = 44
-drive = 0.2
-strafe = 0.2
+drive = 0.15
+strafe = -0.15
