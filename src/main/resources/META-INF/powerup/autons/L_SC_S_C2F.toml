@@ -6,4 +6,4 @@ intakeAzimuth = 45.0
 intakeStopDistance = 35
 driveStopDistance = 44
 drive = 0.15
-strafe = -0.15
+strafe = 0.15
