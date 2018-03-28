@@ -78,8 +78,8 @@ enableCamera  = true
   jogIncrement = 1400
 
   # positions
-  scaleLowPosition     = 9100
-  scaleMidPosition     = 14_700
+  scaleLowPosition     = 12_678
+  scaleMidPosition     = 15_700
   scaleHighPosition    = 18_000
   stowPosition         = 0
   portalPosition       = 5200
@@ -121,5 +121,5 @@ enableCamera  = true
 
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
-  enableTest = false
+  enableTest = true
   enableGame = true
