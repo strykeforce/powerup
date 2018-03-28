@@ -1,18 +1,19 @@
 package frc.team2767.command.auton;
 
-import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
-
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
-import java.util.HashMap;
-import java.util.Map;
 import openrio.powerup.MatchData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
 
 public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettable {
 
@@ -46,19 +47,19 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
 
     kEjectLeftAzimuth = toml.getDouble("ejectAzimuth");
-    kRightDrive1 = toml.getDouble("drive1");
-    kRightDrive2 = toml.getDouble("drive2");
-    kRightStrafe1 = toml.getDouble("strafe1");
-    kRightStrafe2 = toml.getDouble("strafe2");
+    kLeftDrive1 = toml.getDouble("drive1");
+    kLeftDrive2 = toml.getDouble("drive2");
+    kLeftStrafe1 = toml.getDouble("strafe1");
+    kLeftStrafe2 = toml.getDouble("strafe2");
 
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, MatchData.OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
 
     kEjectRightAzimuth = toml.getDouble("ejectAzimuth");
-    kLeftDrive1 = toml.getDouble("drive1");
-    kLeftDrive2 = toml.getDouble("drive2");
-    kLeftStrafe1 = toml.getDouble("strafe1");
-    kLeftStrafe2 = toml.getDouble("strafe2");
+    kRightDrive1 = toml.getDouble("drive1");
+    kRightDrive2 = toml.getDouble("drive2");
+    kRightStrafe1 = toml.getDouble("strafe1");
+    kRightStrafe2 = toml.getDouble("strafe2");
   }
 
   @Override
@@ -66,6 +67,23 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
       StartPosition startPosition, MatchData.OwnedSide nearSwitch, MatchData.OwnedSide scale) {
     boolean isLeft = nearSwitch == MatchData.OwnedSide.LEFT;
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, scale));
+
+    logger.debug("start position = {}", startPosition);
+    logger.debug("settings = {}", settings);
+    logger.debug(
+        "LAzm = {}, LDr1 = {}, LDr2 = {}, LStrf1 = {}, LStrf2  ={}",
+        kEjectLeftAzimuth,
+        kLeftDrive1,
+        kLeftDrive2,
+        kLeftStrafe1,
+        kLeftStrafe2);
+    logger.debug(
+        "RAzm = {}, RDr1 = {}, RDr2 = {}, RStrf1 = {}, RStrf2  ={}",
+        kEjectRightAzimuth,
+        kRightDrive1,
+        kLeftDrive2,
+        kRightStrafe1,
+        kRightStrafe2);
 
     addSequential(
         new CommandGroup() {
@@ -82,7 +100,7 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
     addSequential(new AzimuthCommand(isLeft ? kEjectLeftAzimuth : kEjectRightAzimuth));
     addSequential(
         new TimedDrive(
-            1.25, isLeft ? kLeftDrive2 : kRightDrive2, isLeft ? kLeftStrafe2 : kRightStrafe2, 0.0));
+            1.0, isLeft ? kLeftDrive2 : kRightDrive2, isLeft ? kLeftStrafe2 : kRightStrafe2, 0.0));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT));
   }
 

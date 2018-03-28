@@ -30,34 +30,35 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
   private static final Map<Scenario, String> SETTINGS = new HashMap<>();
 
   static {
-    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.LEFT), "L_SW_S_C2F");
-    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.RIGHT), "L_SW_O_C2F");
+    //    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.LEFT), "L_SW_S_C2F");
+    //    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.RIGHT), "L_SW_O_C2F");
     SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, OwnedSide.LEFT), "L_SC_S_C2F");
     SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, OwnedSide.RIGHT), "L_SC_O_C2F");
-    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.LEFT), "R_SW_O_C2F");
-    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.RIGHT), "R_SW_S_C2F");
+    //    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.LEFT), "R_SW_O_C2F");
+    //    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.RIGHT), "R_SW_S_C2F");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.LEFT), "R_SC_O_C2F");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.RIGHT), "R_SC_S_C2F");
   }
 
-  private final double kLeftIntakeAzimuth;
-  private final int kLeftIntakeStopDistance;
-  private final int kLeftDriveStopDistance;
-  private final double kLeftDrive;
-  private final double kLeftStrafe;
+  private double kLeftIntakeAzimuth;
+  private int kLeftIntakeStopDistance;
+  private int kLeftDriveStopDistance;
+  private double kLeftDrive;
+  private double kLeftStrafe;
 
-  private final double kRightIntakeAzimuth;
-  private final int kRightIntakeStopDistance;
-  private final int kRightDriveStopDistance;
-  private final double kRightDrive;
-  private final double kRightStrafe;
+  private double kRightIntakeAzimuth;
+  private int kRightIntakeStopDistance;
+  private int kRightDriveStopDistance;
+  private double kRightDrive;
+  private double kRightStrafe;
 
-  private final Command leftPath;
-  private final Command rightPath;
-  private final PowerUpGameFeature startFeature;
+  private Command leftPath;
+  private Command rightPath;
+  private PowerUpGameFeature startFeature;
   private String settings;
 
   Cube2Fetch(StartPosition startPosition, PowerUpGameFeature startFeature) {
+    if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
     this.startFeature = startFeature;
     String settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
@@ -125,11 +126,6 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     addSequential(new StartIntakeHold());
   }
 
-  @Override
-  public String toString() {
-    return "Cube2Fetch{" + "settings='" + settings + '\'' + '}';
-  }
-
   static final class DriveToCube extends Command {
 
     private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
@@ -168,6 +164,11 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           intakeSensorsSubsystem.getLidarDistance());
       logger.trace("DriveToCube ENDED");
     }
+  }
+
+  @Override
+  public String toString() {
+    return "Cube2Fetch{" + "settings='" + settings + '\'' + '}';
   }
 
   static final class IntakeInCubeTwo extends Command {
