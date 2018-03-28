@@ -1,7 +1,7 @@
 # NOT USED
 
 #path = "R_SW_S_C2D"
-ejectAzimuth = 70.0
+ejectAzimuth = 60.0
 
 drive1 = -0.1
 drive2 = 0.1
