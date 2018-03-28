@@ -2,13 +2,8 @@
 
 
 path = "L_SC_S_C2F"
-intakeAzimuth = -130.0
-pathAzimuth = 155.0
-# practice
-#driveStopDistance = 44
-#intakeStopDistance = 35
-# comp
-driveStopDistance = 35
-intakeStopDistance = 15
+intakeAzimuth = -135.0
+driveStopDistance = 45
+intakeStopDistance = 35
 drive = 0.15
 strafe = 0.15

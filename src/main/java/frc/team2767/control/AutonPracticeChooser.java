@@ -66,19 +66,20 @@ public class AutonPracticeChooser {
         break;
       case 0x03:
         commandChooser.addObject(
-            "30: scale always", AutonCommands.createFor(0x30, StartPosition.LEFT));
+            "30: scale always", AutonCommands.createFor(0x30, StartPosition.RIGHT));
         commandChooser.addObject(
             "31: switch priority, scale if same side",
-            AutonCommands.createFor(0x31, StartPosition.LEFT));
+            AutonCommands.createFor(0x31, StartPosition.RIGHT));
         commandChooser.addObject(
             "32: witch always, scale first if same side as switch",
-            AutonCommands.createFor(0x32, StartPosition.LEFT));
+            AutonCommands.createFor(0x32, StartPosition.RIGHT));
         commandChooser.addObject(
             "33: scale always, switch second if same side as scale",
-            AutonCommands.createFor(0x33, StartPosition.LEFT));
+            AutonCommands.createFor(0x33, StartPosition.RIGHT));
         commandChooser.addObject(
-            "34: switch only", AutonCommands.createFor(0x34, StartPosition.LEFT));
-        commandChooser.addObject("3F: log only", AutonCommands.createFor(0x3F, StartPosition.LEFT));
+            "34: switch only", AutonCommands.createFor(0x34, StartPosition.RIGHT));
+        commandChooser.addObject(
+            "3F: log only", AutonCommands.createFor(0x3F, StartPosition.RIGHT));
         break;
       default:
         logger.error("invalid auton switch position {}", autonSwitchPosition);

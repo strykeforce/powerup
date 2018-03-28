@@ -1,6 +1,5 @@
 # e kentwood
 
 
-path = "L_SC_S_C2D"
-pathAzimuth = 155.0
-ejectAzimuth = 150.0
+path = "R_SC_S_C2D"
+ejectAzimuth = -150.0

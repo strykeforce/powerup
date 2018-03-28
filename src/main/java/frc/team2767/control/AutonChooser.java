@@ -84,6 +84,7 @@ public class AutonChooser {
   }
 
   public StartPosition getStartPosition() {
+    if (isAutonTest()) return autonPracticeChooser.getStartPosition();
     return startPosition;
   }
 
