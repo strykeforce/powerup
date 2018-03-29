@@ -44,8 +44,10 @@ This is the [St. Joseph District Event](http://www.firstinmichigan.org/events/ev
 
 -   POWER UP code for _Lift Ticket_ and _Payload_ robots.
 
-[18.1.0]: https://github.com/strykeforce/powerup/compare/v18.0.0...v18.1.0
+[18.1.0]: https://github.com/strykeforce/powerup/compare/v18.0.1...v18.1.0
 
-[18.0.0]: https://github.com/strykeforce/powerup/compare/0d7a666...18.0.0
+[18.0.1]: https://github.com/strykeforce/powerup/compare/v18.0.0...v18.0.1
+
+[18.0.0]: https://github.com/strykeforce/powerup/compare/0d7a666...v18.0.0
 
 [unreleased]: https://github.com/strykeforce/powerup/compare/v18.1.0...master
