@@ -50,12 +50,12 @@ enableCamera  = true
   holdCurrentLimit   = 2
 
   # practice
-#  lidarSlope  = 1.0
-#  lidarOffset = -19.4
+  lidarSlope  = 1.0
+  lidarOffset = -19.4
 
   # comp
-  lidarSlope  = 1.0
-  lidarOffset = 0.0
+#  lidarSlope  = 1.0
+#  lidarOffset = 0.0
 
   # velocities
   loadVelocity       = -10_000
@@ -78,7 +78,7 @@ enableCamera  = true
   jogIncrement = 1400
 
   # positions
-  scaleLowPosition     = 12_678
+  scaleLowPosition     = 13_824
   scaleMidPosition     = 15_700
   scaleHighPosition    = 18_000
   stowPosition         = 0

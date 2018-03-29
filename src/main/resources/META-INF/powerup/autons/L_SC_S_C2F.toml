@@ -3,7 +3,7 @@
 
 path = "L_SC_S_C2F"
 intakeAzimuth = 45.0
-intakeStopDistance = 35
-driveStopDistance = 44
+intakeStopDistance = 30
+driveStopDistance = 42
 drive = 0.15
 strafe = 0.15
