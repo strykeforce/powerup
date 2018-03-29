@@ -103,7 +103,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
 
   public boolean isLidarDisanceWithin(double distance) {
     double range = lidarFilter.get();
-    if (range == 0.0) autonCommand.cancel();
+    if (range == kLidarOffset) autonCommand.cancel();
     return range < distance;
   }
 

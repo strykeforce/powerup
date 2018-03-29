@@ -44,6 +44,7 @@ public class SwitchOppositeCube1Deliver extends CommandGroup {
     addSequential(new TimedDrive(kTimeout2, kDrive2, kStrafe2, 0.0)); // push blocks
     addSequential(new TimedDrive(kTimeout3, kDrive3, kStrafe3, 0.0)); // go back
     addSequential(new TimedDrive(kTimeout4, kDrive4, kStrafe4, 0.0)); // back into switch
+    addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
     addSequential(new AzimuthCommand(kAzimuth2), 1.0);
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, EJECT_DURATION));
   }

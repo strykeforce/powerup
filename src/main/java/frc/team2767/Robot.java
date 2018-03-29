@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
       TelemetryService telemetryService = INJECTOR.telemetryService();
       INJECTOR.graphables().forEach(g -> g.register(telemetryService));
       telemetryService.start();
-      INJECTOR.intakeSensorsSubsystem().enableLidar(true);
     }
   }
 

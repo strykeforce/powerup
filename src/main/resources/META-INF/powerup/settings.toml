@@ -50,12 +50,12 @@ enableCamera  = true
   holdCurrentLimit   = 2
 
   # practice
-#  lidarSlope  = 1.0
-#  lidarOffset = -19.4
+  lidarSlope  = 1.0
+  lidarOffset = -19.4
 
   # comp
-  lidarSlope  = 1.0
-  lidarOffset = 0.0
+#  lidarSlope  = 1.0
+#  lidarOffset = 0.0
 
   # velocities
   loadVelocity       = -10_000
@@ -78,8 +78,8 @@ enableCamera  = true
   jogIncrement = 1400
 
   # positions
-  scaleLowPosition     = 9100
-  scaleMidPosition     = 14_700
+  scaleLowPosition     = 13_824
+  scaleMidPosition     = 15_700
   scaleHighPosition    = 18_000
   stowPosition         = 0
   portalPosition       = 5200
@@ -121,5 +121,5 @@ enableCamera  = true
 
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
-  enableTest = false
+  enableTest = true
   enableGame = true
