@@ -19,8 +19,10 @@ enableCamera  = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRed  = 2074 # carpet-x pull test
-  ticksPerInchBlue = 2074
+  ticksPerInchRedLeft   = 2273 # carpet-x pull test
+  ticksPerInchRedRight  = 2273 # carpet-x pull test
+  ticksPerInchBlueLeft  = 2273
+  ticksPerInchBlueRight = 2273
 
 [POWERUP.AZIMUTH]
   p = 0.013
