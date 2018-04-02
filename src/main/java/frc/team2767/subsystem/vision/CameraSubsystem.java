@@ -36,7 +36,7 @@ public class CameraSubsystem extends Subsystem implements Runnable {
     right
   }
 
-  public Side side = Side.right;
+  public Side side;
 
   private static final Logger logger = LoggerFactory.getLogger(ExtenderSubsystem.class);
 
@@ -54,11 +54,20 @@ public class CameraSubsystem extends Subsystem implements Runnable {
     thread.start();
   }
 
-  public void findLeft(){
+  public double findLeft(){
     side = Side.left;
     cancelled = false;
     thread = new Thread(this);
     thread.start();
+    return cubeAngle;
+  }
+
+  public double findRight(){
+    side = Side.right;
+    cancelled = false;
+    thread = new Thread(this);
+    thread.start();
+    return cubeAngle;
   }
 
   @Override
