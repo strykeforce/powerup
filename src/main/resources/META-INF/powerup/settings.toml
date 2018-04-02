@@ -23,10 +23,10 @@ enableCamera  = true
   ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
-  p = 0.009
+  p = 0.013
   i = 0.0
   d = 0.0
-  tolerance = 0.5
+  tolerance = 1.0
   outputMax = 0.3
   test = false
 
@@ -46,18 +46,31 @@ enableCamera  = true
   slowDownPosition = 37_700
 
 [POWERUP.INTAKE]
-  loadOutput  = -1.0
-  holdOutput  = -0.15
-  fastEjectOutput = 1.0
-  scaleEjectOutput = 0.4
-  slowEjectOutput = 0.30
+  normalCurrentLimit = 12  # when changing, also change in thirdcoast.toml
+  holdCurrentLimit   = 2
+
+  # practice
+  lidarSlope  = 1.0
+  lidarOffset = -19.4
+
+  # comp
+#  lidarSlope  = 1.0
+#  lidarOffset = 0.0
+
+  # velocities
+  loadVelocity       = -10_000
+  holdVelocity       = -1500
+  fastEjectVelocity  =  10_000
+  scaleEjectVelocity =  3000
+  slowEjectVelocity  =  1000 #2000
+  switchEjectVelocity = 3000
 
   # release positions
   zeroPosition = 2048
   openPosition = 2500
 
 [POWERUP.LIFT]
-  timeout      = 2.5
+  timeout      = 0.5
   upOutput     = 0.25
   downOutput   = -0.2
   stopOutput   = 0.0
@@ -65,8 +78,8 @@ enableCamera  = true
   jogIncrement = 1400
 
   # positions
-  scaleLowPosition     = 9100
-  scaleMidPosition     = 14_700
+  scaleLowPosition     = 13_824
+  scaleMidPosition     = 15_700
   scaleHighPosition    = 18_000
   stowPosition         = 0
   portalPosition       = 5200
@@ -84,12 +97,12 @@ enableCamera  = true
   upOutput       = 0.4
   downOutput     = -0.4
   stopOutput     = 0.0
-  closeEnough    = 250
-  jogIncrement   = 300
+  closeEnough    = 500
 
   # positions
   limitSwitchZeroPosition = 9394
-  absEncoderZeroPosition  = 1127
+  # practice absEncoderZeroPosition  = 1127
+  absEncoderZeroPosition  = 1900
   tightStowPosition       = 5200
   stowPosition            = 4500 # 3918
   intakePosition          = -100
@@ -108,5 +121,5 @@ enableCamera  = true
 
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
-  enableTest = false
+  enableTest = true
   enableGame = true

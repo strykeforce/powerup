@@ -67,28 +67,15 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
-
-  @Override
   public void disabledInit() {
     logger.info("DISABLED");
-    driveSubsystem.stop();
-    scheduler.removeAll();
     if (autonDone) {
       autonChooser = null;
       autonCommand = null;
+    } else {
+      autonChooser.reset();
     }
     Logging.flushLogs();
-  }
-
-  @Override
-  public void disabledPeriodic() {
-    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
-      logger.debug("align wheels buttons have activated");
-      driveSubsystem.alignWheelsToBar();
-    }
-
-    if (!autonDone) autonChooser.checkAutonSwitch();
   }
 
   @Override
@@ -101,13 +88,28 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-    scheduler.run();
+  public void teleopInit() {
+    logger.info("TELEOP");
+    scheduler.removeAll();
+    driveSubsystem.stop();
   }
 
   @Override
-  public void teleopInit() {
-    logger.info("TELEOP");
+  public void robotPeriodic() {}
+
+  @Override
+  public void disabledPeriodic() {
+    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+      logger.debug("align wheels buttons have activated");
+      driveSubsystem.alignWheelsToBar();
+    }
+
+    if (!autonDone) autonChooser.checkAutonSwitch();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    scheduler.run();
   }
 
   @Override

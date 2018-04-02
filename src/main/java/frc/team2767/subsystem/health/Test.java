@@ -1,13 +1,50 @@
 package frc.team2767.subsystem.health;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import org.slf4j.Logger;
 
-class Test {
-  String name;
-  TestType type;
-  List<Integer> ids;
-  List<TestCase> testCases;
+@ParametersAreNonnullByDefault
+abstract class Test implements Callable<Boolean> {
+
+  private static final long DEFAULT_WARMUP_MS = 500;
+  private static final int DEFAULT_ITERATIONS = 50;
+
+  final String name;
+  final List<Integer> ids = new ArrayList<>();
+  final List<TestCase> testCases = new ArrayList<>();
+  long warmup = DEFAULT_WARMUP_MS;
+  int iterations = DEFAULT_ITERATIONS;
+
+  Test(String name) {
+    this.name = Objects.requireNonNull(name, "name must not be null");
+  }
+
+  public void addId(int id) {
+    ids.add(id);
+  }
+
+  public void addAllIds(Collection<? extends Integer> ids) {
+    this.ids.addAll(ids);
+  }
+
+  public TestCase newTestCase() {
+    TestCase testCase = new TestCase(this);
+    testCases.add(testCase);
+    return testCase;
+  }
+
+  public void setWarmup(long millis) {
+    this.warmup = millis;
+  }
+
+  public void setIterations(int iterations) {
+    this.iterations = iterations;
+  }
 
   void log(Logger logger) {
     logger.info(name);

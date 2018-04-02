@@ -1,0 +1,11 @@
+waypoints = [
+  {x = 0.0, y = 0.0, angle = 0.0},
+  {x = 1.60, y = 1.10, angle = 0.0},
+]
+
+fit              = "HERMITE_CUBIC"
+sample_count     = 20_000
+dt               = 0.050    # sec
+max_velocity     = 2.5   # m/sec
+max_acceleration = 2.5  # m/sec/sec
+max_jerk         = 20.0  # m/sec/sec/sec
