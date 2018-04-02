@@ -70,7 +70,7 @@ enableCamera  = true
   openPosition = 2500
 
 [POWERUP.LIFT]
-  timeout      = 2.5
+  timeout      = 0.5
   upOutput     = 0.25
   downOutput   = -0.2
   stopOutput   = 0.0
