@@ -8,6 +8,7 @@ import frc.team2767.motion.PathControllerFactory;
 import frc.team2767.subsystem.*;
 import frc.team2767.subsystem.health.FollowerVelocityTestFactory;
 import frc.team2767.subsystem.health.HealthCheckSubsystem;
+import frc.team2767.subsystem.vision.CameraSubsystem;
 import frc.team2767.subsystem.health.VelocityTestFactory;
 import java.net.URL;
 import java.util.Set;
@@ -44,6 +45,8 @@ public interface SingletonComponent {
   ShoulderSubsystem shoulderSubsystem();
 
   ExtenderSubsystem extenderSubsystem();
+
+  CameraSubsystem cameraSubsystem();
 
   HealthCheckSubsystem healthCheckSubsystem();
 

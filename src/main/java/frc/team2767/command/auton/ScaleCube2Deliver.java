@@ -88,7 +88,7 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
         });
 
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
-    addSequential(new Stow());
+    addSequential(new Stow(), 1.2);
   }
 
   @Override
