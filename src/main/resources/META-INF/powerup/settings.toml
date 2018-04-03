@@ -26,7 +26,7 @@ enableCamera  = true
   p = 0.013
   i = 0.0
   d = 0.0
-  tolerance = 0.5
+  tolerance = 1.0
   outputMax = 0.3
   test = false
 
@@ -46,18 +46,31 @@ enableCamera  = true
   slowDownPosition = 37_700
 
 [POWERUP.INTAKE]
-  loadOutput  = -1.0
-  holdOutput  = -0.15
-  fastEjectOutput = 1.0
-  scaleEjectOutput = 0.4
-  slowEjectOutput = 0.20
+  normalCurrentLimit = 12  # when changing, also change in thirdcoast.toml
+  holdCurrentLimit   = 2
+
+  # practice
+  lidarSlope  = 1.0
+  lidarOffset = -19.4
+
+  # comp
+#  lidarSlope  = 1.0
+#  lidarOffset = 0.0
+
+  # velocities
+  loadVelocity       = -10_000
+  holdVelocity       = -1500
+  fastEjectVelocity  =  10_000
+  scaleEjectVelocity =  3000
+  slowEjectVelocity  =  1000 #2000
+  switchEjectVelocity = 3000
 
   # release positions
   zeroPosition = 2048
   openPosition = 2500
 
 [POWERUP.LIFT]
-  timeout      = 2.5
+  timeout      = 0.5
   upOutput     = 0.25
   downOutput   = -0.2
   stopOutput   = 0.0
@@ -65,8 +78,8 @@ enableCamera  = true
   jogIncrement = 1400
 
   # positions
-  scaleLowPosition     = 9100
-  scaleMidPosition     = 14_700
+  scaleLowPosition     = 13_824
+  scaleMidPosition     = 15_700
   scaleHighPosition    = 18_000
   stowPosition         = 0
   portalPosition       = 5200
@@ -88,7 +101,8 @@ enableCamera  = true
 
   # positions
   limitSwitchZeroPosition = 9394
-  absEncoderZeroPosition  = 1127
+  # practice absEncoderZeroPosition  = 1127
+  absEncoderZeroPosition  = 1900
   tightStowPosition       = 5200
   stowPosition            = 4500 # 3918
   intakePosition          = -100
@@ -107,57 +121,5 @@ enableCamera  = true
 
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
-  enableTest = false
+  enableTest = true
   enableGame = true
-
-[POWERUP.SCALESETTINGS.RIGHT]
-  path1 = "right_scale"
-  path2 = "right_secondcube_1"
-  path3 = "right_secondcube_2"
-  distance = 210_000
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = -50.0
-  azimuth2 = -130.0
-  azimuth3 = 20.0
-  drive1 = 0.2
-  strafe1 = -0.2
-
-[POWERUP.SCALESETTINGS.LEFT]
-  path1 = "left_scale"
-  path2 = "left_secondcube_1"
-  path3 = "left_secondcube_2"
-  distance = 210_000
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = 50.0
-  azimuth2 = 130.0
-  azimuth3 = -20.0
-  drive1 = 0.2
-  strafe1 = 0.2
-
-[POWERUP.SCALESETTINGS.RIGHTTOLEFT]
-  path1 = "right_opposite_scale"
-  path2 = "left_secondcube_1"
-  path3 = "left_secondcube_2"
-  distance = 0
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = -130.0
-  azimuth2 = -130.0
-  azimuth3 = 20.0
-  drive1 = 0.2
-  strafe1 = 0.2
-
-[POWERUP.SCALESETTINGS.LEFTTORIGHT]
-  path1 = "left_opposite_scale"
-  path2 = "right_secondcube_1"
-  path3 = "right_secondcube_2"
-  distance = 0
-  intakeStopDist = 35
-  driveStopDist = 44
-  azimuth1 = 50.0
-  azimuth2 = 130.0
-  azimuth3 = -20.0
-  drive1 = 0.2
-  strafe1 = 0.2

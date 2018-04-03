@@ -18,4 +18,9 @@ public class LogCommand extends InstantCommand {
   protected void initialize() {
     logger.info(message);
   }
+
+  @Override
+  public String toString() {
+    return "LogCommand{'" + message + "'}";
+  }
 }

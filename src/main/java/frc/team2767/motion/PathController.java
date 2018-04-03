@@ -48,8 +48,8 @@ public class PathController implements Runnable, Item {
   private final SwerveDrive drive;
   private final Wheel[] wheels;
   private final AHRS gyro;
-  private final Notifier notifier;
   private final double kFAccel;
+  private Notifier notifier;
   private int[] start = new int[4];
   private int iteration;
   private volatile boolean running;
@@ -92,8 +92,6 @@ public class PathController implements Runnable, Item {
         trajectory.length(),
         (System.nanoTime() - start) / 1e6);
 
-    notifier = new Notifier(this);
-
     toml = settings.getTable("POWERUP.PATH");
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
@@ -121,11 +119,13 @@ public class PathController implements Runnable, Item {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
     }
     iteration = 1;
+    notifier = new Notifier(this);
     notifier.startPeriodic(config.dt);
     running = true;
   }
 
   public void stop() {
+    if (!running) return;
     logger.info("FINISH path {}", path);
     drive.drive(0, 0, 0);
     notifier.stop();

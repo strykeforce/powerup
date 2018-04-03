@@ -4,12 +4,16 @@ import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.POSITION;
 import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.PULSE_WIDTH_POSITION;
 
 import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifier.GeneralPin;
+import com.moandjiezana.toml.Toml;
 import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
+import frc.team2767.Settings;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -33,6 +37,9 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   private static final double LIDAR_READ_PERIOD = 0.1;
   private static final int NUM_TAPS = 4;
 
+  private final double kLidarSlope;
+  private final double kLidarOffset;
+
   private final CANifier canifier = new CANifier(CANIFIER_ID);
   private final double lidarPwmData[] = new double[2];
   private final double shoulderPwmData[] = new double[2];
@@ -41,8 +48,13 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   private boolean lidarEnabled = false;
   private Timer lidarTimer;
 
+  private Command autonCommand;
+
   @Inject
-  public IntakeSensorsSubsystem() {
+  public IntakeSensorsSubsystem(Settings settings) {
+    Toml toml = settings.getTable("POWERUP.INTAKE");
+    kLidarSlope = toml.getDouble("lidarSlope") / 10.0;
+    kLidarOffset = toml.getDouble("lidarOffset");
     lidarFilter =
         LinearDigitalFilter.movingAverage(
             new PIDSource() {
@@ -57,10 +69,11 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
               @Override
               public double pidGet() {
                 canifier.getPWMInput(CANifier.PWMChannel.PWMChannel0, lidarPwmData);
-                return lidarPwmData[0] / 10.0;
+                return kLidarSlope * lidarPwmData[0] + kLidarOffset;
               }
             },
             NUM_TAPS);
+    enableLidar(false);
   }
 
   @Override
@@ -74,21 +87,32 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   public void enableLidar(boolean enable) {
     lidarEnabled = enable;
     if (enable) {
+      logger.info("enabling lidar");
+      canifier.setGeneralOutput(GeneralPin.LIMF, true, true);
       lidarTimer = new Timer();
       lidarTimer.start();
     } else {
-      lidarTimer.stop();
+      logger.info("disabling lidar");
+      canifier.setGeneralOutput(GeneralPin.LIMF, false, true);
+      if (lidarTimer != null) lidarTimer.stop();
       lidarTimer = null;
+      autonCommand = null;
       lidarFilter.reset();
     }
   }
 
   public boolean isLidarDisanceWithin(double distance) {
-    return lidarFilter.get() < distance;
+    double range = lidarFilter.get();
+    if (range == kLidarOffset) autonCommand.cancel();
+    return range < distance;
   }
 
   public double getLidarDistance() {
     return lidarFilter.get();
+  }
+
+  public void setAutonCommand(Command autonCommand) {
+    this.autonCommand = autonCommand;
   }
 
   public int getShoulderAbsolutePosition() {

@@ -1,5 +1,6 @@
 package frc.team2767;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -47,7 +48,14 @@ public class Robot extends TimedRobot {
     driveSubsystem = INJECTOR.driveSubsystem();
     driveSubsystem.zeroAzimuthEncoders();
 
-    if (settings.isCameraEnabled()) CameraServer.getInstance().startAutomaticCapture();
+    if (settings.isCameraEnabled()) {
+      System.out.println("Camera is enabled");
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setBrightness(40);
+      camera.setExposureManual(30);
+      camera.setExposureHoldCurrent();
+      camera.setResolution(320, 240);
+    }
 
     LiveWindow.disableAllTelemetry();
     if (!settings.isEvent()) {
@@ -59,26 +67,15 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
-
-  @Override
   public void disabledInit() {
     logger.info("DISABLED");
     if (autonDone) {
       autonChooser = null;
       autonCommand = null;
+    } else {
+      autonChooser.reset();
     }
     Logging.flushLogs();
-  }
-
-  @Override
-  public void disabledPeriodic() {
-    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
-      logger.debug("align wheels buttons have activated");
-      driveSubsystem.alignWheelsToBar();
-    }
-
-    if (!autonDone) autonChooser.checkAutonSwitch();
   }
 
   @Override
@@ -91,15 +88,28 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-    scheduler.run();
-  }
-
-  @Override
   public void teleopInit() {
     logger.info("TELEOP");
     scheduler.removeAll();
     driveSubsystem.stop();
+  }
+
+  @Override
+  public void robotPeriodic() {}
+
+  @Override
+  public void disabledPeriodic() {
+    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+      logger.debug("align wheels buttons have activated");
+      driveSubsystem.alignWheelsToBar();
+    }
+
+    if (!autonDone) autonChooser.checkAutonSwitch();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    scheduler.run();
   }
 
   @Override

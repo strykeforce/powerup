@@ -1,0 +1,10 @@
+# NOT USED
+
+#path = "R_SW_S_C2D"
+ejectAzimuth = 60.0
+
+drive1 = -0.1
+drive2 = 0.1
+
+strafe1 = -0.1
+strafe2 = 0.1

@@ -1,16 +1,15 @@
 package frc.team2767.command.auton;
 
-import frc.team2767.command.StartPosition;
-
 /**
  * Fail-safe command, depends on starting position.
  *
  * <p>Center = onTrue command, Left or Right = onFalse command
  */
 public class CrossTheLineCommandGroup extends PowerUpCommandGroup {
+  private static final double START_POSITION_YAW = 0d;
 
   public CrossTheLineCommandGroup(Side side) {
-    addSequential(new PathCommand(side.path, side.startPosition));
+    addSequential(new PathCommand(side.path, side.startPosition.getPathAngle(START_POSITION_YAW)));
   }
 
   public enum Side {

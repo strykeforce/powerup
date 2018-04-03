@@ -1,3 +1,5 @@
-path = "right_secondcube_2"
-pathAzimuth = -130.0
-ejectAzimuth = 20.0
+# e kentwood
+
+
+path = "L_SC_S_C2D"
+ejectAzimuth = 150.0

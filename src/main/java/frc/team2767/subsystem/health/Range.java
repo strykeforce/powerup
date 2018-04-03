@@ -1,7 +1,7 @@
 package frc.team2767.subsystem.health;
 
 class Range {
-  double low, high;
+  final double low, high;
 
   Range(double low, double high) {
     this.low = low;
