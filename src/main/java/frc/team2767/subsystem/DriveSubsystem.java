@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
-import frc.team2767.command.StartPosition;
+import frc.team2767.command.auton.StartPosition;
 import frc.team2767.command.drive.TeleOpDriveCommand;
 import frc.team2767.motion.AzimuthController;
 import frc.team2767.motion.AzimuthControllerFactory;

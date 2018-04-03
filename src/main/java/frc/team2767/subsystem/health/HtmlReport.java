@@ -29,7 +29,7 @@ class HtmlReport {
 
   private static Tag testCase(TestCase c) {
     return div(
-        h3(c.test.name + ": " + c.output * 12 + " Volts"),
+        h3(c.test.name + ": " + String.format("%4.2f", c.output * 12) + " Volts"),
         p(join(b("Current:"), String.format("%4.2f - %4.2f amps", c.current.low, c.current.high)))
             .withClass("spec"),
         p(join(b("Speed:"), String.format("%6.0f - %6.0f ticks/100 ms", c.speed.low, c.speed.high)))

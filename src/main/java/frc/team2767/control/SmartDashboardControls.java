@@ -7,7 +7,7 @@ import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
 import frc.team2767.command.drive.*;
-import frc.team2767.command.health.HealthCheck;
+import frc.team2767.command.health.TestRunner;
 import frc.team2767.command.intake.IntakeIn;
 import frc.team2767.command.intake.IntakeOut;
 import frc.team2767.command.intake.IntakeStop;
@@ -17,14 +17,18 @@ import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
+import frc.team2767.command.test.LidarTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class SmartDashboardControls {
 
+  private final boolean isEvent;
+
   @Inject
   public SmartDashboardControls(Settings settings) {
+    isEvent = settings.isEvent();
     Controls.logger.debug("initializing SmartDashboard controls");
     Toml toml = settings.getTable("POWERUP.SMARTDASHBOARD");
 
@@ -41,7 +45,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
     SmartDashboard.putData("Pit/Shoulder/ZeroLS", new ShoulderZeroWithLimitSwitch());
     SmartDashboard.putData("Pit/Shoulder/ZeroEnc", new ShoulderZeroWithEncoder());
-    SmartDashboard.putData("Pit/HealthCheck", new HealthCheck());
+    if (!isEvent) SmartDashboard.putData("Pit/HealthCheck", new TestRunner());
   }
 
   private void addWheelPitCommands() {
@@ -62,6 +66,7 @@ public class SmartDashboardControls {
   private void addTestCommands() {
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
+    SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
   }
 
   private void addGameCommands() {

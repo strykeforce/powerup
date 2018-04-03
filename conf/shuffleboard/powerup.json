@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.011058451816745656,
+  "dividerPosition": 0.020338983050847456,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -181,20 +181,14 @@
             "content": {
               "_type": "Camera Stream",
               "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Block obtained?",
-              "_title": "/SmartDashboard/Block obtained?",
-              "colorWhenTrue": "#7CFC00FF",
-              "colorWhenFalse": "#8B0000FF"
+              "_title": "USB Camera 0",
+              "showControls": true,
+              "showCrosshair": true,
+              "crosshairColor": "#FFFFFFFF",
+              "compression": 0.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           },
           "5,0": {
@@ -317,6 +311,17 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Test/CommandChooser",
               "_title": "Auton Command"
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Lidar",
+              "_title": "Lidar"
             }
           }
         }

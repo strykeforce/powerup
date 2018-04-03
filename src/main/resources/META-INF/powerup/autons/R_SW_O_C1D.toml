@@ -1,0 +1,21 @@
+# e kentwood
+
+
+path = "R_SW_O_C1D"
+azimuth1 = -45.0
+azimuth2 = -70.0
+
+timeout1 = 0.75
+timeout2 = 1.0
+timeout3 = 0.5
+timeout4 = 0.75
+
+drive1 = 0.25
+drive2 = 0.0
+drive3 = 0.0
+drive4 = 0.25
+
+strafe1 = 0.0
+strafe2 = -0.25
+strafe3 = 0.25
+strafe4 = 0.0
