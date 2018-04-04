@@ -68,7 +68,8 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
     SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
-    SmartDashboard.putData("Test/AutoPal", new PathCommand("PalPath"));
+    SmartDashboard.putData("Test/AutoCalSame", new PathCommand("SameCalPath"));
+    SmartDashboard.putData("Test/AutoCalOpposite", new PathCommand("OppositeCalPath"));
   }
 
   private void addGameCommands() {
