@@ -17,7 +17,7 @@ public class PathCommand extends Command {
     requires(driveSubsystem);
   }
 
-  PathCommand(String pathName) {
+  public PathCommand(String pathName) {
     this(pathName, 0d);
     autoPathAzimuth = true;
   }
