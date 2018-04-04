@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
+import frc.team2767.command.camera.CameraLeftEdge;
+import frc.team2767.command.camera.CameraRightEdge;
 import frc.team2767.command.intake.DisableLidar;
 import frc.team2767.command.intake.EnableLidar;
 import frc.team2767.command.intake.IntakeLoad;
@@ -103,6 +105,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
 
     addParallel(new EnableLidar());
     addSequential(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
+    addSequential(isLeft ? new CameraLeftEdge() : new CameraRightEdge());
 
     addSequential(
         new CommandGroup() {
