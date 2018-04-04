@@ -48,13 +48,13 @@ public class CameraSubsystem extends Subsystem implements Runnable {
   public CameraSubsystem(Talons talons, Settings settings) {}
 
   public void initialize() {
-    //side = Side.right;
+    // side = Side.right;
     cancelled = false;
     thread = new Thread(this);
     thread.start();
   }
 
-  public double findLeft(){
+  public double findLeft() {
     side = Side.left;
     cancelled = false;
     thread = new Thread(this);
@@ -62,7 +62,7 @@ public class CameraSubsystem extends Subsystem implements Runnable {
     return cubeAngle;
   }
 
-  public double findRight(){
+  public double findRight() {
     side = Side.right;
     cancelled = false;
     thread = new Thread(this);
@@ -110,7 +110,7 @@ public class CameraSubsystem extends Subsystem implements Runnable {
     cubeAngle = (rEdge - 160) * 30 / 160;
     System.out.println("Angle: " + cubeAngle);
     running = false;
-}
+  }
 
   public boolean isFinished() {
     System.out.println("iFinished: " + !running);
