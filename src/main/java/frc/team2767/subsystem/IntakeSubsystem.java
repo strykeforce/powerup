@@ -4,6 +4,7 @@ import static com.ctre.phoenix.motorcontrol.ControlMode.Velocity;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.moandjiezana.toml.Toml;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Robot;
 import frc.team2767.Settings;
@@ -20,9 +21,11 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private static final int LEFT_ID = 30; // PDP 10
   private static final int RIGHT_ID = 31; // PDP 9
   private static final int TIMEOUT = 10;
+  private static final int RELEASE_SERVO = 3;
 
   private static final String TABLE = Robot.TABLE + ".INTAKE";
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);
+  private final double kReleaseDefault;
   private final int kLoadVelocity;
   private final int kHoldVelocity;
   private final int kFastEjectVelocity;
@@ -33,6 +36,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final int kHoldCurrentLimit;
 
   private final TalonSRX leftTalon, rightTalon;
+  private final Servo releaseServo = new Servo(RELEASE_SERVO);
 
   @Inject
   public IntakeSubsystem(Talons talons, Settings settings) {
@@ -48,6 +52,8 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     kScaleEjectVelocity = toml.getLong("scaleEjectVelocity").intValue();
     kSlowEjectVelocity = toml.getLong("slowEjectVelocity").intValue();
     kSwitchEjectVelocity = toml.getLong("switchEjectVelocity").intValue();
+    kReleaseDefault = toml.getDouble("releaseDefault");
+    releaseServo.set(kReleaseDefault);
 
     kNormalCurrentLimit = toml.getLong("normalCurrentLimit").intValue();
     kHoldCurrentLimit = toml.getLong("holdCurrentLimit").intValue();
@@ -60,6 +66,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     logger.info("scaleEjectVelocity = {}", kScaleEjectVelocity);
     logger.info("slowEjectVelocity = {}", kSlowEjectVelocity);
     logger.info("switchEjectVelocity = {}", kSwitchEjectVelocity);
+    logger.info("releaseDefault = {}", kReleaseDefault);
   }
 
   @Override
