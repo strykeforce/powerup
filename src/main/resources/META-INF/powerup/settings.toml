@@ -69,6 +69,9 @@ enableCamera  = true
   zeroPosition = 2048
   openPosition = 2500
 
+  # release servo positions
+  releaseDefault = 0.0
+
 [POWERUP.LIFT]
   timeout      = 0.5
   upOutput     = 0.25
@@ -103,11 +106,11 @@ enableCamera  = true
   limitSwitchZeroPosition = 9394
   # practice absEncoderZeroPosition  = 1127
   absEncoderZeroPosition  = 1900
-  tightStowPosition       = 5200
-  stowPosition            = 4500 # 3918
-  intakePosition          = -100
-  launchSwitchPosition    = 4000
-  launchScalePosition     = 2500
+  tightStowPosition       = 8666
+  stowPosition            = 7500
+  intakePosition          = -166
+  launchSwitchPosition    = 6666
+  launchScalePosition     = 4166
 
 [POWERUP.EXTENDER]
   leftUpPosition     = 0.41

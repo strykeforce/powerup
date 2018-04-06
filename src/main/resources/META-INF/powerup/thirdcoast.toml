@@ -160,16 +160,16 @@
     source = "FeedbackConnector"
     normal = "NormallyOpen"
   [TALON.currentLimit]
-    continuous = 10
+    continuous = 15
     peak = 0
     peakDuration = 0
   [TALON.motionMagic]
-    acceleration = 4000
-    cruiseVelocity = 800
+    acceleration = 10_000
+    cruiseVelocity = 1800
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic
-    pGain = 1.0
+    pGain = 0.6
     iGain = 0.0
-    dGain = 50.0
-    fGain = 1.1
+    dGain = 25.0
+    fGain = 0.48
     iZone = 0
     allowableClosedLoopError = 0
