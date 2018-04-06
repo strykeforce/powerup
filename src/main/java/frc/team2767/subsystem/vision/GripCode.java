@@ -4,9 +4,7 @@ import edu.wpi.first.wpilibj.vision.VisionPipeline;
 import java.util.ArrayList;
 import java.util.List;
 import org.opencv.core.*;
-import org.opencv.core.Core.*;
-import org.opencv.imgproc.*;
-import org.opencv.objdetect.*;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * GripPipeline class.
@@ -16,17 +14,18 @@ import org.opencv.objdetect.*;
  * @author GRIP
  */
 public class GripCode implements VisionPipeline {
+  static {
+    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+  }
+
   // Outputs
   private Mat blurOutput = new Mat();
   private Mat hsvThresholdOutput = new Mat();
   private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
   private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 
-  static {
-    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-  }
-
   /** This is the primary method that runs the entire pipeline and updates the outputs. */
+  @Override
   public void process(Mat source0) {
     // Step Blur0:
     Mat blurInput = source0;
@@ -117,40 +116,6 @@ public class GripCode implements VisionPipeline {
   }
 
   /**
-   * An indication of which type of filter to use for a blur. Choices are BOX, GAUSSIAN, MEDIAN, and
-   * BILATERAL
-   */
-  enum BlurType {
-    BOX("Box Blur"),
-    GAUSSIAN("Gaussian Blur"),
-    MEDIAN("Median Filter"),
-    BILATERAL("Bilateral Filter");
-
-    private final String label;
-
-    BlurType(String label) {
-      this.label = label;
-    }
-
-    public static BlurType get(String type) {
-      if (BILATERAL.label.equals(type)) {
-        return BILATERAL;
-      } else if (GAUSSIAN.label.equals(type)) {
-        return GAUSSIAN;
-      } else if (MEDIAN.label.equals(type)) {
-        return MEDIAN;
-      } else {
-        return BOX;
-      }
-    }
-
-    @Override
-    public String toString() {
-      return this.label;
-    }
-  }
-
-  /**
    * Softens an image using one of several filters.
    *
    * @param input The image on which to perform the blur.
@@ -237,6 +202,40 @@ public class GripCode implements VisionPipeline {
       final double ratio = bb.width / (double) bb.height;
       if (ratio < minRatio || ratio > maxRatio) continue;
       output.add(contour);
+    }
+  }
+
+  /**
+   * An indication of which type of filter to use for a blur. Choices are BOX, GAUSSIAN, MEDIAN, and
+   * BILATERAL
+   */
+  enum BlurType {
+    BOX("Box Blur"),
+    GAUSSIAN("Gaussian Blur"),
+    MEDIAN("Median Filter"),
+    BILATERAL("Bilateral Filter");
+
+    private final String label;
+
+    BlurType(String label) {
+      this.label = label;
+    }
+
+    public static BlurType get(String type) {
+      if (BILATERAL.label.equals(type)) {
+        return BILATERAL;
+      } else if (GAUSSIAN.label.equals(type)) {
+        return GAUSSIAN;
+      } else if (MEDIAN.label.equals(type)) {
+        return MEDIAN;
+      } else {
+        return BOX;
+      }
+    }
+
+    @Override
+    public String toString() {
+      return this.label;
     }
   }
 }

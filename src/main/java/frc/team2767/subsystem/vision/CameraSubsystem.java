@@ -18,23 +18,26 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 public class CameraSubsystem extends Subsystem implements Runnable {
-  private VisionThread visionThread;
-  private final Object imgLock = new Object();
-  public UsbCamera camera;
-  public Rect r;
-  public int rEdge;
-  public int rRight;
-  public double rCenter;
-  public boolean validRead;
-  public double xCoordinate;
-  public double[] xArray = new double[5]; // potentially make length configurable
-  public double cubeAngle = -1;
-  public double cubeRight = -1;
-  public double cubeCenter = -1;
 
-  public enum Side { // this currently says if you want the right or left-most block.
-    left,
-    right
+  private static final int CAMERA_WIDTH = 320;
+  private static final int FOV_DEG = 30;
+  private static final int FOV_DEG_PER_PIXEL = FOV_DEG / (CAMERA_WIDTH / 2);
+
+  private UsbCamera camera;
+  private Rect candidateRect;
+  private int rEdge;
+  private int rRight;
+  private double rCenter;
+  private boolean validRead;
+  private double xCoordinate;
+  private double[] xArray = new double[5]; // potentially make length configurable
+  private double cubeLeftAngle = -1;
+  private double cubeRightAngle = -1;
+  private double cubeCenterAngle = -1;
+
+  public enum Side { // this currently says if you want the RIGHT or LEFT-most block.
+    LEFT,
+    RIGHT
   }
 
   public Side side;
@@ -42,33 +45,15 @@ public class CameraSubsystem extends Subsystem implements Runnable {
   private static final Logger logger = LoggerFactory.getLogger(CameraSubsystem.class);
 
   private Thread thread;
-  private volatile boolean cancelled;
   private volatile boolean running;
 
   @Inject
   public CameraSubsystem() {}
 
-  public void initialize() {
-    // side = Side.right;
-    cancelled = false;
+  public void find(Side side) {
     thread = new Thread(this);
     thread.start();
-  }
-
-  public double findLeft() {
-    side = Side.left;
-    cancelled = false;
-    thread = new Thread(this);
-    thread.start();
-    return cubeAngle; // FIXME put in settings file
-  }
-
-  public double findRight() {
-    side = Side.right;
-    cancelled = false;
-    thread = new Thread(this);
-    thread.start();
-    return cubeAngle;
+    running = true;
   }
 
   @Override
@@ -81,51 +66,43 @@ public class CameraSubsystem extends Subsystem implements Runnable {
     Mat threshold = gripCode.hsvThresholdOutput();
     Imgcodecs.imwrite("/home/lvuser/image.jpg", threshold);
 
-    ArrayList<MatOfPoint> image = gripCode.filterContoursOutput();
-    int m = image.size(); // find the number of contours
-    logger.debug("Camera array size ", m);
+    ArrayList<MatOfPoint> contours = gripCode.filterContoursOutput();
+    logger.debug("Number of countours = {} ", contours.size());
 
-    if (!image.isEmpty()) { // if a contour is found
-      if (side == Side.right) {
+    if (!contours.isEmpty()) { // if a contour is found
+      if (side == Side.RIGHT) {
         rEdge = 0;
-        for (int n = 0; n < m; n++) { // find the right-most contour
-          if (Imgproc.boundingRect(image.get(n)).x > rEdge) {
-            r = Imgproc.boundingRect(image.get(n));
-            rEdge = r.x + r.width;
+        for (MatOfPoint contour : contours) { // find the RIGHT-most contour
+          Rect boundingRec = Imgproc.boundingRect(contour);
+          if (boundingRec.x > rEdge) {
+            candidateRect = boundingRec;
+            rEdge = candidateRect.x + candidateRect.width;
           }
         }
       }
-      if (side == Side.left) {
-        rEdge = 320;
-        for (int n = 0; n < m; n++) { // find the left-most block
-          if (Imgproc.boundingRect(image.get(n)).x < rEdge) {
-            r = Imgproc.boundingRect(image.get(n));
-            rEdge = r.x;
-            rCenter = r.x + (.5 * r.width);
-            rRight = r.x + r.width;
+      if (side == Side.LEFT) {
+        rEdge = CAMERA_WIDTH;
+        for (MatOfPoint contour : contours) { // find the LEFT-most block
+          if (Imgproc.boundingRect(contour).x < rEdge) {
+            candidateRect = Imgproc.boundingRect(contour);
+            rEdge = candidateRect.x;
+            rCenter = candidateRect.x + (.5 * candidateRect.width);
+            rRight = candidateRect.x + candidateRect.width;
           }
         }
       }
     }
-    cubeAngle = (rEdge - 160) * 30 / 160;
-    cubeCenter = (rCenter - 160) * 30 / 160;
-    cubeRight = (rRight - 160) * 30 / 160;
-    System.out.println("Cube left edge angle: " + cubeAngle);
-    System.out.println("Cube right edge angle: " + cubeRight);
-    System.out.println("Code center angle" + cubeCenter);
+    cubeLeftAngle = (rEdge - CAMERA_WIDTH / 2) * FOV_DEG_PER_PIXEL;
+    cubeCenterAngle = (rCenter - CAMERA_WIDTH / 2) * FOV_DEG_PER_PIXEL;
+    cubeRightAngle = (rRight - CAMERA_WIDTH / 2) * FOV_DEG_PER_PIXEL;
+    logger.debug("cube LEFT edge angle = {}", cubeLeftAngle);
+    logger.debug("cube RIGHT edge angle = {}", cubeRightAngle);
+    logger.debug("cube CENTER edge angle = {}", cubeCenterAngle);
     running = false;
   }
 
   public boolean isFinished() {
     return (!running);
-  }
-
-  public boolean isCancelled() {
-    if (cancelled) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   public void end() {
@@ -136,64 +113,22 @@ public class CameraSubsystem extends Subsystem implements Runnable {
     }
   }
 
-  public void cancel() {
-    cancelled = true;
-  }
-
   public void cameraInit() {
     System.out.println("Camera Init ran");
   }
 
-  public double getAngle() {
-    System.out.println("CameraAngle ran");
-    /// *
-    visionThread =
-        new VisionThread(
-            camera,
-            new GripCode(),
-            pipeline -> {
-              int m = pipeline.filterContoursOutput().size(); // find the number of contours
-              System.out.println("visionThread ran");
-              if (!pipeline.filterContoursOutput().isEmpty()) { // if a contour is found
-                synchronized (imgLock) {
-                  System.out.println("synchronized ran");
-                  if (side == Side.right) {
-                    rEdge = 0;
-                    for (int n = 0; n < m; n++) { // find the right-most contour
-                      if (Imgproc.boundingRect(pipeline.filterContoursOutput().get(n)).x > rEdge) {
-                        r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(n));
-                        rEdge = r.x + r.width;
-                        System.out.println("Cube angle: " + rEdge);
-                      }
-                    }
-                  }
-                  if (side == Side.left) {
-                    rEdge = 320;
-                    for (int n = 0; n < m; n++) { // find the left-most block
-                      if (Imgproc.boundingRect(pipeline.filterContoursOutput().get(n)).x < rEdge) {
-                        r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(n));
-                        rEdge = r.x;
-                      }
-                    }
-                  }
-                }
-              }
-            });
-    visionThread.start(); // */
-
-    cubeAngle = (xCoordinate - 160) * 30 / 160;
-    System.out.println(cubeAngle);
-    return cubeAngle;
-  }
-
-  public void stopCapture() {
-    visionThread.stop();
-  }
-
-  public boolean finishedRead() {
-    return cubeAngle > -1;
-  }
-
   @Override
   protected void initDefaultCommand() {}
+
+  public double getCubeLeftAngle() {
+    return cubeLeftAngle;
+  }
+
+  public double getCubeRightAngle() {
+    return cubeRightAngle;
+  }
+
+  public double getCubeCenterAngle() {
+    return cubeCenterAngle;
+  }
 }
