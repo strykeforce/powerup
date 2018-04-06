@@ -51,8 +51,8 @@ public class Robot extends TimedRobot {
     if (settings.isCameraEnabled()) {
       System.out.println("Camera is enabled");
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setBrightness(50);
-      camera.setExposureManual(50);
+      camera.setBrightness(40);
+      camera.setExposureManual(40);
       camera.setExposureHoldCurrent();
       camera.setResolution(320, 240);
     }

@@ -9,12 +9,7 @@ public class CameraInit extends Command {
 
   @Override
   protected void initialize() {
-    cameraSubsystem.end();
-  }
-
-  @Override
-  protected void end() {
-    cameraSubsystem.end();
+    cameraSubsystem.initialize();
   }
 
   @Override
