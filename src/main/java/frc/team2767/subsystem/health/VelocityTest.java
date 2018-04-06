@@ -1,6 +1,5 @@
 package frc.team2767.subsystem.health;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
@@ -20,7 +19,7 @@ public class VelocityTest extends Test {
 
   @Override
   public Boolean call() throws Exception {
-    logger.info("running {}", name);
+    /*logger.info("running {}", name);
 
     for (TestCase tc : testCases) {
       for (TalonSRX talon : talons.getTalons(ids)) {
@@ -47,7 +46,7 @@ public class VelocityTest extends Test {
         result.velocity /= iterations;
         result.current /= iterations;
       }
-    }
+    }*/
     return true;
   }
 
