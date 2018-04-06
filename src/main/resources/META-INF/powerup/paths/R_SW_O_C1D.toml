@@ -2,9 +2,9 @@
 
 waypoints = [
   {x = 0.0, y = 0.0, angle = 0.0},
-  {x = 4.8, y = 0.0, angle = 0.0},
-  {x = 5.7, y = 1.2, angle = 90.0},
-  {x = 5.7, y = 4.10, angle = 90.0},
+  {x = 4.6, y = 0.0, angle = 0.0},
+  {x = 5.5, y = 1.2, angle = 90.0},
+  {x = 5.5, y = 3.85, angle = 90.0},
 ]
 
 fit              = "HERMITE_CUBIC"
