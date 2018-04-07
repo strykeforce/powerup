@@ -25,8 +25,8 @@ description   = "Stryke Force 2018 POWER UP"
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRed  = 2074 # carpet-x pull test
-  ticksPerInchBlue = 2074
+  ticksPerInchRed  = 2273 # carpet-x pull test
+  ticksPerInchBlue = 2273
 
 [POWERUP.AZIMUTH]
   p = 0.013

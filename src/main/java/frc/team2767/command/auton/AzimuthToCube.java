@@ -9,18 +9,17 @@ import org.slf4j.LoggerFactory;
 
 public class AzimuthToCube extends Command {
 
-  private static final int STABLE = 2;
-
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final VisionSubsystem visionSubsystem = Robot.INJECTOR.visionSubsystem();
   private static final Logger logger = LoggerFactory.getLogger(AzimuthToCube.class);
 
   private volatile double setpoint;
   private int stableCount;
+  private StartPosition startPosition;
+  private boolean isFinished;
 
-  public AzimuthToCube(double setpoint) {
-    this.setpoint = setpoint;
-
+  public AzimuthToCube(StartPosition startPosition) {
+    this.startPosition = startPosition;
     requires(driveSubsystem);
   }
 
@@ -28,14 +27,31 @@ public class AzimuthToCube extends Command {
   protected void initialize() {
     logger.debug("Azimuth init");
     stableCount = 0;
-    // setpoint = visionSubsystem.call();
-    driveSubsystem.azimuthTo(setpoint);
+    isFinished = false;
+    visionSubsystem.find(startPosition);
+  }
+
+  @Override
+  protected void execute() {
+    if (visionSubsystem.isFinished() && !isFinished) {
+      setpoint = driveSubsystem.getGyro().getYaw();
+      logger.debug(
+          "vision angle => {} + {} = {}",
+          visionSubsystem.getCenterAngle(),
+          setpoint,
+          visionSubsystem.getCenterAngle() + setpoint);
+      driveSubsystem.azimuthTo(visionSubsystem.getCenterAngle() + setpoint);
+      isFinished = true;
+    }
+  }
+
+  public double getSetpoint() {
+    return setpoint;
   }
 
   @Override
   protected boolean isFinished() {
-    stableCount = driveSubsystem.isAzimuthFinished() ? stableCount + 1 : 0;
-    return stableCount > STABLE;
+    return isFinished && driveSubsystem.isAzimuthFinished();
   }
 
   @Override
