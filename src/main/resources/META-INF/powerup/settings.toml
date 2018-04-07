@@ -15,7 +15,7 @@
 description   = "Stryke Force 2018 POWER UP"
 
 [POWERUP.VISION]
-  brightness = 40
+  brightness = 50
   exposure   = 40
   intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
   liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
