@@ -19,6 +19,7 @@ import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
 import frc.team2767.command.test.LidarTestCommand;
+import frc.team2767.command.test.VisionTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -70,6 +71,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
     SmartDashboard.putData("Test/CarpetCalSame", new PathCommand("SameCalPath"));
     SmartDashboard.putData("Test/CarpetCalOpposite", new PathCommand("OppositeCalPath"));
+    SmartDashboard.putData("Test/VisionTest", new VisionTestCommand());
   }
 
   private void addGameCommands() {
