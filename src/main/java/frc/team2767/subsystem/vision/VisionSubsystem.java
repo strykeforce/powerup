@@ -7,17 +7,16 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
 import frc.team2767.command.auton.StartPosition;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.*;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.concurrent.*;
 
 @Singleton
 public class VisionSubsystem extends Subsystem implements Callable<Double> {
