@@ -6,6 +6,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
+import frc.team2767.command.auton.StartPosition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.*;
@@ -20,10 +21,10 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class VisionSubsystem extends Subsystem implements Callable<Double> {
 
-  private static final int FRAME_WIDTH = 320;
+  private static final double FRAME_WIDTH = 320;
   private static final int FRAME_HEIGHT = 240;
   private static final int FOV_DEG = 30;
-  private static final int FOV_DEG_PER_PIXEL = FOV_DEG / (FRAME_WIDTH / 2);
+  private static final double FOV_DEG_PER_PIXEL = FOV_DEG / (FRAME_WIDTH / 2);
   private static final String TABLE = "POWERUP.VISION";
   private static final String BOTTOM_CAMERA = "Intake";
   private static final String TOP_CAMERA = "Elevator";
@@ -38,7 +39,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   private GripCode gripCode;
 
   private Future<Double> result;
-  private Side side;
+  private StartPosition startPosition;
 
   public enum Side { // this currently says if you want the RIGHT or LEFT-most block.
     LEFT,
@@ -55,17 +56,17 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     camera.setBrightness(toml.getLong("brightness").intValue());
     camera.setExposureManual(toml.getLong("exposure").intValue());
     camera.setExposureHoldCurrent();
-    camera.setResolution(FRAME_WIDTH, FRAME_HEIGHT);
+    camera.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
 
     UsbCamera elevator = server.startAutomaticCapture(TOP_CAMERA, toml.getString("liftCameraPath"));
-    elevator.setResolution(FRAME_WIDTH, FRAME_HEIGHT);
+    elevator.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
 
     executorService = Executors.newSingleThreadExecutor();
   }
 
-  public void find(Side side) {
+  public void find(StartPosition startPosition) {
     if (gripCode == null) gripCode = new GripCode();
-    this.side = side;
+    this.startPosition = startPosition;
     result = executorService.submit(this);
   }
 
@@ -80,12 +81,12 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     ArrayList<MatOfPoint> contours = gripCode.filterContoursOutput();
     logger.debug("Number of countours = {} ", contours.size());
 
-    int center = FRAME_WIDTH / 2;
+    double center = FRAME_WIDTH / 2;
     MatOfPoint bestContour = null;
 
     if (!contours.isEmpty()) { // if a contour is found
-      if (side == Side.RIGHT) {
-        int leftEdge = FRAME_WIDTH;
+      if (startPosition == StartPosition.RIGHT) {
+        double leftEdge = FRAME_WIDTH;
         for (MatOfPoint contour : contours) { // find the RIGHT-most contour
           Rect boundingRec = Imgproc.boundingRect(contour);
           if (boundingRec.x < leftEdge) {
@@ -95,7 +96,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
           }
         }
       }
-      if (side == Side.LEFT) {
+      if (startPosition == StartPosition.LEFT) {
         int rightEdge = 0;
         for (MatOfPoint contour : contours) { // find the LEFT-most block
           Rect boundingRec = Imgproc.boundingRect(contour);
@@ -108,7 +109,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
         }
       }
     }
-    double cubeCenterAngle = (center - FRAME_WIDTH / 2) * FOV_DEG_PER_PIXEL;
+    double cubeCenterAngle = (center - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
 
     Mat threshold = gripCode.hsvThresholdOutput();
     Imgproc.cvtColor(threshold, threshold, Imgproc.COLOR_GRAY2RGB);

@@ -105,7 +105,8 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     addSequential(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
 
     addSequential(new WaitCommand(3));
-    //    addSequential(isLeft ? new CameraRightEdge() : new CameraLeftEdge());
+    //  addSequential(isLeft ? new AzimuthToCube(VisionSubsystem.Side.LEFT) : new
+    // AzimuthToCube(VisionSubsystem.Side.RIGHT));
     addSequential(new WaitCommand(10));
 
     addSequential(

@@ -2,6 +2,7 @@ package frc.team2767.command.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
+import frc.team2767.command.auton.StartPosition;
 import frc.team2767.subsystem.vision.VisionSubsystem;
 
 public class VisionTestCommand extends Command {
@@ -9,7 +10,7 @@ public class VisionTestCommand extends Command {
 
   @Override
   protected void initialize() {
-    visionSubsystem.find(VisionSubsystem.Side.RIGHT);
+    visionSubsystem.find(StartPosition.RIGHT);
   }
 
   @Override
