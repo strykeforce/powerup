@@ -47,7 +47,7 @@ public class Settings {
   }
 
   public boolean isCameraEnabled() {
-    return getTable(TABLE).getBoolean("enableCamera", true);
+    return getTable(TABLE + ".VISION").getBoolean("enableCamera", true);
   }
 
   public Toml getTable(String key) {
