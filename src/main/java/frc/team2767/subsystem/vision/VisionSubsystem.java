@@ -71,6 +71,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   public void find(StartPosition startPosition) {
     bottomY = 0;
     bottomX = 0;
+
     if (gripCode == null) gripCode = new GripCode();
     this.startPosition = startPosition;
     result = executorService.submit(this);
