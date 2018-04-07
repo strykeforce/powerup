@@ -5,8 +5,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.vision.VisionThread;
-import frc.team2767.Settings;
-import frc.team2767.subsystem.ExtenderSubsystem;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,7 +15,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.strykeforce.thirdcoast.talon.Talons;
 
 @Singleton
 public class CameraSubsystem extends Subsystem implements Runnable {
@@ -26,10 +23,14 @@ public class CameraSubsystem extends Subsystem implements Runnable {
   public UsbCamera camera;
   public Rect r;
   public int rEdge;
+  public int rRight;
+  public double rCenter;
   public boolean validRead;
   public double xCoordinate;
   public double[] xArray = new double[5]; // potentially make length configurable
   public double cubeAngle = -1;
+  public double cubeRight = -1;
+  public double cubeCenter = -1;
 
   public enum Side { // this currently says if you want the right or left-most block.
     left,
@@ -38,31 +39,31 @@ public class CameraSubsystem extends Subsystem implements Runnable {
 
   public Side side;
 
-  private static final Logger logger = LoggerFactory.getLogger(ExtenderSubsystem.class);
+  private static final Logger logger = LoggerFactory.getLogger(CameraSubsystem.class);
 
   private Thread thread;
   private volatile boolean cancelled;
   private volatile boolean running;
 
   @Inject
-  public CameraSubsystem(Talons talons, Settings settings) {}
+  public CameraSubsystem() {}
 
   public void initialize() {
-    //side = Side.right;
+    // side = Side.right;
     cancelled = false;
     thread = new Thread(this);
     thread.start();
   }
 
-  public double findLeft(){
+  public double findLeft() {
     side = Side.left;
     cancelled = false;
     thread = new Thread(this);
     thread.start();
-    return cubeAngle;
+    return cubeAngle; // FIXME put in settings file
   }
 
-  public double findRight(){
+  public double findRight() {
     side = Side.right;
     cancelled = false;
     thread = new Thread(this);
@@ -72,7 +73,6 @@ public class CameraSubsystem extends Subsystem implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("run ran");
     GripCode gripCode = new GripCode();
     CvSink pipeline = CameraServer.getInstance().getVideo();
     Mat source = new Mat();
@@ -83,12 +83,10 @@ public class CameraSubsystem extends Subsystem implements Runnable {
 
     ArrayList<MatOfPoint> image = gripCode.filterContoursOutput();
     int m = image.size(); // find the number of contours
-    System.out.println("size " + m);
+    logger.debug("Camera array size ", m);
 
     if (!image.isEmpty()) { // if a contour is found
-      System.out.println("not empty ran");
       if (side == Side.right) {
-        System.out.println("right side ran");
         rEdge = 0;
         for (int n = 0; n < m; n++) { // find the right-most contour
           if (Imgproc.boundingRect(image.get(n)).x > rEdge) {
@@ -103,22 +101,26 @@ public class CameraSubsystem extends Subsystem implements Runnable {
           if (Imgproc.boundingRect(image.get(n)).x < rEdge) {
             r = Imgproc.boundingRect(image.get(n));
             rEdge = r.x;
+            rCenter = r.x + (.5 * r.width);
+            rRight = r.x + r.width;
           }
         }
       }
     }
     cubeAngle = (rEdge - 160) * 30 / 160;
-    System.out.println("Angle: " + cubeAngle);
+    cubeCenter = (rCenter - 160) * 30 / 160;
+    cubeRight = (rRight - 160) * 30 / 160;
+    System.out.println("Cube left edge angle: " + cubeAngle);
+    System.out.println("Cube right edge angle: " + cubeRight);
+    System.out.println("Code center angle" + cubeCenter);
     running = false;
-}
+  }
 
   public boolean isFinished() {
-    System.out.println("iFinished: " + !running);
     return (!running);
   }
 
   public boolean isCancelled() {
-    System.out.println("isCancelled: " + cancelled);
     if (cancelled) {
       return true;
     } else {
@@ -127,7 +129,6 @@ public class CameraSubsystem extends Subsystem implements Runnable {
   }
 
   public void end() {
-    System.out.println("end ran");
     try {
       thread.join();
     } catch (InterruptedException e) {
@@ -140,7 +141,6 @@ public class CameraSubsystem extends Subsystem implements Runnable {
   }
 
   public void cameraInit() {
-
     System.out.println("Camera Init ran");
   }
 

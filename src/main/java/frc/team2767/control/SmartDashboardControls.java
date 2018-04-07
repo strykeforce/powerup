@@ -3,6 +3,7 @@ package frc.team2767.control;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
+import frc.team2767.command.auton.PathCommand;
 import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
@@ -67,6 +68,8 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/DriveZero", new DriveZero("Forward", 0.5));
     SmartDashboard.putData("Test/DriveZeroBackwards", new DriveZero("Reverse", -0.5));
     SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
+    SmartDashboard.putData("Test/CarpetCalSame", new PathCommand("SameCalPath"));
+    SmartDashboard.putData("Test/CarpetCalOpposite", new PathCommand("OppositeCalPath"));
   }
 
   private void addGameCommands() {

@@ -4,6 +4,7 @@ import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.TRAJECTORY
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
+import frc.team2767.command.auton.StartPosition;
 import frc.team2767.motion.PathController;
 import frc.team2767.subsystem.DriveSubsystem;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
@@ -24,7 +25,7 @@ public class PathTestCommand extends Command {
   @Override
   protected void initialize() {
     driveSubsystem.setDriveMode(TRAJECTORY);
-    pathController.start();
+    pathController.start(StartPosition.CENTER);
   }
 
   @Override

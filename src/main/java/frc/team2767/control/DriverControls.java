@@ -4,13 +4,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.Settings;
-import frc.team2767.command.camera.CameraAngle;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.sequence.HoldCube;
 import frc.team2767.subsystem.IntakeSubsystem;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,7 +41,6 @@ public class DriverControls {
     new JoystickButton(joystick, Shoulder.RIGHT.index)
         .whenPressed(new IntakeLoad(IntakeLoad.Position.GROUND));
     new JoystickButton(joystick, Shoulder.RIGHT.index).whenReleased(new HoldCube());
-
   }
 
   @Nullable
