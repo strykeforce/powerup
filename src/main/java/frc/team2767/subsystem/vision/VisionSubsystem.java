@@ -23,7 +23,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   private static final int FRAME_WIDTH = 320;
   private static final int FRAME_HEIGHT = 240;
   private static final int FOV_DEG = 30;
-  private static final int FOV_DEG_PER_PIXEL = FOV_DEG / (FRAME_WIDTH / 2);
+  private static final double FOV_DEG_PER_PIXEL = FOV_DEG / (FRAME_WIDTH / 2);
   private static final String TABLE = "POWERUP.VISION";
   private static final String BOTTOM_CAMERA = "Intake";
   private static final String TOP_CAMERA = "Elevator";
@@ -80,7 +80,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     ArrayList<MatOfPoint> contours = gripCode.filterContoursOutput();
     logger.debug("Number of countours = {} ", contours.size());
 
-    int center = FRAME_WIDTH / 2;
+    double center = FRAME_WIDTH / 2;
     MatOfPoint bestContour = null;
 
     if (!contours.isEmpty()) { // if a contour is found
@@ -108,7 +108,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
         }
       }
     }
-    double cubeCenterAngle = (center - FRAME_WIDTH / 2) * FOV_DEG_PER_PIXEL;
+    double cubeCenterAngle = (center - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
 
     Mat threshold = gripCode.hsvThresholdOutput();
     Imgproc.cvtColor(threshold, threshold, Imgproc.COLOR_GRAY2RGB);

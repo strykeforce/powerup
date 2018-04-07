@@ -16,6 +16,7 @@ import frc.team2767.command.sequence.Stow;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.IntakeSensorsSubsystem;
 import frc.team2767.subsystem.IntakeSubsystem;
+import frc.team2767.subsystem.vision.VisionSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 import openrio.powerup.MatchData.OwnedSide;
@@ -105,7 +106,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     addSequential(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
 
     addSequential(new WaitCommand(3));
-    //    addSequential(isLeft ? new CameraRightEdge() : new CameraLeftEdge());
+    //  addSequential(isLeft ? new AzimuthToCube(VisionSubsystem.Side.LEFT) : new AzimuthToCube(VisionSubsystem.Side.RIGHT));
     addSequential(new WaitCommand(10));
 
     addSequential(
