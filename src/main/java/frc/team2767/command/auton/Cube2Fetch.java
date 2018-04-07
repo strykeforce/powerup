@@ -122,7 +122,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
                     ? new DriveToCube(
                         kLeftDriveStopDistance,
                         kLeftForward * Math.sin(90 - azimuthToCube.getSetpoint()),
-                        kLeftStrafe * Math.cos(90 - azimuthToCube.getSetpoint()))
+                        -1 * kLeftStrafe * Math.cos(90 - azimuthToCube.getSetpoint()))
                     : new DriveToCube(
                         kRightDriveStopDistance,
                         -1 * kRightForward * Math.sin(-90 - azimuthToCube.getSetpoint()),
@@ -133,7 +133,8 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
                         + (kLeftForward * Math.sin(90 - azimuthToCube.getSetpoint()))));
             addSequential(
                 new LogCommand(
-                    "Left Strafe = " + (kLeftStrafe * Math.cos(90 - azimuthToCube.getSetpoint()))));
+                    "Left Strafe = "
+                        + (-1 * kLeftStrafe * Math.cos(90 - azimuthToCube.getSetpoint()))));
             addSequential(
                 new LogCommand(
                     "Right Forward"
