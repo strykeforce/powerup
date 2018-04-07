@@ -47,16 +47,7 @@ public class Robot extends TimedRobot {
     driveSubsystem.zeroAzimuthEncoders();
 
     if (settings.isCameraEnabled()) {
-<<<<<<< HEAD
-      System.out.println("Camera is enabled");
-      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setBrightness(50);
-      camera.setExposureManual(50);
-      camera.setExposureHoldCurrent();
-      camera.setResolution(320, 240);
-=======
       INJECTOR.visionSubsystem();
->>>>>>> pr/14
     }
 
     LiveWindow.disableAllTelemetry();

@@ -9,11 +9,7 @@ import frc.team2767.subsystem.*;
 import frc.team2767.subsystem.health.FollowerVelocityTestFactory;
 import frc.team2767.subsystem.health.HealthCheckSubsystem;
 import frc.team2767.subsystem.health.VelocityTestFactory;
-<<<<<<< HEAD
-import frc.team2767.subsystem.vision.CameraSubsystem;
-=======
 import frc.team2767.subsystem.vision.VisionSubsystem;
->>>>>>> pr/14
 import java.net.URL;
 import java.util.Set;
 import javax.inject.Singleton;

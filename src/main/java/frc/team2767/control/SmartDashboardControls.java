@@ -71,10 +71,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
     SmartDashboard.putData("Test/CarpetCalSame", new PathCommand("SameCalPath"));
     SmartDashboard.putData("Test/CarpetCalOpposite", new PathCommand("OppositeCalPath"));
-<<<<<<< HEAD
-=======
     SmartDashboard.putData("Test/VisionTest", new VisionTestCommand());
->>>>>>> pr/14
   }
 
   private void addGameCommands() {
