@@ -13,14 +13,20 @@
 
 [POWERUP]
 description   = "Stryke Force 2018 POWER UP"
-enableCamera  = true
+
+[POWERUP.VISION]
+  brightness = 40
+  exposure   = 40
+  intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
+  liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
+  enableCamera  = true
 
 [POWERUP.PATH]
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRed  = 2273 # carpet-x pull test
-  ticksPerInchBlue = 2273
+  ticksPerInchRed  = 2074 # carpet-x pull test
+  ticksPerInchBlue = 2074
 
 [POWERUP.AZIMUTH]
   p = 0.013
@@ -69,6 +75,9 @@ enableCamera  = true
   zeroPosition = 2048
   openPosition = 2500
 
+  # release servo positions
+  releaseDefault = 0.0
+
 [POWERUP.LIFT]
   timeout      = 0.5
   upOutput     = 0.25
@@ -103,11 +112,11 @@ enableCamera  = true
   limitSwitchZeroPosition = 9394
   # practice absEncoderZeroPosition  = 1127
   absEncoderZeroPosition  = 1900
-  tightStowPosition       = 5200
-  stowPosition            = 4500 # 3918
-  intakePosition          = -100
-  launchSwitchPosition    = 4000
-  launchScalePosition     = 2500
+  tightStowPosition       = 8666
+  stowPosition            = 7500
+  intakePosition          = -166
+  launchSwitchPosition    = 6666
+  launchScalePosition     = 4166
 
 [POWERUP.EXTENDER]
   leftUpPosition     = 0.41

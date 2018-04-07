@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.020338983050847456,
+  "dividerPosition": 0.003981420039814201,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -180,69 +180,33 @@
             ],
             "content": {
               "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
+              "_source0": "camera_server://Intake",
+              "_title": "Intake",
+              "showControls": true,
+              "showCrosshair": true,
+              "crosshairColor": "#FFFFFFFF",
+              "compression": 100.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "3,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://Elevator",
+              "_title": "Elevator",
               "showControls": true,
               "showCrosshair": true,
               "crosshairColor": "#FFFFFFFF",
               "compression": 0.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
-          "5,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "List Layout",
-              "_title": "Lift",
-              "_children": [
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Game/ElevatorUp",
-                  "_title": "Lift Up"
-                },
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Game/ElevatorStop",
-                  "_title": "Lift Stop"
-                },
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Game/ElevatorDown",
-                  "_title": "Lift Down"
-                }
-              ]
-            }
-          },
-          "4,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "List Layout",
-              "_title": "Intake",
-              "_children": [
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Game/IntakeIn",
-                  "_title": "Intake In"
-                },
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Game/IntakeStop",
-                  "_title": "Intake Stop"
-                },
-                {
-                  "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Game/IntakeOut",
-                  "_title": "Intake Out"
-                }
-              ]
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           }
         }
@@ -282,7 +246,7 @@
           },
           "2,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -302,9 +266,9 @@
               "_title": "Scale Side"
             }
           },
-          "4,0": {
+          "3,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -322,6 +286,39 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Test/Lidar",
               "_title": "Lidar"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/CarpetCalOpposite",
+              "_title": "CarpetCalOpposite"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/CarpetCalSame",
+              "_title": "CarpetCalSame"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/VisionTest",
+              "_title": "VisionTest"
             }
           }
         }

@@ -24,7 +24,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   private static final Logger logger = LoggerFactory.getLogger(ShoulderSubsystem.class);
   private static final String TABLE = Robot.TABLE + ".SHOULDER";
   private static final int TIMEOUT = 10;
-  private static final int ABS_TO_REL_RATIO = 5;
+  private static final double ABS_TO_REL_RATIO = 25 / 3;
   private static final int ENC_EPSILON = 400;
   private static final int STABLE_THRESH = 1;
 
@@ -106,7 +106,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     if (talon.getSelectedSensorVelocity(0) != 0) return;
     int position = talon.getSelectedSensorPosition(0);
     int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
-    int error = Math.abs((absolute - kAbsEncoderZeroPosition) * ABS_TO_REL_RATIO - position);
+    double error = Math.abs((absolute - kAbsEncoderZeroPosition) * ABS_TO_REL_RATIO - position);
     if (error > ENC_EPSILON) {
       logger.debug("encoder position error = {}, re-zeroing", error);
       zeroPositionWithEncoder();
@@ -116,8 +116,8 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   public void zeroPositionWithEncoder() {
     if (talon.getSelectedSensorVelocity(0) != 0) return;
     int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
-    int positionOffset = absolute - kAbsEncoderZeroPosition;
-    talon.setSelectedSensorPosition(ABS_TO_REL_RATIO * positionOffset, 0, 0);
+    double positionOffset = absolute - kAbsEncoderZeroPosition;
+    talon.setSelectedSensorPosition((int) Math.round(ABS_TO_REL_RATIO * positionOffset), 0, 0);
     logger.info("absolute position = {} set position = {}", absolute, positionOffset);
   }
 
