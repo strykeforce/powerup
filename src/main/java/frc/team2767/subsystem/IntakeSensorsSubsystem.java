@@ -68,7 +68,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
 
               @Override
               public double pidGet() {
-                canifier.getPWMInput(CANifier.PWMChannel.PWMChannel0, lidarPwmData);
+                canifier.getPWMInput(CANifier.PWMChannel.PWMChannel2, lidarPwmData);
                 return kLidarSlope * lidarPwmData[0] + kLidarOffset;
               }
             },
@@ -116,8 +116,12 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   }
 
   public int getShoulderAbsolutePosition() {
-    canifier.getPWMInput(CANifier.PWMChannel.PWMChannel1, shoulderPwmData);
+    canifier.getPWMInput(CANifier.PWMChannel.PWMChannel3, shoulderPwmData);
     return (int) ((shoulderPwmData[0] / shoulderPwmData[1]) * 4096d);
+  }
+
+  public CANifier getCanifier() {
+    return canifier;
   }
 
   @Override
@@ -136,6 +140,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   }
 
   @Override
+
   public Set<Measure> measures() {
     return Collections.unmodifiableSet(EnumSet.of(PULSE_WIDTH_POSITION, POSITION));
   }
