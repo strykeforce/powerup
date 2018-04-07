@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
 import frc.team2767.command.auton.StartPosition;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,9 +40,6 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
 
   private Future<Double> result;
   private StartPosition startPosition;
-  double bottomY;
-  double bottomX;
-  double bottomAngle;
 
   public enum Side { // this currently says if you want the RIGHT or LEFT-most block.
     LEFT,
@@ -69,9 +65,6 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   }
 
   public void find(StartPosition startPosition) {
-    bottomY = 0;
-    bottomX = 0;
-
     if (gripCode == null) gripCode = new GripCode();
     this.startPosition = startPosition;
     result = executorService.submit(this);
@@ -88,54 +81,28 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     ArrayList<MatOfPoint> contours = gripCode.filterContoursOutput();
     logger.debug("Number of countours = {} ", contours.size());
 
-    double center = FRAME_WIDTH / 2;
-    MatOfPoint bestContour = null;
+    double bottomX = 0;
+    double bottomY = 0;
+    double bottomAngle = 0;
 
-    if (!contours.isEmpty()) { // if a contour is found
-      if (startPosition == StartPosition.RIGHT) {
-        double leftEdge = FRAME_WIDTH;
-        for (MatOfPoint contour : contours) { // find the RIGHT-most contour
-          Point[] points = contour.toArray();
-          for (Point point : points) {
-            if (point.y > bottomY) {
-              bottomX = point.x;
-              bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
-            }
-          }
-          Rect boundingRec = Imgproc.boundingRect(contour);
-          if (boundingRec.x < leftEdge) {
-            bestContour = contour;
-            leftEdge = boundingRec.x;
-            center = boundingRec.x + boundingRec.width / 2;
-          }
-        }
-      }
-      if (startPosition == StartPosition.LEFT) {
-        int rightEdge = 0;
-        for (MatOfPoint contour : contours) {
-          Point[] points = contour.toArray();
-          for (Point point : points) {
-            if (point.y > bottomY) {
-              bottomX = point.x;
-              bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
-            }
-          }
-          Rect boundingRec = Imgproc.boundingRect(contour);
-          int x = boundingRec.x + boundingRec.width; // find the LEFT-most block
-          if (x > rightEdge) {
-            bestContour = contour;
-            rightEdge = x;
-            center = x - boundingRec.width / 2;
+    if (!contours.isEmpty()) {
+      for (MatOfPoint contour : contours) {
+        Point[] points = contour.toArray();
+        for (Point point : points) {
+          if (point.y > bottomY) {
+            bottomY = point.y;
+            bottomX = point.x;
           }
         }
       }
     }
-    double cubeCenterAngle = (center - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
+
+    if (!contours.isEmpty()) bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
 
     Mat threshold = gripCode.hsvThresholdOutput();
     Imgproc.cvtColor(threshold, threshold, Imgproc.COLOR_GRAY2RGB);
-    if (bestContour != null) {
-      Imgproc.drawContours(threshold, Collections.singletonList(bestContour), -1, RED, 2);
+    if (!contours.isEmpty()) {
+      Imgproc.drawContours(threshold, contours, -1, RED, 2);
     }
     Imgproc.line(threshold, new Point(bottomX, 0), new Point(bottomX, FRAME_HEIGHT), GREEN);
     Imgproc.line(
@@ -149,8 +116,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
         WHITE);
     Imgcodecs.imwrite("/home/lvuser/image.jpg", threshold);
 
-    logger.debug("cube CENTER angle = {}", cubeCenterAngle);
-    logger.debug("cube bottom point x = {}", bottomAngle);
+    logger.debug("cube bottom point angle x = {}", bottomAngle);
     return bottomAngle;
   }
 
