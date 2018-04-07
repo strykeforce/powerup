@@ -139,14 +139,14 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     }
     Imgproc.line(threshold, new Point(bottomX, 0), new Point(bottomX, FRAME_HEIGHT), GREEN);
     Imgproc.line(
-            threshold, new Point(FRAME_WIDTH / 2, 0), new Point(FRAME_WIDTH / 2, FRAME_HEIGHT), BLUE);
+        threshold, new Point(FRAME_WIDTH / 2, 0), new Point(FRAME_WIDTH / 2, FRAME_HEIGHT), BLUE);
     Imgproc.putText(
-            threshold,
-            String.format("angle = %4.2f", bottomAngle),
-            new Point(4, 12),
-            Core.FONT_HERSHEY_COMPLEX_SMALL,
-            0.75,
-            WHITE);
+        threshold,
+        String.format("angle = %4.2f", bottomAngle),
+        new Point(4, 12),
+        Core.FONT_HERSHEY_COMPLEX_SMALL,
+        0.75,
+        WHITE);
     Imgcodecs.imwrite("/home/lvuser/image.jpg", threshold);
 
     logger.debug("cube CENTER angle = {}", cubeCenterAngle);
