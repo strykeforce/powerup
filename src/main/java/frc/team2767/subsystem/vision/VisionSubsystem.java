@@ -31,6 +31,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   private static final Scalar RED = new Scalar(50, 50, 255);
   private static final Scalar GREEN = new Scalar(50, 255, 50);
   private static final Scalar WHITE = new Scalar(255, 255, 255);
+  private static final Scalar BLUE = new Scalar(255, 50, 50);
 
   private static final Logger logger = LoggerFactory.getLogger(VisionSubsystem.class);
 
@@ -40,6 +41,9 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
 
   private Future<Double> result;
   private StartPosition startPosition;
+  double bottomY;
+  double bottomX;
+  double bottomAngle;
 
   public enum Side { // this currently says if you want the RIGHT or LEFT-most block.
     LEFT,
@@ -65,6 +69,9 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   }
 
   public void find(StartPosition startPosition) {
+    bottomY = 0;
+    bottomX = 0;
+
     if (gripCode == null) gripCode = new GripCode();
     this.startPosition = startPosition;
     result = executorService.submit(this);
@@ -88,6 +95,13 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
       if (startPosition == StartPosition.RIGHT) {
         double leftEdge = FRAME_WIDTH;
         for (MatOfPoint contour : contours) { // find the RIGHT-most contour
+          Point[] points = contour.toArray();
+          for (Point point : points) {
+            if (point.y > bottomY) {
+              bottomX = point.x;
+              bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
+            }
+          }
           Rect boundingRec = Imgproc.boundingRect(contour);
           if (boundingRec.x < leftEdge) {
             bestContour = contour;
@@ -98,9 +112,16 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
       }
       if (startPosition == StartPosition.LEFT) {
         int rightEdge = 0;
-        for (MatOfPoint contour : contours) { // find the LEFT-most block
+        for (MatOfPoint contour : contours) {
+          Point[] points = contour.toArray();
+          for (Point point : points) {
+            if (point.y > bottomY) {
+              bottomX = point.x;
+              bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
+            }
+          }
           Rect boundingRec = Imgproc.boundingRect(contour);
-          int x = boundingRec.x + boundingRec.width;
+          int x = boundingRec.x + boundingRec.width; // find the LEFT-most block
           if (x > rightEdge) {
             bestContour = contour;
             rightEdge = x;
@@ -116,18 +137,21 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     if (bestContour != null) {
       Imgproc.drawContours(threshold, Collections.singletonList(bestContour), -1, RED, 2);
     }
-    Imgproc.line(threshold, new Point(center, 0), new Point(center, FRAME_HEIGHT), GREEN);
+    Imgproc.line(threshold, new Point(bottomX, 0), new Point(bottomX, FRAME_HEIGHT), GREEN);
+    Imgproc.line(
+            threshold, new Point(FRAME_WIDTH / 2, 0), new Point(FRAME_WIDTH / 2, FRAME_HEIGHT), BLUE);
     Imgproc.putText(
-        threshold,
-        String.format("angle = %4.2f", cubeCenterAngle),
-        new Point(4, 12),
-        Core.FONT_HERSHEY_COMPLEX_SMALL,
-        0.75,
-        WHITE);
+            threshold,
+            String.format("angle = %4.2f", bottomAngle),
+            new Point(4, 12),
+            Core.FONT_HERSHEY_COMPLEX_SMALL,
+            0.75,
+            WHITE);
     Imgcodecs.imwrite("/home/lvuser/image.jpg", threshold);
 
     logger.debug("cube CENTER angle = {}", cubeCenterAngle);
-    return cubeCenterAngle;
+    logger.debug("cube bottom point x = {}", bottomAngle);
+    return bottomAngle;
   }
 
   public boolean isFinished() {
