@@ -36,7 +36,7 @@ public class DriverControls {
     new JoystickButton(joystick, Shoulder.LEFT_DOWN.index)
         .whenPressed(new IntakeEject(IntakeSubsystem.Mode.FAST_EJECT));
     new JoystickButton(joystick, Shoulder.LEFT_UP.index)
-        .whenPressed(new IntakeEject(IntakeSubsystem.Mode.SLOW_EJECT));
+        .whenPressed(new IntakeEject(IntakeSubsystem.Mode.OPEN));
 
     new JoystickButton(joystick, Shoulder.RIGHT.index)
         .whenPressed(new IntakeLoad(IntakeLoad.Position.GROUND));
