@@ -140,7 +140,6 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   }
 
   @Override
-
   public Set<Measure> measures() {
     return Collections.unmodifiableSet(EnumSet.of(PULSE_WIDTH_POSITION, POSITION));
   }

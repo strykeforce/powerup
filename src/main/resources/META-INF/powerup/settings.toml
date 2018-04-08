@@ -138,4 +138,4 @@ description   = "Stryke Force 2018 POWER UP"
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
   enableTest = true
-  enableGame = true
+  enableGame = false
