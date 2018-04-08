@@ -19,6 +19,7 @@ import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
 import frc.team2767.command.test.LidarTestCommand;
+import frc.team2767.command.test.RobotCalibrationTestCommand;
 import frc.team2767.command.test.VisionTestCommand;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,9 +35,15 @@ public class SmartDashboardControls {
     Controls.logger.debug("initializing SmartDashboard controls");
     Toml toml = settings.getTable("POWERUP.SMARTDASHBOARD");
 
-    if (toml.getBoolean("enablePit")) addPitCommands();
-    if (toml.getBoolean("enableTest")) addTestCommands();
     if (toml.getBoolean("enableGame")) addGameCommands();
+    if (toml.getBoolean("enablePit")) addPitEncoderZeroCommands();
+    if (!isEvent && toml.getBoolean("enablePit")) addPitCommands();
+    if (!isEvent && toml.getBoolean("enableTest")) addTestCommands();
+  }
+
+  private void addPitEncoderZeroCommands() {
+    SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
+    SmartDashboard.putData("Pit/Shoulder/ZeroEnc", new ShoulderZeroWithEncoder());
   }
 
   private void addPitCommands() {
@@ -44,10 +51,8 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Pit/Climber/Unwind", new ClimberUnwind());
     SmartDashboard.putData("Pit/Climber/Stop", new ClimberStop());
     SmartDashboard.putData("Pit/Climber/Release", new ClimberRelease());
-    SmartDashboard.putData("Pit/Lift/Zero", new LiftZero());
     SmartDashboard.putData("Pit/Shoulder/ZeroLS", new ShoulderZeroWithLimitSwitch());
-    SmartDashboard.putData("Pit/Shoulder/ZeroEnc", new ShoulderZeroWithEncoder());
-    if (!isEvent) SmartDashboard.putData("Pit/HealthCheck", new TestRunner());
+    SmartDashboard.putData("Pit/HealthCheck", new TestRunner());
   }
 
   private void addWheelPitCommands() {
@@ -71,6 +76,8 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/Lidar", new LidarTestCommand());
     SmartDashboard.putData("Test/CarpetCalSame", new PathCommand("SameCalPath"));
     SmartDashboard.putData("Test/CarpetCalOpposite", new PathCommand("OppositeCalPath"));
+
+    SmartDashboard.putData("Test/RobotCalRun", new RobotCalibrationTestCommand());
     SmartDashboard.putData("Test/VisionTest", new VisionTestCommand());
   }
 

@@ -38,6 +38,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   private final Settings settings;
   private PathController pathController;
   private AzimuthController azimuthController;
+  private StartPosition startPosition;
 
   @Inject
   DriveSubsystem(
@@ -117,7 +118,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   public void drivePath(PathController pathController) {
     this.pathController = pathController;
     setDriveMode(TRAJECTORY);
-    pathController.start();
+    pathController.start(startPosition);
   }
 
   public void drivePath(String path) {
@@ -186,6 +187,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   }
 
   public void setAngleAdjustment(StartPosition startPosition) {
+    this.startPosition = startPosition;
     AHRS gyro = getGyro();
     gyro.zeroYaw();
     gyro.setAngleAdjustment(0);

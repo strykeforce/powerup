@@ -10,6 +10,7 @@ import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import frc.team2767.Settings;
+import frc.team2767.command.auton.StartPosition;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
@@ -38,8 +39,10 @@ public class PathController implements Runnable, Item {
 
   private final double kPAzimuth;
   private final double kPDistance;
-  private final double kTicksPerMeterRed;
-  private final double kTicksPerMeterBlue;
+  private final double kTicksPerMeterRedLeft;
+  private final double kTicksPerMeterRedRight;
+  private final double kTicksPerMeterBlueLeft;
+  private final double kTicksPerMeterBlueRight;
 
   private final String path;
   private final Trajectory.Config config;
@@ -96,24 +99,41 @@ public class PathController implements Runnable, Item {
     kPAzimuth = toml.getDouble("p_azimuth", 0.0);
     kPDistance = toml.getDouble("p_distance", 0.0);
     kFAccel = toml.getDouble("f_acceleration", 0.0);
-    kTicksPerMeterRed = toml.getLong("ticksPerInchRed").doubleValue() * INCHES_PER_METER;
-    kTicksPerMeterBlue = toml.getLong("ticksPerInchBlue").doubleValue() * INCHES_PER_METER;
-    ticksPerMeter = kTicksPerMeterRed;
+    kTicksPerMeterRedLeft = toml.getLong("ticksPerInchRedLeft").doubleValue() * INCHES_PER_METER;
+    kTicksPerMeterRedRight = toml.getLong("ticksPerInchRedRight").doubleValue() * INCHES_PER_METER;
+    kTicksPerMeterBlueLeft = toml.getLong("ticksPerInchBlueLeft").doubleValue() * INCHES_PER_METER;
+    kTicksPerMeterBlueRight =
+        toml.getLong("ticksPerInchBlueRight").doubleValue() * INCHES_PER_METER;
+    ticksPerMeter = kTicksPerMeterRedLeft;
 
     logger.info("p_azimuth = {}", kPAzimuth);
     logger.info("p_distance = {}", kPDistance);
     logger.info("f_acceleration = {}", kFAccel);
-    logger.info("ticksPerMeterRed = {}", kTicksPerMeterRed);
-    logger.info("ticksPerMeterBlue = {}", kTicksPerMeterBlue);
+    logger.info("ticksPerMeterRedLeft = {}", kTicksPerMeterRedLeft);
+    logger.info("ticksPerMeterRedRight = {}", kTicksPerMeterRedRight);
+    logger.info("ticksPerMeterBlueLeft = {}", kTicksPerMeterBlueLeft);
+    logger.info("ticksPerMeterBlueRight = {}", kTicksPerMeterBlueRight);
     logger.info(this.toString());
   }
 
-  public void start() {
+  public void start(StartPosition startPosition) {
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
-    ticksPerMeter = alliance == Red ? kTicksPerMeterRed : kTicksPerMeterBlue;
+    if (alliance == Red) {
+      if (startPosition == StartPosition.LEFT) ticksPerMeter = kTicksPerMeterRedLeft;
+      else ticksPerMeter = kTicksPerMeterRedRight;
+    } else {
+      if (startPosition == StartPosition.LEFT) ticksPerMeter = kTicksPerMeterBlueLeft;
+      else ticksPerMeter = kTicksPerMeterBlueRight;
+    }
     double ticksPerSecMax = wheels[0].getDriveSetpointMax() * 10.0;
     metersPerSecMax = ticksPerSecMax / ticksPerMeter;
-    logger.info("START path {}, target azimuth = {}", path, targetAzimuth);
+    logger.info(
+        "START path {}, target azimuth = {}, alliance = {}, start = {}, tpm = {}",
+        path,
+        targetAzimuth,
+        alliance,
+        startPosition,
+        ticksPerMeter);
 
     for (int i = 0; i < NUM_WHEELS; i++) {
       start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
@@ -230,7 +250,7 @@ public class PathController implements Runnable, Item {
       case PATH_SEG_POSITION_METERS:
         return () -> segment.position;
       case PATH_SEG_POSITION_TICKS:
-        return () -> kTicksPerMeterRed * segment.position;
+        return () -> kTicksPerMeterRedLeft * segment.position;
       case PATH_SEG_VELOCITY:
         return () -> segment.velocity;
       case PATH_SEG_ACCELERATION:
@@ -242,7 +262,7 @@ public class PathController implements Runnable, Item {
       case PATH_DISTANCE:
         return () -> distance;
       case PATH_POSITION_ERROR:
-        return () -> kTicksPerMeterRed * segment.position - distance;
+        return () -> kTicksPerMeterRedLeft * segment.position - distance;
       default:
         logger.error("invalid Measure: {}", measure);
     }
