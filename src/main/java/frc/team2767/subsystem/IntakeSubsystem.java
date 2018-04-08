@@ -41,7 +41,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final double kLeftDefault;
   private final double kLeftClamp;
   private final double kLeftOpen;
-  private final double kRigthDefault;
+  private final double kRightDefault;
   private final double kRightClamp;
   private final double kRightOpen;
 
@@ -66,7 +66,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     kLeftDefault = scaleDutyCycle(toml.getDouble("leftServoDefault"));
     kLeftClamp = scaleDutyCycle(toml.getDouble("leftServoClamp"));
     kLeftOpen = scaleDutyCycle(toml.getDouble("leftServoOpen"));
-    kRigthDefault = scaleDutyCycle(toml.getDouble("rightServoDefault"));
+    kRightDefault = scaleDutyCycle(toml.getDouble("rightServoDefault"));
     kRightClamp = scaleDutyCycle(toml.getDouble("rightServoClamp"));
     kRightOpen = scaleDutyCycle(toml.getDouble("rightServoOpen"));
 
@@ -84,14 +84,14 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     logger.info("leftServoDefault = {}", kLeftDefault);
     logger.info("leftServoClamp = {}", kLeftClamp);
     logger.info("leftServoOpen = {}", kLeftOpen);
-    logger.info("rightServoDefault = {}", kRigthDefault);
+    logger.info("rightServoDefault = {}", kRightDefault);
     logger.info("rightServoClamp = {}", kRightClamp);
     logger.info("rightServoOpen = {}", kRightOpen);
 
     canifier.enablePWMOutput(LEFT_RELEASE, true);
     canifier.enablePWMOutput(RIGHT_RELEASE, true);
-    canifier.setPWMOutput(LEFT_RELEASE,kLeftDefault);
-    canifier.setPWMOutput(RIGHT_RELEASE,kRigthDefault);
+    canifier.setPWMOutput(LEFT_RELEASE,kLeftClamp);
+    canifier.setPWMOutput(RIGHT_RELEASE,kRightClamp);
   }
 
   @Override
@@ -100,15 +100,15 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   public void run(Mode mode) {
     int leftOutput = 0;
     int rightOutput = 0;
-    double leftServo = 0;
-    double rightServo = 0;
+    double leftServo = kLeftClamp;
+    double rightServo = kRightClamp;
     switch (mode) {
       case LOAD:
         leftOutput = kLoadVelocity;
         rightOutput = kLoadVelocity;
         logger.debug("running in LOAD at {}", leftOutput);
         leftServo = kLeftDefault;
-        rightServo = kRigthDefault;
+        rightServo = kRightDefault;
         break;
       case HOLD:
         leftOutput = kHoldVelocity;
@@ -121,25 +121,25 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         leftOutput = kFastEjectVelocity;
         rightOutput = kFastEjectVelocity;
         leftServo = kLeftDefault;
-        rightServo = kRigthDefault;
+        rightServo = kRightDefault;
         break;
       case SCALE_EJECT:
         leftOutput = kScaleEjectVelocity;
         rightOutput = kScaleEjectVelocity;
         leftServo = kLeftDefault;
-        rightServo = kRigthDefault;
+        rightServo = kRightDefault;
         break;
       case SLOW_EJECT:
         leftOutput = kSlowEjectVelocity;
         rightOutput = kSlowEjectVelocity;
         leftServo = kLeftDefault;
-        rightServo = kRigthDefault;
+        rightServo = kRightDefault;
         break;
       case SWITCH_EJECT:
         leftOutput = kSwitchEjectVelocity;
         rightOutput = kSwitchEjectVelocity;
         leftServo = kLeftDefault;
-        rightServo = kRigthDefault;
+        rightServo = kRightDefault;
         break;
       case OPEN:
         leftOutput = 0;
@@ -164,8 +164,8 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   public void stop() {
     leftTalon.set(Velocity, 0d);
     rightTalon.set(Velocity, 0d);
-    canifier.setPWMOutput(LEFT_RELEASE,kLeftDefault);
-    canifier.setPWMOutput(RIGHT_RELEASE,kRigthDefault);
+    canifier.setPWMOutput(LEFT_RELEASE,kLeftClamp);
+    canifier.setPWMOutput(RIGHT_RELEASE,kRightClamp);
   }
 
   private double scaleDutyCycle(double Setting){
@@ -186,7 +186,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         break;
       case LOAD:
         canifier.setPWMOutput(LEFT_RELEASE,kLeftDefault);
-        canifier.setPWMOutput(RIGHT_RELEASE,kRigthDefault);
+        canifier.setPWMOutput(RIGHT_RELEASE, kRightDefault);
         logger.debug("Default Intake");
         break;
     }
