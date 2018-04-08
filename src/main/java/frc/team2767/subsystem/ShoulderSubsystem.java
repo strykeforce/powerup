@@ -65,7 +65,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
 
   public void setPosition(int position) {
     setpoint = position;
-    logger.debug("positioning to {}", position);
+    logger.info("setting position = {}", position);
     talon.set(MotionMagic, position);
     stableCount = 0;
   }
@@ -73,7 +73,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
   @Override
   public void resetPosition() {
     int position = talon.getSelectedSensorPosition(0);
-    logger.info("resetting position = {}", position);
+    logger.debug("resetting position = {}", position);
     setPosition(position);
   }
 
@@ -108,7 +108,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
     double error = Math.abs((absolute - kAbsEncoderZeroPosition) * ABS_TO_REL_RATIO - position);
     if (error > ENC_EPSILON) {
-      logger.debug("encoder position error = {}, re-zeroing", error);
+      logger.info("encoder position error = {}, re-zeroing", error);
       zeroPositionWithEncoder();
     }
   }
@@ -118,7 +118,7 @@ public class ShoulderSubsystem extends Subsystem implements Graphable, Positiona
     int absolute = intakeSensorsSubsystem.getShoulderAbsolutePosition();
     double positionOffset = absolute - kAbsEncoderZeroPosition;
     talon.setSelectedSensorPosition((int) Math.round(ABS_TO_REL_RATIO * positionOffset), 0, 0);
-    logger.info("absolute position = {} set position = {}", absolute, positionOffset);
+    logger.debug("absolute position = {} set position = {}", absolute, positionOffset);
   }
 
   public void openLoopUp() {

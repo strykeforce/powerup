@@ -138,7 +138,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         break;
     }
 
-    logger.debug("running in {} at {}", mode, output);
+    logger.info("running in {} at {}", mode, output);
 
     int currentLimit = mode == Mode.HOLD ? kHoldCurrentLimit : kNormalCurrentLimit;
     leftTalon.configContinuousCurrentLimit(currentLimit, 0);
