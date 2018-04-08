@@ -13,6 +13,7 @@
 
 [POWERUP]
 description   = "Stryke Force 2018 POWER UP"
+immediateFlushLogFile = true
 
 [POWERUP.VISION]
   brightness = 50

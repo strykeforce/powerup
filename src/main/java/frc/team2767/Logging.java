@@ -36,6 +36,8 @@ public class Logging extends ContextAwareBase implements Configurator {
   private static final String FILE_PATTERN =
       "%-23(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{32} - %msg%n";
 
+  private static boolean immediateFlush;
+
   @NotNull
   private static Appender<ILoggingEvent> consoleAppender(LoggerContext lc) {
     ConsoleAppender<ILoggingEvent> ca = new ConsoleAppender<>();
@@ -52,7 +54,7 @@ public class Logging extends ContextAwareBase implements Configurator {
     fa.setContext(lc);
     fa.setName(FILE_NAME);
     fa.setFile(getLogFile());
-    fa.setImmediateFlush(false);
+    fa.setImmediateFlush(immediateFlush);
     fa.setPrudent(false);
     LayoutWrappingEncoder<ILoggingEvent> encoder = getEncoder(lc, FILE_PATTERN);
     fa.setEncoder(encoder);
@@ -94,8 +96,13 @@ public class Logging extends ContextAwareBase implements Configurator {
     return encoder;
   }
 
-  public static void flushLogs() {
+  static void flushLogs() {
     Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+    if (immediateFlush) {
+      root.info("immediate flush is set, ignoring call to flushLogs");
+      return;
+    }
+    root.info("flushing log file");
 
     FileAppender<ILoggingEvent> appender =
         (FileAppender<ILoggingEvent>) root.getAppender(FILE_NAME);
@@ -112,6 +119,7 @@ public class Logging extends ContextAwareBase implements Configurator {
   public void configure(LoggerContext lc) {
     Settings settings = Robot.INJECTOR.settings();
     boolean event = settings.isEvent();
+    immediateFlush = settings.getTable("POWERUP").getBoolean("immediateFlushLogFile", true);
 
     Appender<ILoggingEvent> appender;
     appender = event ? fileAppender(lc) : consoleAppender(lc);
