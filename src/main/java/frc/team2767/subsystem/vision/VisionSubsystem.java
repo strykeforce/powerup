@@ -58,8 +58,9 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     camera.setExposureHoldCurrent();
     camera.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
 
-    UsbCamera elevator = server.startAutomaticCapture(TOP_CAMERA, toml.getString("liftCameraPath"));
-    elevator.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
+    //    UsbCamera elevator = server.startAutomaticCapture(TOP_CAMERA,
+    // toml.getString("liftCameraPath"));
+    //    elevator.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
 
     executorService = Executors.newSingleThreadExecutor();
   }
