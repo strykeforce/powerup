@@ -67,7 +67,7 @@ immediateFlushLogFile = true
 #  lidarOffset = 0.0
 
   # velocities
-  loadVelocity       = -10_000
+  loadVelocity       = -7000
   holdVelocity       = -1500
   fastEjectVelocity  =  1500
   scaleEjectVelocity =  3000
