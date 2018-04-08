@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.003981420039814201,
+  "dividerPosition": 0.005405405405405406,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -319,6 +319,28 @@
               "_type": "Command",
               "_source0": "network_table:///SmartDashboard/Test/VisionTest",
               "_title": "VisionTest"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/RobotCalRun",
+              "_title": "RobotCalRun"
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Test/RobotCalibration",
+              "_title": "RobotCalibration"
             }
           }
         }

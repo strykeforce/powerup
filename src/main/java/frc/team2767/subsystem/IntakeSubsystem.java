@@ -98,64 +98,54 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   public void resetPosition() {}
 
   public void run(Mode mode) {
-    int leftOutput = 0;
-    int rightOutput = 0;
+    int output = 0;
     double leftServo = kLeftClamp;
     double rightServo = kRightClamp;
     switch (mode) {
       case LOAD:
-        leftOutput = kLoadVelocity;
-        rightOutput = kLoadVelocity;
-        logger.debug("running in LOAD at {}", leftOutput);
+        output = kLoadVelocity;
         leftServo = kLeftDefault;
         rightServo = kRightDefault;
         break;
       case HOLD:
-        leftOutput = kHoldVelocity;
-        rightOutput = kHoldVelocity;
-        logger.debug("running in HOLD at {}", leftOutput);
+        output = kHoldVelocity;
         leftServo = kLeftClamp;
         rightServo = kRightClamp;
         break;
       case FAST_EJECT:
-        leftOutput = kFastEjectVelocity;
-        rightOutput = kFastEjectVelocity;
+        output = kFastEjectVelocity;
         leftServo = kLeftDefault;
         rightServo = kRightDefault;
         break;
       case SCALE_EJECT:
-        leftOutput = kScaleEjectVelocity;
-        rightOutput = kScaleEjectVelocity;
+        output = kScaleEjectVelocity;
         leftServo = kLeftDefault;
         rightServo = kRightDefault;
         break;
       case SLOW_EJECT:
-        leftOutput = kSlowEjectVelocity;
-        rightOutput = kSlowEjectVelocity;
+        output = kSlowEjectVelocity;
         leftServo = kLeftDefault;
         rightServo = kRightDefault;
         break;
       case SWITCH_EJECT:
-        leftOutput = kSwitchEjectVelocity;
-        rightOutput = kSwitchEjectVelocity;
+        output = kSwitchEjectVelocity;
         leftServo = kLeftDefault;
         rightServo = kRightDefault;
         break;
       case OPEN:
-        leftOutput = 0;
-        rightOutput = 0;
         leftServo = kLeftOpen;
         rightServo = kRightOpen;
-        logger.debug("running in OPEN at {}", leftOutput);
         break;
     }
+
+    logger.debug("running in {} at {}", mode, output);
 
     int currentLimit = mode == Mode.HOLD ? kHoldCurrentLimit : kNormalCurrentLimit;
     leftTalon.configContinuousCurrentLimit(currentLimit, 0);
     rightTalon.configContinuousCurrentLimit(currentLimit, 0);
 
-    leftTalon.set(Velocity, -leftOutput);
-    rightTalon.set(Velocity, rightOutput);
+    leftTalon.set(Velocity, -output);
+    rightTalon.set(Velocity, output);
     canifier.setPWMOutput(LEFT_RELEASE, leftServo);
     canifier.setPWMOutput(RIGHT_RELEASE, rightServo);
   }
