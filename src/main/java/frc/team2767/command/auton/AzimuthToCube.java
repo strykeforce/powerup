@@ -45,8 +45,8 @@ public class AzimuthToCube extends Command {
     }
   }
 
-  public double getSetpoint() {
-    return setpoint;
+  public double getCurrentYaw() {
+    return driveSubsystem.getGyro().getYaw();
   }
 
   @Override
