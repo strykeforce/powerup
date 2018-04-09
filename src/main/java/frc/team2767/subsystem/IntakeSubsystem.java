@@ -88,8 +88,6 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     logger.info("rightServoClamp = {}", kRightClamp);
     logger.info("rightServoOpen = {}", kRightOpen);
 
-    canifier.enablePWMOutput(LEFT_RELEASE, true);
-    canifier.enablePWMOutput(RIGHT_RELEASE, true);
     canifier.setPWMOutput(LEFT_RELEASE, kLeftClamp);
     canifier.setPWMOutput(RIGHT_RELEASE, kRightClamp);
   }
@@ -155,6 +153,11 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     rightTalon.set(Velocity, 0d);
     canifier.setPWMOutput(LEFT_RELEASE, kLeftClamp);
     canifier.setPWMOutput(RIGHT_RELEASE, kRightClamp);
+  }
+
+  public void setEnabled(boolean enabled) {
+    canifier.enablePWMOutput(LEFT_RELEASE, enabled);
+    canifier.enablePWMOutput(RIGHT_RELEASE, enabled);
   }
 
   private double scaleDutyCycle(double Setting) {
