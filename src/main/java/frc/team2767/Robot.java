@@ -8,6 +8,7 @@ import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.IntakeSubsystem;
 import java.net.URL;
 
 import frc.team2767.subsystem.IntakeSubsystem;
