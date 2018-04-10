@@ -81,7 +81,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     kRightStrafe = toml.getDouble("strafe");
     kRightIntakeStopDistance = toml.getLong("intakeStopDistance").intValue();
     kRightDriveStopDistance = toml.getLong("driveStopDistance").intValue();
-    kDrive = 0.15;
+    kDrive = 0.20;
   }
 
   @Override
