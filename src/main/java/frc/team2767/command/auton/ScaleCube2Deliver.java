@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
+import frc.team2767.command.LogCommand;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.sequence.Stow;
@@ -64,7 +65,8 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
           {
             addParallel(isLeft ? leftPath : rightPath);
             addSequential(new WaitCommand(SHOULDER_DELAY));
-            addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+            addSequential(new LogCommand("S_C2D Finished Shoulder Delay"));
+            addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
           }
 
           @Override

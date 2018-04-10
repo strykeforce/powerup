@@ -27,7 +27,8 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
 
   private static final Logger logger = LoggerFactory.getLogger(Cube2Fetch.class);
   private static final Map<Scenario, String> SETTINGS = new HashMap<>();
-  private static boolean isLeft;
+  private boolean isLeft;
+  private boolean isCross;
 
   static {
     //    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.LEFT), "L_SW_S_C2F");
@@ -86,6 +87,10 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
   @Override
   public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
     isLeft = (startFeature == SWITCH ? nearSwitch : scale) == OwnedSide.LEFT;
+    isCross =
+        (!isLeft || startPosition != StartPosition.LEFT)
+            && (isLeft || startPosition != StartPosition.RIGHT);
+    logger.debug("isLeft = {}, isCross = {}", isLeft, isCross);
     azimuthToCube = new AzimuthToCube(startPosition);
     settings =
         SETTINGS.get(
@@ -108,8 +113,6 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
 
     addParallel(new EnableLidar());
     addSequential(new AzimuthCommand(isLeft ? kLeftIntakeAzimuth : kRightIntakeAzimuth));
-
-    addSequential(new WaitCommand(1));
 
     addSequential(azimuthToCube);
 
@@ -186,29 +189,29 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
       logger.debug("Current Yaw = {}" + driveSubsystem.getGyro().getYaw());
       logger.debug(
           "Left Forward = {}",
-          (kDrive * Math.sin(Math.toRadians(90 - driveSubsystem.getGyro().getYaw()))));
+          (kDrive * Math.sin(Math.toRadians(driveSubsystem.getGyro().getYaw()))));
       logger.debug(
           "Left Strafe = {}",
-          (-1 * kDrive * Math.cos(Math.toRadians(90 - driveSubsystem.getGyro().getYaw()))));
+          (-1 * kDrive * Math.cos(Math.toRadians(driveSubsystem.getGyro().getYaw()))));
       logger.debug(
           "Right Forward = {}",
-          (-1 * kDrive * Math.sin(Math.toRadians(-90 - driveSubsystem.getGyro().getYaw()))));
+          (-1 * kDrive * Math.sin(Math.toRadians(driveSubsystem.getGyro().getYaw()))));
       logger.debug(
           "Right Strafe = {}",
-          (-1 * kDrive * Math.cos(Math.toRadians(-90 - driveSubsystem.getGyro().getYaw()))));
+          (-1 * kDrive * Math.cos(Math.toRadians(driveSubsystem.getGyro().getYaw()))));
 
       logger.info(
           "driving to cube, lidar distance = {}", intakeSensorsSubsystem.getLidarDistance());
 
-      if (isLeft) {
+      if (isLeft && !isCross || !isLeft && isCross) {
         driveSubsystem.drive(
-            -1 * kDrive * Math.cos(Math.toRadians(90 - driveSubsystem.getGyro().getYaw())),
-            kDrive * Math.sin(Math.toRadians(90 - driveSubsystem.getGyro().getYaw())),
+            -kDrive * Math.sin(Math.toRadians(driveSubsystem.getGyro().getYaw())),
+            kDrive * Math.cos(Math.toRadians(driveSubsystem.getGyro().getYaw())),
             0.0);
       } else {
         driveSubsystem.drive(
-            kDrive * Math.sin(Math.toRadians(-90 - driveSubsystem.getGyro().getYaw())),
-            -1 * kDrive * Math.cos(Math.toRadians(-90 - driveSubsystem.getGyro().getYaw())),
+            kDrive * Math.sin(Math.toRadians(driveSubsystem.getGyro().getYaw())),
+            -kDrive * Math.cos(Math.toRadians(driveSubsystem.getGyro().getYaw())),
             0.0);
       }
     }

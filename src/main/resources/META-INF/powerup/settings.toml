@@ -81,10 +81,10 @@ immediateFlushLogFile = true
   # release servo positions
   leftServoDefault = 0.6
   leftServoClamp = 0.8
-  leftServoOpen = 0.0
+  leftServoOpen = 0.03
   rightServoDefault = 0.4
   rightServoClamp = 0.2
-  rightServoOpen = 1.0
+  rightServoOpen = 0.95
 
 [POWERUP.LIFT]
   timeout      = 0.5

@@ -8,9 +8,8 @@ import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
-import java.net.URL;
-
 import frc.team2767.subsystem.IntakeSubsystem;
+import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.telemetry.TelemetryService;
@@ -117,4 +116,3 @@ public class Robot extends TimedRobot {
     scheduler.run();
   }
 }
-

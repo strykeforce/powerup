@@ -18,12 +18,14 @@ public class ScaleSameCube1Deliver extends CommandGroup {
 
   private final int kDistance;
   private final String settings;
+  private final int kLaunchDistance;
 
   ScaleSameCube1Deliver(StartPosition startPosition) {
     settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C1D" : "L_SC_S_C1D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     String path = toml.getString("path");
     kDistance = toml.getLong("distance").intValue();
+    kLaunchDistance = toml.getLong("launchDistance").intValue();
 
     PathCommand pathCommand = new PathCommand(path, startPosition.getPathAngle(START_POSITION_YAW));
 
@@ -47,6 +49,8 @@ public class ScaleSameCube1Deliver extends CommandGroup {
                   }
                 });
 
+            addSequential(new WaitForDistance(pathCommand.getPathController(), kLaunchDistance));
+
             addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
           }
 
@@ -58,6 +62,7 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
+    // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override
