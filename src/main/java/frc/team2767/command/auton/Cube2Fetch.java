@@ -1,8 +1,5 @@
 package frc.team2767.command.auton;
 
-import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
-import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
-
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -16,12 +13,16 @@ import frc.team2767.command.sequence.Stow;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.IntakeSensorsSubsystem;
 import frc.team2767.subsystem.IntakeSubsystem;
-import java.util.HashMap;
-import java.util.Map;
 import openrio.powerup.MatchData.OwnedSide;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
+import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
 
 public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable {
 
