@@ -3,7 +3,6 @@ package frc.team2767.control;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team2767.Settings;
-import frc.team2767.command.auton.PathCommand;
 import frc.team2767.command.climber.ClimberRelease;
 import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.climber.ClimberUnwind;
