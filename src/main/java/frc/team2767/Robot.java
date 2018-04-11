@@ -8,6 +8,7 @@ import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
 import frc.team2767.control.SimpleTrigger;
 import frc.team2767.subsystem.DriveSubsystem;
+import frc.team2767.subsystem.IntakeSubsystem;
 import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   private Controls controls;
   private Settings settings;
   private DriveSubsystem driveSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private SimpleTrigger alignWheelsButtons;
   private Scheduler scheduler;
   private Command autonCommand;
@@ -45,6 +47,7 @@ public class Robot extends TimedRobot {
     alignWheelsButtons = controls.getDriverControls().getAlignWheelsButtons();
     driveSubsystem = INJECTOR.driveSubsystem();
     driveSubsystem.zeroAzimuthEncoders();
+    intakeSubsystem = INJECTOR.intakeSubsystem();
 
     if (settings.isCameraEnabled()) {
       INJECTOR.visionSubsystem();
@@ -68,12 +71,14 @@ public class Robot extends TimedRobot {
     } else {
       autonChooser.reset();
     }
+    intakeSubsystem.setEnabled(false);
     Logging.flushLogs();
   }
 
   @Override
   public void autonomousInit() {
     logger.info("AUTONOMOUS");
+    intakeSubsystem.setEnabled(true);
     autonCommand = autonChooser.getCommand();
     driveSubsystem.setAngleAdjustment(autonChooser.getStartPosition());
     autonDone = settings.isEvent();
@@ -85,6 +90,7 @@ public class Robot extends TimedRobot {
     logger.info("TELEOP");
     scheduler.removeAll();
     driveSubsystem.stop();
+    intakeSubsystem.setEnabled(true);
   }
 
   @Override

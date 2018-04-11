@@ -2,6 +2,7 @@ package frc.team2767.command.auton;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
@@ -18,12 +19,14 @@ public class ScaleSameCube1Deliver extends CommandGroup {
 
   private final int kDistance;
   private final String settings;
+  private final int kLaunchDistance;
 
   ScaleSameCube1Deliver(StartPosition startPosition) {
     settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C1D" : "L_SC_S_C1D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     String path = toml.getString("path");
     kDistance = toml.getLong("distance").intValue();
+    kLaunchDistance = toml.getLong("launchDistance").intValue();
 
     PathCommand pathCommand = new PathCommand(path, startPosition.getPathAngle(START_POSITION_YAW));
 
@@ -47,7 +50,9 @@ public class ScaleSameCube1Deliver extends CommandGroup {
                   }
                 });
 
-            addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+            // addSequential(new WaitForDistance(pathCommand.getPathController(), kLaunchDistance));
+
+            // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
           }
 
           @Override
@@ -58,6 +63,8 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
+    addSequential(new WaitCommand(0.25));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override
