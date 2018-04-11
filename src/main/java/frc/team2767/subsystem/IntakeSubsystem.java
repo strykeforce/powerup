@@ -24,9 +24,12 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private static final int TIMEOUT = 10;
   private static final int LEFT_RELEASE = 3; // PDP 8
   private static final int RIGHT_RELEASE = 4; // PDP 8
-  private static final double DUTY_CYCLE_MIN = 0.5;
-  private static final double DUTY_CYCLE_PERIOD = 4.2;
-  private static final double DUTY_CYCLE_RANGE = 2.0;
+  //private static final double DUTY_CYCLE_MIN = 0.5; //for CANifier
+  //private static final double DUTY_CYCLE_PERIOD = 4.2; //for CANifier
+  //private static final double DUTY_CYCLE_RANGE = 2.0;  //for CANifier
+  private static final double DUTY_CYCLE_MIN = 0.0;
+  private static final double DUTY_CYCLE_PERIOD = 1.0;
+  private static final double DUTY_CYCLE_RANGE = 1.0;
 
   private static final String TABLE = Robot.TABLE + ".INTAKE";
   private static final Logger logger = LoggerFactory.getLogger(IntakeSubsystem.class);
@@ -151,6 +154,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     canifier.setPWMOutput(RIGHT_RELEASE, rightServoSetting);
     leftServo.set(leftServoSetting);
     rightServo.set(rightServoSetting);
+    logger.info("leftServo = {}, rightServo = {}", leftServoSetting, rightServoSetting);
   }
 
   public void stop() {
