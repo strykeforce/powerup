@@ -16,7 +16,7 @@ description   = "Stryke Force 2018 POWER UP"
 immediateFlushLogFile = true
 
 [POWERUP.VISION]
-  brightness = 45
+  brightness = 50
   exposure   = 30
   intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
   liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
@@ -26,9 +26,9 @@ immediateFlushLogFile = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRedLeft   = 2255 # carpet-x pull test
+  ticksPerInchRedLeft   = 2309 # carpet-x pull test
   ticksPerInchRedRight  = 2337 # carpet-x pull test
-  ticksPerInchBlueLeft  = 2305
+  ticksPerInchBlueLeft  = 2353
   ticksPerInchBlueRight = 2287
 
 [POWERUP.AZIMUTH]
