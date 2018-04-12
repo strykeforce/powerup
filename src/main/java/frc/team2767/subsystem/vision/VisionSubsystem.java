@@ -77,6 +77,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     CvSink video = CameraServer.getInstance().getVideo(camera);
     Mat frame = new Mat();
     video.grabFrame(frame);
+    Imgcodecs.imwrite("/home/lvuser/imageOriginal.jpg", frame);
     gripCode.process(frame);
 
     ArrayList<MatOfPoint> contours = gripCode.filterContoursOutput();
