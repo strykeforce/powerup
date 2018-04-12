@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("TELEOP");
-    scheduler.removeAll();
+    //    scheduler.removeAll();
     driveSubsystem.stop();
     //    intakeSubsystem.setEnabled(true);
   }

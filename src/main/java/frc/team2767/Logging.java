@@ -19,7 +19,7 @@ import java.io.OutputStream;
 
 public class Logging extends ContextAwareBase implements Configurator {
 
-  private static final String LOG = "/home/lvuser/logs/P01.log";
+  private static final String LOG = "/home/lvuser/logs/P05.log";
 
   private static final Level CONSOLE_LEVEL = Level.TRACE;
   private static final Level EVENT_LEVEL = Level.DEBUG;
