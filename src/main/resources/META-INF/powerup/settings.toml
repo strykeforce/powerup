@@ -27,7 +27,7 @@ immediateFlushLogFile = true
   p_distance       = 2e-6
   f_acceleration   = 0.0
   ticksPerInchRedLeft   = 2255 # carpet-x pull test
-  ticksPerInchRedRight  = 2315 # carpet-x pull test
+  ticksPerInchRedRight  = 2337 # carpet-x pull test
   ticksPerInchBlueLeft  = 2305
   ticksPerInchBlueRight = 2287
 
