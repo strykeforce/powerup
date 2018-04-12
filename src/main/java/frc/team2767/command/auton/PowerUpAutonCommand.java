@@ -108,7 +108,7 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
     addSequential(sequence.cube1Deliver);
     addSequential(sequence.cube2Fetch);
     addSequential(sequence.cube2Deliver);
-    logger.debug("configured {} for {}", sequence, scenario);
+    logger.info("configured {} for {}", sequence, scenario);
   }
 
   static final class Scenario {

@@ -42,7 +42,7 @@ public class AutonChooser {
   }
 
   private boolean isAutonTest() {
-    return autonSwitchPosition > 0x00 && autonSwitchPosition < 0x04;
+    return false;
   }
 
   private boolean checkAutonomousSwitch() {
