@@ -11,14 +11,15 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.spi.ContextAwareBase;
-import java.io.IOException;
-import java.io.OutputStream;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class Logging extends ContextAwareBase implements Configurator {
 
-  private static final String LOG = "/home/lvuser/logs/Q05.log";
+  private static final String LOG = "/home/lvuser/logs/E1.log";
 
   private static final Level CONSOLE_LEVEL = Level.TRACE;
   private static final Level EVENT_LEVEL = Level.DEBUG;

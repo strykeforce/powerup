@@ -39,13 +39,15 @@ public class AzimuthToCube extends Command {
           visionSubsystem.getCenterAngle(),
           setpoint,
           visionSubsystem.getCenterAngle() + setpoint);
-      if (visionSubsystem.getCenterAngle() < Math.abs(9)) {
-        driveSubsystem.azimuthTo(visionSubsystem.getCenterAngle() + setpoint);
-
-      } else {
-        driveSubsystem.azimuthTo(setpoint);
-        logger.debug("greater than 9, not azimuthing. at {}", setpoint);
-      }
+      //      if (visionSubsystem.getCenterAngle() < Math.abs(9)) {
+      //        driveSubsystem.azimuthTo(visionSubsystem.getCenterAngle() + setpoint);
+      //
+      //      } else {
+      //        driveSubsystem.azimuthTo(setpoint);
+      //        logger.debug("greater than 9, not azimuthing. at {}", setpoint);
+      //      }
+      driveSubsystem.azimuthTo(setpoint);
+      logger.debug("seetpoint angle => {}", setpoint);
       isFinished = true;
     }
   }

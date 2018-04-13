@@ -2,7 +2,7 @@
 
 
 path = "L_SC_S_C2F"
-intakeAzimuth = 55.0
+intakeAzimuth = 57.5
 intakeStopDistance = 26
 driveStopDistance = 42
 drive = 0.15

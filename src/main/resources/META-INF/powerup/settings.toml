@@ -79,11 +79,11 @@ immediateFlushLogFile = true
   openPosition = 2500
 
   # release servo positions - COMP BOT
-  leftServoDefault = 0.65 # good
-  leftServoClamp = 0.85 # good
-  leftServoOpen = 0.02 # good
-  rightServoDefault = 0.3 # good
-  rightServoClamp = 0.1 # good
+  leftServoDefault = 0.66 # good
+  leftServoClamp = 0.89 # good
+  leftServoOpen = 0.06 # good
+  rightServoDefault = 0.27 # good
+  rightServoClamp = 0.05 # good
   rightServoOpen = 0.9 # good
 
 #  # release servo positions - PROTO BOT
@@ -155,4 +155,4 @@ immediateFlushLogFile = true
 [POWERUP.SMARTDASHBOARD]
   enablePit  = true
   enableTest = true
-  enableGame = false
+  enableGame = true
