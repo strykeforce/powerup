@@ -11,11 +11,10 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.spi.ContextAwareBase;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.OutputStream;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 
 public class Logging extends ContextAwareBase implements Configurator {
 
