@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 
 public class AzimuthToCube extends Command {
 
+  private static final Logger logger = LoggerFactory.getLogger(AzimuthToCube.class);
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final VisionSubsystem visionSubsystem = Robot.INJECTOR.visionSubsystem();
-  private static final Logger logger = LoggerFactory.getLogger(AzimuthToCube.class);
-
   private volatile double setpoint;
   private int stableCount;
   private StartPosition startPosition;
@@ -40,13 +39,17 @@ public class AzimuthToCube extends Command {
           visionSubsystem.getCenterAngle(),
           setpoint,
           visionSubsystem.getCenterAngle() + setpoint);
-      driveSubsystem.azimuthTo(visionSubsystem.getCenterAngle() + setpoint);
+      //      if (visionSubsystem.getCenterAngle() < Math.abs(9)) {
+      //        driveSubsystem.azimuthTo(visionSubsystem.getCenterAngle() + setpoint);
+      //
+      //      } else {
+      //        driveSubsystem.azimuthTo(setpoint);
+      //        logger.debug("greater than 9, not azimuthing. at {}", setpoint);
+      //      }
+      driveSubsystem.azimuthTo(setpoint);
+      logger.debug("seetpoint angle => {}", setpoint);
       isFinished = true;
     }
-  }
-
-  public double getCurrentYaw() {
-    return driveSubsystem.getGyro().getYaw();
   }
 
   @Override
@@ -58,5 +61,9 @@ public class AzimuthToCube extends Command {
   protected void end() {
     logger.debug("Azimuth end");
     driveSubsystem.endAzimuth();
+  }
+
+  public double getCurrentYaw() {
+    return driveSubsystem.getGyro().getYaw();
   }
 }

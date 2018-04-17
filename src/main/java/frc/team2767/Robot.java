@@ -65,22 +65,17 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     logger.info("DISABLED");
-    if (autonDone) {
-      autonChooser = null;
-      autonCommand = null;
-    } else {
-      autonChooser.reset();
-    }
-    intakeSubsystem.setEnabled(false);
-    Logging.flushLogs();
+    if (!autonDone) autonChooser.reset();
+    //    intakeSubsystem.setEnabled(false);
   }
 
   @Override
   public void autonomousInit() {
     logger.info("AUTONOMOUS");
-    intakeSubsystem.setEnabled(true);
+    //    intakeSubsystem.setEnabled(true);
     autonCommand = autonChooser.getCommand();
     driveSubsystem.setAngleAdjustment(autonChooser.getStartPosition());
+    logger.info("auton command = {}, autonDone = {}", autonCommand, autonDone);
     autonDone = settings.isEvent();
     autonCommand.start();
   }
@@ -88,9 +83,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("TELEOP");
-    scheduler.removeAll();
+    //    scheduler.removeAll();
     driveSubsystem.stop();
-    intakeSubsystem.setEnabled(true);
+    //    intakeSubsystem.setEnabled(true);
   }
 
   @Override
@@ -98,10 +93,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
-      logger.debug("align wheels buttons have activated");
-      driveSubsystem.alignWheelsToBar();
-    }
+    //    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
+    //      logger.debug("align wheels buttons have activated");
+    //      driveSubsystem.alignWheelsToBar();
+    //    }
 
     if (!autonDone) autonChooser.checkAutonSwitch();
   }
