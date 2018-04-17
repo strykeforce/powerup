@@ -2,6 +2,7 @@ package frc.team2767.command.auton;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
@@ -49,9 +50,9 @@ public class ScaleSameCube1Deliver extends CommandGroup {
                   }
                 });
 
-            addSequential(new WaitForDistance(pathCommand.getPathController(), kLaunchDistance));
+            // addSequential(new WaitForDistance(pathCommand.getPathController(), kLaunchDistance));
 
-            addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+            // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
           }
 
           @Override
@@ -62,7 +63,8 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
-    // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+    addSequential(new WaitCommand(0.50));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override

@@ -66,7 +66,7 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
             addParallel(isLeft ? leftPath : rightPath);
             addSequential(new WaitCommand(SHOULDER_DELAY));
             addSequential(new LogCommand("S_C2D Finished Shoulder Delay"));
-            addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
+            addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
           }
 
           @Override

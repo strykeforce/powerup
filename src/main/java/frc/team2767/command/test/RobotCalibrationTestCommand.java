@@ -9,6 +9,7 @@ import frc.team2767.Robot;
 import frc.team2767.command.LogCommand;
 import frc.team2767.command.auton.PathCommand;
 import frc.team2767.command.auton.StartPosition;
+import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.subsystem.DriveSubsystem;
 
 public class RobotCalibrationTestCommand extends CommandGroup {
@@ -20,6 +21,7 @@ public class RobotCalibrationTestCommand extends CommandGroup {
   public RobotCalibrationTestCommand() {
     initChoosers();
 
+    addSequential(new ZeroGyroYawCommand());
     addSequential(
         new InstantCommand() {
           {

@@ -81,7 +81,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     kRightStrafe = toml.getDouble("strafe");
     kRightIntakeStopDistance = toml.getLong("intakeStopDistance").intValue();
     kRightDriveStopDistance = toml.getLong("driveStopDistance").intValue();
-    kDrive = 0.15;
+    kDrive = 0.20;
   }
 
   @Override
@@ -203,7 +203,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
       logger.info(
           "driving to cube, lidar distance = {}", intakeSensorsSubsystem.getLidarDistance());
 
-      if (isLeft && !isCross || !isLeft && isCross) {
+      if ((isLeft && !isCross) || (!isLeft && isCross)) {
         driveSubsystem.drive(
             -kDrive * Math.sin(Math.toRadians(driveSubsystem.getGyro().getYaw())),
             kDrive * Math.cos(Math.toRadians(driveSubsystem.getGyro().getYaw())),

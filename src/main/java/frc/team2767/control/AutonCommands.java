@@ -85,6 +85,20 @@ public class AutonCommands {
         command.addScenario(LEFT, LEFT, SWITCH, NONE);
         break;
 
+        // switch if opposite, scale always if same
+      case 0x35:
+        command.addScenario(RIGHT, LEFT, SWITCH, NONE);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE);
+        command.addScenario(RIGHT, RIGHT, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, SWITCH, NONE);
+        break;
+      case 0x15:
+        command.addScenario(LEFT, RIGHT, SWITCH, NONE);
+        command.addScenario(RIGHT, LEFT, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, SCALE, SCALE);
+        command.addScenario(RIGHT, RIGHT, SWITCH, NONE);
+        break;
+
         // test
       case 0x1F:
         command.addScenario(LEFT, RIGHT, NONE, NONE);
