@@ -38,13 +38,19 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
   }
 
   public void addScenario(
-      OwnedSide nearSwitch, OwnedSide scale, PowerUpGameFeature cube1, PowerUpGameFeature cube2) {
+      OwnedSide nearSwitch,
+      OwnedSide scale,
+      PowerUpGameFeature cube1,
+      PowerUpGameFeature cube2,
+      PowerUpGameFeature cube3) {
     Scenario scenario = new Scenario(nearSwitch, scale);
     Sequence sequence =
         new Sequence(
             getCube1Deliver(scenario, cube1),
             getCube2Fetch(scenario, cube1, cube2),
-            getCube2Deliver(scenario, cube2));
+            getCube2Deliver(scenario, cube2),
+            getCube3Fetch(scenario, cube2, cube3),
+            getCube3Deliver(scenario, cube3));
     scenarios.put(scenario, sequence);
   }
 
@@ -100,6 +106,32 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
     return command;
   }
 
+  private Command getCube3Fetch(
+      Scenario scenario, PowerUpGameFeature cube2, PowerUpGameFeature cube3) {
+    Command command =
+        cube3 == PowerUpGameFeature.NONE
+            ? new LogCommand("Cube3Fetch game feature is NONE for " + scenario)
+            : new Cube3Fetch(startPosition, cube2);
+    logger.debug("cube 3 fetch = {}", command);
+    return command;
+  }
+
+  private Command getCube3Deliver(Scenario scenario, PowerUpGameFeature cube3) {
+    Command command;
+    switch (cube3) {
+      case SWITCH:
+        command = new SwitchCube3Deliver(startPosition);
+        break;
+      case SCALE:
+        command = new ScaleCube3Deliver(startPosition);
+        break;
+      default:
+        command = new LogCommand("Cube3Deliver game feature is NONE for " + scenario);
+    }
+    logger.debug("cube 3 deliver = {}", command);
+    return command;
+  }
+
   @Override
   public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
     Scenario scenario = new Scenario(nearSwitch, scale);
@@ -108,6 +140,8 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
     addSequential(sequence.cube1Deliver);
     addSequential(sequence.cube2Fetch);
     addSequential(sequence.cube2Deliver);
+    addSequential(sequence.cube3Fetch);
+    addSequential(sequence.cube3Deliver);
     logger.info("configured {} for {}", sequence, scenario);
   }
 
@@ -156,11 +190,20 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
     final Command cube1Deliver;
     final Command cube2Fetch;
     final Command cube2Deliver;
+    final Command cube3Fetch;
+    final Command cube3Deliver;
 
-    Sequence(Command cube1Deliver, Command cube2Fetch, Command cube2Deliver) {
+    Sequence(
+        Command cube1Deliver,
+        Command cube2Fetch,
+        Command cube2Deliver,
+        Command cube3Fetch,
+        Command cube3Deliver) {
       this.cube1Deliver = cube1Deliver;
       this.cube2Fetch = cube2Fetch;
       this.cube2Deliver = cube2Deliver;
+      this.cube3Fetch = cube3Fetch;
+      this.cube3Deliver = cube3Deliver;
     }
 
     @Override
@@ -169,6 +212,10 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
         ((OwnedSidesSettable) cube2Fetch).setOwnedSide(startPosition, nearSwitch, scale);
       if (cube2Deliver instanceof OwnedSidesSettable)
         ((OwnedSidesSettable) cube2Deliver).setOwnedSide(startPosition, nearSwitch, scale);
+      if (cube3Fetch instanceof OwnedSidesSettable)
+        ((OwnedSidesSettable) cube3Fetch).setOwnedSide(startPosition, nearSwitch, scale);
+      if (cube3Deliver instanceof OwnedSidesSettable)
+        ((OwnedSidesSettable) cube3Deliver).setOwnedSide(startPosition, nearSwitch, scale);
     }
 
     @Override
@@ -180,6 +227,10 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
           + cube2Fetch
           + ", cube2Deliver="
           + cube2Deliver
+          + ", cube3Fetch="
+          + cube3Fetch
+          + ", cube3Deliver="
+          + cube3Deliver
           + '}';
     }
   }
