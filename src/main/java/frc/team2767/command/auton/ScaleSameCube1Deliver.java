@@ -63,7 +63,7 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
-    addSequential(new WaitCommand(0.25));
+    addSequential(new WaitCommand(0.50));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 

@@ -11,22 +11,17 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.FileAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.spi.ContextAwareBase;
-import edu.wpi.first.wpilibj.DriverStation;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
 public class Logging extends ContextAwareBase implements Configurator {
 
+  private static final String LOG = "/home/lvuser/logs/E1.log";
+
   private static final Level CONSOLE_LEVEL = Level.TRACE;
-  private static final Level EVENT_LEVEL = Level.INFO;
+  private static final Level EVENT_LEVEL = Level.DEBUG;
 
   private static final String CONSOLE_NAME = "console";
   private static final String CONSOLE_PATTERN =
@@ -63,21 +58,23 @@ public class Logging extends ContextAwareBase implements Configurator {
 
   @NotNull
   private static String getLogFile() {
-    DriverStation driverStation = DriverStation.getInstance();
-    StringBuilder stringBuilder = new StringBuilder();
+    //    DriverStation driverStation = DriverStation.getInstance();
+    //    StringBuilder stringBuilder = new StringBuilder();
+    //
+    //    Path path = FileSystems.getDefault().getPath("/media/sda1/logs/");
+    //    if (Files.exists(path)) stringBuilder.append(path).append("/");
+    //    else stringBuilder.append("/home/lvuser/logs/");
+    //
+    //    DateFormat dateFormat = new SimpleDateFormat("yyMMddhhmm");
+    //    stringBuilder.append(dateFormat.format(Calendar.getInstance().getTime()));
+    //
+    //    DriverStation.MatchType matchType = driverStation.getMatchType();
+    //    if (matchType != null) stringBuilder.append("-").append(matchType);
+    //    stringBuilder.append(".log");
+    //
+    //    String logFile = stringBuilder.toString();
+    String logFile = LOG;
 
-    Path path = FileSystems.getDefault().getPath("/media/sda1/logs/");
-    if (Files.exists(path)) stringBuilder.append(path).append("/");
-    else stringBuilder.append("/home/lvuser/logs/");
-
-    DateFormat dateFormat = new SimpleDateFormat("yyMMddhhmm");
-    stringBuilder.append(dateFormat.format(Calendar.getInstance().getTime()));
-
-    DriverStation.MatchType matchType = driverStation.getMatchType();
-    if (matchType != null) stringBuilder.append("-").append(matchType);
-    stringBuilder.append(".log");
-
-    String logFile = stringBuilder.toString();
     System.out.println("POWER UP log file: " + logFile);
     return logFile;
   }
