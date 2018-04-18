@@ -28,17 +28,23 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 @Singleton
 public class DriveSubsystem extends Subsystem implements Graphable {
 
+  private static final int NUM_WHEELS = 4;
+  private static final int PID = 0;
+
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
 
   private final int kTicksPerTooth;
 
   private final SwerveDrive swerve;
+  private final Wheel[] wheels;
   private final PathControllerFactory pathControllerFactory;
   private final AzimuthControllerFactory azimuthControllerFactory;
   private final Settings settings;
   private PathController pathController;
   private AzimuthController azimuthController;
   private StartPosition startPosition;
+  private int[] start = new int[4];
+  private int distanceTarget;
 
   @Inject
   DriveSubsystem(
@@ -53,7 +59,31 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     kTicksPerTooth = settings.getTable("POWERUP.WHEEL").getLong("ticksPerTooth").intValue();
     if (!settings.isEvent() && settings.getTable("POWERUP.AZIMUTH").getBoolean("test", false))
       azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
+    wheels = swerve.getWheels();
     logger.info("ticksPerTooth = {}", kTicksPerTooth);
+  }
+
+  public void resetDistance() {
+    for (int i = 0; i < NUM_WHEELS; i++) {
+      start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
+    }
+  }
+
+  public int getDistance() {
+    double distance = 0;
+    for (int i = 0; i < NUM_WHEELS; i++) {
+      distance += Math.abs(wheels[i].getDriveTalon().getSelectedSensorPosition(PID) - start[i]);
+    }
+    distance /= 4;
+    return (int) distance;
+  }
+
+  public void setDistanceTarget(int distanceTarget) {
+    this.distanceTarget = distanceTarget;
+  }
+
+  public boolean isDistanceTargetFinished() {
+    return getDistance() >= distanceTarget;
   }
 
   @Override

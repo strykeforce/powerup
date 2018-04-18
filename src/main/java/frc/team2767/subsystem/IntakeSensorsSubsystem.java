@@ -5,6 +5,7 @@ import static org.strykeforce.thirdcoast.telemetry.grapher.Measure.PULSE_WIDTH_P
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.GeneralPin;
+import com.ctre.phoenix.CANifierStatusFrame;
 import com.moandjiezana.toml.Toml;
 import com.squareup.moshi.JsonWriter;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -34,8 +35,8 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   private static final Logger logger = LoggerFactory.getLogger(IntakeSensorsSubsystem.class);
 
   private static final int CANIFIER_ID = 32;
-  private static final double LIDAR_READ_PERIOD = 0.1;
-  private static final int NUM_TAPS = 4;
+  private static final double LIDAR_READ_PERIOD = 20.0 / 1000.0;
+  private static final int NUM_TAPS = 2;
 
   private final double kLidarSlope;
   private final double kLidarOffset;
@@ -89,6 +90,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
     if (enable) {
       logger.info("enabling lidar");
       canifier.setGeneralOutput(GeneralPin.LIMF, true, true);
+      canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 20, 0);
       lidarTimer = new Timer();
       lidarTimer.start();
     } else {
@@ -101,7 +103,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
     }
   }
 
-  public boolean isLidarDisanceWithin(double distance) {
+  public boolean isLidarDisanceWithin(int distance) {
     double range = lidarFilter.get();
     if (range == kLidarOffset) autonCommand.cancel();
     return range < distance;
