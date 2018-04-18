@@ -17,6 +17,7 @@ import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
+import frc.team2767.command.test.DriveToFromCubeCommand;
 import frc.team2767.command.test.LidarTestCommand;
 import frc.team2767.command.test.RobotCalibrationTestCommand;
 import frc.team2767.command.test.VisionTestCommand;
@@ -76,6 +77,7 @@ public class SmartDashboardControls {
 
     SmartDashboard.putData("Test/RobotCalRun", new RobotCalibrationTestCommand());
     SmartDashboard.putData("Test/VisionTest", new VisionTestCommand());
+    SmartDashboard.putData("Test/DriveToCube", new DriveToFromCubeCommand());
   }
 
   private void addGameCommands() {
