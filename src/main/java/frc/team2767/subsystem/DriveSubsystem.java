@@ -8,13 +8,11 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team2767.Robot;
 import frc.team2767.Settings;
 import frc.team2767.command.auton.StartPosition;
 import frc.team2767.command.drive.TeleOpDriveCommand;
-import frc.team2767.motion.AzimuthController;
-import frc.team2767.motion.AzimuthControllerFactory;
-import frc.team2767.motion.PathController;
-import frc.team2767.motion.PathControllerFactory;
+import frc.team2767.motion.*;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -42,6 +40,7 @@ public class DriveSubsystem extends Subsystem implements Graphable {
   private final Settings settings;
   private PathController pathController;
   private AzimuthController azimuthController;
+  private MotionController motionController;
   private StartPosition startPosition;
   private int[] start = new int[4];
   private int distanceTarget;
@@ -186,6 +185,21 @@ public class DriveSubsystem extends Subsystem implements Graphable {
         "azimuth ended setpoint = {} gyro angle = {}",
         azimuthController.getSetpoint(),
         azimuthController.getAngle());
+  }
+
+  public void motionTo(double direction, int distance, double azimuth) {
+    motionController =
+        Robot.INJECTOR.motionControllerFactory().create(direction, distance, azimuth);
+    motionController.start();
+  }
+
+  public boolean isMotionFinished() {
+    return motionController.isFinished();
+  }
+
+  public void endMotion() {
+    motionController.stop();
+    motionController = null;
   }
 
   public int getDrivePosition(int wheel) {

@@ -194,8 +194,8 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
   public void zeroPosition() {
     if (!event && !frontTalon.getSensorCollection().isRevLimitSwitchClosed()) {
       logger.error("LIFT limit switch not detected - disabling closed-loop positioning");
-      frontTalon.selectProfileSlot(4, 0);
-      return;
+      frontTalon.configMotionCruiseVelocity(0, 0);
+      frontTalon.configMotionAcceleration(0, 0);
     }
 
     frontTalon.selectProfileSlot(0, 0);
