@@ -4,6 +4,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 import frc.team2767.control.AutonChooser;
 import frc.team2767.control.Controls;
+import frc.team2767.motion.MotionControllerFactory;
 import frc.team2767.motion.PathControllerFactory;
 import frc.team2767.subsystem.*;
 import frc.team2767.subsystem.health.FollowerVelocityTestFactory;
@@ -63,6 +64,8 @@ public interface SingletonComponent {
   AutonChooser autonChooser();
 
   PathControllerFactory pathControllerFactory();
+
+  MotionControllerFactory motionControllerFactory();
 
   VelocityTestFactory velocityTestFactory();
 
