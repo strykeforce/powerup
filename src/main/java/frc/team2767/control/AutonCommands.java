@@ -99,6 +99,20 @@ public class AutonCommands {
         command.addScenario(RIGHT, RIGHT, SWITCH, NONE, NONE);
         break;
 
+        // stay out of our partner's way, place a cube if possible
+      case 0x16:
+        command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
+        command.addScenario(RIGHT, LEFT, SCALE, COOPERATIVE, NONE);
+        command.addScenario(LEFT, LEFT, SCALE, COOPERATIVE, NONE);
+        command.addScenario(RIGHT, RIGHT, NONE, NONE, NONE);
+        break;
+      case 0x36:
+        command.addScenario(LEFT, RIGHT, SWITCH, COOPERATIVE, NONE);
+        command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
+        command.addScenario(LEFT, LEFT, NONE, NONE, NONE);
+        command.addScenario(RIGHT, RIGHT, SWITCH, COOPERATIVE, NONE);
+        break;
+
         // test
       case 0x1F:
         command.addScenario(LEFT, RIGHT, NONE, NONE, NONE);

@@ -82,10 +82,17 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
 
   private Command getCube2Fetch(
       Scenario scenario, PowerUpGameFeature cube1, PowerUpGameFeature cube2) {
-    Command command =
-        cube2 == PowerUpGameFeature.NONE
-            ? new LogCommand("Cube2Fetch game feature is NONE for " + scenario)
-            : new Cube2Fetch(startPosition, cube1);
+    Command command;
+    switch (cube2) {
+      case NONE:
+        command = new LogCommand("Cube2Fetch game feature is NONE for " + scenario);
+        break;
+      case COOPERATIVE:
+        command = new ScaleClear(startPosition);
+        break;
+      default:
+        command = new Cube2Fetch(startPosition, cube1);
+    }
     logger.debug("cube 2 fetch = {}", command);
     return command;
   }
