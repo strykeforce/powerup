@@ -114,7 +114,7 @@
     source = "FeedbackConnector"
     normal = "NormallyOpen"
   [TALON.softLimit.forward]
-    limit = 17_900
+    limit = 18_000
     enabled = true
   [TALON.softLimit.reverse]
     limit = 0

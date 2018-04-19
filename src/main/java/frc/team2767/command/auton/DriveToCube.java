@@ -29,19 +29,19 @@ public class DriveToCube extends Command {
     driveSubsystem.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
     driveSubsystem.resetDistance();
 
-    double yaw = Math.toRadians(driveSubsystem.getGyro().getYaw());
+    double angle = Math.toRadians(driveSubsystem.getGyro().getAngle());
     Cube2Fetch.logger.info(
-        "driving to cube, lidar distance = {}, lidar target = {}, yaw = {}",
+        "driving to cube, lidar distance = {}, lidar target = {}, angle = {}",
         intakeSensorsSubsystem.getLidarDistance(),
         targetDistance,
-        yaw);
+        angle);
 
     if ((left && !cross) || (!left && cross)) {
-      forward = -DRIVE * Math.sin(yaw);
-      strafe = DRIVE * Math.cos(yaw);
+      forward = -DRIVE * Math.cos(angle);
+      strafe = -DRIVE * Math.sin(angle);
     } else {
-      forward = DRIVE * Math.sin(yaw);
-      strafe = -DRIVE * Math.cos(yaw);
+      forward = -DRIVE * Math.cos(angle);
+      strafe = DRIVE * Math.sin(angle);
     }
     driveSubsystem.drive(forward, strafe, 0.0);
   }

@@ -2,4 +2,6 @@
 
 
 path = "R_SC_S_C2D"
-ejectAzimuth = 35.0
+direction = 45.0
+distance = 100_000
+azimuth = 35.0
