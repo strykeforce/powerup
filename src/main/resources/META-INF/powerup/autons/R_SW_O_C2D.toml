@@ -1,10 +1,12 @@
 # NOT USED
 
 #path = "L_SW_S_C2D"
-ejectAzimuth = -120.0
+direction = 150
+distance = 100_000
+azimuth = -120.0
 
-drive1 = -0.1
-drive2 = 0.1
+#drive1 = -0.1
+#drive2 = 0.1
 
-strafe1 = -0.1
-strafe2 = 0.1
+#strafe1 = -0.1
+#strafe2 = 0.1
