@@ -17,9 +17,7 @@ import frc.team2767.command.lift.LiftUp;
 import frc.team2767.command.lift.LiftZero;
 import frc.team2767.command.shoulder.ShoulderZeroWithEncoder;
 import frc.team2767.command.shoulder.ShoulderZeroWithLimitSwitch;
-import frc.team2767.command.test.LidarTestCommand;
-import frc.team2767.command.test.RobotCalibrationTestCommand;
-import frc.team2767.command.test.VisionTestCommand;
+import frc.team2767.command.test.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -76,6 +74,8 @@ public class SmartDashboardControls {
 
     SmartDashboard.putData("Test/RobotCalRun", new RobotCalibrationTestCommand());
     SmartDashboard.putData("Test/VisionTest", new VisionTestCommand());
+    SmartDashboard.putData("Test/DriveToCube", new DriveToFromCubeCommand());
+    SmartDashboard.putData("Test/Motion", new MotionTestCommand());
   }
 
   private void addGameCommands() {

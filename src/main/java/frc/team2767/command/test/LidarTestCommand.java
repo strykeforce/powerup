@@ -18,20 +18,16 @@ public class LidarTestCommand extends Command {
   @Override
   protected void initialize() {
     intakeSensorsSubsystem.enableLidar(true);
-  }
-
-  @Override
-  protected void execute() {
     logger.debug("distance = {}", intakeSensorsSubsystem.getLidarDistance());
-  }
-
-  @Override
-  protected boolean isFinished() {
-    return false;
   }
 
   @Override
   protected void end() {
     intakeSensorsSubsystem.enableLidar(false);
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return false;
   }
 }

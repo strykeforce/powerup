@@ -27,38 +27,27 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, MatchData.OwnedSide.RIGHT), "R_SW_S_C2D");
   }
 
-  private final double kEjectLeftAzimuth;
-  private final double kEjectRightAzimuth;
-  private final double kRightDrive1;
-  private final double kRightDrive2;
-  private final double kRightStrafe1;
-  private final double kRightStrafe2;
-
-  private final double kLeftDrive1;
-  private final double kLeftDrive2;
-  private final double kLeftStrafe1;
-  private final double kLeftStrafe2;
+  private final double kLeftDirection;
+  private final int kLeftDistance;
+  private final double kLeftAzimuth;
+  private final double kRightDirection;
+  private final int kRightDistance;
+  private final double kRightAzimuth;
 
   private String settings;
 
   public SwitchCube2Deliver(StartPosition startPosition) {
     String settings = SETTINGS.get(new Scenario(startPosition, SCALE, MatchData.OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-
-    kEjectLeftAzimuth = toml.getDouble("ejectAzimuth");
-    kLeftDrive1 = toml.getDouble("drive1");
-    kLeftDrive2 = toml.getDouble("drive2");
-    kLeftStrafe1 = toml.getDouble("strafe1");
-    kLeftStrafe2 = toml.getDouble("strafe2");
+    kLeftDirection = toml.getDouble("direction");
+    kLeftDistance = toml.getLong("distance").intValue();
+    kLeftAzimuth = toml.getDouble("azimuth");
 
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, MatchData.OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
-
-    kEjectRightAzimuth = toml.getDouble("ejectAzimuth");
-    kRightDrive1 = toml.getDouble("drive1");
-    kRightDrive2 = toml.getDouble("drive2");
-    kRightStrafe1 = toml.getDouble("strafe1");
-    kRightStrafe2 = toml.getDouble("strafe2");
+    kRightDirection = toml.getDouble("direction");
+    kRightDistance = toml.getLong("distance").intValue();
+    kRightAzimuth = toml.getDouble("azimuth");
   }
 
   @Override
@@ -69,37 +58,15 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
 
     logger.debug("start position = {}", startPosition);
     logger.debug("settings = {}", settings);
+    logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance, kLeftAzimuth);
     logger.debug(
-        "LAzm = {}, LDr1 = {}, LDr2 = {}, LStrf1 = {}, LStrf2  ={}",
-        kEjectLeftAzimuth,
-        kLeftDrive1,
-        kLeftDrive2,
-        kLeftStrafe1,
-        kLeftStrafe2);
-    logger.debug(
-        "RAzm = {}, RDr1 = {}, RDr2 = {}, RStrf1 = {}, RStrf2  ={}",
-        kEjectRightAzimuth,
-        kRightDrive1,
-        kLeftDrive2,
-        kRightStrafe1,
-        kRightStrafe2);
+        "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
 
-    addSequential(
-        new CommandGroup() {
-          {
-            addParallel(
-                new TimedDrive(
-                    0.5,
-                    isLeft ? kLeftDrive1 : kRightDrive1,
-                    isLeft ? kLeftStrafe1 : kRightStrafe1,
-                    0.0));
-            addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
-          }
-        });
-    addSequential(new AzimuthCommand(isLeft ? kEjectLeftAzimuth : kEjectRightAzimuth));
-    addSequential(
-        new TimedDrive(
-            1.0, isLeft ? kLeftDrive2 : kRightDrive2, isLeft ? kLeftStrafe2 : kRightStrafe2, 0.0));
+    addParallel(
+        isLeft
+            ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
+            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
+    addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT));
   }
 
