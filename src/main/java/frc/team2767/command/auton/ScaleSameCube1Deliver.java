@@ -20,8 +20,8 @@ public class ScaleSameCube1Deliver extends CommandGroup {
   private final String settings;
   private final int kLaunchDistance;
 
-  private final double pathDist = 7.10; //FIXME need to read from settings file
-  private final double rate = 2273; //FIXME need to read from settings file
+  private final double pathDist = 7.10; // FIXME need to read from settings file
+  private final double rate = 2273; // FIXME need to read from settings file
   private final double meterToIn = 39.3701;
   private final long totalDist = Math.round(pathDist * rate * meterToIn);
 

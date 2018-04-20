@@ -83,9 +83,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     logger.info("TELEOP");
-    //    scheduler.removeAll();
     driveSubsystem.stop();
-    //    intakeSubsystem.setEnabled(true);
   }
 
   @Override
@@ -93,12 +91,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    //    if (alignWheelsButtons != null && alignWheelsButtons.hasActivated()) {
-    //      logger.debug("align wheels buttons have activated");
-    //      driveSubsystem.alignWheelsToBar();
-    //    }
-
     if (!autonDone) autonChooser.checkAutonSwitch();
+    scheduler.run();
   }
 
   @Override

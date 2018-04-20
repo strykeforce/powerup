@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.005405405405405406,
+  "dividerPosition": 0.01050080775444265,
   "tabPane": [
     {
       "title": "Pit Dashboard",
@@ -175,8 +175,8 @@
         "tiles": {
           "0,0": {
             "size": [
-              3,
-              2
+              5,
+              4
             ],
             "content": {
               "_type": "Camera Stream",
@@ -186,24 +186,6 @@
               "showCrosshair": true,
               "crosshairColor": "#FFFFFFFF",
               "compression": 100.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
-            }
-          },
-          "3,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Elevator",
-              "_title": "Elevator",
-              "showControls": true,
-              "showCrosshair": true,
-              "crosshairColor": "#FFFFFFFF",
-              "compression": 0.0,
               "fps": -1,
               "imageWidth": 0,
               "imageHeight": 0
@@ -310,7 +292,7 @@
               "_title": "CarpetCalSame"
             }
           },
-          "6,0": {
+          "5,1": {
             "size": [
               1,
               1
@@ -332,7 +314,7 @@
               "_title": "RobotCalRun"
             }
           },
-          "5,1": {
+          "7,0": {
             "size": [
               1,
               1
@@ -341,6 +323,39 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Test/RobotCalibration",
               "_title": "RobotCalibration"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Lights",
+              "_title": "Lights"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/DriveToCube",
+              "_title": "DriveToCube"
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Test/Motion",
+              "_title": "Motion"
             }
           }
         }
