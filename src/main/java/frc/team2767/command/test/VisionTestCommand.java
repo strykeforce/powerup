@@ -1,10 +1,9 @@
 package frc.team2767.command.test;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
-import frc.team2767.command.auton.StartPosition;
+import frc.team2767.command.auton.AzimuthToCube;
 import frc.team2767.command.vision.LightsOff;
 import frc.team2767.command.vision.LightsOn;
 import frc.team2767.subsystem.vision.VisionSubsystem;
@@ -18,22 +17,7 @@ public class VisionTestCommand extends CommandGroup {
     addSequential(new LightsOn());
     addSequential(new WaitCommand(0.5));
 
-    addSequential(
-        new Command() {
-          {
-            requires(visionSubsystem);
-          }
-
-          @Override
-          protected void initialize() {
-            visionSubsystem.find(StartPosition.RIGHT);
-          }
-
-          @Override
-          protected boolean isFinished() {
-            return visionSubsystem.isFinished();
-          }
-        });
+    addSequential(new AzimuthToCube());
 
     addSequential(new LightsOff());
   }

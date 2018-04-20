@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
-import frc.team2767.command.auton.StartPosition;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -45,7 +44,6 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   private final Mat frame = new Mat();
   private GripPipeline gripPipeline = new GripPipeline();
   private Future<Double> result;
-  private StartPosition startPosition;
   private volatile boolean running;
 
   @Inject
@@ -67,8 +65,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     lightsOutput.set(!enable);
   }
 
-  public void find(StartPosition startPosition) {
-    this.startPosition = startPosition;
+  public void findCube() {
     result = executorService.submit(this);
   }
 

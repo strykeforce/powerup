@@ -78,7 +78,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         (!isLeft || startPosition != StartPosition.LEFT)
             && (isLeft || startPosition != StartPosition.RIGHT);
     logger.debug("isLeft = {}, isCross = {}", isLeft, isCross);
-    AzimuthToCube azimuthToCube = new AzimuthToCube(startPosition);
+    AzimuthToCube azimuthToCube = new AzimuthToCube();
     settings =
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
