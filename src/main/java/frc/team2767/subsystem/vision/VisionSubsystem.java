@@ -4,6 +4,7 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team2767.Settings;
 import frc.team2767.command.auton.StartPosition;
@@ -35,6 +36,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
   private static final Logger logger = LoggerFactory.getLogger(VisionSubsystem.class);
 
   private final UsbCamera camera;
+  private final DigitalOutput lightsOutput = new DigitalOutput(6);
   private final ExecutorService executorService;
   private GripCode gripCode;
 
@@ -57,12 +59,17 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     camera.setExposureManual(toml.getLong("exposure").intValue());
     camera.setExposureHoldCurrent();
     camera.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
+    lightsOutput.set(true);
 
     //    UsbCamera elevator = server.startAutomaticCapture(TOP_CAMERA,
     // toml.getString("liftCameraPath"));
     //    elevator.setResolution((int) FRAME_WIDTH, FRAME_HEIGHT);
 
     executorService = Executors.newSingleThreadExecutor();
+  }
+
+  public void enableLights(boolean enable) {
+    lightsOutput.set(enable);
   }
 
   public void find(StartPosition startPosition) {
