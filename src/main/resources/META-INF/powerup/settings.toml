@@ -26,10 +26,10 @@ immediateFlushLogFile = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRedLeft   = 2309 # carpet-x pull test
-  ticksPerInchRedRight  = 2337 # carpet-x pull test
-  ticksPerInchBlueLeft  = 2353
-  ticksPerInchBlueRight = 2287
+  ticksPerInchRedLeft   = 2273 # states: 2309
+  ticksPerInchRedRight  = 2273 # states: 2337
+  ticksPerInchBlueLeft  = 2273 # states: 2353
+  ticksPerInchBlueRight = 2273 # states: 2287
 
 [POWERUP.AZIMUTH]
   p = 0.013
