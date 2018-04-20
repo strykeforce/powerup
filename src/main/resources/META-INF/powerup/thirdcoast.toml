@@ -58,6 +58,9 @@
    continuous = 40
    peak = 0
    peakDuration = 0
+ [TALON.velocityMeasurement]
+   period = "Period_50Ms"
+   window = 32
  [[TALON.closedLoopProfile]] # slot 0 Velocity
    pGain = 0.01
    iGain = 0.0003
@@ -65,6 +68,14 @@
    fGain = 0.028
    iZone = 3000
    maxIntegralAccumulator = 200_000
+   allowableClosedLoopError = 0
+ [[TALON.closedLoopProfile]] # slot 1 Azimuth
+   pGain = 0.04
+   iGain = 0.0004
+   dGain = 2.0
+   fGain = 0.04
+   iZone = 1500
+   maxIntegralAccumulator = 300_000
    allowableClosedLoopError = 0
 
  [[TALON]]

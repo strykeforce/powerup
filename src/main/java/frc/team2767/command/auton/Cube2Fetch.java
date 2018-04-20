@@ -78,7 +78,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         (!isLeft || startPosition != StartPosition.LEFT)
             && (isLeft || startPosition != StartPosition.RIGHT);
     logger.debug("isLeft = {}, isCross = {}", isLeft, isCross);
-    AzimuthToCube azimuthToCube = new AzimuthToCube(startPosition);
+    AzimuthToCube azimuthToCube = new AzimuthToCube();
     settings =
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
@@ -101,37 +101,36 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
             logger.trace("PathCommand || (Stow → Wait → IntakeLoad) ENDED");
           }
         });
+    /*
+      // addSequential(azimuthToCube);
 
-    // addSequential(azimuthToCube);
+      driveToCube =
+          isLeft
+              ? new DriveToCube(kLeftDriveStopDistance, isLeft, isCross)
+              : new DriveToCube(kRightDriveStopDistance, isLeft, isCross);
 
-    driveToCube =
-        isLeft
-            ? new DriveToCube(kLeftDriveStopDistance, isLeft, isCross)
-            : new DriveToCube(kRightDriveStopDistance, isLeft, isCross);
+      addSequential(
+          new CommandGroup() {
+            {
+              addParallel(
+                  new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance : kRightIntakeStopDistance),
+                  3.0);
+              addParallel(driveToCube);
+            }
 
-    /*addSequential(
-        new CommandGroup() {
-          {
-            addParallel(
-                new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance : kRightIntakeStopDistance),
-                3.0);
-            addParallel(driveToCube);
-          }
+            @Override
+            protected void end() {
+              logger.trace("IntakeInCubeTwo || DriveToCube ENDED");
+            }
+          });
 
-          @Override
-          protected void end() {
-            logger.trace("IntakeInCubeTwo || DriveToCube ENDED");
-          }
-        });
+      addParallel(new DisableLidar());
+      addSequential(new StartIntakeHold());
 
-    addParallel(new DisableLidar());
-    addSequential(new StartIntakeHold());
-
-    addParallel(new DriveFromCube(driveToCube));
-    addSequential(new WaitCommand(0.25));
-    addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
-    */
-  }
+      addParallel(new DriveFromCube(driveToCube));
+      addSequential(new WaitCommand(0.25));
+      addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+    */ }
 
   @Override
   public String toString() {

@@ -2,5 +2,5 @@
 
 
 path = "R_SC_S_C1D"
-distance = 200_000
-launchDistance = 200_000
+distance = 360_000
+launchDistance = 100_000

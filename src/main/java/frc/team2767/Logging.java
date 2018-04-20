@@ -93,6 +93,7 @@ public class Logging extends ContextAwareBase implements Configurator {
     return encoder;
   }
 
+  @SuppressWarnings("CatchAndPrintStackTrace")
   static void flushLogs() {
     Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     if (immediateFlush) {

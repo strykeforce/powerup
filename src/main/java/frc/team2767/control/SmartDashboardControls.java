@@ -76,6 +76,7 @@ public class SmartDashboardControls {
     SmartDashboard.putData("Test/VisionTest", new VisionTestCommand());
     SmartDashboard.putData("Test/DriveToCube", new DriveToFromCubeCommand());
     SmartDashboard.putData("Test/Motion", new MotionTestCommand());
+    SmartDashboard.putData("Test/Lights", new LightsTestCommand());
   }
 
   private void addGameCommands() {

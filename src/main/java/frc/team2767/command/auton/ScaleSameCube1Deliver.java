@@ -2,7 +2,6 @@ package frc.team2767.command.auton;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
@@ -21,12 +20,17 @@ public class ScaleSameCube1Deliver extends CommandGroup {
   private final String settings;
   private final int kLaunchDistance;
 
+  private final double pathDist = 7.10; // FIXME need to read from settings file
+  private final double rate = 2273; // FIXME need to read from settings file
+  private final double meterToIn = 39.3701;
+  private final long totalDist = Math.round(pathDist * rate * meterToIn);
+
   ScaleSameCube1Deliver(StartPosition startPosition) {
     settings = startPosition == StartPosition.RIGHT ? "R_SC_S_C1D" : "L_SC_S_C1D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     String path = toml.getString("path");
-    kDistance = toml.getLong("distance").intValue();
-    kLaunchDistance = toml.getLong("launchDistance").intValue();
+    kDistance = Math.round(totalDist - toml.getLong("distance"));
+    kLaunchDistance = Math.round(totalDist - toml.getLong("launchDistance"));
 
     PathCommand pathCommand = new PathCommand(path, startPosition.getPathAngle(START_POSITION_YAW));
 
@@ -50,9 +54,9 @@ public class ScaleSameCube1Deliver extends CommandGroup {
                   }
                 });
 
-            // addSequential(new WaitForDistance(pathCommand.getPathController(), kLaunchDistance));
+            addSequential(new WaitForDistance(pathCommand.getPathController(), kLaunchDistance));
 
-            // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+            addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
           }
 
           @Override
@@ -63,8 +67,8 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
-    addSequential(new WaitCommand(0.50));
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+    // addSequential(new WaitCommand(0.50));
+    // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override
