@@ -1,15 +1,14 @@
 package frc.team2767.subsystem;
 
+import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
+import static com.ctre.phoenix.motorcontrol.ControlMode.Velocity;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import java.util.function.DoubleConsumer;
 import org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode;
 import org.strykeforce.thirdcoast.swerve.Wheel;
 import org.strykeforce.thirdcoast.talon.Talons;
 import org.strykeforce.thirdcoast.util.Settings;
-
-import java.util.function.DoubleConsumer;
-
-import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
-import static com.ctre.phoenix.motorcontrol.ControlMode.Velocity;
 
 public class PowerUpWheel extends Wheel {
 

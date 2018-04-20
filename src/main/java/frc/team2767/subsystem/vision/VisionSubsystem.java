@@ -97,13 +97,14 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
 
     if (!contours.isEmpty()) bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
 
-    if (DEBUG) saveImages(contours, bottomX, bottomAngle);
+    if (DEBUG) saveImages(frame, contours, bottomX, bottomAngle);
 
     logger.debug("cube bottom point angle x = {}", bottomAngle);
     return bottomAngle;
   }
 
-  private void saveImages(ArrayList<MatOfPoint> contours, double bottomX, double bottomAngle) {
+  private void saveImages(
+      Mat source, ArrayList<MatOfPoint> contours, double bottomX, double bottomAngle) {
     Mat threshold = gripPipeline.hsvThresholdOutput();
     Imgproc.cvtColor(threshold, threshold, Imgproc.COLOR_GRAY2RGB);
     if (!contours.isEmpty()) {
@@ -121,6 +122,7 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
         WHITE);
     Imgcodecs.imwrite(IMAGE_DIR + "/threshold.jpg", threshold);
     Imgcodecs.imwrite(IMAGE_DIR + "/resized.jpg", gripPipeline.resizeImageOutput());
+    Imgcodecs.imwrite(IMAGE_DIR + "/full.jpg", source);
   }
 
   public boolean isFinished() {
