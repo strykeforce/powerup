@@ -37,10 +37,10 @@ public class DriveToCube extends Command {
         angle);
 
     if ((left && !cross) || (!left && cross)) {
-      forward = -DRIVE * Math.cos(angle);
+      forward = DRIVE * Math.cos(angle);
       strafe = -DRIVE * Math.sin(angle);
     } else {
-      forward = -DRIVE * Math.cos(angle);
+      forward = DRIVE * Math.cos(angle);
       strafe = DRIVE * Math.sin(angle);
     }
     driveSubsystem.drive(forward, strafe, 0.0);
