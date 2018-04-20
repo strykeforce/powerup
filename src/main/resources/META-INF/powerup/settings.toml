@@ -70,7 +70,7 @@ immediateFlushLogFile = true
   # velocities
   loadVelocity       = -7000
   holdVelocity       = -1500
-  fastEjectVelocity  =  1500
+  fastEjectVelocity  =  1000
   scaleEjectVelocity =  3000
   slowEjectVelocity  =  1000
   switchEjectVelocity = 3000
