@@ -23,10 +23,15 @@ public class AutonCommands {
         // scale always
       case 0x10:
       case 0x30:
-        command.addScenario(LEFT, RIGHT, SCALE, SCALE, NONE);
-        command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
+        //        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
+        //        command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
+        //        command.addScenario(LEFT, LEFT, SCALE, SCALE, SCALE);
+        //        command.addScenario(RIGHT, RIGHT, SCALE, SCALE, SCALE);
+
+        command.addScenario(LEFT, RIGHT, SCALE, NONE, NONE);
+        command.addScenario(RIGHT, LEFT, SCALE, NONE, NONE);
         command.addScenario(LEFT, LEFT, SCALE, SCALE, NONE);
-        command.addScenario(RIGHT, RIGHT, SCALE, SCALE, NONE);
+        command.addScenario(RIGHT, RIGHT, SCALE, NONE, NONE);
         break;
 
         // switch priority, scale if same side

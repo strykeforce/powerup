@@ -5,9 +5,6 @@ import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
-import frc.team2767.command.intake.IntakeEject;
-import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.subsystem.IntakeSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 import openrio.powerup.MatchData;
@@ -53,21 +50,22 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
   @Override
   public void setOwnedSide(
       StartPosition startPosition, MatchData.OwnedSide nearSwitch, MatchData.OwnedSide scale) {
-    boolean isLeft = nearSwitch == MatchData.OwnedSide.LEFT;
-    settings = SETTINGS.get(new Scenario(startPosition, SCALE, scale));
-
-    logger.debug("start position = {}", startPosition);
-    logger.debug("settings = {}", settings);
-    logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance, kLeftAzimuth);
-    logger.debug(
-        "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
-
-    addParallel(
-        isLeft
-            ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
-            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
-    addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT));
+    //    boolean isLeft = nearSwitch == MatchData.OwnedSide.LEFT;
+    //    settings = SETTINGS.get(new Scenario(startPosition, SCALE, scale));
+    //
+    //    logger.debug("start position = {}", startPosition);
+    //    logger.debug("settings = {}", settings);
+    //    logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance,
+    // kLeftAzimuth);
+    //    logger.debug(
+    //        "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
+    //
+    //    addParallel(
+    //        isLeft
+    //            ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
+    //            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
+    //    addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
+    //    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT));
   }
 
   @Override
