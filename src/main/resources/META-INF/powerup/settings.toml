@@ -17,7 +17,7 @@ immediateFlushLogFile = true
 
 [POWERUP.VISION]
   brightness = 57
-  exposure   = 35
+  exposure   = 40
   intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
   liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
   enableCamera  = true
@@ -33,12 +33,12 @@ immediateFlushLogFile = true
   ticksPerInchBlueRight = 2273 # states: 2287
 
 [POWERUP.AZIMUTH]
-  p = 0.013
+  p = 0.05
   i = 0.0
   d = 0.0
   tolerance = 1.0
-  outputMax = 0.3
-  test = false
+  outputMax = 0.6
+  test = true
 
 [POWERUP.JOYSTICK]
   deadband    = 0.10
