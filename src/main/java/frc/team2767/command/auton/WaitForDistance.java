@@ -12,7 +12,11 @@ public class WaitForDistance extends Command {
   public WaitForDistance(PathController pathController, int distance) {
     this.pathController = pathController;
     this.distance = distance;
-    goalDistance = (int) Math.round(pathController.getTicks())-distance;
+  }
+
+  @Override
+  protected void initialize() {
+    goalDistance = (int) Math.round(pathController.getTicks()) - distance;
   }
 
   @Override

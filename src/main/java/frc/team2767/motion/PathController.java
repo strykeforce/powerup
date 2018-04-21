@@ -271,7 +271,7 @@ public class PathController implements Runnable, Item {
 
   public double getTicks() {
     int length = trajectory.length();
-    Segment segment = trajectory.segments[length];
+    Segment segment = trajectory.segments[length - 1];
     logger.debug("distance = {}", segment.position);
     return segment.position * ticksPerMeter;
   }

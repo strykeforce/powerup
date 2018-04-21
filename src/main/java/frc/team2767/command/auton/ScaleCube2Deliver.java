@@ -53,26 +53,26 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
   public void setOwnedSide(StartPosition startPosition, OwnedSide nearSwitch, OwnedSide scale) {
     boolean isLeft = scale == OwnedSide.LEFT;
     settings = SETTINGS.get(new Scenario(startPosition, SCALE, scale));
-    /*addSequential(
-          new CommandGroup() {
-            {
-              addParallel(
-                  isLeft
-                      ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
-                      : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
-              addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
-              addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
-            }
+    addSequential(
+        new CommandGroup() {
+          {
+            addParallel(
+                isLeft
+                    ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
+                    : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
+            /*addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+            addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));*/
+          }
 
-            @Override
-            protected void end() {
-              logger.trace("MotionDrive || LiftPosition ENDED");
-            }
-          });
+          @Override
+          protected void end() {
+            logger.trace("MotionDrive || LiftPosition ENDED");
+          }
+        });
 
-      addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
-      addSequential(new Stow(), 1.2);
-    */ }
+    // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+    // addSequential(new Stow(), 1.2);
+  }
 
   @Override
   public String toString() {
