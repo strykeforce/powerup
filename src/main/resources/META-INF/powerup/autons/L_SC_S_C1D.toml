@@ -1,7 +1,6 @@
 # e kentwood
 
 
-#path = "right_scale"
 path = "L_SC_S_C1D"
-distance = 180_000
-launchDistance = 220_000
+distance = 360_000
+launchDistance = 100_000

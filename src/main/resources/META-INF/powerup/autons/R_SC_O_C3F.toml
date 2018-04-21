@@ -1,0 +1,11 @@
+# e kentwood
+
+
+# path = "L_SC_S_C2F"
+intakeStopDistance = 30
+driveStopDistance = 42
+direction = 150.0
+distance = 100_000
+azimuth = -135.0
+# drive = 0.15
+# strafe = 0.15
