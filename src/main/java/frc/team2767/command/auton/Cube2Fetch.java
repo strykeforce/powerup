@@ -14,6 +14,8 @@ import frc.team2767.command.intake.IntakeLoad;
 import frc.team2767.command.intake.StartIntakeHold;
 import frc.team2767.command.sequence.Stow;
 import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.command.vision.LightsOff;
+import frc.team2767.command.vision.LightsOn;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.IntakeSensorsSubsystem;
 import frc.team2767.subsystem.IntakeSubsystem;
@@ -96,6 +98,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
                     ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
                     : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
             addParallel(new EnableLidar());
+            addParallel(new LightsOn());
             addSequential(new Stow(), 1.2);
             addSequential(new WaitCommand(0.25));
             addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
@@ -107,7 +110,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           }
         });
 
-    // addSequential(azimuthToCube);
+    addSequential(azimuthToCube);
 
     driveToCube =
         isLeft
@@ -130,6 +133,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         });
 
     addParallel(new DisableLidar());
+    addParallel(new LightsOff());
     addSequential(new StartIntakeHold());
 
     addParallel(new DriveFromCube(driveToCube));
