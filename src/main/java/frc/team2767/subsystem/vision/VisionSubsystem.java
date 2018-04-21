@@ -96,10 +96,13 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     }
 
     if (!contours.isEmpty()) bottomAngle = (bottomX - FRAME_WIDTH / 2.0) * FOV_DEG_PER_PIXEL;
-
-    if (DEBUG) saveImages(frame, contours, bottomX, bottomAngle);
-
     logger.debug("cube bottom point angle x = {}", bottomAngle);
+
+    final double debugBottomX = bottomX;
+    final double debugBottomAngle = bottomAngle;
+    if (DEBUG)
+      executorService.submit(() -> saveImages(frame, contours, debugBottomX, debugBottomAngle));
+
     return bottomAngle;
   }
 
@@ -116,12 +119,12 @@ public class VisionSubsystem extends Subsystem implements Callable<Double> {
     Imgproc.putText(
         threshold,
         String.format("angle = %4.2f", bottomAngle),
-        new Point(4, 12),
+        new Point(4, 230),
         Core.FONT_HERSHEY_COMPLEX_SMALL,
         0.75,
         WHITE);
     Imgcodecs.imwrite(IMAGE_DIR + "/threshold.jpg", threshold);
-    Imgcodecs.imwrite(IMAGE_DIR + "/resized.jpg", gripPipeline.resizeImageOutput());
+    // Imgcodecs.imwrite(IMAGE_DIR + "/resized.jpg", gripPipeline.resizeImageOutput());
     Imgcodecs.imwrite(IMAGE_DIR + "/full.jpg", source);
   }
 

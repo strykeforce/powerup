@@ -15,7 +15,7 @@ public class VisionTestCommand extends CommandGroup {
     setRunWhenDisabled(true);
 
     addSequential(new LightsOn());
-    addSequential(new WaitCommand(0.5));
+    addSequential(new WaitCommand(0.1));
 
     addSequential(new AzimuthToCube());
 
