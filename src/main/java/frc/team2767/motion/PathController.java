@@ -269,6 +269,13 @@ public class PathController implements Runnable, Item {
     return () -> 0d;
   }
 
+  public double getTicks() {
+    int length = trajectory.length();
+    Segment segment = trajectory.segments[length - 1];
+    logger.debug("distance = {}", segment.position);
+    return segment.position * ticksPerMeter;
+  }
+
   @Override
   public void toJson(JsonWriter writer) throws IOException {}
 

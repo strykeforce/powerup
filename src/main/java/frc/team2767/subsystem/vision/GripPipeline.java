@@ -3,7 +3,9 @@ package frc.team2767.subsystem.vision;
 import java.util.ArrayList;
 import java.util.List;
 import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Core.*;
+import org.opencv.imgproc.*;
+import org.opencv.objdetect.*;
 
 /**
  * GripPipeline class.
@@ -12,11 +14,14 @@ import org.opencv.imgproc.Imgproc;
  *
  * @author GRIP
  */
-public class GripCode {
+public class GripPipeline {
 
   // Outputs
+  private Mat resizeImageOutput = new Mat();
   private Mat blurOutput = new Mat();
   private Mat hsvThresholdOutput = new Mat();
+  private Mat cvDilateOutput = new Mat();
+  private Mat cvErodeOutput = new Mat();
   private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
   private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 
@@ -26,17 +31,29 @@ public class GripCode {
 
   /** This is the primary method that runs the entire pipeline and updates the outputs. */
   public void process(Mat source0) {
+    // Step Resize_Image0:
+    Mat resizeImageInput = source0;
+    double resizeImageWidth = 320.0;
+    double resizeImageHeight = 240.0;
+    int resizeImageInterpolation = Imgproc.INTER_CUBIC;
+    resizeImage(
+        resizeImageInput,
+        resizeImageWidth,
+        resizeImageHeight,
+        resizeImageInterpolation,
+        resizeImageOutput);
+
     // Step Blur0:
-    Mat blurInput = source0;
-    BlurType blurType = BlurType.get("Box Blur");
-    double blurRadius = 27.927927927927925;
+    Mat blurInput = resizeImageOutput;
+    BlurType blurType = BlurType.get("Gaussian Blur");
+    double blurRadius = 3.6885942546319903;
     blur(blurInput, blurType, blurRadius, blurOutput);
 
     // Step HSV_Threshold0:
     Mat hsvThresholdInput = blurOutput;
-    double[] hsvThresholdHue = {25.899280575539567, 64.84848484848486};
-    double[] hsvThresholdSaturation = {71.08812949640287, 255.0};
-    double[] hsvThresholdValue = {20.638489208633093, 255.0};
+    double[] hsvThresholdHue = {22.357029630532864, 43.32948018639598};
+    double[] hsvThresholdSaturation = {70.0, 255.0};
+    double[] hsvThresholdValue = {18.345323741007192, 255.0};
     hsvThreshold(
         hsvThresholdInput,
         hsvThresholdHue,
@@ -44,20 +61,52 @@ public class GripCode {
         hsvThresholdValue,
         hsvThresholdOutput);
 
+    // Step CV_dilate0:
+    Mat cvDilateSrc = hsvThresholdOutput;
+    Mat cvDilateKernel = new Mat();
+    Point cvDilateAnchor = new Point(-1, -1);
+    double cvDilateIterations = 1.0;
+    int cvDilateBordertype = Core.BORDER_CONSTANT;
+    Scalar cvDilateBordervalue = new Scalar(-1);
+    cvDilate(
+        cvDilateSrc,
+        cvDilateKernel,
+        cvDilateAnchor,
+        cvDilateIterations,
+        cvDilateBordertype,
+        cvDilateBordervalue,
+        cvDilateOutput);
+
+    // Step CV_erode0:
+    Mat cvErodeSrc = cvDilateOutput;
+    Mat cvErodeKernel = new Mat();
+    Point cvErodeAnchor = new Point(-1, -1);
+    double cvErodeIterations = 1.0;
+    int cvErodeBordertype = Core.BORDER_CONSTANT;
+    Scalar cvErodeBordervalue = new Scalar(-1);
+    cvErode(
+        cvErodeSrc,
+        cvErodeKernel,
+        cvErodeAnchor,
+        cvErodeIterations,
+        cvErodeBordertype,
+        cvErodeBordervalue,
+        cvErodeOutput);
+
     // Step Find_Contours0:
-    Mat findContoursInput = hsvThresholdOutput;
-    boolean findContoursExternalOnly = false;
+    Mat findContoursInput = cvErodeOutput;
+    boolean findContoursExternalOnly = true;
     findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
 
     // Step Filter_Contours0:
     ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-    double filterContoursMinArea = 4000.0;
+    double filterContoursMinArea = 500.0;
     double filterContoursMinPerimeter = 0.0;
     double filterContoursMinWidth = 0.0;
     double filterContoursMaxWidth = 1000.0;
     double filterContoursMinHeight = 0.0;
     double filterContoursMaxHeight = 1000.0;
-    double[] filterContoursSolidity = {0.0, 100.0};
+    double[] filterContoursSolidity = {60.263653483992464, 100};
     double filterContoursMaxVertices = 1000000.0;
     double filterContoursMinVertices = 0.0;
     double filterContoursMinRatio = 0.0;
@@ -79,6 +128,15 @@ public class GripCode {
   }
 
   /**
+   * This method is a generated getter for the output of a Resize_Image.
+   *
+   * @return Mat output from Resize_Image.
+   */
+  public Mat resizeImageOutput() {
+    return resizeImageOutput;
+  }
+
+  /**
    * This method is a generated getter for the output of a Blur.
    *
    * @return Mat output from Blur.
@@ -97,6 +155,24 @@ public class GripCode {
   }
 
   /**
+   * This method is a generated getter for the output of a CV_dilate.
+   *
+   * @return Mat output from CV_dilate.
+   */
+  public Mat cvDilateOutput() {
+    return cvDilateOutput;
+  }
+
+  /**
+   * This method is a generated getter for the output of a CV_erode.
+   *
+   * @return Mat output from CV_erode.
+   */
+  public Mat cvErodeOutput() {
+    return cvErodeOutput;
+  }
+
+  /**
    * This method is a generated getter for the output of a Find_Contours.
    *
    * @return ArrayList<MatOfPoint> output from Find_Contours.
@@ -112,6 +188,19 @@ public class GripCode {
    */
   public ArrayList<MatOfPoint> filterContoursOutput() {
     return filterContoursOutput;
+  }
+
+  /**
+   * Scales and image to an exact size.
+   *
+   * @param input The image on which to perform the Resize.
+   * @param width The width of the output in pixels.
+   * @param height The height of the output in pixels.
+   * @param interpolation The type of interpolation.
+   * @param output The image in which to store the output.
+   */
+  private void resizeImage(Mat input, double width, double height, int interpolation, Mat output) {
+    Imgproc.resize(input, output, new Size(width, height), 0.0, 0.0, interpolation);
   }
 
   /**
@@ -178,11 +267,90 @@ public class GripCode {
     }
   }
 
+  /**
+   * Segment an image based on hue, saturation, and value ranges.
+   *
+   * @param input The image on which to perform the HSL threshold.
+   * @param hue The min and max hue
+   * @param sat The min and max saturation
+   * @param val The min and max value
+   * @param output The image in which to store the output.
+   */
   private void hsvThreshold(Mat input, double[] hue, double[] sat, double[] val, Mat out) {
     Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2HSV);
     Core.inRange(out, new Scalar(hue[0], sat[0], val[0]), new Scalar(hue[1], sat[1], val[1]), out);
   }
 
+  /**
+   * Expands area of higher value in an image.
+   *
+   * @param src the Image to dilate.
+   * @param kernel the kernel for dilation.
+   * @param anchor the center of the kernel.
+   * @param iterations the number of times to perform the dilation.
+   * @param borderType pixel extrapolation method.
+   * @param borderValue value to be used for a constant border.
+   * @param dst Output Image.
+   */
+  private void cvDilate(
+      Mat src,
+      Mat kernel,
+      Point anchor,
+      double iterations,
+      int borderType,
+      Scalar borderValue,
+      Mat dst) {
+    if (kernel == null) {
+      kernel = new Mat();
+    }
+    if (anchor == null) {
+      anchor = new Point(-1, -1);
+    }
+    if (borderValue == null) {
+      borderValue = new Scalar(-1);
+    }
+    Imgproc.dilate(src, dst, kernel, anchor, (int) iterations, borderType, borderValue);
+  }
+
+  /**
+   * Expands area of lower value in an image.
+   *
+   * @param src the Image to erode.
+   * @param kernel the kernel for erosion.
+   * @param anchor the center of the kernel.
+   * @param iterations the number of times to perform the erosion.
+   * @param borderType pixel extrapolation method.
+   * @param borderValue value to be used for a constant border.
+   * @param dst Output Image.
+   */
+  private void cvErode(
+      Mat src,
+      Mat kernel,
+      Point anchor,
+      double iterations,
+      int borderType,
+      Scalar borderValue,
+      Mat dst) {
+    if (kernel == null) {
+      kernel = new Mat();
+    }
+    if (anchor == null) {
+      anchor = new Point(-1, -1);
+    }
+    if (borderValue == null) {
+      borderValue = new Scalar(-1);
+    }
+    Imgproc.erode(src, dst, kernel, anchor, (int) iterations, borderType, borderValue);
+  }
+
+  /**
+   * Sets the values of pixels in a binary image to their distance to the nearest black pixel.
+   *
+   * @param input The image on which to perform the Distance Transform.
+   * @param type The Transform.
+   * @param maskSize the size of the mask.
+   * @param output The image in which to store the output.
+   */
   private void findContours(Mat input, boolean externalOnly, List<MatOfPoint> contours) {
     Mat hierarchy = new Mat();
     contours.clear();
@@ -196,6 +364,23 @@ public class GripCode {
     Imgproc.findContours(input, contours, hierarchy, mode, method);
   }
 
+  /**
+   * Filters out contours that do not meet certain criteria.
+   *
+   * @param inputContours is the input list of contours
+   * @param output is the the output list of contours
+   * @param minArea is the minimum area of a contour that will be kept
+   * @param minPerimeter is the minimum perimeter of a contour that will be kept
+   * @param minWidth minimum width of a contour
+   * @param maxWidth maximum width
+   * @param minHeight minimum height
+   * @param maxHeight maximimum height
+   * @param Solidity the minimum and maximum solidity of a contour
+   * @param minVertexCount minimum vertex Count of the contours
+   * @param maxVertexCount maximum vertex Count
+   * @param minRatio minimum ratio of width to height
+   * @param maxRatio maximum ratio of width to height
+   */
   private void filterContours(
       List<MatOfPoint> inputContours,
       double minArea,

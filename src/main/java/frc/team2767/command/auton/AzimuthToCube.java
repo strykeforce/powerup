@@ -12,54 +12,42 @@ public class AzimuthToCube extends Command {
   private static final Logger logger = LoggerFactory.getLogger(AzimuthToCube.class);
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private final VisionSubsystem visionSubsystem = Robot.INJECTOR.visionSubsystem();
-  private volatile double setpoint;
-  private int stableCount;
-  private StartPosition startPosition;
-  private boolean isFinished;
+  private boolean azimuthStarted;
 
-  public AzimuthToCube(StartPosition startPosition) {
-    this.startPosition = startPosition;
+  public AzimuthToCube() {
     requires(driveSubsystem);
+    requires(visionSubsystem);
   }
 
   @Override
   protected void initialize() {
     logger.debug("Azimuth init");
-    stableCount = 0;
-    isFinished = false;
-    visionSubsystem.find(startPosition);
+    azimuthStarted = false;
+    visionSubsystem.findCube();
   }
 
   @Override
   protected void execute() {
-    if (visionSubsystem.isFinished() && !isFinished) {
-      setpoint = driveSubsystem.getGyro().getYaw();
-      logger.debug(
-          "vision angle => {} + {} = {}",
-          visionSubsystem.getCenterAngle(),
-          setpoint,
-          visionSubsystem.getCenterAngle() + setpoint);
-      //      if (visionSubsystem.getCenterAngle() < Math.abs(9)) {
-      //        driveSubsystem.azimuthTo(visionSubsystem.getCenterAngle() + setpoint);
-      //
-      //      } else {
-      //        driveSubsystem.azimuthTo(setpoint);
-      //        logger.debug("greater than 9, not azimuthing. at {}", setpoint);
-      //      }
+    if (!azimuthStarted && visionSubsystem.isFinished()) {
+      double currentYaw = driveSubsystem.getGyro().getYaw();
+      double setpoint = currentYaw + visionSubsystem.getCenterAngle();
       driveSubsystem.azimuthTo(setpoint);
-      logger.debug("seetpoint angle => {}", setpoint);
-      isFinished = true;
+      azimuthStarted = true;
+      logger.info(
+          "start vision azimuth: current yaw = {}, vision cube offset = {}",
+          currentYaw,
+          visionSubsystem.getCenterAngle());
     }
   }
 
   @Override
   protected boolean isFinished() {
-    return isFinished && driveSubsystem.isAzimuthFinished();
+    return azimuthStarted && driveSubsystem.isAzimuthFinished();
   }
 
   @Override
   protected void end() {
-    logger.debug("Azimuth end");
+    logger.info("end vision azimuth");
     driveSubsystem.endAzimuth();
   }
 

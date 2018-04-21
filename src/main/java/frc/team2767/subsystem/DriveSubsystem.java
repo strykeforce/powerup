@@ -8,13 +8,11 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.team2767.Robot;
 import frc.team2767.Settings;
 import frc.team2767.command.auton.StartPosition;
 import frc.team2767.command.drive.TeleOpDriveCommand;
-import frc.team2767.motion.AzimuthController;
-import frc.team2767.motion.AzimuthControllerFactory;
-import frc.team2767.motion.PathController;
-import frc.team2767.motion.PathControllerFactory;
+import frc.team2767.motion.*;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,17 +26,24 @@ import org.strykeforce.thirdcoast.telemetry.TelemetryService;
 @Singleton
 public class DriveSubsystem extends Subsystem implements Graphable {
 
+  private static final int NUM_WHEELS = 4;
+  private static final int PID = 0;
+
   private static final Logger logger = LoggerFactory.getLogger(DriveSubsystem.class);
 
   private final int kTicksPerTooth;
 
   private final SwerveDrive swerve;
+  private final Wheel[] wheels;
   private final PathControllerFactory pathControllerFactory;
   private final AzimuthControllerFactory azimuthControllerFactory;
   private final Settings settings;
   private PathController pathController;
   private AzimuthController azimuthController;
+  private MotionController motionController;
   private StartPosition startPosition;
+  private int[] start = new int[4];
+  private int distanceTarget;
 
   @Inject
   DriveSubsystem(
@@ -53,7 +58,31 @@ public class DriveSubsystem extends Subsystem implements Graphable {
     kTicksPerTooth = settings.getTable("POWERUP.WHEEL").getLong("ticksPerTooth").intValue();
     if (!settings.isEvent() && settings.getTable("POWERUP.AZIMUTH").getBoolean("test", false))
       azimuthController = azimuthControllerFactory.create(azimuth -> swerve.drive(0d, 0d, azimuth));
+    wheels = swerve.getWheels();
     logger.info("ticksPerTooth = {}", kTicksPerTooth);
+  }
+
+  public void resetDistance() {
+    for (int i = 0; i < NUM_WHEELS; i++) {
+      start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
+    }
+  }
+
+  public int getDistance() {
+    double distance = 0;
+    for (int i = 0; i < NUM_WHEELS; i++) {
+      distance += Math.abs(wheels[i].getDriveTalon().getSelectedSensorPosition(PID) - start[i]);
+    }
+    distance /= 4;
+    return (int) distance;
+  }
+
+  public void setDistanceTarget(int distanceTarget) {
+    this.distanceTarget = distanceTarget;
+  }
+
+  public boolean isDistanceTargetFinished() {
+    return getDistance() >= distanceTarget;
   }
 
   @Override
@@ -156,6 +185,21 @@ public class DriveSubsystem extends Subsystem implements Graphable {
         "azimuth ended setpoint = {} gyro angle = {}",
         azimuthController.getSetpoint(),
         azimuthController.getAngle());
+  }
+
+  public void motionTo(double direction, int distance, double azimuth) {
+    motionController =
+        Robot.INJECTOR.motionControllerFactory().create(direction, distance, azimuth);
+    motionController.start();
+  }
+
+  public boolean isMotionFinished() {
+    return motionController.isFinished();
+  }
+
+  public void endMotion() {
+    motionController.stop();
+    motionController = null;
   }
 
   public int getDrivePosition(int wheel) {
