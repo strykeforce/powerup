@@ -107,7 +107,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           }
         });
 
-    addSequential(azimuthToCube);
+    // addSequential(azimuthToCube);
 
     driveToCube =
         isLeft

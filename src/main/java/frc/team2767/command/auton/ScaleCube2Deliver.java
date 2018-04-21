@@ -5,6 +5,11 @@ import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
+import frc.team2767.command.intake.IntakeEject;
+import frc.team2767.command.lift.LiftPosition;
+import frc.team2767.command.sequence.Stow;
+import frc.team2767.command.shoulder.ShoulderPosition;
+import frc.team2767.subsystem.IntakeSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 import openrio.powerup.MatchData.OwnedSide;
@@ -60,8 +65,8 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
                 isLeft
                     ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
                     : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
-            /*addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
-            addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));*/
+            addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+            addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
           }
 
           @Override
@@ -70,8 +75,9 @@ public class ScaleCube2Deliver extends CommandGroup implements OwnedSidesSettabl
           }
         });
 
-    // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
-    // addSequential(new Stow(), 1.2);
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+
+    addSequential(new Stow(), 1.2);
   }
 
   @Override
