@@ -3,5 +3,5 @@
 
 path = "R_SC_S_C2D"
 direction = -30.0
-distance = 50_000
+distance = 20_000
 azimuth = 35.0
