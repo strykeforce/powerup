@@ -1,6 +1,7 @@
 package frc.team2767.command.auton;
 
 import static frc.team2767.command.auton.PowerUpGameFeature.SCALE;
+import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -21,6 +22,11 @@ public class SwitchCube3Deliver extends CommandGroup implements OwnedSidesSettab
     SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, MatchData.OwnedSide.RIGHT), "L_SW_O_C3D");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, MatchData.OwnedSide.LEFT), "R_SW_O_C3D");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, MatchData.OwnedSide.RIGHT), "R_SW_S_C3D");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, MatchData.OwnedSide.LEFT), "L_SW_S_C3D");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, MatchData.OwnedSide.RIGHT), "L_SW_O_C3D");
+    SETTINGS.put(
+        new Scenario(StartPosition.RIGHT, SWITCH, MatchData.OwnedSide.RIGHT), "R_SW_S_C3D");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, MatchData.OwnedSide.LEFT), "R_SW_O_C3D");
   }
 
   private final double kLeftDirection;

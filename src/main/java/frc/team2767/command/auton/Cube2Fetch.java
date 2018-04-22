@@ -91,6 +91,15 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
 
+    if (settings == null) {
+      logger.debug(
+          "startPosition = {}, startFeature = {}, nearSwitch = {}, scale = {}",
+          startPosition,
+          startFeature,
+          nearSwitch,
+          scale);
+    }
+
     addSequential(
         new CommandGroup() {
           {
