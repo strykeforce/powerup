@@ -108,34 +108,34 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
 
     addSequential(azimuthToCube);
 
-    //    driveToCube =
-    //        isLeft
-    //            ? new DriveToCube(kLeftDriveStopDistance, isLeft, isCross)
-    //            : new DriveToCube(kRightDriveStopDistance, isLeft, isCross);
-    //
-    //    addSequential(
-    //        new CommandGroup() {
-    //          {
-    //            addParallel(
-    //                new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance :
-    // kRightIntakeStopDistance),
-    //                3.0);
-    //            addParallel(driveToCube);
-    //          }
-    //
-    //          @Override
-    //          protected void end() {
-    //            logger.trace("IntakeInCubeTwo || DriveToCube ENDED");
-    //          }
-    //        });
-    //
-    //    addParallel(new DisableLidar());
-    //    addParallel(new LightsOff());
-    //    addSequential(new StartIntakeHold());
-    //
-    //    addParallel(new DriveFromCube(driveToCube));
-    //    addSequential(new WaitCommand(0.25));
-    //    addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+    driveToCube =
+        isLeft
+            ? new DriveToCube(kLeftDriveStopDistance, isLeft, isCross)
+            : new DriveToCube(kRightDriveStopDistance, isLeft, isCross);
+    /*
+    addSequential(
+        new CommandGroup() {
+          {
+            addParallel(
+                new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance : kRightIntakeStopDistance),
+                3.0);
+            addParallel(driveToCube);
+          }
+
+          @Override
+          protected void end() {
+            logger.trace("IntakeInCubeTwo || DriveToCube ENDED");
+          }
+        });
+
+    addParallel(new DisableLidar());
+    addParallel(new LightsOff());
+    addSequential(new StartIntakeHold());
+
+    addParallel(new DriveFromCube(driveToCube));
+    addSequential(new WaitCommand(0.25));
+    addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+    */
   }
 
   @Override

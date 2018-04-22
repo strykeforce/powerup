@@ -38,7 +38,7 @@ public class DriveToCube extends Command {
 
     if ((left && !cross) || (!left && cross)) {
       forward = DRIVE * Math.cos(angle);
-      strafe = -DRIVE * Math.sin(angle);
+      strafe = DRIVE * Math.sin(angle);
     } else {
       forward = DRIVE * Math.cos(angle);
       strafe = DRIVE * Math.sin(angle);

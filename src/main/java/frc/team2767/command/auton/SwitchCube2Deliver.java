@@ -50,15 +50,14 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
   @Override
   public void setOwnedSide(
       StartPosition startPosition, MatchData.OwnedSide nearSwitch, MatchData.OwnedSide scale) {
-    //    boolean isLeft = nearSwitch == MatchData.OwnedSide.LEFT;
-    //    settings = SETTINGS.get(new Scenario(startPosition, SCALE, scale));
-    //
-    //    logger.debug("start position = {}", startPosition);
-    //    logger.debug("settings = {}", settings);
-    //    logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance,
-    // kLeftAzimuth);
-    //    logger.debug(
-    //        "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
+    boolean isLeft = nearSwitch == MatchData.OwnedSide.LEFT;
+    settings = SETTINGS.get(new Scenario(startPosition, SCALE, scale));
+
+    logger.debug("start position = {}", startPosition);
+    logger.debug("settings = {}", settings);
+    logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance, kLeftAzimuth);
+    logger.debug(
+        "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
     //
     //    addParallel(
     //        isLeft
