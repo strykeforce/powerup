@@ -113,6 +113,20 @@ public class AutonCommands {
         command.addScenario(RIGHT, RIGHT, SWITCH, COOPERATIVE, NONE);
         break;
 
+        // Tuning Autons
+      case 0x17:
+        command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, NONE);
+        command.addScenario(RIGHT, LEFT, NONE, NONE, NONE);
+        command.addScenario(LEFT, LEFT, SWITCH, SWITCH, NONE);
+        command.addScenario(RIGHT, RIGHT, COOPERATIVE, NONE, NONE);
+        break;
+      case 0x37:
+        command.addScenario(RIGHT, LEFT, SWITCH, SWITCH, NONE);
+        command.addScenario(LEFT, RIGHT, NONE, NONE, NONE);
+        command.addScenario(RIGHT, RIGHT, SWITCH, SWITCH, NONE);
+        command.addScenario(LEFT, LEFT, COOPERATIVE, NONE, NONE);
+        break;
+
         // test
       case 0x1F:
         command.addScenario(LEFT, RIGHT, NONE, NONE, NONE);

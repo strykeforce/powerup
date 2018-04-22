@@ -4,7 +4,6 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
-import frc.team2767.command.intake.EnableLidar;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
@@ -25,7 +24,8 @@ public class ScaleOppositeCube1DeliverDelay extends CommandGroup {
     settings = startPosition == StartPosition.RIGHT ? "R_SC_O_C1D_D" : "L_SC_O_C1D_D";
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
     String kPath = toml.getString("path");
-    double kWait = toml.getDouble("wait");
+    double kWait1 = toml.getDouble("wait1");
+    double kWait2 = toml.getDouble("wait2");
     double kDirection1 = toml.getDouble("direction1");
     int kDistance1 = toml.getLong("distance1").intValue();
     double kAzimuth1 = toml.getDouble("azimuth1");
@@ -33,11 +33,10 @@ public class ScaleOppositeCube1DeliverDelay extends CommandGroup {
     int kDistance2 = toml.getLong("distance2").intValue();
     double kAzimuth2 = toml.getDouble("azimuth2");
 
-    addParallel(new EnableLidar());
-
+    addSequential(new WaitCommand(kWait1));
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
     addSequential(new PathCommand(kPath, startPosition.getPathAngle(START_POSITION_YAW)));
-    addSequential(new WaitCommand(kWait));
+    addSequential(new WaitCommand(kWait2));
     addSequential(new MotionDrive(kDirection1, kDistance1, kAzimuth1));
     addSequential(
         new CommandGroup() {

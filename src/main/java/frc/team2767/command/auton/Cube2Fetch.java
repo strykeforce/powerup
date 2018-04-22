@@ -31,6 +31,11 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, OwnedSide.RIGHT), "L_SC_O_C2F");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.LEFT), "R_SC_O_C2F");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.RIGHT), "R_SC_S_C2F");
+
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.LEFT), "L_SW_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.RIGHT), "L_SW_O_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.RIGHT), "R_SW_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.LEFT), "R_SW_O_C2F");
   }
 
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
@@ -55,7 +60,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
   private double kRightAzimuth;
 
   Cube2Fetch(StartPosition startPosition, PowerUpGameFeature startFeature) {
-    if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
+    // if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
     this.startFeature = startFeature;
     String settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
@@ -85,6 +90,15 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     settings =
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
+
+    if (settings == null) {
+      logger.debug(
+          "startPosition = {}, startFeature = {}, nearSwitch = {}, scale = {}",
+          startPosition,
+          startFeature,
+          nearSwitch,
+          scale);
+    }
 
     addSequential(
         new CommandGroup() {
