@@ -1,0 +1,11 @@
+# e kentwood
+
+
+path = "L_SC_O_C1D_D"
+wait = 0.25
+direction1 = 90.0
+distance1 = 150_000
+azimuth1 = 0.0
+direction2 = 0.0
+distance2 = 110_000
+azimuth2 = -112.0
