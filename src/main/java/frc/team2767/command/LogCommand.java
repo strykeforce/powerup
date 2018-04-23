@@ -12,6 +12,7 @@ public class LogCommand extends InstantCommand {
 
   public LogCommand(String message) {
     this.message = message;
+    setRunWhenDisabled(true);
   }
 
   @Override
