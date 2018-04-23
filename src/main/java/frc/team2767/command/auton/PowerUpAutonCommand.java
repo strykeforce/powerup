@@ -63,6 +63,9 @@ public final class PowerUpAutonCommand extends CommandGroup implements OwnedSide
       case SCALE:
         command = getScaleCube1Deliver(scenario);
         break;
+      case COOPERATIVE:
+        command = new ScaleOppositeCube1DeliverDelay(startPosition);
+        break;
       default:
         command = command = new LogCommand("Cube1Deliver game feature is NONE for " + scenario);
     }

@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     logger.info("TELEOP");
     driveSubsystem.stop();
+    if (autonCommand != null) autonCommand.cancel();
   }
 
   @Override

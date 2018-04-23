@@ -5,13 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
-import frc.team2767.command.intake.DisableLidar;
 import frc.team2767.command.intake.EnableLidar;
 import frc.team2767.command.intake.IntakeLoad;
-import frc.team2767.command.intake.StartIntakeHold;
 import frc.team2767.command.sequence.Stow;
-import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.command.vision.LightsOff;
 import frc.team2767.command.vision.LightsOn;
 import frc.team2767.subsystem.DriveSubsystem;
 import frc.team2767.subsystem.IntakeSensorsSubsystem;
@@ -36,6 +32,11 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     SETTINGS.put(new Scenario(StartPosition.LEFT, SCALE, OwnedSide.RIGHT), "L_SC_O_C2F");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.LEFT), "R_SC_O_C2F");
     SETTINGS.put(new Scenario(StartPosition.RIGHT, SCALE, OwnedSide.RIGHT), "R_SC_S_C2F");
+
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.LEFT), "L_SW_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.LEFT, SWITCH, OwnedSide.RIGHT), "L_SW_O_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.RIGHT), "R_SW_S_C2F");
+    SETTINGS.put(new Scenario(StartPosition.RIGHT, SWITCH, OwnedSide.LEFT), "R_SW_O_C2F");
   }
 
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
@@ -60,7 +61,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
   private double kRightAzimuth;
 
   Cube2Fetch(StartPosition startPosition, PowerUpGameFeature startFeature) {
-    if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
+    // if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
     this.startFeature = startFeature;
     String settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.LEFT));
     Toml toml = Robot.INJECTOR.settings().getAutonSettings(settings);
@@ -91,6 +92,15 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         SETTINGS.get(
             new Scenario(startPosition, startFeature, startFeature == SWITCH ? nearSwitch : scale));
 
+    if (settings == null) {
+      logger.debug(
+          "startPosition = {}, startFeature = {}, nearSwitch = {}, scale = {}",
+          startPosition,
+          startFeature,
+          nearSwitch,
+          scale);
+    }
+
     addSequential(
         new CommandGroup() {
           {
@@ -117,7 +127,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
         isLeft
             ? new DriveToCube(kLeftDriveStopDistance, isLeft, isCross)
             : new DriveToCube(kRightDriveStopDistance, isLeft, isCross);
-
+    /*
     addSequential(
         new CommandGroup() {
           {
@@ -140,6 +150,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
     addParallel(new DriveFromCube(driveToCube));
     addSequential(new WaitCommand(0.25));
     addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+    */
   }
 
   @Override
