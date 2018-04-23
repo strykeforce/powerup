@@ -1,11 +1,12 @@
-# right opposite scale
+# right opposite scale with delay
 
 waypoints = [
-  {x = 0.0, y = 0.0, angle = 0.0},
-  {x = 2.3, y = -0.70, angle = 0.0},
-  {x = 3.50, y = -0.70, angle = 0.0},
-  {x = 5.70, y = 1.2, angle = 90.0},
-  {x = 5.70, y = 3.35, angle = 90.0},
+  {x = 0.0, y = 0.0, angle = 45.0},
+  {x = 0.15, y = 0.6, angle = 90.0},
+  {x = 0.15, y = 2.5, angle = 90.0},
+  {x = 0.15, y = 4.7, angle = 90.0},
+  {x = 2.30, y = 6.4, angle = 0.0},
+  {x = 3.50, y = 6.4, angle = 0.0},
 ]
 
 fit              = "HERMITE_CUBIC"
