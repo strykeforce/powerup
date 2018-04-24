@@ -8,5 +8,6 @@ driveStopDistance = 42
 direction = -150.0
 distance = 100_000
 azimuth = 125.0
+multiplier = 2.0
 #drive = 0.15
 #strafe = -0.15

@@ -6,6 +6,7 @@ import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
+import frc.team2767.command.shoulder.ShoulderPosition;
 import java.util.HashMap;
 import java.util.Map;
 import openrio.powerup.MatchData;
@@ -63,12 +64,12 @@ public class SwitchCube3Deliver extends CommandGroup implements OwnedSidesSettab
     logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance, kLeftAzimuth);
     logger.debug(
         "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
-    //
-    //    addParallel(
-    //        isLeft
-    //            ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
-    //            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
-    //    addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
+
+    addParallel(
+        isLeft
+            ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
+            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
+    addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
     //    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT));
   }
 
