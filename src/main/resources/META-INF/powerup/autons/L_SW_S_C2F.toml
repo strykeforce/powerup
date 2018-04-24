@@ -2,6 +2,7 @@
 
 intakeStopDistance = 22
 driveStopDistance = 42
-direction = -45.0
-distance = 100_000
+direction = -10.0
+distance = 130_000
 azimuth = 49.0
+multiplier = 0.5

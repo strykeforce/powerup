@@ -36,17 +36,17 @@ public class ScaleOppositeCube1DeliverDelay extends CommandGroup {
     addSequential(new WaitCommand(kWait1));
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
     addSequential(new PathCommand(kPath, startPosition.getPathAngle(START_POSITION_YAW)));
+    // addSequential(new AzimuthCommand(kAzimuth2));
     addSequential(new WaitCommand(kWait2));
-    addSequential(new MotionDrive(kDirection1, kDistance1, kAzimuth1));
+    addSequential(new MotionDrive(kDirection1, kDistance1, kAzimuth2));
     addSequential(
         new CommandGroup() {
           {
             addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
             addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
-            addParallel(new AzimuthCommand(kAzimuth2));
           }
         });
-    addSequential(new MotionDrive(kDirection2, kDistance2, kAzimuth2));
+    // addSequential(new MotionDrive(kDirection2, kDistance2, kAzimuth2));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SLOW_EJECT, EJECT_DURATION));
   }
 
