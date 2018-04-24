@@ -64,6 +64,8 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
   private double kRightDirection;
   private int kRightDistance;
   private double kRightAzimuth;
+  private double kRightDriveMultiplier;
+  private double kLeftDriveMultiplier;
 
   Cube3Fetch(StartPosition startPosition, PowerUpGameFeature startFeature) {
     // if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
@@ -75,6 +77,7 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
     kLeftDirection = toml.getDouble("direction");
     kLeftDistance = toml.getLong("distance").intValue();
     kLeftAzimuth = toml.getDouble("azimuth");
+    kLeftDriveMultiplier = toml.getDouble("multiplier");
 
     settings = SETTINGS.get(new Scenario(startPosition, startFeature, OwnedSide.RIGHT));
     toml = Robot.INJECTOR.settings().getAutonSettings(settings);
@@ -83,6 +86,7 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
     kRightDirection = toml.getDouble("direction");
     kRightDistance = toml.getLong("distance").intValue();
     kRightAzimuth = toml.getDouble("azimuth");
+    kRightDriveMultiplier = toml.getDouble("multiplier");
   }
 
   @Override
@@ -107,7 +111,7 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
             addParallel(new EnableLidar());
             addParallel(new LightsOn());
             addSequential(new Stow(), 1.2);
-            addSequential(new WaitCommand(0.15));
+            addSequential(new WaitCommand(0.2));
             addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
           }
 
@@ -144,8 +148,9 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
     addParallel(new LightsOff());
     addSequential(new StartIntakeHold());
 
-    addParallel(new DriveFromCube(driveToCube));
-    addSequential(new WaitCommand(0.25));
+    addParallel(
+        new DriveFromCube(driveToCube, isLeft ? kLeftDriveMultiplier : kRightDriveMultiplier));
+    addSequential(new WaitCommand(0.30));
     addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
   }
 

@@ -13,6 +13,7 @@ public class LidarTestCommand extends Command {
 
   public LidarTestCommand() {
     requires(intakeSensorsSubsystem);
+    setRunWhenDisabled(true);
   }
 
   @Override

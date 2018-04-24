@@ -5,3 +5,4 @@ driveStopDistance = 42
 direction = -45.0
 distance = 100_000
 azimuth = -131.0
+multiplier = 2.0
