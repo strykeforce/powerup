@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Calendar Versioning](http://calver.org/).
 
+## [18.3.0] - 2018-04-25
+
+This is the Detroit World Championships release.
+
+### Added
+
+-   Support for vision system lights hardware.
+-   New motion profile and azimuth routines.
+-   New auton routines.
+-   Vision system calibration support.
+
+### Changed
+
+-   Tuned vision system.
+
+## [18.2.0] - 2018-04-11
+
+This is the Michigan State Championships release.
+
+### Added
+
+-   Vision system for cubes in auton.
+-   Intake release support.
+
+### Changed
+
+-   Auton tuning.
+
 ## [18.1.0] - 2018-03-28
 
 This is the [Kentwood District Event](http://www.firstinmichigan.org/events/eventInfo.php?id=119&program=frc) release.
@@ -43,6 +71,10 @@ This is the [St. Joseph District Event](http://www.firstinmichigan.org/events/ev
 ### Added
 
 -   POWER UP code for _Lift Ticket_ and _Payload_ robots.
+
+[18.3.0]: https://github.com/strykeforce/powerup/compare/v18.2.0...v18.3.0
+
+[18.2.0]: https://github.com/strykeforce/powerup/compare/v18.1.0...v18.2.0
 
 [18.1.0]: https://github.com/strykeforce/powerup/compare/v18.0.1...v18.1.0
 
