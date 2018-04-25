@@ -62,10 +62,6 @@ immediateFlushLogFile = true
   # practice
   lidarSlope  = 1.0
   lidarOffset = -19.4
-  lidarSlopeRight = 1.0
-  lidarOffsetRight = -19.4
-  lidarSlopeLeft = 1.0
-  lidarOffsetLeft = -19.4
 
   # comp
 #  lidarSlope  = 1.0
@@ -76,6 +72,7 @@ immediateFlushLogFile = true
   holdVelocity       = -1500
   fastEjectVelocity  =  1000
   scaleEjectVelocity =  3000
+  scaleEjectFastVelocity = 3700
   slowEjectVelocity  =  2000
   switchEjectVelocity = 3000
 

@@ -22,36 +22,41 @@ public class AutonCommands {
     switch (switchPosition) {
         // scale always
       case 0x10:
-      case 0x30:
-        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE, NONE);
         command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
         command.addScenario(LEFT, LEFT, SCALE, SCALE, SCALE);
+        command.addScenario(RIGHT, RIGHT, SCALE, SCALE, NONE);
+        break;
+      case 0x30:
+        command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
         command.addScenario(RIGHT, RIGHT, SCALE, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, SCALE, SCALE, NONE);
         break;
 
         // switch priority, scale if same side
       case 0x11:
-        command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
-        command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
+        command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
         command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
         command.addScenario(RIGHT, RIGHT, SWITCH, NONE, NONE);
         break;
       case 0x31:
-        command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
-        command.addScenario(LEFT, RIGHT, SCALE, SCALE, NONE);
+        command.addScenario(RIGHT, LEFT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
         command.addScenario(LEFT, LEFT, SWITCH, NONE, NONE);
         break;
 
         // switch always, scale first if same side as switch
       case 0x12:
-        command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
+        command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, SWITCH);
         command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
         command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
         break;
       case 0x32:
-        command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
+        command.addScenario(RIGHT, LEFT, SWITCH, SWITCH, SWITCH);
         command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
         command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
@@ -60,13 +65,13 @@ public class AutonCommands {
         // scale always, switch second if same side as scale
       case 0x13:
         command.addScenario(LEFT, RIGHT, SCALE, SCALE, NONE);
-        command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
+        command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
         command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
         break;
       case 0x33:
         command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
-        command.addScenario(LEFT, RIGHT, SCALE, SCALE, NONE);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
         command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
         break;
@@ -85,46 +90,18 @@ public class AutonCommands {
         command.addScenario(LEFT, LEFT, SWITCH, NONE, NONE);
         break;
 
-        // switch if opposite, scale always if same
+        // Elim Auton
       case 0x35:
-        command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
-        command.addScenario(LEFT, RIGHT, SCALE, SCALE, NONE);
-        command.addScenario(RIGHT, RIGHT, SCALE, SCALE, NONE);
-        command.addScenario(LEFT, LEFT, SWITCH, NONE, NONE);
+        command.addScenario(RIGHT, LEFT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
+        command.addScenario(RIGHT, RIGHT, SCALE, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, COOPERATIVE, NONE, NONE);
         break;
       case 0x15:
-        command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
-        command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
-        command.addScenario(LEFT, LEFT, SCALE, SCALE, NONE);
-        command.addScenario(RIGHT, RIGHT, SWITCH, NONE, NONE);
-        break;
-
-        // stay out of our partner's way, place a cube if possible
-      case 0x16:
-        command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
-        command.addScenario(RIGHT, LEFT, SCALE, COOPERATIVE, NONE);
-        command.addScenario(LEFT, LEFT, SCALE, COOPERATIVE, NONE);
-        command.addScenario(RIGHT, RIGHT, NONE, NONE, NONE);
-        break;
-      case 0x36:
-        command.addScenario(LEFT, RIGHT, SWITCH, COOPERATIVE, NONE);
-        command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
-        command.addScenario(LEFT, LEFT, NONE, NONE, NONE);
-        command.addScenario(RIGHT, RIGHT, SWITCH, COOPERATIVE, NONE);
-        break;
-
-        // Tuning Autons
-      case 0x17:
-        command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, NONE);
-        command.addScenario(RIGHT, LEFT, NONE, NONE, NONE);
-        command.addScenario(LEFT, LEFT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, SCALE, SCALE, SCALE);
         command.addScenario(RIGHT, RIGHT, COOPERATIVE, NONE, NONE);
-        break;
-      case 0x37:
-        command.addScenario(RIGHT, LEFT, SWITCH, SWITCH, NONE);
-        command.addScenario(LEFT, RIGHT, NONE, NONE, NONE);
-        command.addScenario(RIGHT, RIGHT, SWITCH, SWITCH, SWITCH);
-        command.addScenario(LEFT, LEFT, COOPERATIVE, NONE, NONE);
         break;
 
         // test

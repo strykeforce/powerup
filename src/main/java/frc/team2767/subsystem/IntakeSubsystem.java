@@ -39,6 +39,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
   private final int kScaleEjectVelocity;
   private final int kSlowEjectVelocity;
   private final int kSwitchEjectVelocity;
+  private final int kScaleEjectFastVelocity;
   private final int kNormalCurrentLimit;
   private final int kHoldCurrentLimit;
   private final double kLeftDefault;
@@ -67,6 +68,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     kHoldVelocity = toml.getLong("holdVelocity").intValue();
     kFastEjectVelocity = toml.getLong("fastEjectVelocity").intValue();
     kScaleEjectVelocity = toml.getLong("scaleEjectVelocity").intValue();
+    kScaleEjectFastVelocity = toml.getLong("scaleEjectFastVelocity").intValue();
     kSlowEjectVelocity = toml.getLong("slowEjectVelocity").intValue();
     kSwitchEjectVelocity = toml.getLong("switchEjectVelocity").intValue();
     kLeftDefault = scaleDutyCycle(toml.getDouble("leftServoDefault"));
@@ -123,6 +125,11 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         break;
       case SCALE_EJECT:
         output = kScaleEjectVelocity;
+        leftServoSetting = kLeftDefault;
+        rightServoSetting = kRightDefault;
+        break;
+      case SCALE_EJECT_FAST:
+        output = kScaleEjectFastVelocity;
         leftServoSetting = kLeftDefault;
         rightServoSetting = kRightDefault;
         break;
@@ -191,6 +198,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     HOLD,
     FAST_EJECT,
     SCALE_EJECT,
+    SCALE_EJECT_FAST,
     SLOW_EJECT,
     SWITCH_EJECT,
     OPEN
