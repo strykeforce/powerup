@@ -116,6 +116,7 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
     checkEncoder = true;
     positionStartTime = System.nanoTime();
     stableCount = 0;
+    rearTalon.follow(frontTalon);
     frontTalon.set(MotionMagic, position);
   }
 
