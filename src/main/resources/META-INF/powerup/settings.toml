@@ -17,7 +17,7 @@ immediateFlushLogFile = true
 
 [POWERUP.VISION]
   brightness = 57
-  exposure   = 40
+  exposure   = 35
   intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
   liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
   enableCamera  = true
@@ -27,10 +27,10 @@ immediateFlushLogFile = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRedLeft   = 2273 # states: 2309
-  ticksPerInchRedRight  = 2273 # states: 2337
-  ticksPerInchBlueLeft  = 2273 # states: 2353
-  ticksPerInchBlueRight = 2273 # states: 2287
+  ticksPerInchRedLeft   = 2332 # states: 2309
+  ticksPerInchRedRight  = 2332 # states: 2337
+  ticksPerInchBlueLeft  = 2332 # states: 2353
+  ticksPerInchBlueRight = 2332 # states: 2287
 
 [POWERUP.AZIMUTH]
   p = 0.05
@@ -136,7 +136,7 @@ immediateFlushLogFile = true
 
   # positions
   limitSwitchZeroPosition = 9394
-  # practice absEncoderZeroPosition  = 1127
+#   practice absEncoderZeroPosition  = 1127
   absEncoderZeroPosition  = 1900
   tightStowPosition       = 8666
   stowPosition            = 7000

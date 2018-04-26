@@ -124,6 +124,7 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
   public void resetPosition() {
     int position = frontTalon.getSelectedSensorPosition(0);
     logger.info("resetting position = {}", position);
+    rearTalon.follow(frontTalon);
     frontTalon.set(MotionMagic, position);
   }
 
@@ -209,11 +210,13 @@ public class LiftSubsystem extends Subsystem implements Graphable, Positionable 
 
   public void openLoopUp() {
     logger.debug("lift up at output {}", kUpOutput);
+    rearTalon.follow(frontTalon);
     frontTalon.set(PercentOutput, kUpOutput);
   }
 
   public void openLoopDown() {
     logger.debug("lift down at output {}", kDownOutput);
+    rearTalon.follow(frontTalon);
     frontTalon.set(PercentOutput, kDownOutput);
   }
 
