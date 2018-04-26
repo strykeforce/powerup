@@ -1,9 +1,10 @@
 package frc.team2767.subsystem.vision;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GripPipeline class.
