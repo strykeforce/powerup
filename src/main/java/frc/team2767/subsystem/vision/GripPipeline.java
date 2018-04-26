@@ -1,9 +1,10 @@
 package frc.team2767.subsystem.vision;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GripPipeline class.
@@ -18,8 +19,8 @@ public class GripPipeline {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
-  double[] hsvThresholdHue = {22.357029630532864, 43.32948018639598};
-  double[] hsvThresholdSaturation = {70.0, 255.0};
+  double[] hsvThresholdHue = {26.0, 52.0};
+  double[] hsvThresholdSaturation = {75.0, 255.0};
   double[] hsvThresholdValue = {18.345323741007192, 255.0};
   // Outputs
   private Mat resizeImageOutput = new Mat();

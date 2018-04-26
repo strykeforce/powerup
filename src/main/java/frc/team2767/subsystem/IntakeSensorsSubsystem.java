@@ -35,7 +35,7 @@ public class IntakeSensorsSubsystem extends Subsystem implements Graphable, Item
   private static final Logger logger = LoggerFactory.getLogger(IntakeSensorsSubsystem.class);
 
   private static final int CANIFIER_ID = 32;
-  private static final int LIDAR_READ_PERIOD_MS = 20;
+  private static final int LIDAR_READ_PERIOD_MS = 10;
   private static final int NUM_TAPS = 2;
 
   private final double kLidarSlope;

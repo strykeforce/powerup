@@ -7,8 +7,8 @@ import frc.team2767.subsystem.IntakeSubsystem.Mode;
 
 public class IntakeEject extends TimedCommand {
 
-  private static final double FAST_DURATION = 0.5;
-  private static final double SLOW_DURATION = 1.5;
+  private static final double FAST_DURATION = 1.0;
+  private static final double SLOW_DURATION = 2.0;
 
   public final Mode speed;
   private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
