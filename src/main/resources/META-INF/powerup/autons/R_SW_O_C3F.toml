@@ -1,6 +1,6 @@
 # Not Used
 
-intakeStopDistance = 22
+intakeStopDistance = 30
 driveStopDistance = 42
 direction = -45.0
 distance = 100_000

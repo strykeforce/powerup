@@ -2,7 +2,7 @@
 
 
 # path = "R_SC_S_C2F"
-intakeStopDistance = 22
+intakeStopDistance = 30
 driveStopDistance = 42
 direction = -164.0
 distance = 180_000

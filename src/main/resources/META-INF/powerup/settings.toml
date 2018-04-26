@@ -61,7 +61,7 @@ immediateFlushLogFile = true
 
   # practice
   lidarSlope  = 1.0
-  lidarOffset = -19.4
+  lidarOffset = 6.0 # -19.4
 
   # comp
 #  lidarSlope  = 1.0
