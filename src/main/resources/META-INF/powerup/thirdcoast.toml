@@ -136,7 +136,7 @@
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic
     pGain = 1.0
     iGain = 0.0
-    dGain = 75.0
+    dGain = 40.0
     fGain = 0.3
     iZone = 0
     allowableClosedLoopError = 0
