@@ -72,7 +72,8 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
     addParallel(
         isLeft
             ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
-            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
+            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth),
+        3.0);
     addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
     addSequential(new WaitCommand(0.5));
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, 0.8));
