@@ -2,7 +2,7 @@
 
 #path = "L_SW_S_C2D"
 direction = 150.0
-distance = 100_000
+distance = 180_000
 azimuth = -120.0
 
 #drive1 = -0.1

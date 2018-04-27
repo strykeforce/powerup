@@ -80,13 +80,21 @@ immediateFlushLogFile = true
   zeroPosition = 2048
   openPosition = 2500
 
-  # release servo positions - COMP BOT
-  leftServoDefault = 0.66 # good
-  leftServoClamp = 0.89 # good
-  leftServoOpen = 0.06 # good
-  rightServoDefault = 0.27 # good
-  rightServoClamp = 0.05 # good
-  rightServoOpen = 0.9 # good
+    # release servo positions - COMP BOT - OLD
+    leftServoDefault = 0.61 # good 0.61
+    leftServoClamp = 0.86 # good 0.86
+    leftServoOpen = 0.0 # good 0.0
+    rightServoDefault = 0.33 # good
+    rightServoClamp = 0.08 # good
+    rightServoOpen = 0.92 # good
+
+#  # release servo positions - COMP BOT - OLD
+#  leftServoDefault = 0.66 # good 0.61
+#  leftServoClamp = 0.89 # good 0.86
+#  leftServoOpen = 0.06 # good 0.0
+#  rightServoDefault = 0.27 # good
+#  rightServoClamp = 0.05 # good
+#  rightServoOpen = 0.9 # good
 
 #  # release servo positions - PROTO BOT
 #  leftServoDefault = 0.65
