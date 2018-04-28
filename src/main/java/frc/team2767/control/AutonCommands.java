@@ -104,6 +104,19 @@ public class AutonCommands {
         command.addScenario(RIGHT, RIGHT, COOPERATIVE, NONE, NONE);
         break;
 
+      case 0x16:
+        command.addScenario(LEFT, RIGHT, COOPERATIVE, NONE, NONE);
+        command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, SCALE, SCALE, SCALE);
+        command.addScenario(RIGHT, RIGHT, COOPERATIVE, NONE, NONE);
+        break;
+      case 0x36:
+        command.addScenario(RIGHT, LEFT, COOPERATIVE, NONE, NONE);
+        command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
+        command.addScenario(RIGHT, RIGHT, SCALE, SCALE, SCALE);
+        command.addScenario(LEFT, LEFT, COOPERATIVE, NONE, NONE);
+        break;
+
         // test
       case 0x1F:
         command.addScenario(LEFT, RIGHT, NONE, NONE, NONE);

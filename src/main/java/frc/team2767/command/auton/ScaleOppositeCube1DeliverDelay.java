@@ -4,10 +4,7 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
-import frc.team2767.command.intake.IntakeEject;
-import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.subsystem.IntakeSubsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,18 +33,16 @@ public class ScaleOppositeCube1DeliverDelay extends CommandGroup {
     addSequential(new WaitCommand(kWait1));
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
     addSequential(new PathCommand(kPath, startPosition.getPathAngle(START_POSITION_YAW)));
-    // addSequential(new AzimuthCommand(kAzimuth2));
     addSequential(new WaitCommand(kWait2));
-    addSequential(new MotionDrive(kDirection1, kDistance1, kAzimuth2));
-    addSequential(
-        new CommandGroup() {
-          {
-            addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
-            addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
-          }
-        });
-    // addSequential(new MotionDrive(kDirection2, kDistance2, kAzimuth2));
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SLOW_EJECT, EJECT_DURATION));
+    //    addSequential(new MotionDrive(kDirection1, kDistance1, kAzimuth2));
+    //    addSequential(
+    //        new CommandGroup() {
+    //          {
+    //            addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+    //            addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
+    //          }
+    //        });
+    //    addSequential(new IntakeEject(IntakeSubsystem.Mode.SLOW_EJECT, EJECT_DURATION));
   }
 
   @Override
