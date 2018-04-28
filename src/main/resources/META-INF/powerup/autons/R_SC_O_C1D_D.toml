@@ -2,7 +2,7 @@
 
 
 path = "R_SC_O_C1D_D"
-wait1 = 2.5
+wait1 = 1.75
 wait2 = 0.25
 direction1 = 0.0
 distance1 = 420_000
