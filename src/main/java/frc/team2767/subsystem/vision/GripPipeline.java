@@ -19,8 +19,8 @@ public class GripPipeline {
   }
 
   double[] hsvThresholdHue = {22.0, 52.0};
-  double[] hsvThresholdSaturation = {80.0, 255.0};
-  double[] hsvThresholdValue = {18.345323741007192, 255.0};
+  double[] hsvThresholdSaturation = {65.0, 255.0};
+  double[] hsvThresholdValue = {18.0, 255.0};
   // Outputs
   private Mat resizeImageOutput = new Mat();
   private Mat blurOutput = new Mat();

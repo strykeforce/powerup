@@ -17,7 +17,7 @@ immediateFlushLogFile = true
 
 [POWERUP.VISION]
   brightness = 57
-  exposure   = 35
+  exposure   = 22
   intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
   liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
   enableCamera  = true
