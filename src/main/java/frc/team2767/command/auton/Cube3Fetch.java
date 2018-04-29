@@ -111,7 +111,7 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
             addParallel(new EnableLidar());
             addParallel(new LightsOn());
             addSequential(new Stow(), 1.2);
-            addSequential(new WaitCommand(0.2));
+            addSequential(new WaitCommand(0.5));
             addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
           }
 

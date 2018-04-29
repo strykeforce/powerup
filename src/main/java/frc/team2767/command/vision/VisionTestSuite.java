@@ -19,10 +19,10 @@ public class VisionTestSuite extends CommandGroup {
 
     addSequential(new LightsOn());
 
-    addTestRun(20, Arrays.asList(40.0, 50.0, 60.0, 70.0, 80.0));
-    addTestRun(25, Arrays.asList(40.0, 50.0, 60.0, 70.0, 80.0));
-    addTestRun(30, Arrays.asList(40.0, 50.0, 60.0, 70.0, 80.0));
-    addTestRun(35, Arrays.asList(40.0, 50.0, 60.0, 70.0, 80.0));
+    addTestRun(20, Arrays.asList(50.0, 55.0, 60.0, 65.0, 80.0));
+    addTestRun(22, Arrays.asList(50.0, 55.0, 60.0, 65.0, 80.0));
+    addTestRun(34, Arrays.asList(50.0, 55.0, 60.0, 65.0, 80.0));
+    addTestRun(35, Arrays.asList(50.0, 55.0, 60.0, 65.0, 80.0));
 
     addReport();
 
