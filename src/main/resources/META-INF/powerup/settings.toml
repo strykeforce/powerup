@@ -17,7 +17,7 @@ immediateFlushLogFile = true
 
 [POWERUP.VISION]
   brightness = 57
-  exposure   = 35
+  exposure   = 22
   intakeCameraPath = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0"
   liftCameraPath   = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0"
   enableCamera  = true
@@ -27,8 +27,8 @@ immediateFlushLogFile = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRedLeft   = 2332 # states: 2309
-  ticksPerInchRedRight  = 2332 # states: 2337
+  ticksPerInchRedLeft   = 2380 # states: 2309
+  ticksPerInchRedRight  = 2380 # states: 2337
   ticksPerInchBlueLeft  = 2332 # states: 2353
   ticksPerInchBlueRight = 2332 # states: 2287
 
@@ -61,7 +61,7 @@ immediateFlushLogFile = true
 
   # practice
   lidarSlope  = 1.0
-  lidarOffset = -19.4
+  lidarOffset = 6.0 # -19.4
 
   # comp
 #  lidarSlope  = 1.0
@@ -80,13 +80,21 @@ immediateFlushLogFile = true
   zeroPosition = 2048
   openPosition = 2500
 
-  # release servo positions - COMP BOT
-  leftServoDefault = 0.66 # good
-  leftServoClamp = 0.89 # good
-  leftServoOpen = 0.06 # good
-  rightServoDefault = 0.27 # good
-  rightServoClamp = 0.05 # good
-  rightServoOpen = 0.9 # good
+    # release servo positions - COMP BOT - OLD
+    leftServoDefault = 0.61 # good 0.61
+    leftServoClamp = 0.86 # good 0.86
+    leftServoOpen = 0.0 # good 0.0
+    rightServoDefault = 0.33 # good
+    rightServoClamp = 0.08 # good
+    rightServoOpen = 0.92 # good
+
+#  # release servo positions - COMP BOT - OLD
+#  leftServoDefault = 0.66 # good 0.61
+#  leftServoClamp = 0.89 # good 0.86
+#  leftServoOpen = 0.06 # good 0.0
+#  rightServoDefault = 0.27 # good
+#  rightServoClamp = 0.05 # good
+#  rightServoOpen = 0.9 # good
 
 #  # release servo positions - PROTO BOT
 #  leftServoDefault = 0.65

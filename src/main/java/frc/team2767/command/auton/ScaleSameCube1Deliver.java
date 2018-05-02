@@ -1,7 +1,5 @@
 package frc.team2767.command.auton;
 
-import static edu.wpi.first.wpilibj.DriverStation.Alliance.*;
-
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
@@ -65,8 +63,8 @@ public class ScaleSameCube1Deliver extends CommandGroup {
         });
 
     addSequential(pathCommand);
-    // addSequential(new WaitCommand(0.50));
-    // addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
+    //    addSequential(new WaitCommand(0.50));
+    //    addSequential(new IntakeEject(IntakeSubsystem.Mode.SCALE_EJECT, EJECT_DURATION));
   }
 
   @Override

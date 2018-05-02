@@ -5,7 +5,6 @@ import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
 
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.team2767.Robot;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.shoulder.ShoulderPosition;
@@ -69,12 +68,18 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
     logger.debug(
         "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
 
-    addParallel(
-        isLeft
-            ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
-            : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth));
-    addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
-    addSequential(new WaitCommand(0.5));
+    addSequential(
+        new CommandGroup() {
+          {
+            addParallel(
+                isLeft
+                    ? new MotionDrive(kLeftDirection, kLeftDistance, kLeftAzimuth)
+                    : new MotionDrive(kRightDirection, kRightDistance, kRightAzimuth),
+                3.0);
+            addSequential(new ShoulderPosition(ShoulderPosition.Position.STOW));
+          }
+        });
+
     addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, 0.8));
   }
 
