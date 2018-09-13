@@ -1,7 +1,9 @@
 package frc.team2767.command.intake;
 
 import static frc.team2767.subsystem.IntakeSubsystem.Mode.LOAD;
+import static frc.team2767.subsystem.IntakeSubsystem.Mode.OPEN_LOAD;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
@@ -11,6 +13,8 @@ import frc.team2767.subsystem.IntakeSubsystem;
 
 public class IntakeLoad extends CommandGroup {
 
+  private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
+
   @Override
   protected void initialize() {}
 
@@ -18,6 +22,7 @@ public class IntakeLoad extends CommandGroup {
   protected void end() {}
 
   public IntakeLoad(Position position) {
+    requires(intakeSubsystem);
     addParallel(new Intake());
     LiftPosition.Position liftPosition;
     ShoulderPosition.Position shoulderPosition;
@@ -32,6 +37,12 @@ public class IntakeLoad extends CommandGroup {
 
     addParallel(new LiftPosition(liftPosition));
     addSequential(new ShoulderPosition(shoulderPosition));
+
+    //    if (!DriverStation.getInstance().isAutonomous()) {
+    //      addSequential(new PrintCommand("Opening"));
+    //      addSequential(new IntakeOpen());
+    //      addSequential(new IntakeIn());
+    //    }
   }
 
   public enum Position {
@@ -49,7 +60,11 @@ public class IntakeLoad extends CommandGroup {
 
     @Override
     protected void initialize() {
-      intakeSubsystem.run(LOAD);
+      if (DriverStation.getInstance().isAutonomous()) {
+        intakeSubsystem.run(LOAD);
+      } else {
+        intakeSubsystem.run(OPEN_LOAD);
+      }
     }
 
     @Override
