@@ -35,7 +35,6 @@ public class IntakeLoad extends CommandGroup {
 
     addParallel(new LiftPosition(liftPosition));
     addSequential(new ShoulderPosition(shoulderPosition));
-
   }
 
   public enum Position {
@@ -53,7 +52,7 @@ public class IntakeLoad extends CommandGroup {
 
     @Override
     protected void initialize() {
-        intakeSubsystem.run(OPEN_LOAD);
+      intakeSubsystem.run(OPEN_LOAD);
     }
 
     @Override
