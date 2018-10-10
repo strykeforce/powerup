@@ -1,13 +1,13 @@
 package frc.team2767.command.intake;
 
+import static frc.team2767.subsystem.IntakeSubsystem.Mode.OPEN_LOAD;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
 import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
-
-import static frc.team2767.subsystem.IntakeSubsystem.Mode.OPEN_LOAD;
 
 public class IntakeLoad extends CommandGroup {
 

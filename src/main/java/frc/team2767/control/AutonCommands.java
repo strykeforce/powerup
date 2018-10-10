@@ -38,7 +38,7 @@ public class AutonCommands {
       case 0x11:
         command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, SWITCH);
         command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
-        command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
+        command.addScenario(LEFT, LEFT, SWITCH, NONE, NONE);
         command.addScenario(RIGHT, RIGHT, SWITCH, NONE, NONE);
         break;
       case 0x31:
