@@ -27,10 +27,10 @@ immediateFlushLogFile = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRedLeft   = 2380 # states: 2309
-  ticksPerInchRedRight  = 2380 # states: 2337
-  ticksPerInchBlueLeft  = 2332 # states: 2353
-  ticksPerInchBlueRight = 2332 # states: 2287
+  ticksPerInchRedLeft   = 1908 # states: 2309
+  ticksPerInchRedRight  = 1908 # states: 2337
+  ticksPerInchBlueLeft  = 2100 # states: 2353
+  ticksPerInchBlueRight = 2100 # states: 2287
 
 [POWERUP.AZIMUTH]
   p = 0.05
@@ -81,12 +81,13 @@ immediateFlushLogFile = true
   openPosition = 2500
 
     # release servo positions - COMP BOT - OLD
-    leftServoDefault = 0.61 # good 0.61
-    leftServoClamp = 0.86 # good 0.86
+    leftServoDefault = 0.42 # good 0.61
+    leftServoClamp = 0.90 # good 0.86
     leftServoOpen = 0.0 # good 0.0
-    rightServoDefault = 0.33 # good
-    rightServoClamp = 0.08 # good
-    rightServoOpen = 0.92 # good
+
+    rightServoDefault = 0.6 # good
+    rightServoClamp = 0.18 # good
+    rightServoOpen = 0.99 # good
 
 #  # release servo positions - COMP BOT - OLD
 #  leftServoDefault = 0.66 # good 0.61
