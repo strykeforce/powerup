@@ -2,16 +2,16 @@
 
 waypoints = [
   {x = 0.0, y = 0.0, angle = 0.0},
-  {x = 2.3, y = -0.70, angle = 0.0},
-  {x = 3.50, y = -0.70, angle = 0.0},
-  {x = 5.80, y = 1.2, angle = 90.0},
-  {x = 5.80, y = 4.70, angle = 90.0},
-  {x = 7.05, y = 6.40, angle = 0.0},
+  {x = 2.6, y = -0.70, angle = 0.0},
+  {x = 4.0, y = -0.70, angle = 0.0},
+  {x = 5.38, y = 1.2, angle = 90.0},
+  {x = 5.38, y = 4.00, angle = 90.0},
+  {x = 6.45, y = 5.3, angle = 0.0},
 ]
 
 fit              = "HERMITE_CUBIC"
 sample_count     = 20_000
 dt               = 0.050    # sec
-max_velocity     = 3.5   # m/sec
-max_acceleration = 3.5  # m/sec/sec
+max_velocity     = 3.0   # m/sec
+max_acceleration = 2.5  # m/sec/sec
 max_jerk         = 60.0  # m/sec/sec/sec
