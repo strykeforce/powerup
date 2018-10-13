@@ -4,6 +4,7 @@ import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
 import frc.team2767.command.intake.IntakeEject;
+import frc.team2767.command.lift.LiftPosition;
 import frc.team2767.command.shoulder.ShoulderPosition;
 import frc.team2767.subsystem.IntakeSubsystem;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class ScaleOppositeCube1Deliver extends CommandGroup {
         new CommandGroup() {
           {
             addParallel(new AzimuthCommand(kAzimuth));
-            // addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
+            addParallel(new LiftPosition(LiftPosition.Position.SCALE_HIGH));
             addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SCALE));
           }
         });

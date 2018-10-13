@@ -6,9 +6,6 @@ import static frc.team2767.command.auton.PowerUpGameFeature.SWITCH;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
-import frc.team2767.command.intake.IntakeEject;
-import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.subsystem.IntakeSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 import openrio.powerup.MatchData;
@@ -67,7 +64,7 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
     logger.debug("LDirec = {}, LDist = {}, LAzi = {}", kLeftDirection, kLeftDistance, kLeftAzimuth);
     logger.debug(
         "RDirec = {}, RDist = {}, RAzi = {}", kRightDirection, kRightDistance, kRightAzimuth);
-
+    /*
     addSequential(
         new CommandGroup() {
           {
@@ -80,7 +77,7 @@ public class SwitchCube2Deliver extends CommandGroup implements OwnedSidesSettab
           }
         });
 
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, 0.8));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, 0.8));*/
   }
 
   @Override

@@ -3,9 +3,9 @@
 
 intakeStopDistance = 30
 driveStopDistance = 42
-direction = 164.0
-distance = 180_000
-azimuth = 49.0
+direction = 152.0
+distance = 155_000
+azimuth = 51.0
 multiplier = 2.0
 # drive = 0.15
 # strafe = 0.15

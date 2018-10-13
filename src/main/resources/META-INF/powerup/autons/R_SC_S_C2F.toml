@@ -4,8 +4,8 @@
 # path = "R_SC_S_C2F"
 intakeStopDistance = 30
 driveStopDistance = 42
-direction = -164.0
-distance = 180_000
+direction = -149.0
+distance = 155_000
 azimuth = -49.0
 multiplier = 2.0
 # drive = 0.15

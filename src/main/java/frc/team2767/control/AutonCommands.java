@@ -73,7 +73,7 @@ public class AutonCommands {
         command.addScenario(RIGHT, LEFT, SCALE, SCALE, NONE);
         command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
-        command.addScenario(LEFT, LEFT, SCALE, NONE, NONE);
+        command.addScenario(LEFT, LEFT, SCALE, SWITCH, NONE);
         break;
 
         // switch only

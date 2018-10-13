@@ -140,7 +140,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           {
             addParallel(
                 new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance : kRightIntakeStopDistance),
-                3.0);
+                1.5);
             addParallel(driveToCube);
           }
 
