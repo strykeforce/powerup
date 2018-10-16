@@ -3,6 +3,7 @@ package frc.team2767.command.auton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team2767.Robot;
 import frc.team2767.subsystem.DriveSubsystem;
+import org.strykeforce.thirdcoast.swerve.SwerveDrive;
 
 public class DriveFromCube extends Command {
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
@@ -22,11 +23,10 @@ public class DriveFromCube extends Command {
 
   @Override
   protected void initialize() {
-    //   driveSubsystem.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
-    //   driveSubsystem.resetDistance();
-    //   driveSubsystem.setDistanceTarget(driveToCube.actualDistance);
-    //   driveSubsystem.drive(-multiplier * driveToCube.forward, -multiplier * driveToCube.strafe,
-    // 0.0);
+    driveSubsystem.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
+    driveSubsystem.resetDistance();
+    driveSubsystem.setDistanceTarget(driveToCube.actualDistance);
+    driveSubsystem.drive(-multiplier * driveToCube.forward, -multiplier * driveToCube.strafe, 0.0);
   }
 
   @Override
