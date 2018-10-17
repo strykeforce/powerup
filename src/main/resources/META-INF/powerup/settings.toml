@@ -27,8 +27,8 @@ immediateFlushLogFile = true
   p_azimuth        = -0.004
   p_distance       = 2e-6
   f_acceleration   = 0.0
-  ticksPerInchRedLeft   = 1908 # states: 2309
-  ticksPerInchRedRight  = 1908 # states: 2337
+  ticksPerInchRedLeft   = 2100 # states: 2309
+  ticksPerInchRedRight  = 2100 # states: 2337
   ticksPerInchBlueLeft  = 2100 # states: 2353
   ticksPerInchBlueRight = 2100 # states: 2287
 
