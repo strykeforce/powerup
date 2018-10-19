@@ -1,5 +1,9 @@
 # 2018 FIRST POWER UP
 
+Stryke Force FRC competition robot for the 2018 season.
+
+![Payload](doc/payload.png)
+
 ## Controls
 
 ## Talons
