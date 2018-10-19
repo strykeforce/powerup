@@ -6,7 +6,8 @@ import frc.team2767.command.intake.IntakeHold;
 public class HoldCube extends CommandGroup {
 
   public HoldCube() {
+    addSequential(new IntakeHold(), 0.25);
     addParallel(new IntakeHold());
-    addParallel(new Stow());
+    addSequential(new Stow());
   }
 }

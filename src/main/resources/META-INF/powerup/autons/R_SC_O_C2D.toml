@@ -2,6 +2,6 @@
 
 
 path = "L_SC_S_C2D"
-direction = -5.0
-distance = 135_000
-azimuth = 165.0
+direction = 5.0
+distance = 90_000
+azimuth = 135.0

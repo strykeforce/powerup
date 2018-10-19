@@ -140,7 +140,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
           {
             addParallel(
                 new IntakeInCubeTwo(isLeft ? kLeftIntakeStopDistance : kRightIntakeStopDistance),
-                3.0);
+                1.5);
             addParallel(driveToCube);
           }
 
@@ -156,8 +156,14 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
 
     addParallel(
         new DriveFromCube(driveToCube, isLeft ? kLeftDriveMultiplier : kRightDriveMultiplier));
-    addSequential(new WaitCommand(0.25));
-    addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+
+    addParallel(
+        new CommandGroup() {
+          {
+            addSequential(new WaitCommand(0.5));
+            addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
+          }
+        });
   }
 
   @Override

@@ -26,9 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable {
-  {
-  }
-
   static final Logger logger = LoggerFactory.getLogger(Cube2Fetch.class);
   private static final Map<Scenario, String> SETTINGS = new HashMap<>();
 
@@ -47,17 +44,13 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
   private final DriveSubsystem driveSubsystem = Robot.INJECTOR.driveSubsystem();
   private boolean isLeft;
   private boolean isCross;
-
   private int kLeftIntakeStopDistance;
   private int kLeftDriveStopDistance;
-
   private int kRightIntakeStopDistance;
   private int kRightDriveStopDistance;
-
   private PowerUpGameFeature startFeature;
   private String settings;
   private DriveToCube driveToCube;
-
   private double kLeftDirection;
   private int kLeftDistance;
   private double kLeftAzimuth;
@@ -66,6 +59,9 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
   private double kRightAzimuth;
   private double kRightDriveMultiplier;
   private double kLeftDriveMultiplier;
+
+  {
+  }
 
   Cube3Fetch(StartPosition startPosition, PowerUpGameFeature startFeature) {
     // if (startFeature == SWITCH) return; // don't currently get second cube after switch cube 1
@@ -154,11 +150,6 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
     addSequential(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
   }
 
-  @Override
-  public String toString() {
-    return "Cube2Fetch{" + "settings='" + settings + '\'' + '}';
-  }
-
   static final class IntakeInCubeTwo extends Command {
 
     private final IntakeSubsystem intakeSubsystem = Robot.INJECTOR.intakeSubsystem();
@@ -190,5 +181,10 @@ public final class Cube3Fetch extends CommandGroup implements OwnedSidesSettable
           "intake stopped, lidar targetDistance = {}", intakeSensorsSubsystem.getLidarDistance());
       logger.trace("IntakeInCubeTwo ENDED");
     }
+  }
+
+  @Override
+  public String toString() {
+    return "Cube2Fetch{" + "settings='" + settings + '\'' + '}';
   }
 }

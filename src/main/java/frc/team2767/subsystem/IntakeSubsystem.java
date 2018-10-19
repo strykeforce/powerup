@@ -147,6 +147,11 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
         leftServoSetting = kLeftOpen;
         rightServoSetting = kRightOpen;
         break;
+      case OPEN_LOAD:
+        leftServoSetting = kLeftOpen;
+        rightServoSetting = kRightOpen;
+        output = kLoadVelocity;
+        break;
     }
 
     logger.info("running in {} at {}", mode, output);
@@ -201,6 +206,7 @@ public class IntakeSubsystem extends Subsystem implements Graphable, Positionabl
     SCALE_EJECT_FAST,
     SLOW_EJECT,
     SWITCH_EJECT,
-    OPEN
+    OPEN,
+    OPEN_LOAD
   }
 }
