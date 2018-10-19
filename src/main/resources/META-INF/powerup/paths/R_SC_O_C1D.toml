@@ -6,7 +6,7 @@ waypoints = [
   {x = 3.92, y = -0.70, angle = 0.0},
   {x = 5.3, y = 1.2, angle = 90.0},
   {x = 5.3, y = 4.00, angle = 90.0},
-  {x = 6.6, y = 5.54, angle = 0.0},
+  {x = 6.4, y = 5.54, angle = 0.0},
 ]
 
 fit              = "HERMITE_CUBIC"
