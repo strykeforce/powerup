@@ -3,9 +3,7 @@ package frc.team2767.command.auton;
 import com.moandjiezana.toml.Toml;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.team2767.Robot;
-import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.shoulder.ShoulderPosition;
-import frc.team2767.subsystem.IntakeSubsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +36,7 @@ public class SwitchOppositeCube1Deliver extends CommandGroup {
 
     addParallel(new ShoulderPosition(ShoulderPosition.Position.TIGHT_STOW));
     addSequential(new PathCommand(kPath, startPosition.getPathAngle(START_POSITION_YAW)));
-
+    /*
     addSequential(new AzimuthCommand(kAzimuth1));
     addSequential(new TimedDrive(kTimeout1, kDrive1, kStrafe1, 0.0)); // back into switch
     addSequential(new TimedDrive(kTimeout2, kDrive2, kStrafe2, 0.0)); // push blocks
@@ -46,7 +44,7 @@ public class SwitchOppositeCube1Deliver extends CommandGroup {
     addSequential(new TimedDrive(kTimeout4, kDrive4, kStrafe4, 0.0)); // back into switch
     addParallel(new ShoulderPosition(ShoulderPosition.Position.LAUNCH_SWITCH));
     addSequential(new AzimuthCommand(kAzimuth2), 1.0);
-    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, EJECT_DURATION));
+    addSequential(new IntakeEject(IntakeSubsystem.Mode.SWITCH_EJECT, EJECT_DURATION));*/
   }
 
   @Override

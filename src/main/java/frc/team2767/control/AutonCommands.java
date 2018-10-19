@@ -36,13 +36,13 @@ public class AutonCommands {
 
         // switch priority, scale if same side
       case 0x11:
-        command.addScenario(LEFT, RIGHT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(LEFT, RIGHT, SWITCH, NONE, NONE);
         command.addScenario(RIGHT, LEFT, SCALE, SCALE, SCALE);
         command.addScenario(LEFT, LEFT, SWITCH, NONE, NONE);
         command.addScenario(RIGHT, RIGHT, SWITCH, NONE, NONE);
         break;
       case 0x31:
-        command.addScenario(RIGHT, LEFT, SWITCH, SWITCH, SWITCH);
+        command.addScenario(RIGHT, LEFT, SWITCH, NONE, NONE);
         command.addScenario(LEFT, RIGHT, SCALE, SCALE, SCALE);
         command.addScenario(RIGHT, RIGHT, SCALE, SWITCH, NONE);
         command.addScenario(LEFT, LEFT, SWITCH, NONE, NONE);
