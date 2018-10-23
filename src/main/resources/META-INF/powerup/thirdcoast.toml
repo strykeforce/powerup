@@ -4,6 +4,9 @@
 ## Third Coast Library configuration
 ##
 
+## NOTE: All PID constants have been set to zero below as a reminder
+## that they must be specifically tuned for robot hardware.
+
 [THIRDCOAST.SWERVE]
   length        = 20.625
   width         = 26.125
@@ -26,24 +29,24 @@
     acceleration = 10_000
     cruiseVelocity = 800
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic, normal
-    pGain = 10.0
+    pGain = 0.0
     iGain = 0.0
-    dGain = 100.0
-    fGain = 1.0
+    dGain = 0.0
+    fGain = 0.0
     iZone = 0
     allowableClosedLoopError = 0
   [[TALON.closedLoopProfile]] # slot 1 MotionMagic, hot
-    pGain = 15.0
+    pGain = 0.0
     iGain = 0.0
-    dGain = 150.0
-    fGain = 1.0
+    dGain = 0.0
+    fGain = 0.0
     iZone = 0
     allowableClosedLoopError = 0
   [[TALON.closedLoopProfile]] # slot 2 MotionMagic, slow
-    pGain = 2.5
+    pGain = 0.0
     iGain = 0.0
-    dGain = 25.0
-    fGain = 1.0
+    dGain = 0.0
+    fGain = 0.0
     iZone = 0
     allowableClosedLoopError = 0
 
@@ -62,19 +65,19 @@
    period = "Period_50Ms"
    window = 32
  [[TALON.closedLoopProfile]] # slot 0 Velocity
-   pGain = 0.01
-   iGain = 0.0003
-   dGain = 0.6
-   fGain = 0.028
-   iZone = 3000
+   pGain = 0.0
+   iGain = 0.0
+   dGain = 0.0
+   fGain = 0.0
+   iZone = 0
    maxIntegralAccumulator = 200_000
    allowableClosedLoopError = 0
  [[TALON.closedLoopProfile]] # slot 1 Azimuth
-   pGain = 0.04
-   iGain = 0.0004
-   dGain = 2.0
-   fGain = 0.04
-   iZone = 1500
+   pGain = 0.0
+   iGain = 0.0
+   dGain = 0.0
+   fGain = 0.0
+   iZone = 0
    maxIntegralAccumulator = 300_000
    allowableClosedLoopError = 0
 
@@ -99,11 +102,11 @@
     peak = 0
     peakDuration = 0
    [[TALON.closedLoopProfile]] # slot 0 Velocity, 250 - 10_000 ticks/100ms
-     pGain = 0.15
-     iGain = 0.003
+     pGain = 0.0
+     iGain = 0.0
      dGain = 0.0
-     fGain = 0.1
-     iZone = 1000
+     fGain = 0.0
+     iZone = 0
      allowableClosedLoopError = 0
    [TALON.velocityMeasurement]
      period = "Period_25Ms"
@@ -134,10 +137,10 @@
     acceleration = 7500
     cruiseVelocity = 1500
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic
-    pGain = 1.0
+    pGain = 0.0
     iGain = 0.0
-    dGain = 40.0
-    fGain = 0.3
+    dGain = 0.0
+    fGain = 0.0
     iZone = 0
     allowableClosedLoopError = 0
 
@@ -178,9 +181,9 @@
     acceleration = 10_000
     cruiseVelocity = 1800
   [[TALON.closedLoopProfile]] # slot 0 MotionMagic
-    pGain = 0.6
+    pGain = 0.0
     iGain = 0.0
-    dGain = 25.0
-    fGain = 0.48
+    dGain = 0.0
+    fGain = 0.0
     iZone = 0
     allowableClosedLoopError = 0
