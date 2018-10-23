@@ -32,6 +32,7 @@ public class ShoulderPosition extends Command {
     STOW("stowPosition"),
     LAUNCH_SWITCH("launchSwitchPosition"),
     LAUNCH_SCALE("launchScalePosition"),
+    INTAKE_AUTON("intakePositionAuton"),
     INTAKE("intakePosition");
 
     private final String key;

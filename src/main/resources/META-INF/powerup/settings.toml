@@ -149,7 +149,9 @@ immediateFlushLogFile = true
   absEncoderZeroPosition  = 1900
   tightStowPosition       = 8666
   stowPosition            = 7000
-  intakePosition          = -166
+  #intakePosition          = -166
+  intakePosition          = -200
+  intakePositionAuton     = -166
   launchSwitchPosition    = 6666
   launchScalePosition     = 4166
 
