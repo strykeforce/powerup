@@ -119,7 +119,7 @@ public final class Cube2Fetch extends CommandGroup implements OwnedSidesSettable
             addParallel(new LightsOn());
             addSequential(new Stow(), 1.2);
             addSequential(new WaitCommand(0.25));
-            addSequential(new IntakeLoad(IntakeLoad.Position.GROUND), 0.25);
+            addSequential(new IntakeLoad(IntakeLoad.Position.GROUND_AUTON), 0.25);
           }
 
           @Override

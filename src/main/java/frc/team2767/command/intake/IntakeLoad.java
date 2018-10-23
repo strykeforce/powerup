@@ -28,6 +28,9 @@ public class IntakeLoad extends CommandGroup {
     if (position == Position.GROUND) {
       liftPosition = LiftPosition.Position.STOW;
       shoulderPosition = ShoulderPosition.Position.INTAKE;
+    } else if (position == Position.GROUND_AUTON) {
+      liftPosition = LiftPosition.Position.STOW;
+      shoulderPosition = ShoulderPosition.Position.INTAKE_AUTON;
     } else {
       liftPosition = LiftPosition.Position.PORTAL;
       shoulderPosition = ShoulderPosition.Position.INTAKE;
@@ -39,7 +42,8 @@ public class IntakeLoad extends CommandGroup {
 
   public enum Position {
     PORTAL,
-    GROUND
+    GROUND,
+    GROUND_AUTON
   }
 
   static class Intake extends Command {

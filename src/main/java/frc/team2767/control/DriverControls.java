@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team2767.Settings;
+import frc.team2767.command.climber.ClimberClimb;
+import frc.team2767.command.climber.ClimberDeploy;
+import frc.team2767.command.climber.ClimberStop;
 import frc.team2767.command.drive.ZeroGyroYawCommand;
 import frc.team2767.command.intake.IntakeEject;
 import frc.team2767.command.intake.IntakeLoad;
@@ -41,6 +44,11 @@ public class DriverControls {
     new JoystickButton(joystick, Shoulder.RIGHT.index)
         .whenPressed(new IntakeLoad(IntakeLoad.Position.GROUND));
     new JoystickButton(joystick, Shoulder.RIGHT.index).whenReleased(new HoldCube());
+
+    // climber
+    new JoystickButton(joystick, Climber.DEPLOY.index).whenPressed(new ClimberDeploy());
+    new JoystickButton(joystick, Climber.LIFT.index).whenPressed(new ClimberClimb());
+    new JoystickButton(joystick, Climber.LIFT.index).whenReleased(new ClimberStop());
   }
 
   @Nullable
@@ -85,6 +93,17 @@ public class DriverControls {
     private final int index;
 
     Shoulder(int index) {
+      this.index = index;
+    }
+  }
+
+  public enum Climber {
+    DEPLOY(17),
+    LIFT(16);
+
+    private final int index;
+
+    Climber(int index) {
       this.index = index;
     }
   }
